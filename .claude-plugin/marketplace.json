@@ -7,10 +7,10 @@
   },
   "plugins": [
     {
-      "name": "kit-store-checkup",
-      "displayName": "Kit Store Checkup",
-      "source": "./skills/kit-store-checkup",
-      "description": "Weekly revision of a Yandex Kit store: what is published but impossible to buy, what is running out of stock, and which orders are waiting or stuck.",
+      "name": "kit-skills",
+      "displayName": "Yandex Kit",
+      "source": "./",
+      "description": "Skills for running a Yandex Kit store from an agent: catalog and orders, storefront pages and sections, a store checkup, and offline authoring of custom sections.",
       "homepage": "https://github.com/yandex/kit-skills",
       "license": "MIT"
     }

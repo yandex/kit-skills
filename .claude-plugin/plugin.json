@@ -1,0 +1,10 @@
+{
+  "name": "kit-skills",
+  "description": "Skills for running a Yandex Kit store from an agent: catalog and orders, storefront pages and sections, a store checkup, and offline authoring of custom sections.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Yandex Kit"
+  },
+  "homepage": "https://github.com/yandex/kit-skills",
+  "license": "MIT"
+}
