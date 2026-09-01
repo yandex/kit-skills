@@ -1,0 +1,36 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}} 
+>
+    <ya-kit-section-layout-row>
+        <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" /> 
+    </ya-kit-section-layout-row>
+    <ya-kit-section-layout-row>  
+        {{#each settings.modules as |module index|}}
+            <ya-kit-module module-id={{module.id}} class="item {{skinRounded 150}}">
+                <ya-kit-accordion default-expanded="{{eql index 0}}">
+                    <ya-kit-accordion-header>
+                        <ya-kit-text as="h3" size="xl" weight="semibold">{{module.question}}</ya-kit-text>
+                        <svg class="item__icon-minus" focusable="false" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1" >
+                            <path d="M19 13H5v-2h14z"></path>
+                        </svg>
+                        <svg class="item__icon-plus" focusable="false" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1" >
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"></path>
+                        </svg>
+                    </ya-kit-accordion-header>
+                    <ya-kit-accordion-body>
+                        <div class="item__answer">
+                            <ya-kit-markdown  markup={{module.answer}} />
+                        </div>
+                    </ya-kit-accordion-body>
+                </ya-kit-accordion>
+            </ya-kit-module>
+        {{/each}} 
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

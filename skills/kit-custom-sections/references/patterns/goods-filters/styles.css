@@ -1,0 +1,16 @@
+.items:not(.visible) {
+    display: none;
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "palette": "default",
+  "titleText": "Частые вопросы",
+  "titleAlign": "default",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "question": "Как оформить заказ?",
+      "answer": "Выберите товар, добавьте его в корзину и оформите доставку."
+    }
+  ],
+  "verticalRhythm": "500",
+  "verticalRhythmTouch": "300"
+}

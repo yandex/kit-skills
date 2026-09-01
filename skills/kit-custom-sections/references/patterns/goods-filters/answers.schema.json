@@ -1,0 +1,55 @@
+{
+  "title": "Ответы для полки с вкладками",
+  "type": "object",
+  "properties": {
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок секции"
+    },
+    "titleAlign": {
+      "type": "string",
+      "enum": [
+        "default",
+        "left",
+        "center"
+      ],
+      "title": "Расположение заголовка"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "modules": {
+      "type": "array",
+      "title": "Вкладки (подборку каждой мерчант выберет в форме)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Название вкладки"
+          },
+          "source": {
+            "$ref": "#/definitions/ProductsSource",
+            "title": "Источник товаров: объект {id, slug, type} категории/подборки магазина"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Вертикальный отступ блока (spacing-токен, например 500 = 40px с каждой стороны)"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Вертикальный отступ на телефоне (spacing-токен)"
+    }
+  },
+  "required": [
+    "titleText",
+    "modules"
+  ]
+}

@@ -1,0 +1,33 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}} 
+>
+    <ya-kit-section-layout-row> 
+        <ya-kit-v-stack gap="100" class="container {{if (settings.isBlurry) 'blurry'}}">
+            <div class="text-scroll">
+                {{#repeat 10}}
+                    <span class="text-scroll-item anim-loop-left type-outline">
+                        {{#each settings.modules as |module|}}
+                        	<span>{{module.title}}</span>
+                        {{/each}}
+                    </span>
+                {{/repeat}}
+            </div>
+            <div class="text-scroll">
+                {{#repeat 10}}
+                    <span class="text-scroll-item anim-loop-right">
+                       {{#each settings.modules as |module|}}
+                        	<span>{{module.title}}</span>
+                        {{/each}}
+                    </span>
+                {{/repeat}}
+            </div>
+        </ya-kit-v-stack>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

@@ -1,0 +1,113 @@
+{
+  "generator_version": "0.1.0",
+  "generated_at": "2026-08-10",
+  "sources": [
+    {
+      "source_id": "atoms_registry",
+      "source_kind": "trunk-code",
+      "content_sha256": "5b7fccaec38899dba02504c6437282eb0fc6cb8e9d458543a6e429b126fe735f"
+    },
+    {
+      "source_id": "b2b_ref_constants",
+      "source_kind": "trunk-code",
+      "content_sha256": "cb7f400aa131b2a81450c77b950ebe5aec9b1d01bf5c6044a54266880304df82"
+    },
+    {
+      "source_id": "denormalize",
+      "source_kind": "trunk-code",
+      "content_sha256": "dec636af2938a36b9ea8d01dc5bbb7ceee367686755bcb73ee11c9b96ae8d2d2"
+    },
+    {
+      "source_id": "docs_root",
+      "source_kind": "public-docs",
+      "content_sha256": "-"
+    },
+    {
+      "source_id": "fragment_validation",
+      "source_kind": "trunk-code",
+      "content_sha256": "e3bc20f5e656d060ef196b4e588723619db2c511578821a5e47f54c20208daf9"
+    },
+    {
+      "source_id": "generate_schema",
+      "source_kind": "trunk-code",
+      "content_sha256": "0ac71041be95cef06a7048ebc345abbb419af5d3b1471d0d9820109959998ce6"
+    },
+    {
+      "source_id": "helpers_dir",
+      "source_kind": "trunk-code",
+      "content_sha256": "-"
+    },
+    {
+      "source_id": "interpreter",
+      "source_kind": "trunk-code",
+      "content_sha256": "fd71ba9aebf15d6829e9ba89a212318f890320ec4a76c5a1db8c742618fd6ce8"
+    },
+    {
+      "source_id": "kit_json_schema",
+      "source_kind": "trunk-code",
+      "content_sha256": "b4a79f64e5bf6dfb449b738fdedc67d0a04d03a4be38927e7d8626dedae4b5ce"
+    },
+    {
+      "source_id": "palette_tokens",
+      "source_kind": "trunk-code",
+      "content_sha256": "0eba023e8b5afb2acb218067b395936d9616516aa4223cd2eec1f1ce09d818c7"
+    },
+    {
+      "source_id": "spacing_css",
+      "source_kind": "trunk-code",
+      "content_sha256": "1f9f9ddbe4cf1098002654e667ea50e9d36178f4f3bf69c0b155b1212fc594de"
+    },
+    {
+      "source_id": "spacing_module",
+      "source_kind": "trunk-code",
+      "content_sha256": "531de97c25839ca74da8c6f4c009b279e0c158e066a19db338523db55a56386f"
+    },
+    {
+      "source_id": "spacing_skin",
+      "source_kind": "trunk-code",
+      "content_sha256": "d2cfdcd8cff3e85032fe325a625e88d42fe4a32c261463b00b5d364317b2b01c"
+    },
+    {
+      "source_id": "theme_vars",
+      "source_kind": "trunk-code",
+      "content_sha256": "4299a85fdf6cba2897a6d168c1bb5c08c80d76a8fa52c54ccec493dfe68f65f3"
+    }
+  ],
+  "counters": {
+    "tags_builtin": 8,
+    "tags_controllers": 36,
+    "tags_atoms": 50,
+    "tags_total": 94,
+    "helpers_inline_names": 54,
+    "helpers_inline_functions": 53,
+    "helpers_block": 6,
+    "spacing_tokens": 28,
+    "spacing_slider": 27,
+    "reserved_refs": 20,
+    "service_refs": 5,
+    "schema_extra_tags": 17,
+    "form_extra_keywords": 1,
+    "element_blacklist": 2
+  },
+  "coverage": {
+    "tags_documented": 74,
+    "tags_total": 94,
+    "attributes_source": "public-docs"
+  },
+  "manual_gaps": [
+    "payload контроллеров: реестр из кода, тела payload — из доки; для недокументированных контроллеров payload неизвестен",
+    "атрибуты атомов: только из таблиц доки (Tier C заблокирован: нет pnpm/node_modules); attributes_source: public-docs",
+    "hero / advantages / CTA-полоса / text+media split: в официальной доке отсутствуют, паттерны написаны вручную — их разметка не подтверждена платформой, в отличие от импортированных из доки"
+  ],
+  "bff_build_version": "910f99ec8a22a9c9ca7ee3508a3a95123ad627e6cb1f9ffb16a7bf6aff5b39a8",
+  "files": {
+    "registry.json": "6d1d4ae212f29d2228705f74bcfe06c0cfce84442c0dee7571198fe7350fddb6",
+    "tags.md": "c63ce51ff039071d8ca37d13e7092a655ad2cab3bf1ea878922a002824c85e71",
+    "helpers.md": "bec0491789d06e33e4b242e628c9b4645c9a9b9079efc09906f95184e29e6a4e",
+    "controllers.md": "6c299684e0670923bfa50d676c07dae208bd9eea48fb8dabfc6a8517edb93411",
+    "tokens.md": "ef02606beb09655e3a885591a943b8dc6ee478e179e6ff160f7b2198bfa097c1",
+    "schema-keywords.md": "c5d14620850c92e5b4c603e56a957fb93460cc91206538696b2532f9bdabc951",
+    "data-context.md": "8a91073cfb29319e0ba1376ce83e522d06ef79a39cfdc6fc38b72ee181c1b4cf",
+    "definitions.json": "f72c0e76be67dcd564fbd66b153ef5bd87dfd555f82219567dc65c1c360f6d82"
+  }
+}

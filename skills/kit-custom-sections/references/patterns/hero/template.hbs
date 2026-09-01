@@ -1,0 +1,31 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        <div class="hero">
+            <ya-kit-v-stack class="hero__text" gap="300" justify-content="center" align-items="flex-start">
+                <ya-kit-text class="hero__title" as="h1" size="4xl" weight="bold">{{settings.titleText}}</ya-kit-text>
+                {{#if settings.subtitleText}}
+                    <ya-kit-text class="hero__subtitle" size="xl" color="secondary">{{settings.subtitleText}}</ya-kit-text>
+                {{/if}}
+                {{#if settings.buttonUrl.link}}
+                    <div class="hero__cta">
+                        <ya-kit-button color="primary" size="lg" to={{settings.buttonUrl.link}}>{{settings.buttonText}}</ya-kit-button>
+                    </div>
+                {{/if}}
+            </ya-kit-v-stack>
+            {{#if settings.image.filePath}}
+                <div class="hero__media">
+                    <ya-kit-image class="hero__image" src={{settings.image}} fit="cover" aspect-ratio="4:3" rounded="200" />
+                </div>
+            {{/if}}
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

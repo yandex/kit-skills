@@ -1,0 +1,12 @@
+{
+  "palette": "default",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "200",
+  "verticalRhythmTouch": "100"
+}

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Яндекс.Кит custom sections"
+  short_description: "Assemble and lint custom storefront sections offline from verified patterns"
+  default_prompt: "Use $kit-custom-sections to build a custom Яндекс.Кит storefront section offline from a catalog of verified patterns (pick a pattern, fill its settings, get a validated html + css + json_schema triple with upload commands printed for kit-storefront-constructor), lint an existing or exported section template against the tag/helper/token registries and the settings-to-schema bijection, or answer reference questions about ya-kit tags, helpers, data controllers and schema $ref types."
+  brand_color: "#FC3F1D"
+
+policy:
+  allow_implicit_invocation: true

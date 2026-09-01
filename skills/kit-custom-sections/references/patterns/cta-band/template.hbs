@@ -1,0 +1,24 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        <div class="band {{skinRounded 200}}">
+            <ya-kit-v-stack class="band__text" gap="100" align-items="flex-start">
+                <ya-kit-text as="h3" size="2xl" weight="bold">{{settings.titleText}}</ya-kit-text>
+                {{#if settings.subtitleText}}
+                    <ya-kit-text size="md" color="secondary">{{settings.subtitleText}}</ya-kit-text>
+                {{/if}}
+            </ya-kit-v-stack>
+            <div class="band__cta">
+                <ya-kit-button color="primary" size="lg" to={{settings.buttonUrl.link}}>{{settings.buttonText}}</ya-kit-button>
+            </div>
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

@@ -1,0 +1,21 @@
+{
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "title": "Быстрая доставка",
+      "description": "Отправляем в день заказа."
+    }
+  ],
+  "verticalRhythm": "500",
+  "verticalRhythmTouch": "300"
+}

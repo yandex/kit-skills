@@ -1,0 +1,75 @@
+.grid {
+    width: 100%;
+}
+
+.preview-product-card-layout__body {
+    display: block;
+}
+
+.preview-product-image-wrapper {
+    position: relative;
+    border-radius: var(--ys-current-skin-border-radius);
+    overflow: hidden;
+}
+
+.preview-product-card-layout--oos .preview-product-image-wrapper {
+    opacity: 0.75;
+}
+
+.preview-product-image-wrapper::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.0375);
+    pointer-events: none;
+    top: 0;
+    left: 0;
+}
+
+.preview-product-image  {
+    pointer-events: none;
+    transition: transform .2s ease-in-out;
+    transform-origin: center;
+    transform: scale(1) translate3d(0, 0, 0);
+}
+
+.preview-product-card-layout:not(.preview-product-card-layout--oos) .preview-product-card-layout__body:hover .preview-product-image  {
+    transform: scale(1.15) translate3d(0, 0, 0);
+}
+
+.preview-product-card-layout__body:hover .preview-product-card-layout__title-text {
+    color: var(--ys-color-token-brand-primary)
+}
+
+.preview-product-card-layout__badges {
+    bottom: 0;
+    box-sizing: border-box;
+    left: 0;
+    padding: 12px;
+    position: absolute;
+}
+
+.preview-product-card-layout__badge {
+    border-radius: 16px;
+    padding: 2px 12px;
+    background-color: #000;
+    color: #ffffff;
+}
+
+.preview-product-card-layout__control {
+    margin-top: auto;
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

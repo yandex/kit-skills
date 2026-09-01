@@ -1,0 +1,14 @@
+id: static-reviews
+version: 1
+title: "Статические отзывы"
+purpose: "Карусель карточек отзывов с рейтингом, автором и текстом"
+origin: "doc-example: example/others/static-reviews.md"
+fingerprint: "cb7f1c608bf844f67518db1e2fae32364f261176ae6d674d8dde6957c0a5d600"
+docs_fingerprint: "a414ccd54f07e4e4659d602bc51b707988b6ad63b6128820118ae28de4c45c75"
+applied_patches: "fix-hpadding-touch"
+keywords: "отзывы, review, отзывы покупателей, рейтинг, звёзды, карусель отзывов"
+pages: "main, landing"
+controllers: ""
+answers_required: "titleText, modules"
+rhythm: "500"
+rhythm_touch: "300"

@@ -1,0 +1,26 @@
+{
+  "titleText": "До и после",
+  "titleAlign": "default",
+  "palette": "default",
+  "before": {
+    "image": {
+      "fileId": "",
+      "filePath": ""
+    }
+  },
+  "after": {
+    "image": {
+      "fileId": "",
+      "filePath": ""
+    }
+  },
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "500",
+  "verticalRhythmTouch": "300"
+}

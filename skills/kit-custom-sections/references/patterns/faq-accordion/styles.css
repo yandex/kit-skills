@@ -1,0 +1,47 @@
+.item:not(:last-child) {
+    border-bottom: 1px solid var(--ys-color-token-border-primary);
+}
+
+.item__answer {
+    padding-bottom: var(--ys-spacing-200);
+}
+
+.item [data-icon="true"] {
+    display: none;
+}
+
+
+.item .item__icon-minus,
+.item .item__icon-plus {
+    width: 28px;
+    fill: var(--ys-color-token-border-primary);
+}
+
+.item .item__icon-plus {
+    display: block;
+}
+
+.item .item__icon-minus {
+    display: none; 
+}
+
+.item [aria-expanded="true"] .item__icon-plus {
+    display: none;
+}
+
+.item [aria-expanded="true"] .item__icon-minus {
+    display: block;
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

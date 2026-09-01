@@ -1,0 +1,14 @@
+id: selected-custom-snippets
+version: 1
+title: "Избранные товары"
+purpose: "Сетка избранных товаров пользователя со своими карточками"
+origin: "doc-example: example/selected-products/selected-custom-snippets.md"
+fingerprint: "9410c2586d53539940582dfec5db96a0f54ff8acc89003f6b35fae5c5e8991a2"
+docs_fingerprint: "469593ce505cf0765e67f3a07bb16e3bf14fce55620ce4724fb04c6fdf2541e8"
+applied_patches: "fix-hpadding-touch, add-missing-datasource, add-missing-count"
+keywords: "избранное, favourites, вишлист, отложенные товары"
+pages: "main, landing"
+controllers: "ya-kit-favourite-products-controller, ya-kit-product-snippet-controller"
+answers_required: ""
+rhythm: "500"
+rhythm_touch: "300"

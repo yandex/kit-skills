@@ -1,0 +1,19 @@
+{
+  "palette": "default",
+  "isBlurry": false,
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "title": "Доставка по всей России"
+    }
+  ],
+  "verticalRhythm": "500",
+  "verticalRhythmTouch": "300"
+}

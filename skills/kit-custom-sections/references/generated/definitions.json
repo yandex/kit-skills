@@ -1,0 +1,728 @@
+{
+  "build_version": "910f99ec8a22a9c9ca7ee3508a3a95123ad627e6cb1f9ffb16a7bf6aff5b39a8",
+  "definitions": {
+    "Advantage": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/ValueOf<object-615881021-725-921-615881021-725-930-615881021-709-930-615881021-702-930-615881021-702-931-615881021-0-5479>",
+          "title": "Тип",
+          "options": [
+            "Нет",
+            "Сплит",
+            "Доставка",
+            "Подарок",
+            "Примерка",
+            "Отказ",
+            "Возврат",
+            "Оплата"
+          ]
+        },
+        "text": {
+          "$ref": "#/definitions/TextArea",
+          "title": "Текст",
+          "description": "Коротко опишите преимущество"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "BannerSlideMedia": {
+      "type": "object",
+      "properties": {
+        "media": {
+          "$ref": "#/definitions/DesktopMediaItemModel",
+          "title": "Изображение или видео"
+        },
+        "mediaMobile": {
+          "$ref": "#/definitions/MobileMediaItemModel",
+          "title": "Изображение или видео для телефона"
+        }
+      }
+    },
+    "BlogEntryType": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string"
+        },
+        "blogEntryId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "slug",
+        "blogEntryId",
+        "name"
+      ]
+    },
+    "CategoryCollection": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
+        },
+        "collectionId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "slug",
+        "categoryId",
+        "collectionId"
+      ]
+    },
+    "ColorSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "backgroundPrimary": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "backgroundPrimary",
+        "text"
+      ]
+    },
+    "DesktopMediaItemModel": {
+      "$ref": "#/definitions/LegacyMediaModel"
+    },
+    "FontFamily": {
+      "type": "object",
+      "properties": {
+        "predefined": {
+          "$ref": "#/definitions/FontFamilyItem"
+        },
+        "custom": {
+          "$ref": "#/definitions/FontFamilyItem"
+        }
+      },
+      "required": [
+        "predefined"
+      ]
+    },
+    "FontFamilyItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "isSelected": {
+          "type": "boolean"
+        },
+        "sources": {
+          "type": "object",
+          "properties": {
+            "normal": {
+              "type": "object",
+              "properties": {
+                "regular": {
+                  "$ref": "#/definitions/OtherMediaModel"
+                },
+                "medium": {
+                  "$ref": "#/definitions/OtherMediaModel"
+                },
+                "semibold": {
+                  "$ref": "#/definitions/OtherMediaModel"
+                },
+                "bold": {
+                  "$ref": "#/definitions/OtherMediaModel"
+                }
+              },
+              "required": [
+                "regular",
+                "bold"
+              ]
+            },
+            "italic": {
+              "type": "object",
+              "properties": {
+                "regular": {
+                  "$ref": "#/definitions/OtherMediaModel"
+                },
+                "bold": {
+                  "$ref": "#/definitions/OtherMediaModel"
+                }
+              }
+            }
+          },
+          "required": [
+            "normal"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "isSelected"
+      ]
+    },
+    "ImageModel": {
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "type": "string"
+        },
+        "filePath": {
+          "type": "string"
+        },
+        "sizes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImageSizesModel"
+          }
+        },
+        "metadata": {
+          "$ref": "#/definitions/MediaMetadataModel"
+        }
+      },
+      "required": [
+        "fileId",
+        "filePath"
+      ]
+    },
+    "ImageSizesModel": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "alias"
+      ]
+    },
+    "LegacyMediaModel": {
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "type": "string"
+        },
+        "filePath": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "IMAGE",
+            "VIDEO",
+            "OTHER"
+          ]
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "thumbHash": {
+              "type": "string"
+            },
+            "backgroundColors": {
+              "type": "object",
+              "properties": {
+                "bottom": {
+                  "$ref": "#/definitions/Nullable<string>"
+                },
+                "left": {
+                  "$ref": "#/definitions/Nullable<string>"
+                },
+                "right": {
+                  "$ref": "#/definitions/Nullable<string>"
+                },
+                "top": {
+                  "$ref": "#/definitions/Nullable<string>"
+                }
+              }
+            }
+          },
+          "required": [
+            "thumbHash",
+            "backgroundColors"
+          ]
+        },
+        "sizes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "alias": {
+                "type": "string"
+              },
+              "width": {
+                "type": "number"
+              },
+              "height": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "alias"
+            ]
+          }
+        }
+      },
+      "required": [
+        "fileId",
+        "filePath",
+        "type",
+        "sizes"
+      ]
+    },
+    "LinkSource": {
+      "type": "object",
+      "properties": {
+        "link": {
+          "type": "string"
+        },
+        "linkId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "link",
+        "linkId"
+      ]
+    },
+    "MarkdownContent": {
+      "type": "string"
+    },
+    "MediaMetadataModel": {
+      "type": "object",
+      "properties": {
+        "thumbUrl": {
+          "type": "string"
+        },
+        "backgroundColors": {
+          "type": "object",
+          "properties": {
+            "bottom": {
+              "$ref": "#/definitions/Nullable<string>"
+            },
+            "left": {
+              "$ref": "#/definitions/Nullable<string>"
+            },
+            "right": {
+              "$ref": "#/definitions/Nullable<string>"
+            },
+            "top": {
+              "$ref": "#/definitions/Nullable<string>"
+            }
+          }
+        }
+      },
+      "required": [
+        "backgroundColors"
+      ]
+    },
+    "MenuId": {
+      "type": "string"
+    },
+    "MobileMediaItemModel": {
+      "$ref": "#/definitions/LegacyMediaModel"
+    },
+    "Nullable<string>": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Делает тип Nullable"
+    },
+    "OptionalFlag": {
+      "type": "string",
+      "enum": [
+        "default",
+        "enabled",
+        "disabled"
+      ],
+      "options": [
+        "Как в теме",
+        "Да",
+        "Нет"
+      ],
+      "default": "default"
+    },
+    "OtherMediaModel": {
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "type": "string"
+        },
+        "filePath": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "fileId",
+        "filePath"
+      ]
+    },
+    "Palette": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PaletteId"
+        },
+        {
+          "$ref": "#/definitions/ColorSchema"
+        }
+      ]
+    },
+    "PaletteId": {
+      "type": "string"
+    },
+    "Palettes": {
+      "$ref": "#/definitions/ColorSchema"
+    },
+    "ProductCard": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string"
+        },
+        "cardId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "slug",
+        "cardId",
+        "name"
+      ]
+    },
+    "ProductsSource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "category",
+            "collection",
+            "contextCollection",
+            "relevant",
+            "last_seen"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "slug",
+        "type"
+      ]
+    },
+    "PromocodeSource": {
+      "type": "object",
+      "properties": {
+        "promocodeId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "promocodeId"
+      ]
+    },
+    "SectionHPadding": {
+      "$ref": "#/definitions/SpacingSkin<(\"0\"|\"200\"|\"400\"|\"800\"|\"1000\"|\"1100\"|\"1200\"|\"1400\"|\"1500\"|\"1600\")>"
+    },
+    "SectionHPaddingTouch": {
+      "$ref": "#/definitions/SpacingSkin<(\"0\"|\"50\"|\"100\"|\"150\"|\"200\"|\"250\"|\"300\"|\"400\"|\"500\")>"
+    },
+    "SectionTitleAlign": {
+      "type": "string",
+      "enum": [
+        "default",
+        "left",
+        "center"
+      ],
+      "title": "Расположение заголовка",
+      "default": "default",
+      "options": [
+        "Как в теме",
+        "Слева",
+        "По центру"
+      ]
+    },
+    "SectionVPadding": {
+      "$ref": "#/definitions/ValueOf<object-1125372640-787-853-1125372640-787-862-1125372640-763-862-1125372640-757-862-1125372640-749-863-1125372640-0-6093>",
+      "default": "single",
+      "options": [
+        "Двойной",
+        "Обычный",
+        "Нет"
+      ]
+    },
+    "SpacingSkin<(\"0\"|\"200\"|\"400\"|\"800\"|\"1000\"|\"1100\"|\"1200\"|\"1400\"|\"1500\"|\"1600\")>": {
+      "type": "string",
+      "enum": [
+        "0",
+        "200",
+        "400",
+        "800",
+        "1000",
+        "1100",
+        "1200",
+        "1400",
+        "1500",
+        "1600"
+      ],
+      "component": "slider",
+      "optionsMap": {
+        "0": "0px",
+        "25": "2px",
+        "50": "4px",
+        "100": "8px",
+        "150": "12px",
+        "200": "16px",
+        "250": "20px",
+        "300": "24px",
+        "350": "28px",
+        "400": "32px",
+        "450": "36px",
+        "500": "40px",
+        "600": "48px",
+        "700": "56px",
+        "800": "64px",
+        "900": "72px",
+        "1000": "80px",
+        "1100": "96px",
+        "1200": "112px",
+        "1300": "128px",
+        "1400": "144px",
+        "1500": "160px",
+        "1600": "176px",
+        "1700": "192px",
+        "1800": "208px",
+        "1900": "224px",
+        "2000": "240px"
+      }
+    },
+    "SpacingSkin<(\"0\"|\"50\"|\"100\"|\"150\"|\"200\"|\"250\"|\"300\"|\"400\"|\"500\")>": {
+      "type": "string",
+      "enum": [
+        "0",
+        "50",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "400",
+        "500"
+      ],
+      "component": "slider",
+      "optionsMap": {
+        "0": "0px",
+        "25": "2px",
+        "50": "4px",
+        "100": "8px",
+        "150": "12px",
+        "200": "16px",
+        "250": "20px",
+        "300": "24px",
+        "350": "28px",
+        "400": "32px",
+        "450": "36px",
+        "500": "40px",
+        "600": "48px",
+        "700": "56px",
+        "800": "64px",
+        "900": "72px",
+        "1000": "80px",
+        "1100": "96px",
+        "1200": "112px",
+        "1300": "128px",
+        "1400": "144px",
+        "1500": "160px",
+        "1600": "176px",
+        "1700": "192px",
+        "1800": "208px",
+        "1900": "224px",
+        "2000": "240px"
+      }
+    },
+    "TextArea": {
+      "type": "string"
+    },
+    "ThemeColor": {
+      "type": "string"
+    },
+    "ValueOf<object-1125372640-787-853-1125372640-787-862-1125372640-763-862-1125372640-757-862-1125372640-749-863-1125372640-0-6093>": {
+      "type": "string",
+      "enum": [
+        "double",
+        "single",
+        "none"
+      ],
+      "description": "Возваращает union-type содержащий типы всех значений объекта"
+    },
+    "ValueOf<object-615881021-725-921-615881021-725-930-615881021-709-930-615881021-702-930-615881021-702-931-615881021-0-5479>": {
+      "type": "string",
+      "enum": [
+        "none",
+        "split-payment",
+        "delivery",
+        "gift",
+        "fitting",
+        "refusal",
+        "return",
+        "payment"
+      ],
+      "description": "Возваращает union-type содержащий типы всех значений объекта"
+    },
+    "VideoContentModel": {
+      "type": "object",
+      "properties": {
+        "uploadDate": {
+          "type": "string"
+        },
+        "playerUrl": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "streamDashUrl": {
+          "type": "string"
+        },
+        "streamHlsUrl": {
+          "type": "string"
+        },
+        "firstFrameUrl": {
+          "type": "string"
+        },
+        "firstBlurredFrameUrl": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "uploadDate",
+        "playerUrl"
+      ]
+    },
+    "VideoModel": {
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "type": "string"
+        },
+        "filePath": {
+          "type": "string"
+        },
+        "sizes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImageSizesModel"
+          }
+        },
+        "metadata": {
+          "$ref": "#/definitions/MediaMetadataModel"
+        },
+        "video": {
+          "$ref": "#/definitions/VideoSourceModel"
+        }
+      },
+      "required": [
+        "fileId",
+        "filePath"
+      ]
+    },
+    "VideoSourceModel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/VideoStatusModel"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "$ref": "#/definitions/VideoContentModel"
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "title"
+      ]
+    },
+    "VideoStatusModel": {
+      "type": "string",
+      "enum": [
+        "videoStatusUnspecified",
+        "waitUploading",
+        "uploaded",
+        "processing",
+        "ready",
+        "error",
+        "uploadFailed"
+      ]
+    },
+    "YandexSplitSize": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "s",
+        "m",
+        "widget-white",
+        "widget-grey",
+        "widget-outlined",
+        "widget-transparent"
+      ],
+      "options": [
+        "Нет",
+        "Маленький",
+        "Средний",
+        "Белый",
+        "Серый",
+        "С обводкой",
+        "Прозрачный"
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+.band {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ys-spacing-400);
+    background: var(--ys-background-secondary);
+    padding: var(--ys-spacing-500) var(--ys-spacing-600);
+}
+
+.band__text {
+    min-width: 0;
+}
+
+.band__cta {
+    flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+    .band {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--ys-spacing-400);
+        gap: var(--ys-spacing-300);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

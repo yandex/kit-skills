@@ -1,0 +1,19 @@
+{
+  "palette": "default",
+  "titleText": "О бренде",
+  "contentText": "Расскажите здесь историю бренда.",
+  "image": {
+    "fileId": "",
+    "filePath": ""
+  },
+  "mediaLeft": false,
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "500",
+  "verticalRhythmTouch": "300"
+}

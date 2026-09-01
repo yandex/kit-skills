@@ -1,0 +1,14 @@
+id: cta-band
+version: 1
+title: "CTA-полоса"
+purpose: "Акцентная полоса призыва к действию: заголовок слева, кнопка справа"
+origin: "handmade"
+fingerprint: "1c711079f3d9cb6de9481188d9b1c91b90782eb8000ca5271767b3a776494230"
+docs_fingerprint: "1c711079f3d9cb6de9481188d9b1c91b90782eb8000ca5271767b3a776494230"
+applied_patches: ""
+keywords: "cta, полоса, призыв к действию, баннер с кнопкой, промо-полоса, акция"
+pages: "main, landing"
+controllers: ""
+answers_required: "titleText, buttonText"
+rhythm: "500"
+rhythm_touch: "300"

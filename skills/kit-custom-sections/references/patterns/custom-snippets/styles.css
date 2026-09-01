@@ -1,0 +1,71 @@
+.list-item {
+    width: 100%;
+}
+
+.list-item__image-wrapper {
+    flex: 0 0 96px;
+    overflow: hidden;
+    border-radius: var(--ys-current-skin-border-radius);
+}
+
+.list-item__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ys-spacing-300);
+}
+
+.list-item__content {
+    flex: 1 1 auto;
+}
+
+.divider {
+    border-top: 1px solid var(--ys-color-token-border-primary);
+}
+
+.list-item__actions {
+    margin-top: auto;
+}
+
+:global(.drawer) {
+    display: flex;
+    padding: var(--ys-spacing-200) var(--ys-spacing-250);
+}
+
+
+:global(.drawer .drawer__filters) {
+    display: flex;
+    flex: 1 1 auto;
+} 
+
+@media screen and (min-width: 768px) {
+    .list-item__image-wrapper {
+        flex: 0 0 120px;
+    }
+    
+    .list-item__body {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .list-item__actions {
+        flex: 0 0 120px;
+    }
+    
+    :global(.drawer .drawer__content) {
+        padding: var(--ys-spacing-200) var(--ys-spacing-250);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

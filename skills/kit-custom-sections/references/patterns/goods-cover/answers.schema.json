@@ -1,0 +1,46 @@
+{
+  "title": "Ответы для полки с обложкой",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "cover": {
+      "type": "object",
+      "title": "Обложка",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Заголовок обложки"
+        },
+        "description": {
+          "type": "string",
+          "title": "Описание (markdown)"
+        },
+        "url": {
+          "$ref": "#/definitions/LinkSource",
+          "title": "Ссылка: объект {link, linkId} (linkId можно пустым)"
+        }
+      },
+      "required": [
+        "title"
+      ]
+    },
+    "source": {
+      "$ref": "#/definitions/ProductsSource",
+      "title": "Источник товаров: объект {id, slug, type} категории/подборки магазина"
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Вертикальный отступ блока (spacing-токен, например 500 = 40px с каждой стороны)"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Вертикальный отступ на телефоне (spacing-токен)"
+    }
+  },
+  "required": [
+    "cover"
+  ]
+}

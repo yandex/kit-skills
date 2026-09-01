@@ -1,0 +1,67 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    class="preview-products container"
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}} 
+>
+    <ya-kit-section-layout-row>
+        <ya-kit-section-title align="{{settings.titleAlign}}" text="Список желаний" /> 
+    </ya-kit-section-layout-row>
+    <ya-kit-section-layout-row>
+        <ya-kit-favourite-products-controller data-source="{{settings.dataSource}}" as="controller" count="{{settings.count}}">
+            <ya-kit-grid columns="2" columns-touch="1" h-gap="300" v-gap="600" class="grid">
+                {{#if controller.isLoading}}
+                	{{#repeat 6}}
+                		 <ya-kit-h-stack as="article" class="snippet {{skinRounded 150}}" gap="250" align-items="stretch">
+                             <ya-kit-skeleton class="snippet__media-wrapper" aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}" />
+                             <ya-kit-v-stack gap="250" class="snippet__content" justify-content="space-between" align-items="stretch">
+                                 <ya-kit-v-stack gap="100" align-items="stretch">
+                                     <ya-kit-text weight="bold" size="lg" lines="2">
+                                     	<ya-kit-skeleton variant="text" width="100%" />
+                                     </ya-kit-text>
+                                     <ya-kit-prices size="md" is-loading="1" />
+                                 </ya-kit-v-stack>
+                                 <footer>
+                                 	<ya-kit-clickable-area is-disabled="1">Удалить</ya->
+                                 </footer>
+                             </ya-kit-v-stack>
+                </ya-kit-h-stack>
+                	{{/repeat}}
+                {{elseif controller.model.items.length}}
+                    {{#each controller.model.items as |product|}}
+                        <ya-kit-product-snippet-controller product="{{product}}" as="controller">
+                            <ya-kit-h-stack as="article" class="snippet {{skinRounded 150}}" gap="250" align-items="stretch">
+                                <ya-kit-link to={{product.url}}>
+                                    <ya-kit-paranja class="snippet__media-wrapper">
+                                        <ya-kit-image 
+                                            src="{{product.mediaItems.0.payload}}"
+                                            aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}"
+                                        />
+                                    </ya-kit-paranja>
+                                </ya-kit-link>
+                                <ya-kit-v-stack gap="250" class="snippet__content" justify-content="space-between" align-items="stretch">
+                                    <ya-kit-v-stack gap="100" align-items="stretch">
+                                        <ya-kit-link to={{product.url}} weight="bold" size="lg" lines="2">{{product.name}}</ya-kit-link>
+                                        <ya-kit-prices size="md" price="{{product.price}}" final-price="{{product.finalPrice}}" />
+                                    </ya-kit-v-stack>
+                                    <footer>
+                                        <ya-kit-clickable-area on-press={{controller.onToggleFavourite}}>
+                                            {{if product.isFavourite "Удалить" "Вернуть"}}
+                                        </ya-kit-clickable-area>
+                                    </footer>
+                                </ya-kit-v-stack>
+                            </ya-kit-h-stack>
+                        </ya-kit-product-snippet-controller> 
+                    {{/each}}
+                {{else}}
+                	<ya-kit-text>Пустой список желаний</ya-kit-text>
+                {{/if}}
+            </ya-kit-grid>
+        </ya-kit-favourite-products-controller>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

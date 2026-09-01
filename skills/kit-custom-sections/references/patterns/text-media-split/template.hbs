@@ -1,0 +1,24 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        <div class="split {{if settings.mediaLeft 'split_media-left'}}">
+            <ya-kit-v-stack class="split__text" gap="300" justify-content="center" align-items="flex-start">
+                <ya-kit-text as="h3" size="2xl" weight="semibold">{{settings.titleText}}</ya-kit-text>
+                <div class="split__content">
+                    <ya-kit-markdown markup={{settings.contentText}} />
+                </div>
+            </ya-kit-v-stack>
+            <div class="split__media">
+                <ya-kit-image class="split__image" src={{settings.image}} fit="cover" aspect-ratio="4:3" rounded="200" />
+            </div>
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

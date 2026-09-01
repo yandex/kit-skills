@@ -1,0 +1,8 @@
+interface:
+  display_name: "Яндекс.Кит storefront constructor"
+  short_description: "Read and edit storefront content and pages, create templates, upload local media, and take the store token through a local page"
+  default_prompt: "Use $kit-storefront-constructor to inspect storefront content through compact fixed-route reads, edit sections, pages (create, retitle, hide, remove — with server-mirroring local validation), and global settings in a local workspace with a confirmed full-replace push — published or stored as an unpublished proposal version (no-publish preview), inspect native widget schemas, safely preview and create custom section templates, explicitly upload local images/videos and poll video status, or set up the store API token — locally through a one-shot page on 127.0.0.1 instead of asking for the value in the chat, and in a hosted session through that session's environment settings or the token sent in the conversation."
+  brand_color: "#FC3F1D"
+
+policy:
+  allow_implicit_invocation: true

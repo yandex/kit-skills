@@ -1,0 +1,14 @@
+id: goods-filters
+version: 1
+title: "Полка товаров с вкладками"
+purpose: "Полка товаров с переключаемыми вкладками-подборками"
+origin: "doc-example: example/shelf-goods/goods-filters.md"
+fingerprint: "a9fbdf76eb7afdf859895e64efb9cf8bb58ca1bd29ec0ed1fd3dea73c732d2aa"
+docs_fingerprint: "caaf3fbdf8bab9f42aefef80163be24a0888c989c4363f20507a9112137f1002"
+applied_patches: "fix-hpadding-touch"
+keywords: "полка с фильтрами, вкладки товаров, табы, подборки, переключатель"
+pages: "main, landing"
+controllers: "ya-kit-featured-products-controller, ya-kit-value-controller"
+answers_required: "titleText, modules"
+rhythm: "500"
+rhythm_touch: "300"

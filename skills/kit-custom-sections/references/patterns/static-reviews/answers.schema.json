@@ -1,0 +1,69 @@
+{
+  "title": "Ответы для секции отзывов",
+  "type": "object",
+  "properties": {
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок секции"
+    },
+    "titleAlign": {
+      "type": "string",
+      "enum": [
+        "default",
+        "left",
+        "center"
+      ],
+      "title": "Расположение заголовка"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "modules": {
+      "type": "array",
+      "title": "Отзывы",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Заголовок отзыва"
+          },
+          "description": {
+            "type": "string",
+            "title": "Текст отзыва"
+          },
+          "rating": {
+            "type": "number",
+            "title": "Рейтинг 1–5"
+          },
+          "author": {
+            "type": "string",
+            "title": "Автор"
+          },
+          "caption": {
+            "type": "string",
+            "title": "Подпись (дата, город)"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "author"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Вертикальный отступ блока (spacing-токен, например 500 = 40px с каждой стороны)"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Вертикальный отступ на телефоне (spacing-токен)"
+    }
+  },
+  "required": [
+    "titleText",
+    "modules"
+  ]
+}

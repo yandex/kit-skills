@@ -1,0 +1,14 @@
+id: custom-snippets
+version: 1
+title: "Листинг с кастомными сниппетами"
+purpose: "Полка листинга категории: фильтры, сортировка, пагинация, свои карточки товара"
+origin: "doc-example: example/products/custom-snippets.md"
+fingerprint: "0a53c5357372f9e3f458bb5a50b23fa91a8cd3b0a10dc15ef0534f9b2da8141b"
+docs_fingerprint: "4c831771825ea234fb9c6b3d93d086c3933df954a680731b690964b4518795c4"
+applied_patches: "fix-hpadding-touch"
+keywords: "листинг, полка товаров, каталог, фильтры, сортировка, пагинация, сниппет"
+pages: "listing"
+controllers: "ya-kit-products-listing-controller, ya-kit-product-snippet-controller, ya-kit-toggle-controller"
+answers_required: ""
+rhythm: "200"
+rhythm_touch: "100"

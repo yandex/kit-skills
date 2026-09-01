@@ -1,0 +1,14 @@
+id: advantages
+version: 1
+title: "Преимущества"
+purpose: "Сетка из 3–4 плиток преимуществ: иконка, заголовок, короткий текст"
+origin: "handmade"
+fingerprint: "1084f18685343b455cff8c83519c54c0542703931b2a2ff0217598e518277d79"
+docs_fingerprint: "1084f18685343b455cff8c83519c54c0542703931b2a2ff0217598e518277d79"
+applied_patches: ""
+keywords: "преимущества, advantages, features, почему мы, плюсы, плитки, benefits"
+pages: "main, landing"
+controllers: ""
+answers_required: "modules"
+rhythm: "500"
+rhythm_touch: "300"

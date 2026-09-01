@@ -1,0 +1,36 @@
+{
+  "title": "Ответы для секции избранного",
+  "type": "object",
+  "properties": {
+    "titleAlign": {
+      "type": "string",
+      "enum": [
+        "default",
+        "left",
+        "center"
+      ],
+      "title": "Расположение заголовка"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "count": {
+      "type": "number",
+      "title": "Сколько товаров показывать"
+    },
+    "dataSource": {
+      "$ref": "#/definitions/ProductsSource",
+      "title": "Источник товаров: объект {id, slug, type} категории/подборки магазина"
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Вертикальный отступ блока (spacing-токен, например 500 = 40px с каждой стороны)"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Вертикальный отступ на телефоне (spacing-токен)"
+    }
+  },
+  "required": []
+}

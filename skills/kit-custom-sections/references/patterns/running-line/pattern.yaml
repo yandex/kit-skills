@@ -1,0 +1,14 @@
+id: running-line
+version: 1
+title: "Бегущая строка"
+purpose: "Бесконечная бегущая строка из повторяющихся фраз (marquee)"
+origin: "doc-example: example/others/running-line.md"
+fingerprint: "35eaa77b2b1b95bcb44f47f2a449ee04693f0ac2248a275fff56f869de5654a4"
+docs_fingerprint: "7c4d06a718994fc2d2830ee915469f9f2a042e0402bc389184250e6ad0093ddd"
+applied_patches: "fix-hpadding-touch, fix-value-keyword-isblurry"
+keywords: "бегущая строка, marquee, тикер, лента, анонс, акция строкой"
+pages: "main, landing"
+controllers: ""
+answers_required: "modules"
+rhythm: "500"
+rhythm_touch: "300"

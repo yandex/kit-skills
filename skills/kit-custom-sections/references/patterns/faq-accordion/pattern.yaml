@@ -1,0 +1,14 @@
+id: faq-accordion
+version: 1
+title: "FAQ-аккордеон"
+purpose: "Секция вопросов и ответов: раскрывающиеся карточки-аккордеоны"
+origin: "doc-example: example/others/faq.md"
+fingerprint: "c53d23ef28c5eb2680dceb951f6b5a214f3a6893a8ed9668259f64a23fcb2a04"
+docs_fingerprint: "619c83961200b66541a9c29ee7a17aabbf09692b8893510ac2612d2adb395512"
+applied_patches: "fix-hpadding-touch"
+keywords: "faq, вопросы, ответы, аккордеон, вопрос-ответ, частые вопросы, faq-секция"
+pages: "main, landing"
+controllers: ""
+answers_required: "titleText, modules"
+rhythm: "500"
+rhythm_touch: "300"

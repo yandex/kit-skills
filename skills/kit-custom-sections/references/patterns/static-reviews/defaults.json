@@ -1,0 +1,24 @@
+{
+  "palette": "default",
+  "titleText": "Отзывы покупателей",
+  "titleAlign": "default",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "title": "Отличный магазин",
+      "description": "Быстрая доставка, всё как на фото.",
+      "rating": 5,
+      "author": "Покупатель",
+      "caption": ""
+    }
+  ],
+  "verticalRhythm": "500",
+  "verticalRhythmTouch": "300"
+}

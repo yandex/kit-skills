@@ -1,0 +1,59 @@
+{
+  "title": "Ответы для секции преимуществ",
+  "type": "object",
+  "properties": {
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок секции (можно пустой)"
+    },
+    "titleAlign": {
+      "type": "string",
+      "enum": [
+        "default",
+        "left",
+        "center"
+      ],
+      "title": "Расположение заголовка"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "modules": {
+      "type": "array",
+      "title": "Плитки преимуществ (3–4 оптимально)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Заголовок плитки"
+          },
+          "description": {
+            "type": "string",
+            "title": "Текст плитки (1–2 предложения)"
+          },
+          "image": {
+            "$ref": "#/definitions/ImageModel",
+            "title": "Изображение: {fileId, filePath}. Из вывода kit.py media upload берётся fileId = поле `id`, filePath = `public_path` — как есть вывод не вставлять"
+          }
+        },
+        "required": [
+          "title",
+          "description"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Вертикальный отступ блока (spacing-токен, например 500 = 40px с каждой стороны)"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Вертикальный отступ на телефоне (spacing-токен)"
+    }
+  },
+  "required": [
+    "modules"
+  ]
+}

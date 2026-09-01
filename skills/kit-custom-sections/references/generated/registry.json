@@ -1,0 +1,1671 @@
+{
+  "tags": {
+    "builtin": [
+      "ya-kit-each",
+      "ya-kit-else",
+      "ya-kit-elseif",
+      "ya-kit-if",
+      "ya-kit-partial",
+      "ya-kit-repeat",
+      "ya-kit-unless",
+      "ya-kit-with"
+    ],
+    "controllers": [
+      "ya-kit-blog-detail-controller",
+      "ya-kit-blog-listing-controller",
+      "ya-kit-boundary-controller",
+      "ya-kit-breadcrumbs-controller",
+      "ya-kit-carousel-controller",
+      "ya-kit-categories-controller",
+      "ya-kit-collections-listing-controller",
+      "ya-kit-company-controller",
+      "ya-kit-countdown-controller",
+      "ya-kit-delivery-options-controller",
+      "ya-kit-drag-controller",
+      "ya-kit-email-subscription-controller",
+      "ya-kit-favourite-products-controller",
+      "ya-kit-featured-blog-controller",
+      "ya-kit-featured-products-controller",
+      "ya-kit-field-controller",
+      "ya-kit-gift-slot-controller",
+      "ya-kit-gift-snippet-controller",
+      "ya-kit-gifts-controller",
+      "ya-kit-intersection-controller",
+      "ya-kit-location-controller",
+      "ya-kit-menu-controller",
+      "ya-kit-metrika-controller",
+      "ya-kit-product-detail-controller",
+      "ya-kit-product-snippet-controller",
+      "ya-kit-products-filters-controller",
+      "ya-kit-products-listing-controller",
+      "ya-kit-promocode-controller",
+      "ya-kit-resize-controller",
+      "ya-kit-scroll-controller",
+      "ya-kit-self-pickup-controller",
+      "ya-kit-shopping-cart-bundle-controller",
+      "ya-kit-shopping-cart-controller",
+      "ya-kit-toggle-controller",
+      "ya-kit-user-controller",
+      "ya-kit-value-controller"
+    ],
+    "atoms": [
+      "ya-kit-accordion",
+      "ya-kit-accordion-body",
+      "ya-kit-accordion-header",
+      "ya-kit-badge",
+      "ya-kit-breadcrumbs",
+      "ya-kit-button",
+      "ya-kit-carousel",
+      "ya-kit-checkbox",
+      "ya-kit-checkbox-group",
+      "ya-kit-clickable-area",
+      "ya-kit-drawer",
+      "ya-kit-form-control",
+      "ya-kit-form-control-label",
+      "ya-kit-gift-progress-bar",
+      "ya-kit-gift-slots",
+      "ya-kit-grid",
+      "ya-kit-grouping-characteristic",
+      "ya-kit-h-stack",
+      "ya-kit-image",
+      "ya-kit-image-swiper",
+      "ya-kit-input",
+      "ya-kit-input-stepper",
+      "ya-kit-link",
+      "ya-kit-markdown",
+      "ya-kit-media-gallery",
+      "ya-kit-menu",
+      "ya-kit-module",
+      "ya-kit-pagination",
+      "ya-kit-parallax",
+      "ya-kit-paranja",
+      "ya-kit-prices",
+      "ya-kit-product-snippet",
+      "ya-kit-products-filters",
+      "ya-kit-products-sorting",
+      "ya-kit-radio",
+      "ya-kit-radio-group",
+      "ya-kit-section-layout",
+      "ya-kit-section-layout-row",
+      "ya-kit-section-title",
+      "ya-kit-shopping-cart-snippet",
+      "ya-kit-skeleton",
+      "ya-kit-sticky",
+      "ya-kit-switch",
+      "ya-kit-text",
+      "ya-kit-transition",
+      "ya-kit-v-stack",
+      "ya-kit-video",
+      "ya-kit-video-queue",
+      "yandex-pay-badge-discount",
+      "yandex-pay-badge-split"
+    ]
+  },
+  "element_blacklist": [
+    "script",
+    "style"
+  ],
+  "helpers": {
+    "inline": [
+      {
+        "name": "at",
+        "function": "at",
+        "group": "array"
+      },
+      {
+        "name": "first",
+        "function": "first",
+        "group": "array"
+      },
+      {
+        "name": "join",
+        "function": "join",
+        "group": "array"
+      },
+      {
+        "name": "last",
+        "function": "last",
+        "group": "array"
+      },
+      {
+        "name": "length",
+        "function": "length",
+        "group": "array"
+      },
+      {
+        "name": "slice",
+        "function": "slice",
+        "group": "array"
+      },
+      {
+        "name": "eql",
+        "function": "eql",
+        "group": "comparison"
+      },
+      {
+        "name": "notEql",
+        "function": "notEql",
+        "group": "comparison"
+      },
+      {
+        "name": "gt",
+        "function": "gt",
+        "group": "comparison"
+      },
+      {
+        "name": "gte",
+        "function": "gte",
+        "group": "comparison"
+      },
+      {
+        "name": "lt",
+        "function": "lt",
+        "group": "comparison"
+      },
+      {
+        "name": "lte",
+        "function": "lte",
+        "group": "comparison"
+      },
+      {
+        "name": "cn",
+        "function": "className",
+        "group": "css"
+      },
+      {
+        "name": "skinAspectRatio",
+        "function": "skinAspectRatio",
+        "group": "css"
+      },
+      {
+        "name": "skinBackground",
+        "function": "skinBackground",
+        "group": "css"
+      },
+      {
+        "name": "skinBorderColor",
+        "function": "skinBorderColor",
+        "group": "css"
+      },
+      {
+        "name": "skinRounded",
+        "function": "skinRounded",
+        "group": "css"
+      },
+      {
+        "name": "formatDate",
+        "function": "formatDate",
+        "group": "formatting"
+      },
+      {
+        "name": "formatLineBreaks",
+        "function": "formatLineBreaks",
+        "group": "formatting"
+      },
+      {
+        "name": "formatPhoneNumber",
+        "function": "formatPhoneNumber",
+        "group": "formatting"
+      },
+      {
+        "name": "formatPrice",
+        "function": "formatPrice",
+        "group": "formatting"
+      },
+      {
+        "name": "pluralize",
+        "function": "pluralize",
+        "group": "formatting"
+      },
+      {
+        "name": "bind",
+        "function": "bind",
+        "group": "functions"
+      },
+      {
+        "name": "call",
+        "function": "call",
+        "group": "functions"
+      },
+      {
+        "name": "compose",
+        "function": "compose",
+        "group": "functions"
+      },
+      {
+        "name": "if",
+        "function": "when",
+        "group": "logic"
+      },
+      {
+        "name": "when",
+        "function": "when",
+        "group": "logic"
+      },
+      {
+        "name": "unless",
+        "function": "unless",
+        "group": "logic"
+      },
+      {
+        "name": "not",
+        "function": "not",
+        "group": "logic"
+      },
+      {
+        "name": "and",
+        "function": "and",
+        "group": "logic"
+      },
+      {
+        "name": "or",
+        "function": "or",
+        "group": "logic"
+      },
+      {
+        "name": "add",
+        "function": "add",
+        "group": "math"
+      },
+      {
+        "name": "subtract",
+        "function": "subtract",
+        "group": "math"
+      },
+      {
+        "name": "multiply",
+        "function": "multiply",
+        "group": "math"
+      },
+      {
+        "name": "divide",
+        "function": "divide",
+        "group": "math"
+      },
+      {
+        "name": "max",
+        "function": "max",
+        "group": "math"
+      },
+      {
+        "name": "min",
+        "function": "min",
+        "group": "math"
+      },
+      {
+        "name": "ceil",
+        "function": "ceil",
+        "group": "math"
+      },
+      {
+        "name": "floor",
+        "function": "floor",
+        "group": "math"
+      },
+      {
+        "name": "round",
+        "function": "round",
+        "group": "math"
+      },
+      {
+        "name": "ratio",
+        "function": "ratio",
+        "group": "math"
+      },
+      {
+        "name": "filterImages",
+        "function": "filterImages",
+        "group": "media"
+      },
+      {
+        "name": "imageUrl",
+        "function": "imageUrl",
+        "group": "media"
+      },
+      {
+        "name": "get",
+        "function": "get",
+        "group": "object"
+      },
+      {
+        "name": "stringify",
+        "function": "stringify",
+        "group": "object"
+      },
+      {
+        "name": "lower",
+        "function": "lower",
+        "group": "string"
+      },
+      {
+        "name": "lowerFirst",
+        "function": "lowerFirst",
+        "group": "string"
+      },
+      {
+        "name": "upper",
+        "function": "upper",
+        "group": "string"
+      },
+      {
+        "name": "upperFirst",
+        "function": "upperFirst",
+        "group": "string"
+      },
+      {
+        "name": "startsWith",
+        "function": "startsWith",
+        "group": "string"
+      },
+      {
+        "name": "endsWith",
+        "function": "endsWith",
+        "group": "string"
+      },
+      {
+        "name": "includes",
+        "function": "includes",
+        "group": "string"
+      },
+      {
+        "name": "padStart",
+        "function": "padStart",
+        "group": "string"
+      },
+      {
+        "name": "padEnd",
+        "function": "padEnd",
+        "group": "string"
+      }
+    ],
+    "inline_function_count": 53,
+    "block": [
+      {
+        "helper": "each",
+        "openTag": "ya-kit-each",
+        "openAttr": "of",
+        "supportsElse": true,
+        "elseTag": "ya-kit-else",
+        "supportsElseIf": false,
+        "supportsAsPipes": true,
+        "aliasAttr": "as",
+        "indexAttr": "index"
+      },
+      {
+        "helper": "if",
+        "openTag": "ya-kit-if",
+        "openAttr": "when",
+        "supportsElse": true,
+        "elseTag": "ya-kit-else",
+        "supportsElseIf": true,
+        "elseIfTag": "ya-kit-elseif",
+        "elseIfAttr": "when",
+        "supportsAsPipes": false
+      },
+      {
+        "helper": "repeat",
+        "openTag": "ya-kit-repeat",
+        "openAttr": "of",
+        "supportsElse": false,
+        "supportsElseIf": false,
+        "supportsAsPipes": true,
+        "aliasAttr": "as"
+      },
+      {
+        "helper": "times",
+        "openTag": "ya-kit-repeat",
+        "openAttr": "of",
+        "supportsElse": false,
+        "supportsElseIf": false,
+        "supportsAsPipes": true,
+        "aliasAttr": "as"
+      },
+      {
+        "helper": "unless",
+        "openTag": "ya-kit-unless",
+        "openAttr": "when",
+        "supportsElse": true,
+        "elseTag": "ya-kit-else",
+        "supportsElseIf": false,
+        "supportsAsPipes": false
+      },
+      {
+        "helper": "with",
+        "openTag": "ya-kit-with",
+        "openAttr": "of",
+        "supportsElse": true,
+        "supportsElseIf": false,
+        "supportsAsPipes": true,
+        "aliasAttr": "as"
+      }
+    ]
+  },
+  "spacing_tokens": {
+    "0": "0px",
+    "25": "2px",
+    "50": "4px",
+    "75": "6px",
+    "100": "8px",
+    "150": "12px",
+    "200": "16px",
+    "250": "20px",
+    "300": "24px",
+    "350": "28px",
+    "400": "32px",
+    "450": "36px",
+    "500": "40px",
+    "600": "48px",
+    "700": "56px",
+    "800": "64px",
+    "900": "72px",
+    "1000": "80px",
+    "1100": "96px",
+    "1200": "112px",
+    "1300": "128px",
+    "1400": "144px",
+    "1500": "160px",
+    "1600": "176px",
+    "1700": "192px",
+    "1800": "208px",
+    "1900": "224px",
+    "2000": "240px"
+  },
+  "spacing_slider": [
+    "0",
+    "25",
+    "50",
+    "100",
+    "150",
+    "200",
+    "250",
+    "300",
+    "350",
+    "400",
+    "450",
+    "500",
+    "600",
+    "700",
+    "800",
+    "900",
+    "1000",
+    "1100",
+    "1200",
+    "1300",
+    "1400",
+    "1500",
+    "1600",
+    "1700",
+    "1800",
+    "1900",
+    "2000"
+  ],
+  "color_tokens": [
+    "--ys-background-neutral",
+    "--ys-background-overlay",
+    "--ys-background-primary",
+    "--ys-background-secondary",
+    "--ys-color-token-border-primary",
+    "--ys-color-token-border-secondary",
+    "--ys-color-token-brand-primary",
+    "--ys-color-token-brand-primary-contrast",
+    "--ys-color-token-discount",
+    "--ys-color-token-error",
+    "--ys-color-token-link",
+    "--ys-color-token-placeholder",
+    "--ys-color-token-text-primary",
+    "--ys-color-token-text-secondary",
+    "--ys-font-family"
+  ],
+  "extra_css_vars": [
+    "--ys-current-skin-border-radius",
+    "--ys-font-family",
+    "--ys-sticky-offset"
+  ],
+  "reserved_refs": [
+    "#/definitions/Advantage",
+    "#/definitions/BannerSlideMedia",
+    "#/definitions/BlogEntryType",
+    "#/definitions/CategoryCollection",
+    "#/definitions/DesktopMediaItemModel",
+    "#/definitions/FontFamily",
+    "#/definitions/ImageModel",
+    "#/definitions/LinkSource",
+    "#/definitions/MarkdownContent",
+    "#/definitions/MenuId",
+    "#/definitions/MobileMediaItemModel",
+    "#/definitions/Palette",
+    "#/definitions/Palettes",
+    "#/definitions/ProductCard",
+    "#/definitions/ProductsSource",
+    "#/definitions/PromocodeSource",
+    "#/definitions/TextArea",
+    "#/definitions/ThemeColor",
+    "#/definitions/VideoModel",
+    "#/definitions/YandexSplitSize"
+  ],
+  "service_refs": [
+    "#/definitions/SectionHPadding",
+    "#/definitions/SectionHPaddingTouch",
+    "#/definitions/SectionVPadding",
+    "#/definitions/SectionTitleAlign",
+    "#/definitions/OptionalFlag"
+  ],
+  "renamed_refs": {
+    "#/definitions/ImageInfo": "#/definitions/ImageModel"
+  },
+  "schema_extra_keywords": [
+    "component",
+    "step",
+    "displaySequence",
+    "options",
+    "enumNames",
+    "supportedPages",
+    "totalMaximum",
+    "totalMinimum",
+    "hidden",
+    "longDescription",
+    "canCopy",
+    "modulesCopyWhitelist",
+    "canBeParent",
+    "alwaysComponent",
+    "optionsMap",
+    "defaultValueLabel",
+    "alias"
+  ],
+  "form_extra_keywords": [
+    "unit"
+  ],
+  "fragment_name_rule": {
+    "max_length": 100,
+    "regex": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+  },
+  "partial_max_depth": 10,
+  "tag_attributes": {
+    "ya-kit-each": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-else": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-elseif": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-if": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-partial": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-repeat": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-unless": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-with": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-blog-detail-controller": {
+      "documented": true,
+      "attributes": [
+        "as"
+      ],
+      "attribute_types": {
+        "as": "string"
+      }
+    },
+    "ya-kit-blog-listing-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "per-page"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "per-page": "number"
+      }
+    },
+    "ya-kit-boundary-controller": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-breadcrumbs-controller": {
+      "documented": true,
+      "attributes": [
+        "as"
+      ],
+      "attribute_types": {
+        "as": "string"
+      }
+    },
+    "ya-kit-carousel-controller": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-categories-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "include-images"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "include-images": "boolean"
+      }
+    },
+    "ya-kit-collections-listing-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "source"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "source": "all`, `collections`, `categories"
+      }
+    },
+    "ya-kit-company-controller": {
+      "documented": true,
+      "attributes": [
+        "as"
+      ],
+      "attribute_types": {
+        "as": "string"
+      }
+    },
+    "ya-kit-countdown-controller": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-delivery-options-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "location",
+        "product"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "location": "RegionModel",
+        "product": "ProductVariantModel"
+      }
+    },
+    "ya-kit-drag-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "is-disabled",
+        "axis"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "is-disabled": "boolean",
+        "axis": "x`, `y`, `both"
+      }
+    },
+    "ya-kit-email-subscription-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "enable-agreement",
+        "promocode"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "enable-agreement": "boolean",
+        "promocode": "PromocodeModel`, `null"
+      }
+    },
+    "ya-kit-favourite-products-controller": {
+      "documented": true,
+      "attributes": [
+        "as"
+      ],
+      "attribute_types": {
+        "as": "string"
+      }
+    },
+    "ya-kit-featured-blog-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "tags",
+        "count"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "tags": "string[]",
+        "count": "number"
+      }
+    },
+    "ya-kit-featured-products-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "data-source",
+        "count"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "data-source": "ProductsSource",
+        "count": "number"
+      }
+    },
+    "ya-kit-field-controller": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-gift-slot-controller": {
+      "documented": true,
+      "attributes": [
+        "slot",
+        "as"
+      ],
+      "attribute_types": {
+        "slot": "GiftSlot",
+        "as": "string"
+      }
+    },
+    "ya-kit-gift-snippet-controller": {
+      "documented": true,
+      "attributes": [
+        "gift",
+        "as"
+      ],
+      "attribute_types": {
+        "gift": "GiftVariantOption",
+        "as": "string"
+      }
+    },
+    "ya-kit-gifts-controller": {
+      "documented": true,
+      "attributes": [
+        "as"
+      ],
+      "attribute_types": {
+        "as": "string"
+      }
+    },
+    "ya-kit-intersection-controller": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-location-controller": {
+      "documented": true,
+      "attributes": [
+        "as"
+      ],
+      "attribute_types": {
+        "as": "string"
+      }
+    },
+    "ya-kit-menu-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "menu"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "menu": "MenuId`, `MenuId[]"
+      }
+    },
+    "ya-kit-metrika-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "goal",
+        "strategy"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "goal": "string",
+        "strategy": "viewport`, `mount`, `manual"
+      }
+    },
+    "ya-kit-product-detail-controller": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-product-snippet-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "product"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "product": "ProductVariantModel"
+      }
+    },
+    "ya-kit-products-filters-controller": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-products-listing-controller": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-promocode-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "promocode-id"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "promocode-id": "string"
+      }
+    },
+    "ya-kit-resize-controller": {
+      "documented": true,
+      "attributes": [
+        "as"
+      ],
+      "attribute_types": {
+        "as": "string"
+      }
+    },
+    "ya-kit-scroll-controller": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-self-pickup-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "location",
+        "product",
+        "quantity"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "location": "RegionModel",
+        "product": "ProductVariantModel",
+        "quantity": "number"
+      }
+    },
+    "ya-kit-shopping-cart-bundle-controller": {
+      "documented": true,
+      "attributes": [
+        "bundle",
+        "as"
+      ],
+      "attribute_types": {
+        "bundle": "ShoppingCartBundleModel",
+        "as": "string"
+      }
+    },
+    "ya-kit-shopping-cart-controller": {
+      "documented": true,
+      "attributes": [
+        "as"
+      ],
+      "attribute_types": {
+        "as": "string"
+      }
+    },
+    "ya-kit-toggle-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "initial-value"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "initial-value": "boolean"
+      }
+    },
+    "ya-kit-user-controller": {
+      "documented": true,
+      "attributes": [
+        "as"
+      ],
+      "attribute_types": {
+        "as": "string"
+      }
+    },
+    "ya-kit-value-controller": {
+      "documented": true,
+      "attributes": [
+        "as",
+        "initial-value"
+      ],
+      "attribute_types": {
+        "as": "string",
+        "initial-value": "unknown"
+      }
+    },
+    "ya-kit-accordion": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "default-expanded"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "default-expanded": "boolean"
+      }
+    },
+    "ya-kit-accordion-body": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-accordion-header": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-badge": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-breadcrumbs": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "items"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "items": "BreadcrumbModel[]"
+      }
+    },
+    "ya-kit-button": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "color",
+        "size",
+        "is-disabled",
+        "is-loading",
+        "on-click"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "color": "primary`, `secondary`, `neutral`, `outlined`, `flat",
+        "size": "xs`, `sm`, `md`, `lg",
+        "is-disabled": "boolean",
+        "is-loading": "boolean",
+        "on-click": "() => void"
+      }
+    },
+    "ya-kit-carousel": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "count",
+        "columns",
+        "columns-touch",
+        "h-gap",
+        "autoplay",
+        "autoplay-delay",
+        "controls-alignment",
+        "controls-size"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "count": "number",
+        "columns": "number",
+        "columns-touch": "number",
+        "h-gap": "0`, `25`, `50`, `100`, `150`, `200`, `250`, `300`, `400`, `500`, `600`, `700",
+        "autoplay": "boolean",
+        "autoplay-delay": "number",
+        "controls-alignment": "none`, `edges`, `leftRight`, `left`, `right",
+        "controls-size": "xs`, `sm`, `md`, `lg"
+      }
+    },
+    "ya-kit-checkbox": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "value",
+        "color",
+        "is-selected",
+        "is-disabled",
+        "is-error",
+        "on-change"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "value": "string",
+        "color": "primary, secondary",
+        "is-selected": "boolean",
+        "is-disabled": "boolean",
+        "is-error": "boolean",
+        "on-change": "(value: boolean) => void"
+      }
+    },
+    "ya-kit-checkbox-group": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-clickable-area": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-drawer": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "is-open",
+        "is-closable",
+        "enable-overlay",
+        "on-close"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "is-open": "boolean",
+        "is-closable": "boolean",
+        "enable-overlay": "boolean",
+        "on-close": "() => void"
+      }
+    },
+    "ya-kit-form-control": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "is-disabled",
+        "label",
+        "error-message"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "is-disabled": "boolean",
+        "label": "string",
+        "error-message": "string"
+      }
+    },
+    "ya-kit-form-control-label": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "is-disabled",
+        "label",
+        "label-placement"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "is-disabled": "boolean",
+        "label": "string",
+        "label-placement": "start, end"
+      }
+    },
+    "ya-kit-gift-progress-bar": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "progress",
+        "remaining",
+        "is-available",
+        "current",
+        "total",
+        "on-select"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "progress": "number",
+        "remaining": "number",
+        "is-available": "boolean",
+        "current": "number",
+        "total": "number",
+        "on-select": "() => void"
+      }
+    },
+    "ya-kit-gift-slots": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "on-select-gift-slot"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "on-select-gift-slot": "(giftId: string) => void"
+      }
+    },
+    "ya-kit-grid": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "count",
+        "columns",
+        "columns-touch",
+        "h-gap",
+        "v-gap"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "count": "number",
+        "columns": "number",
+        "columns-touch": "number",
+        "h-gap": "0`, `25`, `50`, `100`, `150`, `200`, `250`, `300`, `400`, `500`, `600`, `700",
+        "v-gap": "0`, `25`, `50`, `100`, `150`, `200`, `250`, `300`, `400`, `500`, `600`, `700"
+      }
+    },
+    "ya-kit-grouping-characteristic": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "characteristic",
+        "is-сollapsable",
+        "size-table",
+        "on-сhange"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "characteristic": "GroupingCharacteristicModel",
+        "is-сollapsable": "boolean",
+        "size-table": "ProductSizeTableModel",
+        "on-сhange": "(id: string, value: string) => void"
+      }
+    },
+    "ya-kit-h-stack": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "flex-wrap",
+        "justify-content",
+        "align-items",
+        "gap"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "flex-wrap": "nowrap`, `wrap",
+        "justify-content": "unset`, `flex-start`, `flex-end`, `center`, `space-between`, `space-around",
+        "align-items": "unset`, `flex-start`, `flex-end`, `center`, `baseline`, `stretch",
+        "gap": "0`, `25`, `50`, `100`, `150`, `200`, `250`, `300`, `400`, `500`, `600`, `700"
+      }
+    },
+    "ya-kit-image": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "src",
+        "fit",
+        "aspect-ratio",
+        "background-color",
+        "rounded",
+        "enable-paranja"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "src": "string`, `ImageInfoModel",
+        "fit": "contain`, `cover`, `auto",
+        "aspect-ratio": "3:4`, `1:1`, `4:3`, `2:1`, `5:2`, `5:1",
+        "background-color": "none`, `primary`, `secondary`, `neutral",
+        "rounded": "0`, `25`, `50`, `75`, `100`, `150`, `200`, `250`, `999",
+        "enable-paranja": "boolean"
+      }
+    },
+    "ya-kit-image-swiper": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "items",
+        "fit",
+        "aspect-ratio",
+        "background-color",
+        "rounded",
+        "disable-carousel"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "items": "MediaModel[]",
+        "fit": "contain`, `cover`, `auto",
+        "aspect-ratio": "3:4`, `1:1`, `4:3`, `2:1`, `5:2`, `5:1",
+        "background-color": "none`, `primary`, `secondary`, `neutral",
+        "rounded": "0`, `25`, `50`, `75`, `100`, `150`, `200`, `250`, `999",
+        "disable-carousel": "hover`, `never`, `always"
+      }
+    },
+    "ya-kit-input": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "value",
+        "size",
+        "color",
+        "is-disabled",
+        "is-error",
+        "on-change"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "value": "string",
+        "size": "xs, sm, md, lg",
+        "color": "primary, flat",
+        "is-disabled": "boolean",
+        "is-error": "boolean",
+        "on-change": "(value: string) => void"
+      }
+    },
+    "ya-kit-input-stepper": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "value",
+        "size",
+        "min",
+        "max",
+        "on-change"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "value": "number",
+        "size": "xs`, `sm`, `md`, `lg",
+        "min": "number",
+        "max": "number",
+        "on-change": "(value: number) => void"
+      }
+    },
+    "ya-kit-link": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "to",
+        "size",
+        "align",
+        "weight",
+        "decoration",
+        "lines"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "to": "string",
+        "size": "xs \\ sm \\ md \\ lg \\ xl \\ 2xl \\ 3xl \\ 4xl \\ 5xl",
+        "align": "left \\ center \\ right",
+        "weight": "normal \\ medium \\ semibold \\ bold",
+        "decoration": "line-through \\ underline",
+        "lines": "number"
+      }
+    },
+    "ya-kit-markdown": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "markup"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "markup": "string"
+      }
+    },
+    "ya-kit-media-gallery": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "is-loading",
+        "items",
+        "layout",
+        "background-color",
+        "aspect-ratio",
+        "fit",
+        "gap",
+        "initial-grid-count",
+        "enable-paranja",
+        "enable-fullscreen",
+        "autoplay",
+        "priority",
+        "loop"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "is-loading": "boolean",
+        "items": "MediaModel[]",
+        "layout": "grid \\ thumbnail",
+        "background-color": "none \\ primary \\ secondary \\ neutral",
+        "aspect-ratio": "3:4 \\ 1:1 \\ 4:3 \\ 2:1 \\ 5:2 \\ 5:1",
+        "fit": "contain \\ cover \\ auto",
+        "gap": "0 \\ 25 \\ 50 \\ 100",
+        "initial-grid-count": "number",
+        "enable-paranja": "boolean",
+        "enable-fullscreen": "boolean",
+        "autoplay": "boolean",
+        "priority": "boolean",
+        "loop": "boolean"
+      }
+    },
+    "ya-kit-menu": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-module": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "module-id"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "module-id": "string"
+      }
+    },
+    "ya-kit-pagination": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "current",
+        "total",
+        "on-page-change"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "current": "number",
+        "total": "number",
+        "on-page-change": "(page: number) => void"
+      }
+    },
+    "ya-kit-parallax": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "speed"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "speed": "number"
+      }
+    },
+    "ya-kit-paranja": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-prices": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "price",
+        "final-price",
+        "quantity",
+        "size",
+        "weight",
+        "enable-discount"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "price": "number`, `string",
+        "final-price": "number`, `string",
+        "quantity": "number",
+        "size": "sm`, `md`, `lg`, `xl`, `2xl",
+        "weight": "normal`, `medium`, `semibold`, `bold",
+        "enable-discount": "boolean"
+      }
+    },
+    "ya-kit-product-snippet": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "product",
+        "quantity",
+        "enable-button",
+        "enable-carousel",
+        "enable-rounding",
+        "enable-badges",
+        "on-toggle-favourite",
+        "on-update-quantity"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "product": "ProductVariantModel",
+        "quantity": "number",
+        "enable-button": "boolean",
+        "enable-carousel": "boolean",
+        "enable-rounding": "boolean",
+        "enable-badges": "boolean",
+        "on-toggle-favourite": "() => void",
+        "on-update-quantity": "(quantity: number) => void"
+      }
+    },
+    "ya-kit-products-filters": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-products-sorting": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-radio": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-radio-group": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-section-layout": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "background",
+        "palette",
+        "is-fullscreen",
+        "v-gap",
+        "h-padding-desktop",
+        "h-padding-mobile",
+        "padding-top",
+        "padding-bottom"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "background": "none`, `primary`, `secondary`, `neutral",
+        "palette": "Palette",
+        "is-fullscreen": "default`, `enabled`, `disabled",
+        "v-gap": "SpacingSkin",
+        "h-padding-desktop": "SpacingSkin",
+        "h-padding-mobile": "SpacingSkin",
+        "padding-top": "double`, `single`, `none",
+        "padding-bottom": "double`, `single`, `none"
+      }
+    },
+    "ya-kit-section-layout-row": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "is-sticky"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "is-sticky": "boolean"
+      }
+    },
+    "ya-kit-section-title": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "as",
+        "text",
+        "to"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "as": "h1`, `h2`, `h3`, `h4`, `h5`, `h6",
+        "text": "string",
+        "to": "LinkSource"
+      }
+    },
+    "ya-kit-shopping-cart-snippet": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-skeleton": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "variant",
+        "rounded",
+        "width",
+        "height"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "variant": "rect`, `circle`, `text",
+        "rounded": "0`, `25`, `50`, `75`, `100`, `150`, `200`, `250`, `999",
+        "width": "number`, `string",
+        "height": "number`, `string"
+      }
+    },
+    "ya-kit-sticky": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "scope",
+        "is-sticky"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "scope": "local`, `global",
+        "is-sticky": "boolean"
+      }
+    },
+    "ya-kit-switch": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "value",
+        "color",
+        "is-selected",
+        "is-disabled",
+        "is-error",
+        "on-change"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "value": "string",
+        "color": "primary, secondary",
+        "is-selected": "boolean",
+        "is-disabled": "boolean",
+        "is-error": "boolean",
+        "on-change": "(value: boolean) => void"
+      }
+    },
+    "ya-kit-text": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "as",
+        "color",
+        "size",
+        "align",
+        "weight",
+        "decoration",
+        "lines"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "as": "string",
+        "color": "inherit`,  `primary`, `secondary`, `brand",
+        "size": "xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl",
+        "align": "left`, `center`, `right",
+        "weight": "normal`, `medium`, `semibold`, `bold",
+        "decoration": "line-through`, `underline",
+        "lines": "number"
+      }
+    },
+    "ya-kit-transition": {
+      "documented": true,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-v-stack": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "ya-kit-video": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "src",
+        "fit",
+        "aspect-ratio",
+        "volume",
+        "is-autoplay",
+        "is-muted",
+        "is-loop",
+        "is-skinless"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "src": "string`, `VideoModel",
+        "fit": "contain`, `cover`, `auto",
+        "aspect-ratio": "3:4`, `1:1`, `4:3`, `2:1`, `5:2`, `5:1",
+        "volume": "number",
+        "is-autoplay": "boolean",
+        "is-muted": "boolean",
+        "is-loop": "boolean",
+        "is-skinless": "boolean"
+      }
+    },
+    "ya-kit-video-queue": {
+      "documented": false,
+      "attributes": [],
+      "attribute_types": {}
+    },
+    "yandex-pay-badge-discount": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "price",
+        "size"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "price": "number`, `string",
+        "size": "s`, `m`, `l"
+      }
+    },
+    "yandex-pay-badge-split": {
+      "documented": true,
+      "attributes": [
+        "class",
+        "price",
+        "size",
+        "color",
+        "variant"
+      ],
+      "attribute_types": {
+        "class": "string",
+        "price": "number`, `string",
+        "size": "s`, `m`, `l",
+        "color": "primary`, `green`, `grey`, `transparent",
+        "variant": "simple`, `detailed"
+      }
+    }
+  }
+}

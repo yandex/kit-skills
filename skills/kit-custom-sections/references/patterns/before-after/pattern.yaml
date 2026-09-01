@@ -1,0 +1,14 @@
+id: before-after
+version: 1
+title: "До/после"
+purpose: "Сравнение двух изображений с перетаскиваемой вертикальной границей"
+origin: "doc-example: example/others/before-after.md"
+fingerprint: "ca5c74e5b3b08534c11b90b82d21aade60a17b26a9b40787070d0a9a1965949a"
+docs_fingerprint: "6fd7d8c1b7528b6b9c18064f445c1c22af9f23cf375b18f0662c25379555f7a6"
+applied_patches: "fix-hpadding-touch"
+keywords: "до после, before after, сравнение, слайдер сравнения, результат"
+pages: "main, landing"
+controllers: "ya-kit-drag-controller"
+answers_required: "titleText"
+rhythm: "500"
+rhythm_touch: "300"

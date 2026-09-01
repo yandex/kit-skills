@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.eval-runs/
+**/evals/artifacts/
+
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+*.token
+.env

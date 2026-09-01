@@ -1,0 +1,45 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}} 
+>
+    <ya-kit-section-layout-row>
+        <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" /> 
+    </ya-kit-section-layout-row>
+    <ya-kit-section-layout-row> 
+        <ya-kit-carousel class="carousel" columns="3" columns-touch="1" h-gap="500" controls-alignment="none">
+            {{#each settings.modules as |module|}}
+                <ya-kit-module module-id={{module.id}} class="quote {{skinRounded 150}}">
+                    <ya-kit-v-stack class="quote__content" align-items="stretch" gap="200">
+                        <ya-kit-h-stack class="quote__rating" gap="50">
+                            {{#repeat 5 as |index|}}
+                                {{#if (gt module.rating index)}}
+                                    <svg class="quote__rating-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1">
+                                        <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                                    </svg>
+                                {{else}}
+                                    <svg class="quote__rating-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1">
+                                        <path d="m22 9.24-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28z"></path>
+                                    </svg>
+                                {{/if}}
+                            {{/repeat}}
+                        </ya-kit-h-stack>
+                        <ya-kit-text class="quote__title" weight="semibold" size="lg">{{module.title}}</ya-kit-text> 
+                        <ya-kit-text class="quote__description">{{module.description}}</ya-kit-text> 
+                        <ya-kit-v-stack as="footer" class="quote__footer" align-items="stretch" gap="50">
+                            <ya-kit-text weight="bold">{{module.author}}</ya-kit-text>
+                            {{#if module.caption}}
+                            	<ya-kit-text color="secondary">{{module.caption}}</ya-kit-text>
+                            {{/if}}
+                        </ya-kit-v-stack>
+                    </ya-kit-v-stack> 
+            	</ya-kit-module>
+            {{/each}}
+        </ya-kit-carousel>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

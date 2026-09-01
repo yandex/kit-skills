@@ -1,0 +1,8 @@
+interface:
+  display_name: "Кабинет Яндекс.Кит"
+  short_description: "Manage the Яндекс.Кит e-com cabinet via public API"
+  brand_color: "#FC3F1D"
+  default_prompt: "Use $yandex-kit-cabinet to manage the Яндекс.Кит cabinet."
+
+policy:
+  allow_implicit_invocation: true

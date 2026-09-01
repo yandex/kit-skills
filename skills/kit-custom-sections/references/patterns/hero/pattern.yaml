@@ -1,0 +1,14 @@
+id: hero
+version: 1
+title: "Hero — первый экран"
+purpose: "Первый экран главной: крупный заголовок, подзаголовок, CTA-кнопка и изображение"
+origin: "handmade"
+fingerprint: "9ebaf23a47e6a38f4508a0565b16c21cf5be0a15c87f81a5bbe4159ef7eda257"
+docs_fingerprint: "9ebaf23a47e6a38f4508a0565b16c21cf5be0a15c87f81a5bbe4159ef7eda257"
+applied_patches: ""
+keywords: "hero, герой, первый экран, главный баннер, обложка сайта, шапка главной, баннер с кнопкой"
+pages: "main, landing"
+controllers: ""
+answers_required: "titleText"
+rhythm: "500"
+rhythm_touch: "300"

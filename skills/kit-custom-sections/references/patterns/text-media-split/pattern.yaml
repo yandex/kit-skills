@@ -1,0 +1,14 @@
+id: text-media-split
+version: 1
+title: "Текст + изображение"
+purpose: "Двухколоночный блок: заголовок и markdown-текст рядом с изображением"
+origin: "handmade"
+fingerprint: "ac34210207891769122a7a994e3276e7ff1109d0745735b1a1483d363b56114c"
+docs_fingerprint: "ac34210207891769122a7a994e3276e7ff1109d0745735b1a1483d363b56114c"
+applied_patches: ""
+keywords: "текст с картинкой, о нас, о бренде, история, text media, split, описание с фото"
+pages: "main, landing"
+controllers: ""
+answers_required: "titleText, contentText"
+rhythm: "500"
+rhythm_touch: "300"

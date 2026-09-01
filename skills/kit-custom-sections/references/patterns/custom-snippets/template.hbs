@@ -1,0 +1,133 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}} 
+>
+    <ya-kit-toggle-controller as="filtersState">
+        <ya-kit-products-listing-controller per-page="3" as="listing" on-filters-did-changed={{filtersState.onSetFalsy}}>
+            <ya-kit-section-layout-row>
+                <ya-kit-section-title>
+                    {{#if route.context.collection}}
+                        {{route.context.collection.title}}
+                    {{elseif controller.isLoading}}
+                        <ya-kit-skeleton variant="text" width="200px" />
+                    {{elseif route.context.query.query}}
+                        Результаты по запросу: {{route.context.query.query}}
+                    {{else}}
+                        Результаты поиска
+                    {{/if}}
+                </ya-kit-section-title>
+            </ya-kit-section-layout-row>
+            <ya-kit-section-layout-row>
+                <ya-kit-h-stack justify-content="space-between" gap="100">
+                    <ya-kit-clickable-area on-press={{filtersState.onSetTruthy}}>
+                        <ya-kit-h-stack align-items="center" gap="150">
+                            <svg width="24" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z"></path>
+                            </svg>
+                            <ya-kit-text>Фильтры</ya-kit-text>
+                        </ya-kit-h-stack>
+                    </ya-kit-clickable-area>
+                    <ya-kit-products-sorting
+                        value={{listing.model.sorting.option.value}}
+                        options={{listing.model.sorting.options}} 
+                        on-change={{listing.onSortingChange}}
+                    >
+                        <ya-kit-h-stack align-items="center" gap="50">
+                            <ya-kit-text>{{listing.model.sorting.option.displayText}}</ya-kit-text>
+                            <svg width="24" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"></path>
+                            </svg>
+                        </ya-kit-h-stack>
+                    </ya-kit-products-sorting>
+                </ya-kit-h-stack>
+            </ya-kit-section-layout-row>
+            <ya-kit-section-layout-row>
+                <ya-kit-drawer class="drawer" is-open={{filtersState.isOpen}} variant="left" on-close={{filtersState.onSetFalsy}}>
+                    <ya-kit-v-stack gap="150" class="drawer__content">
+                        <ya-kit-text size="xl" weight="semibold">Фильтры</ya-kit-text>
+                        <ya-kit-products-filters
+                            class="drawer__filters"
+                            schema={{listing.model.filters.schema}}
+                            value={{listing.model.filters.values}}
+                            category={{listing.model.categories.selected}}
+                            categories={{listing.model.categories.items}}
+                            on-submit={{listing.onFiltersChange}}
+                        /> 
+                    </ya-kit-v-stack>
+                </ya-kit-drawer>
+                <ya-kit-v-stack gap="300" class="list" align-items="stretch">
+                    {{#if (and (eql listing.model.items.length 0) listing.isLoading)}}
+                    	{{#repeat 5}}
+                     		<ya-kit-h-stack gap="300" class="list-item" align-items="center">
+                                <ya-kit-skeleton class="list-item__image-wrapper" aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}" />
+                                <div class="list-item__body">
+                                    <ya-kit-v-stack gap="100" align-items="stretch" class="list-item__content">
+                                        <ya-kit-text size="md">
+                                            <ya-kit-skeleton variant="text" width="100%" />
+                                            <ya-kit-skeleton variant="text" width="60%" />
+                                        </ya-kit-text>
+                                        <ya-kit-prices size="xl" weight="bold" is-loading="1" />
+                                    </ya-kit-v-stack>
+                                    <div class="list-item__actions"> 
+                                        <ya-kit-button size="sm" color="primary" width="max" is-loading="1">
+                                            В корзину
+                                        </ya-kit-button>
+                                    </div> 
+                                </div>
+                    		</ya-kit-h-stack>
+                    	{{/repeat}}
+                    {{else}}
+                        {{#each listing.model.items as |product index|}}
+                            <ya-kit-product-snippet-controller as="controller" product="{{product}}">
+                                <ya-kit-h-stack gap="300" class="list-item" align-items="center">
+                                    <ya-kit-link to="{{product.url}}" class="list-item__image-wrapper {{skinRounded 100}}">
+                                        <ya-kit-paranja>
+                                            <ya-kit-image src="{{product.mediaItems.0.payload}}" aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}" />
+                                        </ya-kit-paranja>
+                                    </ya-kit-link>
+                                    <div class="list-item__body">
+                                        <ya-kit-v-stack gap="100">
+                                            <ya-kit-link to={{product.url}} size="md" lines="2">{{product.name}}</ya-kit-link>
+                                            <ya-kit-prices size="xl" weight="bold" price="{{product.price}}" final-price="{{product.finalPrice}}" />
+                                        </ya-kit-v-stack>
+                                         <div class="list-item__actions"> 
+                                            {{#if (gt controller.quantity 0)}}
+                                                <ya-kit-input-stepper size="sm" width="max" value="{{controller.quantity}}" on-change="{{controller.onUpdateQuantity}}" />
+                                            {{elseif (gte product.totalQuantity 1)}}
+                                                <ya-kit-button size="sm" color="primary" width="max" on-press="{{controller.onAddToCart}}">
+                                                    В корзину
+                                                </ya-kit-button>
+                                            {{elseif (eql product.totalQuantity 0)}}
+                                                <ya-kit-button size="sm" color="secondary" is-disabled="1"> 
+                                                    Нет в наличии
+                                                </ya-kit-button>
+                                            {{/if}}
+                                        </div> 
+                                    </div>
+                                </ya-kit-h-stack>
+                            </ya-kit-product-snippet-controller> 
+                            {{#if (lt (add index 1) productsController.model.items.length)}}
+                                <div class="divider"></div>
+                            {{/if}}
+                        {{/each}}
+                        {{#if listing.model.pagination}}
+                            <ya-kit-v-stack align-items="center">
+                                <ya-kit-pagination
+                                    current="{{listing.model.pagination.current}}"
+                                    total="{{listing.model.pagination.total}}"
+                                    on-page-change="{{listing.onPageChange}}"
+                                />
+                            </ya-kit-v-stack>
+                        {{/if}}
+                     {{/if}}
+                </ya-kit-v-stack>
+            </ya-kit-section-layout-row>
+        </ya-kit-products-listing-controller>
+    </ya-kit-toggle-controller>
+</ya-kit-section-layout>
+</div>

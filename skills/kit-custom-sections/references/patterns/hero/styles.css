@@ -1,0 +1,71 @@
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--ys-spacing-600);
+    align-items: center;
+    padding: var(--ys-spacing-600) 0;
+}
+
+.hero__text {
+    max-width: 48rem;
+}
+
+/* Собственная шкала h1: платформенный максимум ya-kit-text (4xl = 32px) не даёт
+   иерархии против заголовков секций (24px). Размерных токенов шрифта в теме нет,
+   поэтому px; цвета остаются токенами. */
+.hero__title {
+    font-size: 52px;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+}
+
+.hero__subtitle {
+    max-width: 36rem;
+}
+
+.hero__cta {
+    padding-top: var(--ys-spacing-100);
+}
+
+.hero__media {
+    min-width: 0;
+}
+
+/* Планшет 768–1023 — промежуточная ступень шкалы: 52px в узкой колонке
+   разваливается на четыре строки. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .hero__title {
+        font-size: 40px;
+        line-height: 1.1;
+    }
+
+    .hero {
+        gap: var(--ys-spacing-400);
+    }
+}
+
+@media (max-width: 767px) {
+    .hero {
+        grid-template-columns: 1fr;
+        gap: var(--ys-spacing-300);
+        padding: var(--ys-spacing-300) 0;
+    }
+
+    .hero__title {
+        font-size: 34px;
+        line-height: 1.12;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

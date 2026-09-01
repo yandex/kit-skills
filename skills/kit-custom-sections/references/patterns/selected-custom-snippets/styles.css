@@ -1,0 +1,28 @@
+.snippet {
+    background-color: var(--ys-background-neutral);
+    border-radius: var(--ys-current-skin-border-radius);
+    overflow: hidden;
+}
+
+.snippet__media-wrapper {
+    width: 108px;    
+    min-width: 108px;
+}
+
+.snippet__content {
+    flex: 1 1 auto;
+    padding: var(--ys-spacing-200) var(--ys-spacing-200) var(--ys-spacing-200) 0;
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

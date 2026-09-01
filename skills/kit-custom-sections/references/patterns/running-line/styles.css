@@ -1,0 +1,93 @@
+.container {
+    position: relative;
+    overflow: hidden;
+}
+
+.container.blurry::before,
+.container.blurry::after {
+    content: "";
+    position: absolute;
+    width: 5%;
+    height: 100%;
+    top: 0;
+    z-index: 1;
+}
+
+.container::before {
+    left: 0;
+    background: linear-gradient(to right, var(--ys-background-primary), transparent);
+}
+
+.container::after {
+    right: 0;
+    background: linear-gradient(to left, var(--ys-background-primary), transparent);
+}
+
+.text-scroll {
+    grid: auto / auto-flow max-content;
+    justify-content: center;
+    display: grid;
+    overflow: hidden;
+}
+
+.text-scroll-item {
+    grid: auto / auto-flow auto max-content;
+    place-items: center;
+    display: grid;
+    animation-duration: 20s;
+    
+    font-weight: 600;
+    font-size: 48px;
+    color: var(--ys-color-token-text-primary);
+}
+
+.text-scroll-item.type-outline {
+    color: var(--ys-background-primary);
+}
+
+.text-scroll-item > span {
+    padding: 0 3rem;
+    -webkit-text-shadow: -1px -1px 0 var(--ys-color-token-text-primary), 1px -1px 0 var(--ys-color-token-text-primary), -1px 1px 0 var(--ys-color-token-text-primary), 1px 1px 0 var(--ys-color-token-text-primary);
+    text-shadow: -1px -1px 0 var(--ys-color-token-text-primary), 1px -1px 0 var(--ys-color-token-text-primary), -1px 1px 0 var(--ys-color-token-text-primary), 1px 1px 0 var(--ys-color-token-text-primary);
+}
+
+.anim-loop-left {
+    animation: loop-anim-left 30s linear infinite reverse;
+    white-space: nowrap;
+}
+
+.anim-loop-right {
+    animation: loop-anim-right 30s linear infinite reverse;
+    white-space: nowrap;
+}
+
+@keyframes loop-anim-left {
+    from {
+        transform: translateZ(0);
+    }
+    to {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+@keyframes loop-anim-right {
+    from {
+        transform: translate3d(-100%, 0, 0);
+    }
+    to {
+        transform: translateZ(0);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

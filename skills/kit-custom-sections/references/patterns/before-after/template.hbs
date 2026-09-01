@@ -1,0 +1,42 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}} 
+>
+    <ya-kit-section-layout-row>
+        <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" /> 
+    </ya-kit-section-layout-row>
+    <ya-kit-section-layout-row> 
+        <ya-kit-drag-controller axis="x" as="conroller">
+            {{#with conroller}}
+                <div class="container" ref={{containerRef}}>
+                    <div class="slide">
+                        <ya-kit-image class="slide__image" aspect-ratio="1:1" src={{settings.before.image}} />
+                    </div>
+                    <div 
+                        class="slide" 
+                        style="  clip-path: inset(0 {{multiply (subtract 1 (if progressHorizontal progressHorizontal 0.5)) 100}}% 0 0);"
+                    >
+                        <ya-kit-image class="slide__image" aspect-ratio="1:1" src={{settings.after.image}} />
+                    </div>
+                    <div 
+                        class="trigger" 
+                        ref={{elementRef}} 
+                        style="left: {{multiply (if progressHorizontal progressHorizontal 0.5) 100}}%;"
+                    >
+                        <svg role="presentation" focusable="false" width="28" height="35" viewBox="0 0 32 40">
+                            <path d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16V24C32 32.8366 24.8366 40 16 40C7.16344 40 0 32.8366 0 24V16Z" fill="var(--ys-background-primary)"></path>
+                            <path fill="#000000" d="M11 14H13V26H11zM15 14H17V26H15zM19 14H21V26H19z"></path>
+                        </svg>
+                    </div>
+                </div> 
+            {{/with}}
+        </ya-kit-drag-controller>
+    
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

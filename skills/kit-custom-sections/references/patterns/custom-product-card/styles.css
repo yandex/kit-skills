@@ -1,0 +1,62 @@
+.wrapper {
+    overflow: visible;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-250);
+}
+
+.product-card__gallery-wrapper {
+    position: relative;
+    top: 0;
+}
+
+.product-card__gallery {
+    width: 100%;
+}
+
+.product-card__favourite-icon {
+    width: 24px;
+    fill: #bf1545;
+}
+
+.product-card__cart-button,
+.product-card__cart-stepper {
+    flex: 1 1 auto;
+    white-space: nowrap;
+}
+
+@media screen and (min-width: 768px) {
+    .product-card {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--ys-spacing-500);
+    }
+    
+    .product-card__gallery-wrapper {
+        position: sticky;
+        width: 50%;
+        min-width: 350px;
+        max-width: 640px;
+        top: var(--ys-sticky-offset,0)
+    }
+	
+    .product-card__content {
+        width: 50%;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

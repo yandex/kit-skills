@@ -1,0 +1,14 @@
+id: goods-snippets
+version: 1
+title: "Полка товаров с кастомными сниппетами"
+purpose: "Сетка товаров из выбранной подборки со своими карточками"
+origin: "doc-example: example/shelf-goods/goods-snippets.md"
+fingerprint: "ed475fe2dd339e34b9dbb270723f608ef68ed686da9a8bbd0532f49e3cde0fe9"
+docs_fingerprint: "37ce04f4d84ef30c8047d4db48440bcef5c094026e96778b100691320d7de8bf"
+applied_patches: "fix-hpadding-touch, prune-broken-required"
+keywords: "полка товаров, сетка товаров, подборка, товары на главной, сниппеты"
+pages: "main, landing"
+controllers: "ya-kit-featured-products-controller, ya-kit-product-snippet-controller"
+answers_required: "titleText"
+rhythm: "500"
+rhythm_touch: "300"

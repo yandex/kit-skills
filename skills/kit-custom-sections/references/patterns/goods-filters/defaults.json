@@ -1,0 +1,25 @@
+{
+  "palette": "default",
+  "titleText": "Наши товары",
+  "titleAlign": "default",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "title": "Новинки",
+      "source": {
+        "id": "",
+        "slug": "",
+        "type": "category"
+      }
+    }
+  ],
+  "verticalRhythm": "500",
+  "verticalRhythmTouch": "300"
+}

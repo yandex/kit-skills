@@ -1,0 +1,41 @@
+{
+  "title": "Ответы для hero-секции",
+  "type": "object",
+  "properties": {
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок (главное сообщение)"
+    },
+    "subtitleText": {
+      "type": "string",
+      "title": "Подзаголовок (1–2 предложения)"
+    },
+    "buttonText": {
+      "type": "string",
+      "title": "Текст CTA-кнопки"
+    },
+    "buttonUrl": {
+      "$ref": "#/definitions/LinkSource",
+      "title": "Ссылка: объект {link, linkId} (linkId можно пустым)"
+    },
+    "image": {
+      "$ref": "#/definitions/ImageModel",
+      "title": "Изображение: {fileId, filePath}. Из вывода kit.py media upload берётся fileId = поле `id`, filePath = `public_path` — как есть вывод не вставлять"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Вертикальный отступ блока (spacing-токен, например 500 = 40px с каждой стороны)"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Вертикальный отступ на телефоне (spacing-токен)"
+    }
+  },
+  "required": [
+    "titleText"
+  ]
+}

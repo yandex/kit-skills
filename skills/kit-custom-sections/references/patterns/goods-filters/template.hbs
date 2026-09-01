@@ -1,0 +1,35 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-value-controller initial-value="{{0}}" as="controller">
+    <ya-kit-section-layout
+    	palette={{settings.palette}}
+        padding-top={{settings.section.paddingTop}}
+        padding-bottom={{settings.section.paddingBottom}}
+        h-padding-desktop={{settings.section.hPaddingDesktop}}
+        h-padding-mobile={{settings.section.hPaddingMobile}}
+        is-fullscreen={{settings.section.isFullscreen}} 
+	>
+		<ya-kit-section-layout-row>
+			<ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" /> 
+        </ya-kit-section-layout-row>
+        <ya-kit-section-layout-row>
+            <ya-kit-h-stack gap="100">
+                {{#each settings.modules as |module, index|}}
+                	<ya-kit-button on-press="{{call controller.makeChangeHandler index}}">{{module.title}}</ya-kit-button>
+                {{/each}}
+            </ya-kit-h-stack>
+        </ya-kit-section-layout-row>
+        <ya-kit-section-layout-row> 
+            {{#each settings.modules as |module, index|}}
+                <ya-kit-featured-products-controller data-source={{module.source}} as="productsController" count="5">
+                    <ya-kit-carousel columns="4" columns-touch="1" class="items {{if (eql controller.value index) 'visible'}}"> 
+                        {{#each productsController.model as |item|}}
+                        	<ya-kit-product-snippet product={{item}} />
+                        {{/each}}
+                    </ya-kit-carousel>
+                </ya-kit-featured-products-controller>
+            {{/each}}
+        </ya-kit-section-layout-row>
+    </ya-kit-section-layout>
+
+</ya-kit-value-controller>
+</div>

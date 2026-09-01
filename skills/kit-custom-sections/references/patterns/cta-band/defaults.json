@@ -1,0 +1,19 @@
+{
+  "palette": "default",
+  "titleText": "Готовы начать?",
+  "subtitleText": "",
+  "buttonText": "Смотреть каталог",
+  "buttonUrl": {
+    "link": "/",
+    "linkId": ""
+  },
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "500",
+  "verticalRhythmTouch": "300"
+}

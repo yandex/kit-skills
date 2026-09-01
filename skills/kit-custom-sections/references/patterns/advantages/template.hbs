@@ -1,0 +1,31 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <div class="advantages">
+            {{#each settings.modules as |module index|}}
+                <ya-kit-module module-id={{module.id}} class="advantages__item {{skinRounded 150}}">
+                    <ya-kit-v-stack gap="150" align-items="flex-start">
+                        {{#if module.image.filePath}}
+                            <ya-kit-image class="advantages__icon" src={{module.image}} fit="cover" aspect-ratio="1:1" rounded="999" />
+                        {{/if}}
+                        <ya-kit-text as="h4" size="lg" weight="semibold">{{module.title}}</ya-kit-text>
+                        <ya-kit-text size="md" color="secondary">{{module.description}}</ya-kit-text>
+                    </ya-kit-v-stack>
+                </ya-kit-module>
+            {{/each}}
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

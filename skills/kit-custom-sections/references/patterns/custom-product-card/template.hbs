@@ -1,0 +1,182 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    class="wrapper"
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}} 
+>
+    <ya-kit-product-detail-controller as="controller">    
+        <ya-kit-section-layout-row> 
+            {{#if controller.isLoading}}
+            	<article class="product-card">
+                	<ya-kit-sticky>
+                        <div class="product-card__gallery-wrapper">
+                        	<ya-kit-media-gallery class="product-card__gallery" layout="thumbnail" is-loading="1" />
+                        </div>
+                    </ya-kit-sticky>
+                   	<ya-kit-v-stack gap="250" class="product-card__content" align-items="stretch">
+                        <ya-kit-breadcrumbs-controller as="breadcrumbsController">
+                            <ya-kit-breadcrumbs items={{breadcrumbsController.model}} />
+                        </ya-kit-breadcrumbs-controller>
+                        <ya-kit-v-stack gap="150" class="product-card__info" align-items="stretch">
+                            <ya-kit-text as="h1" size="3xl">
+                                <ya-kit-skeleton variant="text" width="100%" />
+                            </ya-kit-text>
+                            <ya-kit-prices size="xl" weight="bold" is-loading="1" />
+                        </ya-kit-v-stack>
+                        
+                     	<ya-kit-grouping-characteristic is-loading="1"  />
+                        <ya-kit-button class="product-card__cart-button" is-loading="1" />
+                        
+                        <ya-kit-v-stack gap="50" align-items="stretch">
+                            <ya-kit-accordion default-expanded="1">
+                                <ya-kit-accordion-header>
+                                    <ya-kit-text as="h3" size="xl" weight="bold">Характеристики</ya-kit-text>
+                                </ya-kit-accordion-header> 
+                                <ya-kit-accordion-body>
+                                    <ya-kit-v-stack as="ul" gap="250">
+                                        {{#repeat 3}}
+                                            <ya-kit-v-stack as="li" gap="50" align-items="stretch">
+                                                <ya-kit-text size="sm" weight="bold" color="secondary">
+                                                    <ya-kit-skeleton variant="text" width="150px" />
+                                                </ya-kit-text>
+                                                <ya-kit-text>
+                                                    <ya-kit-skeleton variant="text" width="250px" />
+                                                </ya-kit-text>
+                                            </ya-kit-v-stack>
+                                        {{/repeat}}
+                                    </ya-kit-v-stack>
+                                </ya-kit-accordion-body>
+                            </ya-kit-accordion>
+
+                            <ya-kit-accordion is-disabled="1">
+                                <ya-kit-accordion-header>
+                                    <ya-kit-text as="h3" size="xl" weight="bold">Описание</ya-kit-text>
+                                </ya-kit-accordion-header>
+                                <ya-kit-accordion-body />
+                            </ya-kit-accordion>
+
+                            <ya-kit-accordion is-disabled="1">
+                                <ya-kit-accordion-header>
+                                    <ya-kit-text as="h3" size="xl" weight="bold">Доставка</ya-kit-text>
+                                </ya-kit-accordion-header>
+                                <ya-kit-accordion-body />
+                            </ya-kit-accordion>
+                        </ya-kit-v-stack>
+                    </ya-kit-v-stack>
+                    
+                </article>
+            {{elseif controller.model.variant}}
+                {{#with controller.model.variant as |variant|}}
+                    <article class="product-card">
+                        <ya-kit-sticky>
+                            <div class="product-card__gallery-wrapper">
+                            	<ya-kit-media-gallery class="product-card__gallery" layout="thumbnail" items={{variant.mediaItems}} />
+                            </div>
+                        </ya-kit-sticky>
+                        <ya-kit-v-stack gap="250" class="product-card__content" align-items="stretch">
+                            <ya-kit-breadcrumbs-controller as="breadcrumbsController">
+                                <ya-kit-breadcrumbs items={{breadcrumbsController.model}} />
+                            </ya-kit-breadcrumbs-controller>
+                            <ya-kit-v-stack gap="150" class="product-card__info" align-items="stretch">
+                                <ya-kit-text as="h1" size="3xl">{{variant.name}}</ya-kit-text>
+                                <ya-kit-prices size="xl" weight="bold" price={{variant.price}} final-price={{variant.finalPrice}} />
+                            </ya-kit-v-stack>
+                            
+                            {{#each controller.model.groupingCharacteristics as |characteristic|}}
+                            	<ya-kit-grouping-characteristic characteristic={{characteristic}} on-change={{controller.onVariantSelect}} />
+                            {{/each}} 
+                            
+                            <ya-kit-h-stack align-items="center" gap="100">
+                                {{#if (gte controller.model.quantity 1)}} 
+                                    <ya-kit-input-stepper class="product-card__cart-stepper" value={{controller.model.quantity}} on-change={{controller.onUpdateVariantQuantity}} />
+                                	<ya-kit-button to="/cart" class="product-card__cart-button" on-press={{controller.onAddVariantToCart}}>В корзину</ya-kit-button>
+                                {{else}} 
+                                    <ya-kit-button class="product-card__cart-button" is-disabled="{{(eql variant.totalQuantity 0)}}" on-press={{controller.onAddVariantToCart}}>Добавить в корзину</ya-kit-button>
+                                {{/if}}
+                                <ya-kit-button color="outlined" on-press={{controller.onToggleVariantFavourite}}>
+                                    {{#if variant.isFavourite}}
+                                    	<svg class="product-card__favourite-icon" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1"><path d="m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"></path></svg>
+                                	{{else}}
+                                    	<svg class="product-card__favourite-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1" title="FavoriteBorder"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3m-4.4 15.55-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05"></path></svg>
+                                    {{/if}}
+                                </ya-kit-button>
+                            </ya-kit-h-stack>
+
+                            <ya-kit-v-stack gap="50" align-items="stretch">
+                                {{#if (gt variant.characteristics.length 0)}}
+                                	<ya-kit-accordion default-expanded="1">
+                                        <ya-kit-accordion-header>
+                                            <ya-kit-text as="h3" size="xl" weight="bold">Характеристики</ya-kit-text>
+                                        </ya-kit-accordion-header> 
+                                      	<ya-kit-accordion-body>
+                                            <ya-kit-v-stack as="ul" gap="250">
+                                                {{#each variant.characteristics as |characteristic|}}
+                                                    <ya-kit-v-stack as="li" gap="50">
+                                                        <ya-kit-text size="sm" weight="bold" color="secondary">
+                                                            {{characteristic.title}}:
+                                                        </ya-kit-text>
+                                                        <ya-kit-text>{{characteristic.value}}</ya-kit-text>
+                                                    </ya-kit-v-stack>
+                                                {{/each}}
+                                            </ya-kit-v-stack>
+                                    	</ya-kit-accordion-body>
+                                	</ya-kit-accordion>
+                                {{/if}}
+
+                                <ya-kit-accordion>
+                                    <ya-kit-accordion-header>
+                                        <ya-kit-text as="h3" size="xl" weight="bold">Описание</ya-kit-text>
+                                    </ya-kit-accordion-header>
+                                    <ya-kit-accordion-body>
+                                        <ya-kit-markdown class="product-card__description" markup={{variant.description}} />
+                                    </ya-kit-accordion-body>
+                                </ya-kit-accordion>
+                                
+                                <ya-kit-accordion>
+                                    <ya-kit-accordion-header>
+                                        <ya-kit-text as="h3" size="xl" weight="bold">Доставка</ya-kit-text>
+                                    </ya-kit-accordion-header>
+                                    <ya-kit-accordion-body>
+										<ya-kit-location-controller as="location">
+                                            <ya-kit-v-stack gap="100">
+                                                <ya-kit-h-stack gap="50">
+                                                    <ya-kit-text>Город доставки: </ya-kit-text>
+                                                    <ya-kit-text weight="bold" on-click={{location.onLocationSelect}}>
+                                                        {{#if location.model}}
+                                                            {{location.model.name}}
+                                                        {{else}}
+                                                            <ya-kit-skeleton variant="text" width="100" />
+                                                        {{/if}}
+                                                    </ya-kit-text>
+                                                </ya-kit-h-stack>
+                                                <ya-kit-delivery-options-controller location={{location.model}} product={{variant}} as="options">
+                                                    <ya-kit-v-stack gap="100">
+                                                        {{#each options.model as |option|}}
+                                                            <ya-kit-v-stack gap="25">
+                                                                <ya-kit-text weight="bold">{{option.formattedDate}}</ya-kit-text>
+                                                                <ya-kit-text weight="bold">{{if (eql option.method 'COURIER') 'Курьер' 'ПВЗ'}} {{option.serviceName}}</ya-kit-text>
+                                                            </ya-kit-v-stack>
+                                                        {{else}}
+                                                            <ya-kit-text>Не доставляем в указанный регион</ya-kit-text>
+                                                        {{/each}}
+                                                    </ya-kit-v-stack> 
+                                                </ya-kit-delivery-options-controller>
+                                            </ya-kit-v-stack>
+                                        </ya-kit-location-controller>
+                                    </ya-kit-accordion-body>
+                                </ya-kit-accordion>
+                            </ya-kit-v-stack>
+                        </ya-kit-v-stack>
+                    </article>
+                {{/with}}
+            {{/if}}
+            
+            
+        </ya-kit-section-layout-row>
+    </ya-kit-product-detail-controller>
+</ya-kit-section-layout>
+</div>

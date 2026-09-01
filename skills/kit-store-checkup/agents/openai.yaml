@@ -1,0 +1,8 @@
+interface:
+  display_name: "Ревизия магазина Яндекс.Кит"
+  short_description: "Read-only check-up: unavailable items, low stock, waiting and stuck orders, zero prices, duplicate SKUs, incomplete listings"
+  brand_color: "#FC3F1D"
+  default_prompt: "Use $kit-store-checkup to review a Яндекс.Кит store and report what needs attention."
+
+policy:
+  allow_implicit_invocation: true

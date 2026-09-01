@@ -1,0 +1,43 @@
+.advantages {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--ys-spacing-300);
+}
+
+.advantages__item {
+    background: var(--ys-background-neutral);
+    padding: var(--ys-spacing-400);
+    min-width: 0;
+}
+
+.advantages__icon {
+    width: var(--ys-spacing-800);
+}
+
+/* Порог 4->2 колонки — 1199: на 1024px четыре колонки дают плитки ~206px
+   с текстом в шесть строк. */
+@media (max-width: 1199px) {
+    .advantages {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 599px) {
+    .advantages {
+        grid-template-columns: 1fr;
+        gap: var(--ys-spacing-200);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
+.kcs-rhythm {
+    padding-top: var(--kcs-rhythm, 0px);
+    padding-bottom: var(--kcs-rhythm, 0px);
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm {
+        padding-top: var(--kcs-rhythm-touch, 0px);
+        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    }
+}

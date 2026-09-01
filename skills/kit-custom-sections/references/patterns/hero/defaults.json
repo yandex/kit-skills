@@ -1,0 +1,23 @@
+{
+  "palette": "default",
+  "titleText": "Магазин, в который возвращаются",
+  "subtitleText": "",
+  "buttonText": "Перейти в каталог",
+  "buttonUrl": {
+    "link": "",
+    "linkId": ""
+  },
+  "image": {
+    "fileId": "",
+    "filePath": ""
+  },
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingDesktop": "800",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "500",
+  "verticalRhythmTouch": "300"
+}

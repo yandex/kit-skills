@@ -1,0 +1,58 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}} 
+>
+    <ya-kit-section-layout-row>
+        <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" /> 
+    </ya-kit-section-layout-row>
+    <ya-kit-section-layout-row>
+        <ya-kit-featured-products-controller data-source="{{settings.dataSource}}" as="productsController" count="{{settings.count}}">
+            <ya-kit-grid columns="{{settings.columns}}" columns-touch="2" h-gap="300" v-gap="600" class="grid">
+                {{#each productsController.model as |product|}}
+                    <ya-kit-product-snippet-controller as="controller" product="{{product}}">
+                        <ya-kit-v-stack gap="200" class="{{cn 'preview-product-card-layout' (if (lt product.totalQuantity 1) 'preview-product-card-layout--oos')}}" align-items="stretch">
+                            <ya-kit-link to="{{product.url}}" class="preview-product-card-layout__body">
+                                <ya-kit-v-stack gap="200" align-items="stretch">
+                                    <div class="{{cn 'preview-product-image-wrapper' (skinRounded '200')}}">
+                                        <ya-kit-image src="{{product.mediaItems.0.payload}}" aspect-ratio="1:1" class="preview-product-image" />
+                                        <ya-kit-v-stack class="preview-product-card-layout__badges" gap="100">
+                                            {{#each product.badges as |badge|}}
+                                            <ya-kit-text class="preview-product-card-layout__badge" weight="bold">
+                                                {{badge.label}}
+                                            </ya-kit-text>
+                                            {{/each}} 
+                                        </ya-kit-v-stack>
+                                    </div>
+                                    <ya-kit-v-stack gap="50" class="preview-product-card-layout__title">
+                                        <ya-kit-text weight="semibold" size="md" lines="2" class="preview-product-card-layout__title-text">{{product.name}}</ya-kit-text>
+                                        <ya-kit-prices size="2xl" weight="bold" class="preview-product-card-layout__price" price="{{product.price}}" final-price="{{product.finalPrice}}" />
+                                    </ya-kit-v-stack>
+                                </ya-kit-v-stack>
+                            </ya-kit-link>
+
+                            <div class="preview-product-card-layout__control"> 
+                                {{#if (gt controller.quantity 0)}}
+                                <ya-kit-input-stepper width="max" value="{{controller.quantity}}" on-change="{{controller.onUpdateQuantity}}" />
+                                {{elseif (gte product.totalQuantity 1)}}
+                                <ya-kit-button color="primary" width="max" on-click="{{controller.onAddToCart}}">
+                                    В корзину
+                                </ya-kit-button>
+                                {{elseif (eql product.totalQuantity 0)}}
+                                <ya-kit-button color="secondary" is-disabled="1"> 
+                                    Нет в наличии
+                                </ya-kit-button>
+                                {{/if}}
+                            </div> 
+                        </ya-kit-v-stack>
+                    </ya-kit-product-snippet-controller> 
+                {{/each}}
+            </ya-kit-grid>
+        </ya-kit-featured-products-controller>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>
