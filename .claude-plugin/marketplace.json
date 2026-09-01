@@ -1,0 +1,17 @@
+{
+  "name": "kit-skills",
+  "description": "Official skills for Yandex Kit stores, published from the yandex/kit-skills repository.",
+  "owner": {
+    "name": "Yandex Kit",
+    "url": "https://github.com/yandex/kit-skills"
+  },
+  "plugins": [
+    {
+      "name": "kit-skills",
+      "source": "./",
+      "description": "Skills for running a Yandex Kit store from an agent: catalog and orders, storefront pages and sections, a store checkup, and offline authoring of custom sections.",
+      "homepage": "https://github.com/yandex/kit-skills",
+      "license": "MIT"
+    }
+  ]
+}

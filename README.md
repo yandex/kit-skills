@@ -25,8 +25,31 @@ over to each other.
 
 ## Install
 
-Give Claude Code (or Codex) the repository link and ask it to install the
-skills, or do it yourself:
+### As a plugin (Claude only)
+
+This repository is also a plugin marketplace, so Claude installs and updates the
+skills itself. All four arrive together.
+
+In Claude Code:
+
+```
+/plugin marketplace add yandex/kit-skills
+/plugin install kit-skills@kit-skills
+```
+
+In the Claude app — web, desktop or Cowork — open **Customize → Plugins**, and
+under **Personal plugins** pick **+ → Add marketplace**, then give it
+`yandex/kit-skills`. Plugins there need a paid plan.
+
+Skills installed this way are namespaced under the plugin, so they are invoked
+as `kit-skills:yandex-kit-cabinet`, and `/plugin update` brings new versions.
+
+Codex has no plugin system — use the installer below.
+
+### With the installer (Claude Code and Codex)
+
+Give the agent the repository link and ask it to install the skills, or do it
+yourself:
 
 ```bash
 git clone https://github.com/yandex/kit-skills.git

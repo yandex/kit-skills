@@ -1,6 +1,7 @@
 {
   "":"yastore/ai/yandex-kit-skills",
   ".":"yastore/ai/yandex-kit-skills",
+  ".claude-plugin/marketplace.json":"yastore/ai/yandex-kit-skills/.claude-plugin/marketplace.json",
   ".gitignore":"yastore/ai/yandex-kit-skills/.gitignore",
   "AGENTS.md":"yastore/ai/yandex-kit-skills/AGENTS.md",
   "CONTRIBUTING":"yastore/ai/yandex-kit-skills/CONTRIBUTING",
