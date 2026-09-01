@@ -1,0 +1,10 @@
+{
+  "name": "kit-store-checkup",
+  "description": "Weekly revision of a Yandex Kit store: what is published but impossible to buy, what is running out of stock, and which orders are waiting or stuck.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Yandex Kit"
+  },
+  "homepage": "https://github.com/yandex/kit-skills",
+  "license": "MIT"
+}
