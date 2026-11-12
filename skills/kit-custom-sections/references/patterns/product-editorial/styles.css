@@ -1,0 +1,164 @@
+/* Товар + фото кампании. Одна разметка на все ширины: на десктопе плоская
+   сетка, где высоту ряда задаёт карточка товара, а фото растягиваются до неё
+   (нижние края ячеек совпадают при любых пропорциях фото); до 1023px та же
+   разметка становится лентой со snap-прокруткой. Цвета и скругления из темы. */
+
+.editorial {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+    gap: var(--ys-spacing-150);
+}
+
+.editorial_media-left {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* Одно фото из двух: карточка 1/3, фото 2/3. */
+.editorial_no-main,
+.editorial_no-side {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+
+.editorial_media-left.editorial_no-main,
+.editorial_media-left.editorial_no-side {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+
+/* Без фото: одна карточка по центру, без пустых ячеек. */
+.editorial_no-main.editorial_no-side {
+    grid-template-columns: minmax(0, 22rem);
+    justify-content: center;
+}
+
+.editorial__cell {
+    min-width: 0;
+}
+
+.editorial__product {
+    align-self: start;
+}
+
+.editorial__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+}
+
+/* Фото тянется до высоты ряда: картинка абсолютно заполняет ячейку,
+   кадрирование cover по центру. Скругление ячейки берётся из темы (skinRounded). */
+.editorial__media {
+    position: relative;
+    min-height: 20rem;
+    overflow: hidden;
+    border-radius: var(--ys-current-skin-border-radius, 0px);
+    background: var(--ys-background-secondary);
+}
+
+.editorial__image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.editorial__image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Секция не вывелась (источник пуст): блок не держит пустой отступ. */
+.kcs-rhythm:not(:has(.editorial)) {
+    display: none;
+}
+
+/* Зеркало только на десктопе: на планшете и телефоне товар всегда первый слайд. */
+@media (min-width: 1024px) {
+    .editorial_media-left .editorial__media_main {
+        order: -2;
+    }
+
+    .editorial_media-left .editorial__media_side {
+        order: -1;
+    }
+}
+
+/* Планшет и телефон: лента со snap-прокруткой в ширину контента секции, внутри
+   её боковых полей (ya-kit-section-layout обрезает горизонтальный выход за свой
+   блок, публичной переменной поля секции нет). Первый слайд стоит по левому
+   полю, следующий выглядывает у правого. Порядок слайдов: карточка, крупное
+   фото, второе фото. */
+@media (max-width: 1023px) {
+    .editorial {
+        display: flex;
+        gap: var(--ys-spacing-150);
+        overflow-x: auto;
+        overflow-y: hidden;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .editorial::-webkit-scrollbar {
+        display: none;
+    }
+
+    .editorial__cell {
+        flex: 0 0 44%;
+        scroll-snap-align: start;
+    }
+
+    .editorial__product {
+        align-self: flex-start;
+    }
+
+    .editorial__media_main {
+        order: 1;
+    }
+
+    .editorial__media_side {
+        order: 2;
+    }
+
+    .editorial_no-main.editorial_no-side {
+        justify-content: center;
+    }
+}
+
+/* Планшет с одним фото: ленты нет, фото занимает всё место справа от карточки. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .editorial_no-main .editorial__media,
+    .editorial_no-side .editorial__media {
+        flex: 1 1 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .editorial {
+        gap: var(--ys-spacing-100);
+    }
+
+    .editorial__cell {
+        flex-basis: 85%;
+    }
+
+    .editorial_no-main.editorial_no-side .editorial__cell {
+        flex-basis: 100%;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

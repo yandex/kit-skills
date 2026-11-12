@@ -3,34 +3,219 @@
   "title": "",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
-    "dataSource": {
-      "$ref": "#/definitions/ProductsSource",
-      "title": "Товары"
-    },
-    "count": {
-      "step": 2,
-      "type": "number",
-      "unit": "шт.",
-      "title": "Общее количество карточек",
-      "default": 6,
-      "maximum": 12,
-      "minimum": 4
-    },
-    "columns": {
-      "step": 1,
-      "type": "number",
-      "title": "Количество колонок",
-      "default": 4,
-      "maximum": 6,
-      "minimum": 3
-    },
     "titleText": {
       "type": "string",
-      "title": "Заголовок"
+      "title": "Заголовок",
+      "default": ""
     },
     "titleAlign": {
       "$ref": "#/definitions/SectionTitleAlign",
       "title": "Расположение заголовка"
+    },
+    "dataSource": {
+      "$ref": "#/definitions/ProductsSource",
+      "title": "Товары"
+    },
+    "showAllText": {
+      "type": "string",
+      "title": "Кнопка под полкой",
+      "description": "Ведёт в выбранную категорию или подборку. Пусто — без кнопки",
+      "default": "Смотреть все"
+    },
+    "count": {
+      "type": "number",
+      "title": "Сколько товаров загрузить",
+      "description": "Для ровных рядов — кратно числу колонок и чётное (на телефоне 2 карточки в ряду)",
+      "unit": "шт.",
+      "step": 1,
+      "minimum": 4,
+      "maximum": 24,
+      "default": 8
+    },
+    "layout": {
+      "type": "string",
+      "title": "Раскладка",
+      "enum": [
+        "grid-strip",
+        "grid",
+        "carousel"
+      ],
+      "options": [
+        "Сетка, на телефоне лента",
+        "Сетка",
+        "Карусель"
+      ],
+      "default": "grid-strip"
+    },
+    "columns": {
+      "type": "number",
+      "title": "Колонок на компьютере",
+      "step": 1,
+      "minimum": 2,
+      "maximum": 6,
+      "default": 4
+    },
+    "columnsTouch": {
+      "type": "number",
+      "title": "Карточек на экране телефона в ленте и карусели",
+      "description": "Сетка на телефоне всегда в 2 колонки",
+      "step": 1,
+      "minimum": 1,
+      "maximum": 2,
+      "default": 2
+    },
+    "maxRowsTouch": {
+      "type": "number",
+      "title": "Рядов сетки на телефоне",
+      "description": "Остальные товары — по кнопке под полкой",
+      "step": 1,
+      "minimum": 1,
+      "maximum": 3,
+      "default": 2
+    },
+    "hGap": {
+      "type": "string",
+      "title": "Расстояние между карточками",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "400",
+        "500",
+        "600",
+        "700"
+      ],
+      "options": [
+        "0",
+        "2 px",
+        "4 px",
+        "8 px",
+        "12 px",
+        "16 px",
+        "20 px",
+        "24 px",
+        "32 px",
+        "40 px",
+        "48 px",
+        "56 px"
+      ],
+      "default": "300"
+    },
+    "vGap": {
+      "type": "string",
+      "title": "Расстояние между рядами сетки",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "400",
+        "500",
+        "600",
+        "700"
+      ],
+      "options": [
+        "0",
+        "2 px",
+        "4 px",
+        "8 px",
+        "12 px",
+        "16 px",
+        "20 px",
+        "24 px",
+        "32 px",
+        "40 px",
+        "48 px",
+        "56 px"
+      ],
+      "default": "600"
+    },
+    "card": {
+      "type": "object",
+      "title": "Карточка товара",
+      "properties": {
+        "titleLines": {
+          "type": "number",
+          "title": "Строк в названии",
+          "step": 1,
+          "minimum": 1,
+          "maximum": 3,
+          "default": 2
+        },
+        "discount": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Скидка у цены"
+        },
+        "showBadges": {
+          "type": "boolean",
+          "title": "Метки товара на фото",
+          "default": true
+        },
+        "showFavourite": {
+          "type": "boolean",
+          "title": "Кнопка избранного",
+          "default": true
+        },
+        "cartButton": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Кнопка корзины"
+        },
+        "hideCartButtonTouch": {
+          "type": "boolean",
+          "title": "Скрыть кнопку корзины на телефоне",
+          "default": true
+        },
+        "addToCartText": {
+          "type": "string",
+          "title": "Текст кнопки корзины",
+          "default": "В корзину"
+        },
+        "outOfStockText": {
+          "type": "string",
+          "title": "Текст у товара не в наличии",
+          "description": "Пусто — без кнопки",
+          "default": "Нет в наличии"
+        },
+        "split": {
+          "type": "string",
+          "title": "Бейдж Сплита",
+          "enum": [
+            "disabled",
+            "s",
+            "m"
+          ],
+          "options": [
+            "Нет",
+            "Маленький",
+            "Средний"
+          ],
+          "default": "disabled"
+        },
+        "payDiscount": {
+          "type": "string",
+          "title": "Бейдж скидки Пэй",
+          "enum": [
+            "disabled",
+            "s",
+            "m"
+          ],
+          "options": [
+            "Нет",
+            "Маленький",
+            "Средний"
+          ],
+          "default": "disabled"
+        }
+      }
     },
     "palette": {
       "$ref": "#/definitions/Palette",
@@ -99,8 +284,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ блока (токен темы, с каждой стороны)",
-      "default": "500"
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
     },
     "verticalRhythmTouch": {
       "type": "string",
@@ -134,8 +319,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ на телефоне (токен темы)",
-      "default": "300"
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
     }
   },
   "required": [

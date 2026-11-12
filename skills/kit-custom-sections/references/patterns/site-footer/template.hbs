@@ -1,0 +1,198 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-company-controller as="company">
+<ya-kit-section-layout
+    class="kcs-ftr-section {{when settings.view.dividers 'kcs-ftr-section_lines' ''}}"
+    palette={{settings.palette}}
+    padding-top="none"
+    padding-bottom="none"
+    v-gap="0"
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen="{{when (eql settings.view.width 'full') 'enabled' 'default'}}"
+>
+    {{#if settings.ticker.text}}
+        <div class="kcs-ftr__ticker kcs-ftr__ticker_{{settings.ticker.size}} kcs-ftr__ticker_{{settings.ticker.speed}}">
+            <span class="kcs-ftr__sr">{{settings.ticker.text}}</span>
+            <div class="kcs-ftr__ticker-track" aria-hidden="true">
+                {{#repeat 12}}
+                    <span class="kcs-ftr__ticker-item">
+                        <span>{{settings.ticker.text}}</span>
+                        {{#if settings.ticker.separator}}
+                            <span class="kcs-ftr__ticker-sep">{{settings.ticker.separator}}</span>
+                        {{/if}}
+                    </span>
+                {{/repeat}}
+            </div>
+        </div>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <footer class="kcs-ftr kcs-ftr_{{settings.view.layout}} {{when (and (eql settings.view.layout 'split') (eql settings.view.columnsTouch 'accordion')) 'kcs-ftr_acc' 'kcs-ftr_open'}}">
+            <div class="kcs-ftr__main {{when (or (notEql settings.about.headline 'none') settings.about.description (and settings.about.enableSocialNetworks (gte (length company.model.socialNetworks) 1))) 'kcs-ftr__main_brand' 'kcs-ftr__main_solo'}}">
+                {{#if (or (notEql settings.about.headline 'none') settings.about.description (and settings.about.enableSocialNetworks (gte (length company.model.socialNetworks) 1)))}}
+                    <div class="kcs-ftr__brand">
+                        {{#if (eql settings.about.headline 'logo')}}
+                            {{#if settings.about.logoImage.filePath}}
+                                <ya-kit-link class="kcs-ftr__logo kcs-ftr__logo_{{settings.about.logoSize}}" to="/">
+                                    <ya-kit-image class="kcs-ftr__logo-img" src={{settings.about.logoImage}} fit="contain" background-color="none" alt="{{when company.model.name company.model.name 'Логотип магазина'}}" />
+                                </ya-kit-link>
+                            {{else}}
+                                {{#if (or company.model.logo company.model.invertedLogo)}}
+                                    <ya-kit-link class="kcs-ftr__logo kcs-ftr__logo_{{settings.about.logoSize}}" to="/">
+                                        <ya-kit-image class="kcs-ftr__logo-img" src="{{when (and settings.about.invertedLogo company.model.invertedLogo) company.model.invertedLogo (when company.model.logo company.model.logo company.model.invertedLogo)}}" fit="contain" background-color="none" alt="{{when company.model.name company.model.name 'Логотип магазина'}}" />
+                                    </ya-kit-link>
+                                {{else}}
+                                    <ya-kit-text class="kcs-ftr__name" as="p" size="xl" weight="semibold">{{company.model.name}}</ya-kit-text>
+                                {{/if}}
+                            {{/if}}
+                        {{/if}}
+                        {{#if (eql settings.about.headline 'title')}}
+                            <ya-kit-text class="kcs-ftr__name" as="p" size="xl" weight="semibold">{{when settings.about.title settings.about.title company.model.name}}</ya-kit-text>
+                        {{/if}}
+                        {{#if settings.about.description}}
+                            <ya-kit-text class="kcs-ftr__tagline" as="p" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{settings.about.description}}</ya-kit-text>
+                        {{/if}}
+                        {{#if (and settings.about.enableSocialNetworks (gte (length company.model.socialNetworks) 1))}}
+                            <ul class="kcs-ftr__socials" aria-label="Соцсети магазина">
+                                {{#each company.model.socialNetworks as |sn|}}
+                                    {{#if sn.value}}
+                                        {{#if (eql sn.name 'telegram')}}
+                                            <li><a class="kcs-ftr__social" href="{{sn.value}}" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><ya-kit-icon name="telegram" size="20" /></a></li>
+                                        {{/if}}
+                                        {{#if (eql sn.name 'vk')}}
+                                            <li><a class="kcs-ftr__social" href="{{sn.value}}" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте"><ya-kit-icon name="vk" size="20" /></a></li>
+                                        {{/if}}
+                                        {{#if (eql sn.name 'dzen')}}
+                                            <li><a class="kcs-ftr__social" href="{{sn.value}}" target="_blank" rel="noopener noreferrer" aria-label="Дзен"><ya-kit-icon name="dzen" size="20" /></a></li>
+                                        {{/if}}
+                                        {{#if (eql sn.name 'ok')}}
+                                            <li><a class="kcs-ftr__social" href="{{sn.value}}" target="_blank" rel="noopener noreferrer" aria-label="Одноклассники"><ya-kit-icon name="odnoklassniki" size="20" /></a></li>
+                                        {{/if}}
+                                        {{#if (eql sn.name 'youtube')}}
+                                            <li><a class="kcs-ftr__social" href="{{sn.value}}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><ya-kit-icon name="youtube" size="20" /></a></li>
+                                        {{/if}}
+                                        {{#if (eql sn.name 'tiktok')}}
+                                            <li><a class="kcs-ftr__social" href="{{sn.value}}" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><ya-kit-icon name="tiktok" size="20" /></a></li>
+                                        {{/if}}
+                                        {{#if (eql sn.name 'rhythm')}}
+                                            <li><a class="kcs-ftr__social" href="{{sn.value}}" target="_blank" rel="noopener noreferrer" aria-label="Ритм"><ya-kit-icon name="rhythm" size="20" /></a></li>
+                                        {{/if}}
+                                        {{#if (eql sn.name 'whatsapp')}}
+                                            <li><a class="kcs-ftr__social" href="{{sn.value}}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><ya-kit-icon name="whats-app" size="20" /></a></li>
+                                        {{/if}}
+                                        {{#if (eql sn.name 'max')}}
+                                            <li><a class="kcs-ftr__social" href="{{sn.value}}" target="_blank" rel="noopener noreferrer" aria-label="Макс"><ya-kit-icon name="max" size="20" /></a></li>
+                                        {{/if}}
+                                    {{/if}}
+                                {{/each}}
+                            </ul>
+                        {{/if}}
+                    </div>
+                {{/if}}
+                <div class="kcs-ftr__nav">
+                    {{#each settings.modules as |col|}}
+                        {{#if col.menu}}
+                            <ya-kit-menu-controller menu="{{col.menu}}" as="colMenu">
+                                <ya-kit-toggle-controller as="colOpen">
+                                    <nav class="kcs-ftr__col {{when col.menuTitle 'kcs-ftr__col_titled' ''}} {{when colOpen.isOpen 'kcs-ftr__col_open' ''}}" aria-label="{{when col.menuTitle col.menuTitle 'Меню'}}">
+                                        {{#if col.menuTitle}}
+                                            <ya-kit-text class="kcs-ftr__col-title" as="p" size="sm" weight="medium" color="secondary">{{col.menuTitle}}</ya-kit-text>
+                                            <button class="kcs-ftr__col-toggle" type="button" aria-expanded="{{colOpen.isOpen}}" aria-controls="kcs-ftr-links-{{col.id}}" on-click="{{colOpen.onToggle}}">
+                                                <ya-kit-text as="span" size="md" weight="medium">{{col.menuTitle}}</ya-kit-text>
+                                                <ya-kit-icon class="kcs-ftr__chevron" name="arrow-down" size="16" />
+                                            </button>
+                                        {{/if}}
+                                        <ul class="kcs-ftr__links" id="kcs-ftr-links-{{col.id}}">
+                                            {{#each colMenu.model.items as |item|}}
+                                                <li><ya-kit-link class="kcs-ftr__link" to="{{item.url}}" size="md">{{item.title}}</ya-kit-link></li>
+                                            {{/each}}
+                                        </ul>
+                                    </nav>
+                                </ya-kit-toggle-controller>
+                            </ya-kit-menu-controller>
+                        {{/if}}
+                    {{/each}}
+                    {{#if (or (and settings.contacts.showAddress company.model.address.0.value) (and settings.contacts.showPhone (gte (length company.model.phone) 1)) (and settings.contacts.showWorkingMode company.model.workingMode.0.value) (and settings.contacts.showMail (gte (length company.model.mail) 1)))}}
+                        <div class="kcs-ftr__col kcs-ftr__contacts">
+                            {{#if settings.contacts.title}}
+                                <ya-kit-text class="kcs-ftr__col-title kcs-ftr__contacts-title" as="p" size="sm" weight="medium" color="secondary">{{settings.contacts.title}}</ya-kit-text>
+                                <ya-kit-text class="kcs-ftr__contacts-head" as="p" size="md" weight="medium">{{settings.contacts.title}}</ya-kit-text>
+                            {{/if}}
+                            <ul class="kcs-ftr__links kcs-ftr__contact-list">
+                                {{#if (and settings.contacts.showAddress company.model.address.0.value)}}
+                                    <li class="kcs-ftr__contact">
+                                        {{#if company.model.address.0.name}}
+                                            <ya-kit-text class="kcs-ftr__caption" as="span" size="xs" color="secondary">{{company.model.address.0.name}}</ya-kit-text>
+                                        {{/if}}
+                                        <ya-kit-text as="span" size="md">{{company.model.address.0.value}}</ya-kit-text>
+                                    </li>
+                                {{/if}}
+                                {{#if settings.contacts.showPhone}}
+                                    {{#each company.model.phone as |ph|}}
+                                        {{#if ph.value}}
+                                            <li class="kcs-ftr__contact">
+                                                {{#if ph.name}}
+                                                    <ya-kit-text class="kcs-ftr__caption" as="span" size="xs" color="secondary">{{ph.name}}</ya-kit-text>
+                                                {{/if}}
+                                                <ya-kit-link class="kcs-ftr__link kcs-ftr__nowrap" to="tel:{{ph.value}}" size="md">{{when (formatPhoneNumber ph.value) (formatPhoneNumber ph.value) ph.value}}</ya-kit-link>
+                                            </li>
+                                        {{/if}}
+                                    {{/each}}
+                                {{/if}}
+                                {{#if (and settings.contacts.showWorkingMode company.model.workingMode.0.value)}}
+                                    <li class="kcs-ftr__contact">
+                                        {{#if company.model.workingMode.0.name}}
+                                            <ya-kit-text class="kcs-ftr__caption" as="span" size="xs" color="secondary">{{company.model.workingMode.0.name}}</ya-kit-text>
+                                        {{/if}}
+                                        <ya-kit-text as="span" size="md">{{company.model.workingMode.0.value}}</ya-kit-text>
+                                    </li>
+                                {{/if}}
+                                {{#if settings.contacts.showMail}}
+                                    {{#each company.model.mail as |ml|}}
+                                        {{#if ml.value}}
+                                            <li class="kcs-ftr__contact">
+                                                {{#if ml.name}}
+                                                    <ya-kit-text class="kcs-ftr__caption" as="span" size="xs" color="secondary">{{ml.name}}</ya-kit-text>
+                                                {{/if}}
+                                                <ya-kit-link class="kcs-ftr__link kcs-ftr__break" to="mailto:{{ml.value}}" size="md">{{ml.value}}</ya-kit-link>
+                                            </li>
+                                        {{/if}}
+                                    {{/each}}
+                                {{/if}}
+                            </ul>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+            {{#if (or settings.legalInfo.copyrightText settings.legalInfo.menu)}}
+                <div class="kcs-ftr__legal">
+                    {{#if settings.legalInfo.copyrightText}}
+                        <ya-kit-text class="kcs-ftr__copyright" as="p" size="sm" color="secondary">{{settings.legalInfo.copyrightText}}</ya-kit-text>
+                    {{/if}}
+                    {{#if settings.legalInfo.menu}}
+                        <ya-kit-menu-controller menu="{{settings.legalInfo.menu}}" as="legalMenu">
+                            <ul class="kcs-ftr__legal-links" aria-label="Документы магазина">
+                                {{#each legalMenu.model.items as |doc|}}
+                                    <li><ya-kit-link class="kcs-ftr__legal-link" to="{{doc.url}}" size="sm">{{doc.title}}</ya-kit-link></li>
+                                {{/each}}
+                            </ul>
+                        </ya-kit-menu-controller>
+                    {{/if}}
+                </div>
+            {{/if}}
+            {{#if (eql settings.wordmark.mode 'text')}}
+                {{#with (when settings.wordmark.text settings.wordmark.text company.model.name) as |w|}}
+                    <div class="kcs-ftr__wordmark kcs-ftr__wordmark_text{{if (eql w (upper w)) ' kcs-ftr__wordmark_upper' ''}}{{if (or (includes w 'Й') (includes w 'Ё')) ' kcs-ftr__wordmark_acc' ''}}" style="--kcs-ftr-chars: {{max 1 (length (split w ''))}}; --kcs-ftr-sp: {{subtract (length (split w ' ')) 1}}">
+                        <p class="kcs-ftr__wordtext">{{w}}</p>
+                    </div>
+                {{/with}}
+            {{/if}}
+            {{#if (and (eql settings.wordmark.mode 'image') settings.wordmark.image.filePath)}}
+                <div class="kcs-ftr__wordmark">
+                    <ya-kit-image class="kcs-ftr__wordmark-img" src={{settings.wordmark.image}} fit="contain" background-color="none" alt="{{when settings.wordmark.alt settings.wordmark.alt (when company.model.name company.model.name '')}}" />
+                </div>
+            {{/if}}
+        </footer>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</ya-kit-company-controller>
+</div>

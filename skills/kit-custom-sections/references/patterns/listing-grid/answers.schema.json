@@ -1,0 +1,133 @@
+{
+  "title": "Ответы для листинга сеткой",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "view": {
+      "type": "object",
+      "title": "Заголовок и пустой результат",
+      "properties": {
+        "showTitle": {
+          "type": "boolean",
+          "title": "Показывать заголовок страницы (h1)"
+        },
+        "fallbackTitle": {
+          "type": "string",
+          "title": "Заголовок без категории, подборки и запроса"
+        },
+        "emptyText": {
+          "type": "string",
+          "title": "Текст, когда товаров не нашлось"
+        }
+      }
+    },
+    "controls": {
+      "type": "object",
+      "title": "Фильтры, сортировка, страницы",
+      "properties": {
+        "showFilters": {
+          "type": "boolean",
+          "title": "Кнопка «Фильтры»"
+        },
+        "showSorting": {
+          "type": "boolean",
+          "title": "Сортировка"
+        },
+        "sortLabel": {
+          "type": "string",
+          "enum": [
+            "current",
+            "static"
+          ],
+          "title": "Подпись сортировки: выбранный вариант или «Сортировка»"
+        },
+        "showPagination": {
+          "type": "boolean",
+          "title": "Переключатель страниц"
+        }
+      }
+    },
+    "grid": {
+      "type": "object",
+      "title": "Сетка",
+      "properties": {
+        "columns": {
+          "type": "number",
+          "title": "Колонок на десктопе (2–6)"
+        },
+        "rows": {
+          "type": "number",
+          "title": "Рядов на странице (2–8); товаров = колонки × ряды"
+        },
+        "columnsTouch": {
+          "type": "number",
+          "title": "Колонок на телефоне (1–2)"
+        },
+        "gapless": {
+          "type": "boolean",
+          "title": "Фото встык, без зазоров"
+        }
+      }
+    },
+    "card": {
+      "type": "object",
+      "title": "Карточка товара",
+      "properties": {
+        "order": {
+          "type": "string",
+          "enum": [
+            "theme",
+            "name-first",
+            "price-first"
+          ],
+          "title": "Порядок строк: как в теме, название первым, цена первой"
+        },
+        "showVendor": {
+          "type": "boolean",
+          "title": "Бренд над названием"
+        },
+        "showBadges": {
+          "type": "boolean",
+          "title": "Бейджи товара на фото (сколько — по теме)"
+        },
+        "badgePosition": {
+          "type": "string",
+          "enum": [
+            "bottom-left",
+            "top-left"
+          ],
+          "title": "Где бейджи"
+        },
+        "cartButton": {
+          "type": "string",
+          "enum": [
+            "default",
+            "enabled",
+            "disabled"
+          ],
+          "title": "Кнопка «В корзину»: как в теме (кнопка в каталоге), показывать, скрыть"
+        },
+        "addToCartText": {
+          "type": "string",
+          "title": "Текст кнопки"
+        },
+        "outOfStockText": {
+          "type": "string",
+          "title": "Плашка на фото, если товара нет"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
+    }
+  },
+  "required": []
+}

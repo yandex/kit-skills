@@ -1,0 +1,54 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <div class="kcs-mosaic kcs-mosaic_gap-{{settings.gap}} kcs-mosaic_unit-{{settings.unitRatio}}">
+            {{#each settings.modules as |m|}}
+                <ya-kit-module
+                    module-id={{m.id}}
+                    class="kcs-mosaic__tile kcs-mosaic__tile_{{m.size}} kcs-mosaic__tile_{{m.kind}} kcs-mosaic__tile_fill-{{m.fill}} kcs-mosaic__tile_touch-{{m.touch}} {{if m.tall 'kcs-mosaic__tile_tall' ''}} {{if m.link.link 'kcs-mosaic__tile_link' ''}} {{skinRounded 150}}"
+                >
+                    {{#if (eql m.kind "text")}}
+                        <div class="kcs-mosaic__text">
+                            {{#if m.title}}
+                                <ya-kit-text as="h3" size="lg" weight="medium" align="center" color="inherit" lines="3">{{m.title}}</ya-kit-text>
+                            {{/if}}
+                            {{#if m.caption}}
+                                <ya-kit-text class="kcs-mosaic__caption" size="sm" align="center" color="inherit" lines="2">{{m.caption}}</ya-kit-text>
+                            {{/if}}
+                            {{#if m.link.link}}
+                                <ya-kit-icon class="kcs-mosaic__arrow" name="arrow-right" size="24" color="inherit" />
+                            {{/if}}
+                        </div>
+                    {{else}}
+                        {{#if m.image.filePath}}
+                            <ya-kit-image class="kcs-mosaic__image" src={{m.image}} fit="cover" alt="{{m.imageAlt}}" />
+                        {{/if}}
+                        {{#if m.title}}
+                            <div class="kcs-mosaic__label kcs-mosaic__label_{{settings.photoTitle}}">
+                                <ya-kit-text as="h3" size="lg" weight="medium" color="{{if (eql settings.photoTitle 'plate') 'inherit' 'white'}}" lines="2">{{m.title}}</ya-kit-text>
+                            </div>
+                        {{/if}}
+                    {{/if}}
+                    {{#if m.link.link}}
+                        <ya-kit-link class="kcs-mosaic__hit" to={{m.link.link}}>
+                            <span class="kcs-mosaic__sr">{{#if m.title}}{{m.title}}{{else}}{{m.imageAlt}}{{/if}}</span>
+                        </ya-kit-link>
+                    {{/if}}
+                </ya-kit-module>
+            {{/each}}
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

@@ -1,0 +1,245 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок секции (пусто — названия рядов становятся заголовками)",
+      "default": ""
+    },
+    "titleAlign": {
+      "$ref": "#/definitions/SectionTitleAlign",
+      "title": "Расположение заголовка"
+    },
+    "introText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Вводный текст под заголовком"
+    },
+    "mediaWidth": {
+      "type": "string",
+      "title": "Ширина фото на компьютере",
+      "enum": [
+        "wide",
+        "half"
+      ],
+      "options": [
+        "Фото шире текста",
+        "Поровну"
+      ],
+      "default": "wide"
+    },
+    "mediaRatio": {
+      "type": "string",
+      "title": "Формат фото",
+      "enum": [
+        "3:4",
+        "1:1"
+      ],
+      "options": [
+        "Вертикальные 3:4",
+        "Квадратные 1:1"
+      ],
+      "default": "3:4"
+    },
+    "mediaSide": {
+      "type": "string",
+      "title": "Где фото на компьютере",
+      "enum": [
+        "left",
+        "right",
+        "alternate"
+      ],
+      "options": [
+        "Фото слева",
+        "Фото справа",
+        "Чередовать"
+      ],
+      "default": "left"
+    },
+    "buttonColor": {
+      "type": "string",
+      "title": "Цвет кнопок",
+      "enum": [
+        "primary",
+        "outlined",
+        "secondary"
+      ],
+      "options": [
+        "Основная",
+        "Контурная",
+        "Второстепенная"
+      ],
+      "default": "primary"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Ряды",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Название",
+            "default": ""
+          },
+          "text": {
+            "$ref": "#/definitions/MarkdownContent",
+            "title": "Описание (markdown, списки)"
+          },
+          "image": {
+            "$ref": "#/definitions/ImageModel",
+            "title": "Фото 1"
+          },
+          "imageAlt": {
+            "type": "string",
+            "title": "Описание фото 1 для незрячих (пусто — название ряда)",
+            "default": ""
+          },
+          "image2": {
+            "$ref": "#/definitions/ImageModel",
+            "title": "Фото 2 (необязательно)"
+          },
+          "image2Alt": {
+            "type": "string",
+            "title": "Описание фото 2 для незрячих (пусто — название ряда)",
+            "default": ""
+          },
+          "buttonText": {
+            "type": "string",
+            "title": "Текст кнопки",
+            "default": "Подробнее"
+          },
+          "buttonUrl": {
+            "$ref": "#/definitions/LinkSource",
+            "title": "Ссылка кнопки: страница магазина или файл"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "modules",
+    "section"
+  ]
+}

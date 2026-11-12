@@ -1,0 +1,33 @@
+{
+  "start": "links",
+  "looks": [
+    {
+      "name": "links",
+      "title": "Ссылки строкой",
+      "description": "Ряд подкатегорий текстом.",
+      "settings": {}
+    },
+    {
+      "name": "chips",
+      "title": "Чипсы",
+      "description": "Кнопки-чипсы.",
+      "settings": {
+        "view": {
+          "style": "chips"
+        }
+      }
+    },
+    {
+      "name": "masthead",
+      "title": "Шапка категории",
+      "description": "Крошки, обложка и название над рядом.",
+      "settings": {
+        "masthead": {
+          "showBreadcrumbs": true,
+          "showTitle": true,
+          "cover": "slim"
+        }
+      }
+    }
+  ]
+}

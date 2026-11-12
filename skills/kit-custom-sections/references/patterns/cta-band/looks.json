@@ -1,0 +1,30 @@
+{
+  "start": "display-centered",
+  "looks": [
+    {
+      "name": "display-centered",
+      "title": "Крупный призыв по центру",
+      "description": "Заголовок шкалы первого экрана, без подложки.",
+      "settings": {
+        "layout": "centered",
+        "titleSize": "display",
+        "surface": "none"
+      }
+    },
+    {
+      "name": "split-panel",
+      "title": "Строка на подложке (вид v1)",
+      "description": "Текст слева, кнопка справа, вторичная подложка.",
+      "settings": {}
+    },
+    {
+      "name": "button-only",
+      "title": "Одна кнопка на подложке",
+      "description": "Без заголовка и текста (titleText и subtitleText пустые).",
+      "settings": {
+        "layout": "centered",
+        "innerPadding": "400"
+      }
+    }
+  ]
+}

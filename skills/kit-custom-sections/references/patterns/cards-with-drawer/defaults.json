@@ -1,0 +1,82 @@
+{
+  "cta": {
+    "text": "",
+    "link": {
+      "link": "",
+      "linkId": ""
+    },
+    "style": "button"
+  },
+  "descriptionTone": "primary",
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "columns": 3,
+  "columnsTouch": 1,
+  "hGap": "300",
+  "vGap": "300",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "icon": {
+        "fileId": "",
+        "filePath": ""
+      },
+      "title": "",
+      "description": "",
+      "ctaText": "Подробнее",
+      "details": {
+        "content": "",
+        "image": {
+          "fileId": "",
+          "filePath": ""
+        },
+        "imageAlt": ""
+      }
+    },
+    {
+      "id": "m2",
+      "icon": {
+        "fileId": "",
+        "filePath": ""
+      },
+      "title": "",
+      "description": "",
+      "ctaText": "Подробнее",
+      "details": {
+        "content": "",
+        "image": {
+          "fileId": "",
+          "filePath": ""
+        },
+        "imageAlt": ""
+      }
+    },
+    {
+      "id": "m3",
+      "icon": {
+        "fileId": "",
+        "filePath": ""
+      },
+      "title": "",
+      "description": "",
+      "ctaText": "Подробнее",
+      "details": {
+        "content": "",
+        "image": {
+          "fileId": "",
+          "filePath": ""
+        },
+        "imageAlt": ""
+      }
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

@@ -1,0 +1,281 @@
+/* Строки с разделителями: название и значение на одной линии, пояснение под
+   ними или в средней колонке, тонкие линии между строками. Одна разметка на
+   все режимы: раскладку выбирают классы-модификаторы списка. Цвета только
+   токенами палитры; шрифт в шкале каталога (lg/md), третьего масштаба
+   заголовка нет. */
+
+.kcs-rows-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ys-spacing-300);
+}
+
+.kcs-rows-main {
+    min-width: 0;
+}
+
+.kcs-rows-body_media-left .kcs-rows-media {
+    order: -1;
+}
+
+.kcs-rows-media {
+    min-width: 0;
+}
+
+.kcs-rows-media__image {
+    width: 100%;
+}
+
+.kcs-rows {
+    --kcs-rows-line: var(--ys-color-token-border-primary);
+    --kcs-rows-icon: var(--ys-spacing-700);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-rows_line-contrast {
+    --kcs-rows-line: var(--ys-color-token-text-primary);
+}
+
+/* Линия под каждой строкой и над первой: список закрыт сверху и снизу. */
+.kcs-rows__item {
+    min-width: 0;
+    border-bottom: 1px solid var(--kcs-rows-line);
+}
+
+.kcs-rows__item:first-child {
+    border-top: 1px solid var(--kcs-rows-line);
+}
+
+.kcs-rows__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--ys-spacing-300);
+    padding: var(--ys-spacing-300) 0;
+}
+
+/* Колонка иконок есть у всех строк сразу (настройка секции), поэтому строка
+   без своей иконки держит выравнивание. Иконка не перекрашивается палитрой. */
+.kcs-rows__marker {
+    display: none;
+}
+
+.kcs-rows_icons-sm {
+    --kcs-rows-icon: var(--ys-spacing-500);
+}
+
+.kcs-rows_icons-md {
+    --kcs-rows-icon: var(--ys-spacing-700);
+}
+
+.kcs-rows_icons-lg {
+    --kcs-rows-icon: var(--ys-spacing-900);
+}
+
+.kcs-rows_icons-sm .kcs-rows__row,
+.kcs-rows_icons-md .kcs-rows__row,
+.kcs-rows_icons-lg .kcs-rows__row {
+    grid-template-columns: var(--kcs-rows-icon) minmax(0, 1fr);
+}
+
+.kcs-rows_icons-sm .kcs-rows__marker,
+.kcs-rows_icons-md .kcs-rows__marker,
+.kcs-rows_icons-lg .kcs-rows__marker {
+    display: block;
+    width: var(--kcs-rows-icon);
+}
+
+.kcs-rows__icon {
+    display: block;
+    width: 100%;
+}
+
+/* Название слева, значение справа на той же базовой линии; пояснение —
+   строкой ниже на всю ширину. Значение забирает не больше половины строки. */
+.kcs-rows__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) fit-content(50%);
+    align-items: baseline;
+    min-width: 0;
+}
+
+.kcs-rows__name {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.kcs-rows__value {
+    grid-column: 2;
+    grid-row: 1;
+    padding-left: var(--ys-spacing-300);
+    text-align: right;
+    font-variant-numeric: tabular-nums lining-nums;
+    overflow-wrap: break-word;
+}
+
+.kcs-rows__desc {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    max-width: 44rem;
+    margin-top: var(--ys-spacing-100);
+}
+
+/* Название плашкой: живой текст на заливке цветом текста палитры (или в
+   рамке), при переносе плашка повторяется на каждой строке. */
+.kcs-rows_name-chip .kcs-rows__name,
+.kcs-rows_name-outline .kcs-rows__name {
+    line-height: 1.5;
+}
+
+.kcs-rows_name-chip .kcs-rows__name-text,
+.kcs-rows_name-outline .kcs-rows__name-text {
+    padding: 0.1em 0.4em;
+    border-radius: var(--ys-spacing-50);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+.kcs-rows_name-chip .kcs-rows__desc,
+.kcs-rows_name-outline .kcs-rows__desc {
+    margin-top: var(--ys-spacing-150);
+}
+
+.kcs-rows_name-chip .kcs-rows__name-text {
+    background: var(--ys-color-token-text-primary);
+    color: var(--ys-background-primary);
+}
+
+.kcs-rows_name-outline .kcs-rows__name-text {
+    box-shadow: inset 0 0 0 1px var(--ys-color-token-text-primary);
+}
+
+.kcs-rows-note {
+    max-width: 44rem;
+    margin-top: var(--ys-spacing-300);
+}
+
+.kcs-rows-note p,
+.kcs-rows-note li {
+    color: var(--ys-color-token-text-secondary);
+}
+
+/* ---------- планшет и компьютер: пояснение в средней колонке ----------
+   Колонки общие для всех строк (1/3 название, 1/2 пояснение, 1/6 значение):
+   пояснения и значения стоят ровными столбцами. У строки без значения
+   пояснение занимает и колонку значения. */
+@media (min-width: 768px) {
+    .kcs-rows_desc-right .kcs-rows__content {
+        grid-template-columns: minmax(0, 4fr) minmax(0, 6fr) minmax(0, 2fr);
+    }
+
+    .kcs-rows_desc-right .kcs-rows__value {
+        grid-column: 3;
+    }
+
+    .kcs-rows_desc-right .kcs-rows__desc {
+        grid-column: 2;
+        grid-row: 1;
+        max-width: none;
+        margin-top: 0;
+        padding-left: var(--ys-spacing-300);
+    }
+
+    .kcs-rows_desc-right .kcs-rows__name + .kcs-rows__desc {
+        grid-column: 2 / -1;
+    }
+}
+
+/* ---------- компьютер: две колонки строк и изображение сбоку ---------- */
+@media (min-width: 1024px) {
+    .kcs-rows_cols-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: var(--ys-spacing-800);
+    }
+
+    .kcs-rows_cols-2 .kcs-rows__item:nth-child(2) {
+        border-top: 1px solid var(--kcs-rows-line);
+    }
+
+    .kcs-rows-body_has-media {
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        align-items: center;
+        column-gap: var(--ys-spacing-800);
+    }
+
+    .kcs-rows-body_has-media.kcs-rows-body_media-left {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+
+    /* Рядом с изображением строкам нужна вся ширина колонки: две колонки
+       строк включаются только без изображения. */
+    .kcs-rows-body_has-media .kcs-rows_cols-2 {
+        display: block;
+    }
+
+    .kcs-rows-body_has-media .kcs-rows_cols-2 .kcs-rows__item:nth-child(2) {
+        border-top: 0;
+    }
+}
+
+/* Планшет: изображение под строками или над ними, не шире 32rem —
+   вертикальное 3:4 во всю ширину планшета заняло бы весь экран. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-rows-media {
+        max-width: 32rem;
+    }
+}
+
+/* ---------- телефон ----------
+   Пояснение всегда под названием; значение остаётся справа на линии
+   названия. Строки и иконки плотнее. */
+@media (max-width: 767px) {
+    .kcs-rows__row {
+        column-gap: var(--ys-spacing-200);
+        padding: var(--ys-spacing-200) 0;
+    }
+
+    .kcs-rows_icons-sm {
+        --kcs-rows-icon: var(--ys-spacing-400);
+    }
+
+    .kcs-rows_icons-md {
+        --kcs-rows-icon: var(--ys-spacing-500);
+    }
+
+    .kcs-rows_icons-lg {
+        --kcs-rows-icon: var(--ys-spacing-600);
+    }
+
+    .kcs-rows__value {
+        padding-left: var(--ys-spacing-200);
+    }
+
+    .kcs-rows__desc {
+        margin-top: var(--ys-spacing-50);
+    }
+
+    .kcs-rows_name-chip .kcs-rows__desc,
+    .kcs-rows_name-outline .kcs-rows__desc {
+        margin-top: var(--ys-spacing-100);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

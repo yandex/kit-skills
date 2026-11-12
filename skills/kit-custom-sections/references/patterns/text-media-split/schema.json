@@ -6,21 +6,187 @@
       "$ref": "#/definitions/Palette",
       "title": "Палитра цветов"
     },
+    "eyebrowText": {
+      "type": "string",
+      "title": "Надзаголовок",
+      "description": "Короткая строка над заголовком, выводится прописными. Пусто — без надзаголовка"
+    },
     "titleText": {
       "type": "string",
       "title": "Заголовок"
     },
+    "titlePlacement": {
+      "type": "string",
+      "title": "Где заголовок",
+      "enum": [
+        "column",
+        "above"
+      ],
+      "options": [
+        "В колонке текста",
+        "Над колонками, по центру"
+      ],
+      "default": "column"
+    },
     "contentText": {
       "$ref": "#/definitions/MarkdownContent",
-      "title": "Текст (markdown)"
+      "title": "Текст (markdown)",
+      "description": "Абзацы, **жирный**, списки, ссылки. Заголовки через # не нужны: заголовок блока задан выше"
+    },
+    "listStyle": {
+      "type": "string",
+      "title": "Маркеры списков в тексте",
+      "enum": [
+        "default",
+        "arrow",
+        "check"
+      ],
+      "options": [
+        "Точки",
+        "Стрелки",
+        "Галочки"
+      ],
+      "default": "default"
+    },
+    "buttonText": {
+      "type": "string",
+      "title": "Текст кнопки",
+      "description": "Пусто — без кнопки"
+    },
+    "buttonUrl": {
+      "$ref": "#/definitions/LinkSource",
+      "title": "Ссылка кнопки",
+      "description": "Без ссылки кнопка не выводится"
+    },
+    "buttonColor": {
+      "type": "string",
+      "title": "Цвет кнопки",
+      "enum": [
+        "primary",
+        "secondary",
+        "neutral",
+        "outlined",
+        "flat"
+      ],
+      "options": [
+        "Основной",
+        "Вторичный",
+        "Нейтральный",
+        "С обводкой",
+        "Без фона"
+      ],
+      "default": "primary"
+    },
+    "noteText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Сноска",
+      "description": "Мелкий текст: оговорка, условия, подпись к фото. Пусто — без сноски"
+    },
+    "notePlacement": {
+      "type": "string",
+      "title": "Где сноска",
+      "enum": [
+        "text",
+        "media"
+      ],
+      "options": [
+        "Под текстом",
+        "Под изображением"
+      ],
+      "default": "text"
     },
     "image": {
       "$ref": "#/definitions/ImageModel",
-      "title": "Изображение"
+      "title": "Изображение",
+      "description": "Без текста на картинке: текст блока живой и перестраивается на телефоне"
+    },
+    "imageAlt": {
+      "type": "string",
+      "title": "Что на изображении (alt)",
+      "description": "Для экранного диктора и поиска. Пусто — берётся заголовок"
+    },
+    "imageMobile": {
+      "$ref": "#/definitions/ImageModel",
+      "title": "Изображение для телефона",
+      "description": "Необязательно: своя картинка для экрана до 767px. Пусто — то же изображение"
     },
     "mediaLeft": {
       "type": "boolean",
       "title": "Изображение слева",
+      "default": false
+    },
+    "mediaRatio": {
+      "type": "string",
+      "title": "Пропорция изображения",
+      "enum": [
+        "4:3",
+        "1:1",
+        "3:4",
+        "2:1"
+      ],
+      "options": [
+        "4:3",
+        "1:1, квадрат",
+        "3:4, вертикальная",
+        "2:1, широкая"
+      ],
+      "default": "4:3"
+    },
+    "mediaRatioTouch": {
+      "type": "string",
+      "title": "Пропорция изображения на телефоне",
+      "enum": [
+        "same",
+        "1:1",
+        "4:3",
+        "3:4"
+      ],
+      "options": [
+        "Как на десктопе",
+        "1:1, квадрат",
+        "4:3",
+        "3:4, вертикальная"
+      ],
+      "default": "same"
+    },
+    "touchOrder": {
+      "type": "string",
+      "title": "Порядок на телефоне",
+      "enum": [
+        "same",
+        "media-first",
+        "text-first"
+      ],
+      "options": [
+        "Как на десктопе: левая колонка сверху",
+        "Сначала изображение",
+        "Сначала текст"
+      ],
+      "default": "same"
+    },
+    "surface": {
+      "type": "string",
+      "title": "Подложка текста",
+      "enum": [
+        "none",
+        "neutral",
+        "secondary",
+        "accent",
+        "inverted"
+      ],
+      "options": [
+        "Без подложки",
+        "Нейтральный фон темы",
+        "Вторичный фон темы",
+        "Цвет бренда",
+        "Инверсия: цвет текста"
+      ],
+      "default": "none"
+    },
+    "joined": {
+      "type": "boolean",
+      "title": "Встык: без зазора и скруглений",
+      "description": "Текст и изображение смыкаются. Для цепочки блоков край в край — отступы секции 0 и вертикальный отступ 0",
       "default": false
     },
     "section": {
@@ -86,8 +252,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ блока (токен темы, с каждой стороны)",
-      "default": "500"
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
     },
     "verticalRhythmTouch": {
       "type": "string",
@@ -121,8 +287,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ на телефоне (токен темы)",
-      "default": "300"
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
     }
   },
   "required": [

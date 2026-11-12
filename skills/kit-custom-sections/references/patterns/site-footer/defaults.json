@@ -1,0 +1,60 @@
+{
+  "descriptionTone": "primary",
+  "palette": "default",
+  "about": {
+    "headline": "logo",
+    "logoImage": {
+      "fileId": "",
+      "filePath": ""
+    },
+    "invertedLogo": false,
+    "logoSize": "lg",
+    "title": "",
+    "description": "",
+    "enableSocialNetworks": true
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "menu": "",
+      "menuTitle": ""
+    }
+  ],
+  "contacts": {
+    "title": "Контакты",
+    "showAddress": true,
+    "showPhone": true,
+    "showWorkingMode": true,
+    "showMail": true
+  },
+  "legalInfo": {
+    "copyrightText": "",
+    "menu": ""
+  },
+  "view": {
+    "layout": "split",
+    "width": "theme",
+    "columnsTouch": "accordion",
+    "dividers": true
+  },
+  "ticker": {
+    "text": "",
+    "separator": "•",
+    "size": "m",
+    "speed": "normal"
+  },
+  "wordmark": {
+    "mode": "none",
+    "text": "",
+    "image": {
+      "fileId": "",
+      "filePath": ""
+    },
+    "alt": ""
+  },
+  "section": {
+    "hPaddingMobile": "200"
+  },
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

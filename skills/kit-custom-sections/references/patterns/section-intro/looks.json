@@ -1,0 +1,32 @@
+{
+  "start": "display",
+  "looks": [
+    {
+      "name": "display",
+      "title": "Крупный заголовок раздела",
+      "description": "Заголовок шкалы первого экрана, лид рядом.",
+      "settings": {}
+    },
+    {
+      "name": "band",
+      "title": "Полоса над полкой",
+      "description": "Заголовок размера темы, ссылка со стрелкой справа.",
+      "settings": {
+        "layout": "band",
+        "titleSize": "section",
+        "linkStyle": "arrow"
+      }
+    },
+    {
+      "name": "manifest",
+      "title": "Манифест в рамке",
+      "description": "По центру на вторичной подложке.",
+      "settings": {
+        "layout": "stacked",
+        "align": "center",
+        "surface": "secondary",
+        "framed": true
+      }
+    }
+  ]
+}

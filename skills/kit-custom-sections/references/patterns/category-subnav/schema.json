@@ -1,0 +1,239 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "source": {
+      "type": "string",
+      "title": "Что показывать в ряду",
+      "enum": [
+        "current",
+        "menu"
+      ],
+      "options": [
+        "Подкатегории текущей категории",
+        "Пункты меню магазина"
+      ],
+      "default": "current",
+      "longDescription": "«Подкатегории» работают на странице категории: на других страницах секция не показывается. «Пункты меню» работают на любой странице."
+    },
+    "menu": {
+      "$ref": "#/definitions/MenuId",
+      "title": "Меню для ряда (вариант «Пункты меню»)"
+    },
+    "view": {
+      "type": "object",
+      "title": "Ряд ссылок",
+      "properties": {
+        "style": {
+          "type": "string",
+          "title": "Вид пунктов",
+          "enum": [
+            "links",
+            "chips"
+          ],
+          "options": [
+            "Текстовые ссылки",
+            "Кнопки-чипсы"
+          ],
+          "default": "links"
+        },
+        "align": {
+          "type": "string",
+          "title": "Выравнивание на десктопе",
+          "enum": [
+            "start",
+            "center"
+          ],
+          "options": [
+            "Слева",
+            "По центру"
+          ],
+          "default": "start",
+          "longDescription": "На телефоне ряд всегда начинается слева и листается пальцем."
+        },
+        "allText": {
+          "type": "string",
+          "title": "Первый пункт «все товары раздела»",
+          "default": "Все",
+          "longDescription": "Ведёт на родительскую категорию. Пусто — пункта нет. Только для подкатегорий."
+        },
+        "activeFirstTouch": {
+          "type": "boolean",
+          "title": "На телефоне активный пункт первым в ряду",
+          "default": true
+        },
+        "showOn": {
+          "type": "string",
+          "title": "Где показывать ряд",
+          "enum": [
+            "all",
+            "touch"
+          ],
+          "options": [
+            "Везде",
+            "Только на телефоне — на компьютере есть меню шапки"
+          ],
+          "default": "all"
+        },
+        "siblingsOnLeaf": {
+          "type": "boolean",
+          "title": "В категории без подкатегорий показывать соседние",
+          "default": true
+        },
+        "topBorder": {
+          "type": "boolean",
+          "title": "Линия над рядом",
+          "default": false
+        },
+        "bottomBorder": {
+          "type": "boolean",
+          "title": "Линия под рядом",
+          "default": true
+        }
+      }
+    },
+    "masthead": {
+      "type": "object",
+      "title": "Шапка категории (только для подкатегорий)",
+      "properties": {
+        "showBreadcrumbs": {
+          "type": "boolean",
+          "title": "Хлебные крошки",
+          "default": false,
+          "longDescription": "Включать, если нативный листинг заменён или его крошки выключены: иначе крошки задвоятся."
+        },
+        "showTitle": {
+          "type": "boolean",
+          "title": "Название категории",
+          "default": false,
+          "longDescription": "У нативного листинга свой заголовок: включать, если листинг заменён своей секцией."
+        },
+        "cover": {
+          "type": "string",
+          "title": "Обложка категории",
+          "enum": [
+            "none",
+            "slim",
+            "banner"
+          ],
+          "options": [
+            "Без обложки",
+            "Полоса 5:1",
+            "Баннер 7:2"
+          ],
+          "default": "none",
+          "longDescription": "Картинка категории из кабинета. У категории без картинки блока нет."
+        }
+      }
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "source",
+    "section"
+  ]
+}

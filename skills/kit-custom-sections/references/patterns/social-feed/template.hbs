@@ -1,0 +1,121 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-company-controller as="company">
+    {{#if (or (join (mapBy settings.modules 'image.filePath') '') (and settings.handleText settings.profileLink.link) (and settings.showNetworks (length company.model.socialNetworks)))}}
+        <ya-kit-section-layout
+            palette={{settings.palette}}
+            padding-top={{settings.section.paddingTop}}
+            padding-bottom={{settings.section.paddingBottom}}
+            h-padding-desktop={{settings.section.hPaddingDesktop}}
+            h-padding-mobile={{settings.section.hPaddingMobile}}
+            is-fullscreen={{settings.section.isFullscreen}}
+        >
+            <ya-kit-section-layout-row>
+                <div
+                    class="kcs-social kcs-social_head-{{settings.headerAlign}} kcs-social_{{settings.layout}} kcs-social_touch-{{settings.touchLayout}} kcs-social_c{{settings.columns}} kcs-social_gap-{{settings.gap}} {{if (join (mapBy settings.modules 'caption') '') 'kcs-social_captions' ''}} {{if (eql settings.section.hPaddingDesktop '0') 'kcs-social_flush-d' ''}} {{if (eql settings.section.hPaddingMobile '0') 'kcs-social_flush-m' ''}}"
+                    style="--kcs-social-cols: {{settings.columns}}; --kcs-social-cols-touch: {{settings.columnsTouch}}; --kcs-social-ratio: {{settings.tileRatio}}; --kcs-social-gap: var(--ys-spacing-{{settings.gap}}); --kcs-social-bleed: var(--ys-spacing-{{settings.section.hPaddingMobile}})"
+                >
+                    {{#if (or settings.titleText settings.leadText (and settings.handleText settings.profileLink.link) (and settings.showNetworks (length company.model.socialNetworks)))}}
+                        <div class="kcs-social__head">
+                            {{#if (or settings.titleText settings.leadText)}}
+                                <div class="kcs-social__intro">
+                                    {{#if settings.titleText}}
+                                        <ya-kit-text class="kcs-social__title" as="h2" size="{{when globals.typography.titleSize globals.typography.titleSize '2xl'}}" weight="semibold">{{settings.titleText}}</ya-kit-text>
+                                    {{/if}}
+                                    {{#if settings.leadText}}
+                                        <ya-kit-text class="kcs-social__lead" as="p" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{settings.leadText}}</ya-kit-text>
+                                    {{/if}}
+                                </div>
+                            {{/if}}
+                            {{#if (or (and settings.handleText settings.profileLink.link) (and settings.showNetworks (length company.model.socialNetworks)))}}
+                                <div class="kcs-social__actions">
+                                    {{#if (and settings.handleText settings.profileLink.link)}}
+                                        <a class="kcs-social__handle {{skinRounded 999}}" href="{{settings.profileLink.link}}" target="_blank" rel="noopener noreferrer">
+                                            <ya-kit-text class="kcs-social__handle-text" size="md" weight="medium" color="inherit">{{settings.handleText}}</ya-kit-text>
+                                        </a>
+                                    {{/if}}
+                                    {{#if (and settings.showNetworks (length company.model.socialNetworks))}}
+                                        <ul class="kcs-social__nets" role="list">
+                                            {{#each company.model.socialNetworks as |net|}}
+                                                {{#if (and net.value (or (eql net.name 'telegram') (eql net.name 'vk') (eql net.name 'dzen') (eql net.name 'ok') (eql net.name 'youtube') (eql net.name 'tiktok') (eql net.name 'rhythm') (eql net.name 'whatsapp') (eql net.name 'max')))}}
+                                                    <li class="kcs-social__net-item">
+                                                        {{#if (eql net.name 'telegram')}}
+                                                            <a class="kcs-social__net" href="{{net.value}}" target="_blank" rel="noopener noreferrer" title="Telegram"><ya-kit-icon name="telegram" size="20" color="inherit" /><span class="kcs-social__sr">Telegram</span></a>
+                                                        {{else if (eql net.name 'vk')}}
+                                                            <a class="kcs-social__net" href="{{net.value}}" target="_blank" rel="noopener noreferrer" title="ВКонтакте"><ya-kit-icon name="vk" size="20" color="inherit" /><span class="kcs-social__sr">ВКонтакте</span></a>
+                                                        {{else if (eql net.name 'dzen')}}
+                                                            <a class="kcs-social__net" href="{{net.value}}" target="_blank" rel="noopener noreferrer" title="Дзен"><ya-kit-icon name="dzen" size="20" color="inherit" /><span class="kcs-social__sr">Дзен</span></a>
+                                                        {{else if (eql net.name 'ok')}}
+                                                            <a class="kcs-social__net" href="{{net.value}}" target="_blank" rel="noopener noreferrer" title="Одноклассники"><ya-kit-icon name="odnoklassniki" size="20" color="inherit" /><span class="kcs-social__sr">Одноклассники</span></a>
+                                                        {{else if (eql net.name 'youtube')}}
+                                                            <a class="kcs-social__net" href="{{net.value}}" target="_blank" rel="noopener noreferrer" title="YouTube"><ya-kit-icon name="youtube" size="20" color="inherit" /><span class="kcs-social__sr">YouTube</span></a>
+                                                        {{else if (eql net.name 'tiktok')}}
+                                                            <a class="kcs-social__net" href="{{net.value}}" target="_blank" rel="noopener noreferrer" title="TikTok"><ya-kit-icon name="tiktok" size="20" color="inherit" /><span class="kcs-social__sr">TikTok</span></a>
+                                                        {{else if (eql net.name 'rhythm')}}
+                                                            <a class="kcs-social__net" href="{{net.value}}" target="_blank" rel="noopener noreferrer" title="Ритм"><ya-kit-icon name="rhythm" size="20" color="inherit" /><span class="kcs-social__sr">Ритм</span></a>
+                                                        {{else if (eql net.name 'whatsapp')}}
+                                                            <a class="kcs-social__net" href="{{net.value}}" target="_blank" rel="noopener noreferrer" title="WhatsApp"><ya-kit-icon name="whats-app" size="20" color="inherit" /><span class="kcs-social__sr">WhatsApp</span></a>
+                                                        {{else}}
+                                                            <a class="kcs-social__net" href="{{net.value}}" target="_blank" rel="noopener noreferrer" title="Макс"><ya-kit-icon name="max" size="20" color="inherit" /><span class="kcs-social__sr">Макс</span></a>
+                                                        {{/if}}
+                                                    </li>
+                                                {{/if}}
+                                            {{/each}}
+                                        </ul>
+                                    {{/if}}
+                                </div>
+                            {{/if}}
+                        </div>
+                    {{/if}}
+                    {{#if (join (mapBy settings.modules 'image.filePath') '')}}
+                        <ul class="kcs-social__grid" role="list">
+                            {{#each settings.modules as |m|}}
+                                {{#if m.image.filePath}}
+                                    <li class="kcs-social__cell">
+                                        <ya-kit-module module-id={{m.id}} class="kcs-social__module">
+                                            <div class="kcs-social__frame {{skinRounded 150}}">
+                                                {{#if m.link.link}}
+                                                    <a class="kcs-social__tile kcs-social__tile_link" href="{{m.link.link}}" target="_blank" rel="noopener noreferrer">
+                                                        <ya-kit-image class="kcs-social__img" src={{m.image}} fit="cover" alt="{{m.alt}}" />
+                                                    </a>
+                                                {{else}}
+                                                    <div class="kcs-social__tile">
+                                                        <ya-kit-image class="kcs-social__img" src={{m.image}} fit="cover" alt="{{m.alt}}" />
+                                                    </div>
+                                                {{/if}}
+                                                {{#if m.network}}
+                                                    <span class="kcs-social__badge" aria-hidden="true">
+                                                        {{#if (eql m.network 'telegram')}}
+                                                            <ya-kit-icon name="telegram" size="16" color="inherit" />
+                                                        {{else if (eql m.network 'vk')}}
+                                                            <ya-kit-icon name="vk" size="16" color="inherit" />
+                                                        {{else if (eql m.network 'dzen')}}
+                                                            <ya-kit-icon name="dzen" size="16" color="inherit" />
+                                                        {{else if (eql m.network 'ok')}}
+                                                            <ya-kit-icon name="odnoklassniki" size="16" color="inherit" />
+                                                        {{else if (eql m.network 'youtube')}}
+                                                            <ya-kit-icon name="youtube" size="16" color="inherit" />
+                                                        {{else if (eql m.network 'tiktok')}}
+                                                            <ya-kit-icon name="tiktok" size="16" color="inherit" />
+                                                        {{else if (eql m.network 'rhythm')}}
+                                                            <ya-kit-icon name="rhythm" size="16" color="inherit" />
+                                                        {{else}}
+                                                            <ya-kit-icon name="max" size="16" color="inherit" />
+                                                        {{/if}}
+                                                    </span>
+                                                {{/if}}
+                                            </div>
+                                            {{#if m.caption}}
+                                                <ya-kit-text class="kcs-social__caption" size="sm" color="secondary" lines="2">{{m.caption}}</ya-kit-text>
+                                            {{/if}}
+                                        </ya-kit-module>
+                                    </li>
+                                {{/if}}
+                            {{/each}}
+                        </ul>
+                    {{/if}}
+                </div>
+            </ya-kit-section-layout-row>
+        </ya-kit-section-layout>
+    {{/if}}
+</ya-kit-company-controller>
+</div>

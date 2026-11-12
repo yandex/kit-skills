@@ -1,0 +1,186 @@
+/* Фигурный край: переход между двумя палитрами фигурой вместо прямой линии.
+   Два вложенных layout: внешний несёт палитру и фон «с другой стороны»
+   (backdrop), внутренний — палитру блока, к которому примыкает фигура.
+   Цвет backdrop фиксируется на внешнем layout: пользовательское свойство
+   наследуется уже вычисленным, поэтому внутренний layout, переопределяя
+   --ys-background-*, его не перебивает. Рисуется только градиентами и
+   border-radius в двух цветах темы: без картинок, url() и масок. */
+.kcs-edge-back {
+    --kcs-edge-back: var(--ys-background-primary);
+}
+
+.kcs-edge-back_secondary {
+    --kcs-edge-back: var(--ys-background-secondary);
+}
+
+.kcs-edge-back_neutral {
+    --kcs-edge-back: var(--ys-background-neutral);
+}
+
+.kcs-edge {
+    --kcs-edge-fill: var(--ys-background-primary);
+    --kcs-edge-bg: var(--kcs-edge-back, transparent);
+    --kcs-edge-depth: var(--kcs-edge-d, var(--ys-spacing-500));
+    --kcs-edge-sx: 1;
+    --kcs-edge-sy: 1;
+    position: relative;
+    display: block;
+    width: 100%;
+    height: var(--kcs-edge-depth);
+    background-color: var(--kcs-edge-bg);
+    transform: scale(var(--kcs-edge-sx), var(--kcs-edge-sy));
+}
+
+.kcs-edge_fill-secondary {
+    --kcs-edge-fill: var(--ys-background-secondary);
+}
+
+.kcs-edge_fill-neutral {
+    --kcs-edge-fill: var(--ys-background-neutral);
+}
+
+/* edge=top: фигура поднимается из блока ниже; bottom — свисает из блока выше */
+.kcs-edge_bottom {
+    --kcs-edge-sy: -1;
+}
+
+.kcs-edge_mirrored {
+    --kcs-edge-sx: -1;
+}
+
+/* Шаг узора кратен глубине: мобильная глубина пересчитывает узор сама.
+   Узор центрирован (position 50%): края экрана симметричны. */
+
+/* Волна: гребни и впадины — дуги равных эллипсов, касающихся друг друга
+   в точках перегиба на средней линии (40% высоты). Амплитуда 80% глубины,
+   нижние 20% — сплошная полоса цвета блока. Впадины рисуются цветом
+   backdrop поверх гребней и основания. */
+.kcs-edge_wave {
+    --kcs-edge-step: calc(var(--kcs-edge-depth) * 4);
+    background-image:
+        radial-gradient(35.36% 136.57% at 50% -56.57%, var(--kcs-edge-bg) calc(100% - 0.75px), transparent calc(100% + 0.75px)),
+        radial-gradient(35.36% 136.57% at 50% 136.57%, var(--kcs-edge-fill) calc(100% - 0.75px), transparent calc(100% + 0.75px)),
+        linear-gradient(var(--kcs-edge-fill), var(--kcs-edge-fill));
+    background-position: calc(50% + var(--kcs-edge-step) / 2) 0, 50% 0, 0 100%;
+    background-size: var(--kcs-edge-step) 100%, var(--kcs-edge-step) 100%, 100% 60%;
+    background-repeat: repeat-x, repeat-x, no-repeat;
+}
+
+.kcs-edge_wave.kcs-edge_period-s {
+    --kcs-edge-step: calc(var(--kcs-edge-depth) * 2.5);
+}
+
+.kcs-edge_wave.kcs-edge_period-l {
+    --kcs-edge-step: calc(var(--kcs-edge-depth) * 7);
+}
+
+/* Фестоны: полуэллипсы высотой 75% глубины встык, нижние 25% — сплошные */
+.kcs-edge_scallop {
+    --kcs-edge-step: calc(var(--kcs-edge-depth) * 2);
+    background-image:
+        radial-gradient(50% 75% at 50% 75%, var(--kcs-edge-fill) calc(100% - 0.6px), transparent calc(100% + 0.6px)),
+        linear-gradient(var(--kcs-edge-fill), var(--kcs-edge-fill));
+    background-position: 50% 0, 0 100%;
+    background-size: var(--kcs-edge-step) 100%, 100% 25%;
+    background-repeat: repeat-x, no-repeat;
+}
+
+.kcs-edge_scallop.kcs-edge_period-s {
+    --kcs-edge-step: calc(var(--kcs-edge-depth) * 1.5);
+}
+
+.kcs-edge_scallop.kcs-edge_period-l {
+    --kcs-edge-step: calc(var(--kcs-edge-depth) * 3);
+}
+
+/* Зубцы высотой 75% глубины: цвет блока снизу, два треугольника backdrop
+   в верхних углах каждого шага. Угол наклона и позиция кромки посчитаны
+   под соотношение шага и высоты зубца (s 90°, m 118°, l 139° у вершины),
+   кромка сглажена на 1px поперёк линии. */
+.kcs-edge_zigzag {
+    --kcs-edge-step: calc(var(--kcs-edge-depth) * 2.5);
+    --kcs-edge-zz-a: 149.036deg;
+    --kcs-edge-zz-b: 210.964deg;
+    --kcs-edge-zz-x: calc(var(--kcs-edge-depth) * 0.64312);
+    background-image:
+        linear-gradient(var(--kcs-edge-zz-a), var(--kcs-edge-bg) calc(var(--kcs-edge-zz-x) - 0.5px), transparent calc(var(--kcs-edge-zz-x) + 0.5px)),
+        linear-gradient(var(--kcs-edge-zz-b), var(--kcs-edge-bg) calc(var(--kcs-edge-zz-x) - 0.5px), transparent calc(var(--kcs-edge-zz-x) + 0.5px)),
+        linear-gradient(var(--kcs-edge-fill), var(--kcs-edge-fill));
+    background-position: 50% 0, 50% 0, 0 0;
+    background-size: var(--kcs-edge-step) 75%, var(--kcs-edge-step) 75%, 100% 100%;
+    background-repeat: repeat-x, repeat-x, no-repeat;
+}
+
+.kcs-edge_zigzag.kcs-edge_period-s {
+    --kcs-edge-step: calc(var(--kcs-edge-depth) * 1.5);
+    --kcs-edge-zz-a: 135deg;
+    --kcs-edge-zz-b: 225deg;
+    --kcs-edge-zz-x: calc(var(--kcs-edge-depth) * 0.53033);
+}
+
+.kcs-edge_zigzag.kcs-edge_period-l {
+    --kcs-edge-step: calc(var(--kcs-edge-depth) * 4);
+    --kcs-edge-zz-a: 159.444deg;
+    --kcs-edge-zz-b: 200.556deg;
+    --kcs-edge-zz-x: calc(var(--kcs-edge-depth) * 0.70225);
+}
+
+/* Скос через всю ширину: диагональ из нижнего левого угла в верхний правый */
+.kcs-edge_slant {
+    background-image: linear-gradient(to bottom right, var(--kcs-edge-bg) calc(50% - 0.5px), var(--kcs-edge-fill) calc(50% + 0.5px));
+}
+
+/* Дуги — сегмент эллипса в 1,5 ширины экрана через border-radius: кромка
+   приходит в углы полого, почти как дуга окружности, а не отвесно, как у
+   полуэллипса во всю ширину. Браузер сглаживает такую кромку сам, у очень
+   пологого эллипса градиент дал бы ступеньки. Высота эллипса 7.854 глубины —
+   при ширине 150% он проходит ровно через углы блока. */
+.kcs-edge_arc,
+.kcs-edge_arc-inverse {
+    overflow: hidden;
+}
+
+.kcs-edge_arc::before,
+.kcs-edge_arc-inverse::before {
+    content: "";
+    position: absolute;
+    left: -25%;
+    width: 150%;
+    height: calc(var(--kcs-edge-depth) * 7.854);
+    border-radius: 50%;
+}
+
+.kcs-edge_arc::before {
+    top: 0;
+    background-color: var(--kcs-edge-fill);
+}
+
+.kcs-edge_arc-inverse {
+    background-color: var(--kcs-edge-fill);
+}
+
+.kcs-edge_arc-inverse::before {
+    bottom: 0;
+    background-color: var(--kcs-edge-bg);
+}
+
+@media (max-width: 767px) {
+    .kcs-edge {
+        --kcs-edge-depth: var(--kcs-edge-d-touch, var(--ys-spacing-300));
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

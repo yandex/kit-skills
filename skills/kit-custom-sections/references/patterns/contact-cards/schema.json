@@ -1,0 +1,335 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет текста под заголовком",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок",
+      "default": ""
+    },
+    "titleAlign": {
+      "$ref": "#/definitions/SectionTitleAlign",
+      "title": "Расположение заголовка"
+    },
+    "intro": {
+      "$ref": "#/definitions/MarkdownContent",
+      "title": "Текст под заголовком"
+    },
+    "variant": {
+      "type": "string",
+      "title": "Вид",
+      "enum": [
+        "cards",
+        "rows",
+        "buttons"
+      ],
+      "options": [
+        "Карточки",
+        "Строки с разделителями",
+        "Кнопки в колонку (мультиссылка)"
+      ],
+      "default": "cards"
+    },
+    "columns": {
+      "type": "string",
+      "title": "Карточек в ряд на компьютере (меньше, если не помещаются)",
+      "enum": [
+        "2",
+        "3",
+        "4"
+      ],
+      "options": [
+        "2",
+        "3",
+        "4"
+      ],
+      "default": "3"
+    },
+    "showIcons": {
+      "type": "boolean",
+      "title": "Значки у контактов",
+      "default": true
+    },
+    "numbered": {
+      "type": "boolean",
+      "title": "Нумерация 01, 02… (карточки и строки)",
+      "default": false
+    },
+    "storeContacts": {
+      "type": "object",
+      "title": "Контакты из настроек магазина",
+      "properties": {
+        "phone": {
+          "type": "boolean",
+          "title": "Телефоны",
+          "default": true
+        },
+        "mail": {
+          "type": "boolean",
+          "title": "Эл. почта",
+          "default": true
+        },
+        "address": {
+          "type": "boolean",
+          "title": "Адреса",
+          "default": true
+        },
+        "addressOnMap": {
+          "type": "boolean",
+          "title": "Адрес — ссылкой на Яндекс Карты",
+          "default": true
+        },
+        "workingMode": {
+          "type": "boolean",
+          "title": "Режим работы",
+          "default": true
+        },
+        "socialNetworks": {
+          "type": "boolean",
+          "title": "Соцсети и мессенджеры",
+          "default": true
+        }
+      }
+    },
+    "socialLabel": {
+      "type": "string",
+      "title": "Подпись к соцсетям",
+      "default": "Соцсети и мессенджеры"
+    },
+    "logo": {
+      "type": "object",
+      "title": "Логотип над заголовком",
+      "properties": {
+        "show": {
+          "type": "boolean",
+          "title": "Показывать логотип",
+          "default": false
+        },
+        "inverted": {
+          "type": "boolean",
+          "title": "Светлый вариант логотипа магазина (для тёмной палитры)",
+          "default": false
+        },
+        "image": {
+          "$ref": "#/definitions/ImageModel",
+          "title": "Свой логотип (пусто — логотип из настроек магазина)"
+        }
+      }
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Свои строки: реквизиты, отделы, ссылки (идут после контактов магазина)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "title": "Тип строки",
+            "enum": [
+              "text",
+              "phone",
+              "email",
+              "link"
+            ],
+            "options": [
+              "Текст",
+              "Телефон",
+              "Эл. почта",
+              "Ссылка"
+            ],
+            "default": "text"
+          },
+          "icon": {
+            "type": "string",
+            "title": "Значок",
+            "enum": [
+              "auto",
+              "none",
+              "phone",
+              "mail",
+              "location",
+              "clock",
+              "shop",
+              "delivery",
+              "box",
+              "credit-card",
+              "user",
+              "help",
+              "info",
+              "file-doc",
+              "download",
+              "telegram",
+              "whats-app",
+              "max",
+              "vk"
+            ],
+            "options": [
+              "По типу строки",
+              "Без значка",
+              "Телефон",
+              "Конверт",
+              "Метка на карте",
+              "Часы",
+              "Магазин",
+              "Доставка",
+              "Коробка",
+              "Банковская карта",
+              "Человек",
+              "Вопрос",
+              "Информация",
+              "Документ",
+              "Скачать",
+              "Telegram",
+              "WhatsApp",
+              "Макс",
+              "ВКонтакте"
+            ],
+            "default": "auto"
+          },
+          "label": {
+            "type": "string",
+            "title": "Подпись над значением",
+            "default": ""
+          },
+          "value": {
+            "$ref": "#/definitions/TextArea",
+            "title": "Значение: номер, адрес почты, текст ссылки или текст (пустая строка не показывается)"
+          },
+          "link": {
+            "$ref": "#/definitions/LinkSource",
+            "title": "Куда ведёт ссылка (только для типа «Ссылка»)"
+          },
+          "note": {
+            "$ref": "#/definitions/MarkdownContent",
+            "title": "Примечание мелким шрифтом"
+          }
+        },
+        "required": [
+          "kind",
+          "value"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section"
+  ]
+}

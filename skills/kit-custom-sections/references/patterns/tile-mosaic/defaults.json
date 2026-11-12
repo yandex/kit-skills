@@ -1,0 +1,37 @@
+{
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "gap": "regular",
+  "unitRatio": "square",
+  "photoTitle": "scrim",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "kind": "photo",
+      "size": "third",
+      "tall": false,
+      "image": {
+        "fileId": "",
+        "filePath": ""
+      },
+      "imageAlt": "",
+      "title": "",
+      "caption": "",
+      "link": {
+        "link": "",
+        "linkId": ""
+      },
+      "fill": "none",
+      "touch": "auto"
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

@@ -1,0 +1,15 @@
+id: ticker-band
+version: 2
+title: "Лента-разделитель"
+purpose: "Тонкая бегущая лента в одну строку: фразы с разделителем между смысловыми блоками"
+origin: "handmade"
+fingerprint: "d141c0655ffcbf25692b9c0b666b61ac40d6e4d19332b2513066175bfaf07a91"
+docs_fingerprint: "d141c0655ffcbf25692b9c0b666b61ac40d6e4d19332b2513066175bfaf07a91"
+applied_patches: ""
+keywords: "лента-разделитель, разделитель, бегущая лента, тонкая бегущая строка, бегущий текст, бегущий слоган, преимущества строкой, ticker"
+pages: "main, landing"
+controllers: ""
+answers_required: "modules"
+alternatives: "running-line, shaped-divider"
+rhythm: "0"
+rhythm_touch: "0"

@@ -1,0 +1,28 @@
+{
+  "start": "regular",
+  "looks": [
+    {
+      "name": "regular",
+      "title": "Мозаика с зазорами",
+      "description": "Заголовки на фото поверх градиента.",
+      "settings": {}
+    },
+    {
+      "name": "lookbook",
+      "title": "Лукбук без зазоров",
+      "description": "Подписи плашками.",
+      "settings": {
+        "gap": "none",
+        "photoTitle": "plate"
+      }
+    },
+    {
+      "name": "portrait",
+      "title": "Вертикальные ячейки",
+      "description": "Ячейки 3:4.",
+      "settings": {
+        "unitRatio": "portrait"
+      }
+    }
+  ]
+}

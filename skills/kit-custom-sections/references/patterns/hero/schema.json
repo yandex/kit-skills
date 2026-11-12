@@ -2,31 +2,230 @@
   "title": "",
   "type": "object",
   "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
     "palette": {
       "$ref": "#/definitions/Palette",
       "title": "Палитра цветов"
     },
-    "titleText": {
+    "layout": {
       "type": "string",
-      "title": "Заголовок"
+      "title": "Вид блока",
+      "enum": [
+        "inset",
+        "panel"
+      ],
+      "options": [
+        "С отступами: текст и фото раздельно",
+        "Панель 50/50: текст на заливке впритык к фото"
+      ],
+      "default": "inset"
+    },
+    "panelSurface": {
+      "type": "string",
+      "title": "Заливка текстовой половины (для вида «Панель»)",
+      "enum": [
+        "secondary",
+        "neutral",
+        "brand",
+        "inverse",
+        "palette"
+      ],
+      "options": [
+        "Светлый оттенок палитры",
+        "Нейтральный",
+        "Фирменный цвет",
+        "Инверсия (тёмная на светлой теме)",
+        "Без заливки, как фон секции"
+      ],
+      "default": "secondary"
+    },
+    "mediaLeft": {
+      "type": "boolean",
+      "title": "Фото слева (зеркально)",
+      "default": false
+    },
+    "eyebrowText": {
+      "type": "string",
+      "title": "Надзаголовок",
+      "description": "Коротко, до 32 знаков: коллекция, сезон, категория. Пусто — не показывается",
+      "default": ""
+    },
+    "titleText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Заголовок",
+      "description": "До 60 знаков: на телефоне это 3 строки. Перенос строки — Enter"
+    },
+    "headingLevel": {
+      "type": "string",
+      "title": "Уровень заголовка",
+      "enum": [
+        "h2",
+        "h1"
+      ],
+      "options": [
+        "H2 — по умолчанию",
+        "H1 — второй h1 на странице, только по решению владельца"
+      ],
+      "default": "h2"
     },
     "subtitleText": {
       "type": "string",
       "title": "Подзаголовок",
+      "description": "Одно-два предложения, до 140 знаков",
       "default": ""
+    },
+    "textAlign": {
+      "type": "string",
+      "title": "Выравнивание текста",
+      "enum": [
+        "left",
+        "center"
+      ],
+      "options": [
+        "Слева",
+        "По центру"
+      ],
+      "default": "left"
     },
     "buttonText": {
       "type": "string",
       "title": "Текст кнопки",
-      "default": "Перейти в каталог"
+      "default": ""
     },
     "buttonUrl": {
       "$ref": "#/definitions/LinkSource",
-      "title": "Ссылка кнопки"
+      "title": "Ссылка кнопки (без ссылки кнопка не показывается)"
+    },
+    "buttonColor": {
+      "type": "string",
+      "title": "Стиль кнопки",
+      "enum": [
+        "primary",
+        "secondary",
+        "outlined"
+      ],
+      "options": [
+        "Основная",
+        "Вторичная",
+        "Контурная"
+      ],
+      "default": "primary"
+    },
+    "modules": {
+      "type": "array",
+      "title": "Значки доверия под кнопкой (до четырёх)",
+      "description": "Иконка и короткая подпись: доставка, гарантия, возврат, оплата частями. Значок с пустой подписью не показывается",
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string",
+            "title": "Иконка",
+            "enum": [
+              "check",
+              "delivery",
+              "box",
+              "credit-card",
+              "coins",
+              "percent",
+              "gift",
+              "lock",
+              "clock",
+              "reload",
+              "star",
+              "heart",
+              "shop",
+              "location",
+              "phone",
+              "none"
+            ],
+            "options": [
+              "Галочка",
+              "Доставка",
+              "Коробка",
+              "Банковская карта",
+              "Монеты",
+              "Процент",
+              "Подарок",
+              "Замок",
+              "Часы",
+              "Круговые стрелки",
+              "Звезда (залитая)",
+              "Сердце (контуром)",
+              "Магазин",
+              "Геолокация",
+              "Телефон",
+              "Без иконки"
+            ],
+            "default": "check"
+          },
+          "text": {
+            "type": "string",
+            "title": "Подпись, 2–4 слова",
+            "default": ""
+          }
+        },
+        "required": [
+          "icon",
+          "text"
+        ]
+      }
     },
     "image": {
       "$ref": "#/definitions/ImageModel",
-      "title": "Изображение"
+      "title": "Фото",
+      "description": "Без текста на самом фото: заголовок и кнопка живые. Без фото блок становится текстовым в одну колонку"
+    },
+    "imageMobile": {
+      "$ref": "#/definitions/ImageModel",
+      "title": "Фото для телефона 4:3 (необязательно)",
+      "description": "Заменяет основное фото на телефоне; без основного фото не показывается"
+    },
+    "imageAlt": {
+      "type": "string",
+      "title": "Описание фото для незрячих и поиска",
+      "default": ""
+    },
+    "mediaRatio": {
+      "type": "string",
+      "title": "Пропорции фото на компьютере",
+      "enum": [
+        "4:3",
+        "1:1",
+        "3:4"
+      ],
+      "options": [
+        "4:3 — горизонтальное",
+        "1:1 — квадрат, для панели",
+        "3:4 — вертикальное"
+      ],
+      "default": "4:3"
+    },
+    "mobileOrder": {
+      "type": "string",
+      "title": "Порядок на телефоне",
+      "enum": [
+        "text",
+        "media"
+      ],
+      "options": [
+        "Сначала текст",
+        "Сначала фото"
+      ],
+      "default": "text"
     },
     "section": {
       "type": "object",
@@ -91,8 +290,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ блока (токен темы, с каждой стороны)",
-      "default": "500"
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
     },
     "verticalRhythmTouch": {
       "type": "string",
@@ -126,8 +325,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ на телефоне (токен темы)",
-      "default": "300"
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
     }
   },
   "required": [

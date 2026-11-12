@@ -1,0 +1,31 @@
+{
+  "palette": "default",
+  "word": "",
+  "wordSource": "text",
+  "asHeading": false,
+  "isUppercase": true,
+  "weight": "bold",
+  "fontWidth": "normal",
+  "tone": "primary",
+  "tracking": "tight",
+  "widthShare": "100",
+  "widthShareMobile": "100",
+  "align": "start",
+  "sizeCap": "none",
+  "crop": "none",
+  "linkText": "Смотреть все",
+  "link": {
+    "link": "",
+    "linkId": ""
+  },
+  "linkPosition": "end",
+  "showArrow": true,
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

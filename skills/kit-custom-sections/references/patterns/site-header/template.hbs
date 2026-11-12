@@ -1,0 +1,342 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-company-controller as="company">
+<ya-kit-user-controller as="user">
+<ya-kit-shopping-cart-controller as="cart">
+<ya-kit-location-controller as="loc">
+<ya-kit-menu-controller menu="{{when settings.mainMenu settings.mainMenu null}}" as="nav">
+<ya-kit-menu-controller menu="{{when settings.secondaryMenu settings.secondaryMenu null}}" as="nav2">
+<ya-kit-toggle-controller as="drawer">
+<ya-kit-value-controller as="lvl1">
+<ya-kit-value-controller as="lvl2">
+<ya-kit-toggle-controller as="find">
+<ya-kit-sticky scope="global" is-sticky="{{settings.layout.isSticky}}">
+    <div class="kcs-hdr kcs-hdr_logo_{{settings.layout.logoPosition}} kcs-hdr_nav_{{settings.layout.navMode}} kcs-hdr_drop_{{settings.layout.dropdown}} kcs-hdr_h_{{settings.layout.barHeight}} kcs-hdr_w_{{settings.layout.width}} kcs-hdr_search_{{settings.actions.search}} {{if settings.layout.isSticky '' 'kcs-hdr_static'}} {{if settings.layout.showBorder 'kcs-hdr_border' ''}} {{if settings.layout.uppercase 'kcs-hdr_caps' ''}}">
+        <ya-kit-section-layout
+            class="kcs-hdr__layout"
+            palette={{settings.palette}}
+            background="primary"
+            v-gap="0"
+            padding-top={{settings.section.paddingTop}}
+            padding-bottom={{settings.section.paddingBottom}}
+            h-padding-desktop={{settings.section.hPaddingDesktop}}
+            h-padding-mobile={{settings.section.hPaddingMobile}}
+            is-fullscreen="{{when (eql settings.layout.width 'full') 'enabled' 'default'}}"
+        >
+            <ya-kit-section-layout-row class="kcs-hdr__row">
+                <div class="kcs-hdr__barbox">
+                    <div class="kcs-hdr__bar">
+                        <button type="button" class="kcs-hdr__btn kcs-hdr__burger" aria-label="Открыть меню" aria-expanded="{{if drawer.isOpen 'true' 'false'}}" on-click="{{drawer.onSetTruthy}}">
+                            <ya-kit-icon name="menu" size="24" color="inherit" />
+                        </button>
+                        <ya-kit-link class="kcs-hdr__logo" to="/" aria-label="На главную">
+                            <span class="kcs-hdr__logo-box {{if settings.logo.imageTouch.filePath 'kcs-hdr__logo-box_split' ''}}" style="--kcs-logo-w: {{settings.logo.widthDesktop}}px; --kcs-logo-w-touch: {{settings.logo.widthTouch}}px">
+                                <span class="kcs-hdr__logo-main">
+                                    {{#if settings.logo.image.filePath}}
+                                        <ya-kit-image class="kcs-hdr__logo-img" src={{settings.logo.image}} alt="{{if settings.logo.text settings.logo.text company.model.name}}" fit="contain" background-color="none" />
+                                    {{else}}
+                                        {{#if (and settings.logo.useInverted company.model.invertedLogo.filePath)}}
+                                            <ya-kit-image class="kcs-hdr__logo-img" src={{company.model.invertedLogo}} alt="{{if settings.logo.text settings.logo.text company.model.name}}" fit="contain" background-color="none" />
+                                        {{else}}
+                                            {{#if company.model.logo.filePath}}
+                                                <ya-kit-image class="kcs-hdr__logo-img" src={{company.model.logo}} alt="{{if settings.logo.text settings.logo.text company.model.name}}" fit="contain" background-color="none" />
+                                            {{else}}
+                                                {{#if company.model.invertedLogo.filePath}}
+                                                    <ya-kit-image class="kcs-hdr__logo-img" src={{company.model.invertedLogo}} alt="{{if settings.logo.text settings.logo.text company.model.name}}" fit="contain" background-color="none" />
+                                                {{else}}
+                                                    <span class="kcs-hdr__wordmark">{{if settings.logo.text settings.logo.text company.model.name}}</span>
+                                                {{/if}}
+                                            {{/if}}
+                                        {{/if}}
+                                    {{/if}}
+                                </span>
+                                {{#if settings.logo.imageTouch.filePath}}
+                                    <span class="kcs-hdr__logo-touch">
+                                        <ya-kit-image class="kcs-hdr__logo-img" src={{settings.logo.imageTouch}} alt="{{if settings.logo.text settings.logo.text company.model.name}}" fit="contain" background-color="none" />
+                                    </span>
+                                {{/if}}
+                            </span>
+                        </ya-kit-link>
+                        <nav class="kcs-hdr__nav" aria-label="Основное меню">
+                            {{#if nav.model}}
+                                <ul class="kcs-hdr__menu">
+                                    {{#each nav.model.items as |item|}}
+                                        <li class="kcs-hdr__item {{if (gte (length item.children) 1) 'kcs-hdr__item_parent' ''}}">
+                                            <ya-kit-link class="kcs-hdr__link" to={{item.url}}><span class="kcs-hdr__link-text">{{item.title}}</span></ya-kit-link>
+                                            {{#if (gte (length item.children) 1)}}
+                                                <ya-kit-icon class="kcs-hdr__caret" name="arrow-down" size="16" color="inherit" />
+                                                <div class="kcs-hdr__drop {{skinRounded 150}}">
+                                                    <ul class="kcs-hdr__drop-list">
+                                                        {{#each item.children as |child|}}
+                                                            <li class="kcs-hdr__drop-item">
+                                                                <ya-kit-link class="kcs-hdr__drop-link" to={{child.url}}>{{child.title}}</ya-kit-link>
+                                                                {{#if (gte (length child.children) 1)}}
+                                                                    <ul class="kcs-hdr__drop-sub">
+                                                                        {{#each child.children as |leaf|}}
+                                                                            <li class="kcs-hdr__drop-subitem">
+                                                                                <ya-kit-link class="kcs-hdr__drop-sublink" to={{leaf.url}}>{{leaf.title}}</ya-kit-link>
+                                                                            </li>
+                                                                        {{/each}}
+                                                                    </ul>
+                                                                {{/if}}
+                                                            </li>
+                                                        {{/each}}
+                                                    </ul>
+                                                </div>
+                                            {{/if}}
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            {{/if}}
+                        </nav>
+                        <div class="kcs-hdr__actions">
+                            {{#if (eql settings.actions.search 'field')}}
+                                <form class="kcs-hdr__field kcs-hdr__desk {{skinRounded 100}}" action="/search" method="get" role="search">
+                                    <ya-kit-icon class="kcs-hdr__field-icon" name="search" size="20" color="inherit" />
+                                    <input class="kcs-hdr__field-input" type="search" name="query" placeholder="{{settings.actions.searchPlaceholder}}" aria-label="{{settings.actions.searchPlaceholder}}">
+                                </form>
+                            {{/if}}
+                            {{#if (notEql settings.actions.search 'none')}}
+                                <button type="button" class="kcs-hdr__btn kcs-hdr__find-btn" aria-label="Поиск" aria-expanded="{{if find.isOpen 'true' 'false'}}" on-click="{{find.onToggle}}">
+                                    <ya-kit-icon name="search" size="24" color="inherit" />
+                                </button>
+                            {{/if}}
+                            {{#if settings.actions.showFavourites}}
+                                <ya-kit-link class="kcs-hdr__btn kcs-hdr__desk" to="/profile/favourites" aria-label="Избранное">
+                                    <ya-kit-icon class="kcs-hdr__fav-icon" name="heart" size="24" color="inherit" />
+                                </ya-kit-link>
+                            {{/if}}
+                            {{#if settings.actions.showAccount}}
+                                {{#if user.model.isRegistered}}
+                                    <ya-kit-link class="kcs-hdr__btn kcs-hdr__desk" to="/account/profile" aria-label="Личный кабинет">
+                                        <ya-kit-icon name="user-authorized" size="24" color="inherit" />
+                                    </ya-kit-link>
+                                {{else}}
+                                    <button type="button" class="kcs-hdr__btn kcs-hdr__desk" aria-label="Войти" on-click="{{user.onLogin}}">
+                                        <ya-kit-icon name="user" size="24" color="inherit" />
+                                    </button>
+                                {{/if}}
+                            {{/if}}
+                            {{#if settings.actions.showCart}}
+                                <ya-kit-link class="kcs-hdr__btn kcs-hdr__cart" to="/cart" aria-label="Корзина">
+                                    <ya-kit-icon name="shopping-bag" size="24" color="inherit" />
+                                    {{#if (gte cart.model.totalQuantity 1)}}
+                                        <span class="kcs-hdr__badge">{{if (gt cart.model.totalQuantity 99) '99+' cart.model.totalQuantity}}</span>
+                                    {{/if}}
+                                </ya-kit-link>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </ya-kit-section-layout-row>
+            {{#if find.isOpen}}
+                <ya-kit-section-layout-row class="kcs-hdr__find">
+                    <form class="kcs-hdr__find-form" action="/search" method="get" role="search">
+                        <div class="kcs-hdr__find-box {{skinRounded 100}}">
+                            <ya-kit-icon class="kcs-hdr__field-icon" name="search" size="20" color="inherit" />
+                            <input class="kcs-hdr__find-input" type="search" name="query" placeholder="{{settings.actions.searchPlaceholder}}" aria-label="{{settings.actions.searchPlaceholder}}">
+                            <button type="submit" class="kcs-hdr__find-go {{skinRounded 100}}">Найти</button>
+                        </div>
+                        <button type="button" class="kcs-hdr__btn" aria-label="Закрыть поиск" on-click="{{find.onSetFalsy}}">
+                            <ya-kit-icon name="cross" size="24" color="inherit" />
+                        </button>
+                    </form>
+                </ya-kit-section-layout-row>
+            {{/if}}
+            {{#if (or nav2.model (or settings.location.show (or (and (eql settings.contacts.show 'phone') company.model.phone.0.value) (and (eql settings.contacts.show 'email') company.model.mail.0.value))))}}
+                <ya-kit-section-layout-row class="kcs-hdr__sub {{if (and nav2.model settings.secondaryRow.showOnTouch) 'kcs-hdr__sub_touch' ''}}">
+                    <div class="kcs-hdr__sub-in">
+                        {{#if nav2.model}}
+                            <nav class="kcs-hdr__sub-nav" aria-label="Дополнительное меню">
+                                <ul class="kcs-hdr__sub-list">
+                                    {{#each nav2.model.items as |item|}}
+                                        <li class="kcs-hdr__sub-item">
+                                            <ya-kit-link class="kcs-hdr__sub-link" to={{item.url}}>{{item.title}}</ya-kit-link>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            </nav>
+                        {{/if}}
+                        <div class="kcs-hdr__utils">
+                            {{#if settings.location.show}}
+                                <button type="button" class="kcs-hdr__chip {{skinRounded 100}}" on-click="{{loc.onLocationSelect}}">
+                                    <ya-kit-icon name="location" size="16" color="inherit" />
+                                    <span class="kcs-hdr__chip-text">{{if loc.model.name loc.model.name settings.location.fallbackText}}</span>
+                                </button>
+                            {{/if}}
+                            {{#if (eql settings.contacts.show 'phone')}}
+                                {{#if company.model.phone.0.value}}
+                                    <a class="kcs-hdr__contact" href="tel:{{replaceAll company.model.phone.0.value ' ' ''}}">
+                                        <ya-kit-icon name="phone" size="16" color="inherit" />
+                                        <span>{{company.model.phone.0.value}}</span>
+                                    </a>
+                                {{/if}}
+                            {{/if}}
+                            {{#if (eql settings.contacts.show 'email')}}
+                                {{#if company.model.mail.0.value}}
+                                    <a class="kcs-hdr__contact" href="mailto:{{company.model.mail.0.value}}">
+                                        <ya-kit-icon name="mail" size="16" color="inherit" />
+                                        <span>{{company.model.mail.0.value}}</span>
+                                    </a>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+                </ya-kit-section-layout-row>
+            {{/if}}
+            {{#if drawer.isOpen}}
+                <div class="kcs-hdr__drawer" role="dialog" aria-modal="true" aria-label="Меню">
+                    <button type="button" class="kcs-hdr__scrim" aria-label="Закрыть меню" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}"></button>
+                    <div class="kcs-hdr__panel">
+                        <div class="kcs-hdr__panel-top">
+                            {{#if lvl1.value}}
+                                <button type="button" class="kcs-hdr__back" on-click="{{if lvl2.value (bind lvl2.onChange null) (bind lvl1.onChange null)}}">
+                                    <ya-kit-icon name="arrow-left" size="20" color="inherit" />
+                                    <span>Назад</span>
+                                </button>
+                            {{else}}
+                                <span class="kcs-hdr__panel-title">Меню</span>
+                            {{/if}}
+                            <button type="button" class="kcs-hdr__btn" aria-label="Закрыть меню" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}">
+                                <ya-kit-icon name="cross" size="24" color="inherit" />
+                            </button>
+                        </div>
+                        <div class="kcs-hdr__panel-body">
+                            {{#if lvl2.value}}
+                                <ul class="kcs-hdr__plist">
+                                    <li class="kcs-hdr__pitem kcs-hdr__pitem_all" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}">
+                                        <ya-kit-link class="kcs-hdr__prow kcs-hdr__prow_all" to={{lvl2.value.url}}>
+                                            <span class="kcs-hdr__all-title">{{lvl2.value.title}}</span>
+                                            <span class="kcs-hdr__all-hint">Весь раздел</span>
+                                        </ya-kit-link>
+                                    </li>
+                                    {{#each lvl2.value.children as |leaf|}}
+                                        <li class="kcs-hdr__pitem" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}">
+                                            <ya-kit-link class="kcs-hdr__prow" to={{leaf.url}}>{{leaf.title}}</ya-kit-link>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            {{else}}
+                                {{#if lvl1.value}}
+                                    <ul class="kcs-hdr__plist">
+                                        <li class="kcs-hdr__pitem kcs-hdr__pitem_all" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}">
+                                            <ya-kit-link class="kcs-hdr__prow kcs-hdr__prow_all" to={{lvl1.value.url}}>
+                                                <span class="kcs-hdr__all-title">{{lvl1.value.title}}</span>
+                                                <span class="kcs-hdr__all-hint">Весь раздел</span>
+                                            </ya-kit-link>
+                                        </li>
+                                        {{#each lvl1.value.children as |child|}}
+                                            {{#if (gte (length child.children) 1)}}
+                                                <li class="kcs-hdr__pitem">
+                                                    <button type="button" class="kcs-hdr__prow" on-click="{{bind lvl2.onChange child}}">
+                                                        <span>{{child.title}}</span>
+                                                        <ya-kit-icon name="arrow-right" size="16" color="inherit" />
+                                                    </button>
+                                                </li>
+                                            {{else}}
+                                                <li class="kcs-hdr__pitem" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}">
+                                                    <ya-kit-link class="kcs-hdr__prow" to={{child.url}}>{{child.title}}</ya-kit-link>
+                                                </li>
+                                            {{/if}}
+                                        {{/each}}
+                                    </ul>
+                                {{else}}
+                                    {{#if nav.model}}
+                                        <ul class="kcs-hdr__plist">
+                                            {{#each nav.model.items as |item|}}
+                                                {{#if (gte (length item.children) 1)}}
+                                                    <li class="kcs-hdr__pitem">
+                                                        <button type="button" class="kcs-hdr__prow" on-click="{{bind lvl1.onChange item}}">
+                                                            <span>{{item.title}}</span>
+                                                            <ya-kit-icon name="arrow-right" size="16" color="inherit" />
+                                                        </button>
+                                                    </li>
+                                                {{else}}
+                                                    <li class="kcs-hdr__pitem" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}">
+                                                        <ya-kit-link class="kcs-hdr__prow" to={{item.url}}>{{item.title}}</ya-kit-link>
+                                                    </li>
+                                                {{/if}}
+                                            {{/each}}
+                                        </ul>
+                                    {{/if}}
+                                    {{#if nav2.model}}
+                                        <ul class="kcs-hdr__plist kcs-hdr__plist_minor">
+                                            {{#each nav2.model.items as |item|}}
+                                                <li class="kcs-hdr__pitem" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}">
+                                                    <ya-kit-link class="kcs-hdr__prow" to={{item.url}}>{{item.title}}</ya-kit-link>
+                                                </li>
+                                            {{/each}}
+                                        </ul>
+                                    {{/if}}
+                                    {{#if (or settings.actions.showAccount settings.actions.showFavourites)}}
+                                        <ul class="kcs-hdr__plist kcs-hdr__plist_minor">
+                                            {{#if settings.actions.showAccount}}
+                                                {{#if user.model.isRegistered}}
+                                                    <li class="kcs-hdr__pitem" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}">
+                                                        <ya-kit-link class="kcs-hdr__prow kcs-hdr__prow_icon" to="/account/profile">
+                                                            <ya-kit-icon name="user-authorized" size="20" color="inherit" />
+                                                            <span>Личный кабинет</span>
+                                                        </ya-kit-link>
+                                                    </li>
+                                                {{else}}
+                                                    <li class="kcs-hdr__pitem">
+                                                        <button type="button" class="kcs-hdr__prow kcs-hdr__prow_icon" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null) user.onLogin}}">
+                                                            <ya-kit-icon name="user" size="20" color="inherit" />
+                                                            <span>Войти</span>
+                                                        </button>
+                                                    </li>
+                                                {{/if}}
+                                            {{/if}}
+                                            {{#if settings.actions.showFavourites}}
+                                                <li class="kcs-hdr__pitem" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null)}}">
+                                                    <ya-kit-link class="kcs-hdr__prow kcs-hdr__prow_icon" to="/profile/favourites">
+                                                        <ya-kit-icon class="kcs-hdr__fav-icon" name="heart" size="20" color="inherit" />
+                                                        <span>Избранное</span>
+                                                    </ya-kit-link>
+                                                </li>
+                                            {{/if}}
+                                        </ul>
+                                    {{/if}}
+                                    <div class="kcs-hdr__pmeta">
+                                        {{#if settings.location.show}}
+                                            <button type="button" class="kcs-hdr__chip {{skinRounded 100}}" on-click="{{compose drawer.onSetFalsy (bind lvl1.onChange null) (bind lvl2.onChange null) loc.onLocationSelect}}">
+                                                <ya-kit-icon name="location" size="16" color="inherit" />
+                                                <span class="kcs-hdr__chip-text">{{if loc.model.name loc.model.name settings.location.fallbackText}}</span>
+                                            </button>
+                                        {{/if}}
+                                        {{#if (eql settings.contacts.show 'phone')}}
+                                            {{#if company.model.phone.0.value}}
+                                                <a class="kcs-hdr__contact" href="tel:{{replaceAll company.model.phone.0.value ' ' ''}}">
+                                                    <ya-kit-icon name="phone" size="16" color="inherit" />
+                                                    <span>{{company.model.phone.0.value}}</span>
+                                                </a>
+                                            {{/if}}
+                                        {{/if}}
+                                        {{#if (eql settings.contacts.show 'email')}}
+                                            {{#if company.model.mail.0.value}}
+                                                <a class="kcs-hdr__contact" href="mailto:{{company.model.mail.0.value}}">
+                                                    <ya-kit-icon name="mail" size="16" color="inherit" />
+                                                    <span>{{company.model.mail.0.value}}</span>
+                                                </a>
+                                            {{/if}}
+                                        {{/if}}
+                                    </div>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </ya-kit-section-layout>
+    </div>
+</ya-kit-sticky>
+</ya-kit-toggle-controller>
+</ya-kit-value-controller>
+</ya-kit-value-controller>
+</ya-kit-toggle-controller>
+</ya-kit-menu-controller>
+</ya-kit-menu-controller>
+</ya-kit-location-controller>
+</ya-kit-shopping-cart-controller>
+</ya-kit-user-controller>
+</ya-kit-company-controller>
+</div>

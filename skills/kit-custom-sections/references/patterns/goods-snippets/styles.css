@@ -1,75 +1,264 @@
-.grid {
-    width: 100%;
-}
+/* Полка товаров: одна DOM-структура на все ширины. Сетка на десктопе,
+   на телефоне — сетка в 2 колонки с потолком рядов или горизонтальная лента.
+   Цвета — только токены темы, фото и кнопка корзины — из настроек темы. */
 
-.preview-product-card-layout__body {
+.kcs-gs__title-link {
     display: block;
+    color: inherit;
+    text-decoration: none;
 }
 
-.preview-product-image-wrapper {
-    position: relative;
-    border-radius: var(--ys-current-skin-border-radius);
-    overflow: hidden;
-}
+.kcs-gs__track {
+    --kcs-gs-cols: 4;
 
-.preview-product-card-layout--oos .preview-product-image-wrapper {
-    opacity: 0.75;
-}
-
-.preview-product-image-wrapper::after {
-    content: "";
-    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(var(--kcs-gs-cols), minmax(0, 1fr));
+    column-gap: var(--kcs-gs-hgap, var(--ys-spacing-300));
+    row-gap: var(--kcs-gs-vgap, var(--ys-spacing-600));
     width: 100%;
+}
+
+.kcs-gs__track--cols-2 {
+    --kcs-gs-cols: 2;
+}
+
+.kcs-gs__track--cols-3 {
+    --kcs-gs-cols: 3;
+}
+
+.kcs-gs__track--cols-4 {
+    --kcs-gs-cols: 4;
+}
+
+.kcs-gs__track--cols-5 {
+    --kcs-gs-cols: 5;
+}
+
+.kcs-gs__track--cols-6 {
+    --kcs-gs-cols: 6;
+}
+
+/* Планшет: 5–6 колонок дают карточки уже 180px — ужимаем до 4, а ниже 1024px до 3. */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .kcs-gs__track--cols-5,
+    .kcs-gs__track--cols-6 {
+        --kcs-gs-cols: 4;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-gs__track--cols-4,
+    .kcs-gs__track--cols-5,
+    .kcs-gs__track--cols-6 {
+        --kcs-gs-cols: 3;
+    }
+}
+
+.kcs-gs__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+    min-width: 0;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.0375);
-    pointer-events: none;
-    top: 0;
-    left: 0;
 }
 
-.preview-product-image  {
-    pointer-events: none;
-    transition: transform .2s ease-in-out;
-    transform-origin: center;
-    transform: scale(1) translate3d(0, 0, 0);
+.kcs-gs__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+    color: inherit;
+    text-decoration: none;
 }
 
-.preview-product-card-layout:not(.preview-product-card-layout--oos) .preview-product-card-layout__body:hover .preview-product-image  {
-    transform: scale(1.15) translate3d(0, 0, 0);
+.kcs-gs__media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--ys-current-skin-border-radius);
+    isolation: isolate;
 }
 
-.preview-product-card-layout__body:hover .preview-product-card-layout__title-text {
-    color: var(--ys-color-token-brand-primary)
+.kcs-gs__image {
+    display: block;
+    width: 100%;
+    transition: transform 0.4s ease;
 }
 
-.preview-product-card-layout__badges {
-    bottom: 0;
-    box-sizing: border-box;
-    left: 0;
-    padding: 12px;
+.kcs-gs__card--oos .kcs-gs__media {
+    opacity: 0.6;
+}
+
+.kcs-gs__badges {
     position: absolute;
+    top: var(--ys-spacing-100);
+    left: var(--ys-spacing-100);
+    right: var(--ys-spacing-600);
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-50);
+    pointer-events: none;
 }
 
-.preview-product-card-layout__badge {
-    border-radius: 16px;
-    padding: 2px 12px;
-    background-color: #000;
-    color: #ffffff;
+/* Размер и начертание метки — из шкалы ya-kit-text (size xs, semibold). */
+.kcs-gs__badge {
+    padding: var(--ys-spacing-25) var(--ys-spacing-100);
+    border-radius: var(--ys-current-skin-border-radius);
+    background: var(--ys-background-primary);
+    color: var(--ys-color-token-text-primary);
 }
 
-.preview-product-card-layout__control {
+.kcs-gs__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-50);
+}
+
+.kcs-gs__body--name-first .kcs-gs__name {
+    order: -1;
+}
+
+.kcs-gs__fav {
+    position: absolute;
+    top: var(--ys-spacing-100);
+    right: var(--ys-spacing-100);
+    z-index: 2;
+    border-radius: 999px;
+    background: var(--ys-background-primary);
+    background: color-mix(in srgb, var(--ys-background-primary) 85%, transparent);
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-gs__fav--on {
+    color: var(--ys-color-token-brand-primary);
+}
+
+.kcs-gs__fav-icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.kcs-gs__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.kcs-gs__pay {
+    max-width: 100%;
+}
+
+.kcs-gs__actions {
     margin-top: auto;
 }
 
-/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
-.kcs-rhythm {
-    padding-top: var(--kcs-rhythm, 0px);
-    padding-bottom: var(--kcs-rhythm, 0px);
+.kcs-gs__more {
+    display: flex;
+    justify-content: center;
+}
+
+/* Эффекты наведения — только для устройств с курсором: на тач-экране
+   :hover «залипает» после тапа. */
+@media (hover: hover) {
+    .kcs-gs__card:not(.kcs-gs__card--oos) .kcs-gs__link:hover .kcs-gs__image {
+        transform: scale(1.04);
+    }
+
+    .kcs-gs__link:hover .kcs-gs__name {
+        color: var(--ys-color-token-brand-primary);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-gs__image {
+        transition: none;
+    }
 }
 
 @media (max-width: 767px) {
-    .kcs-rhythm {
-        padding-top: var(--kcs-rhythm-touch, 0px);
-        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    .kcs-gs__track {
+        --kcs-gs-gap-touch: min(var(--kcs-gs-hgap, var(--ys-spacing-300)), var(--ys-spacing-200));
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: var(--kcs-gs-gap-touch);
+        row-gap: min(var(--kcs-gs-vgap, var(--ys-spacing-600)), var(--ys-spacing-500));
+    }
+
+    .kcs-gs__card {
+        gap: var(--ys-spacing-100);
+    }
+
+    .kcs-gs__actions--no-touch {
+        display: none;
+    }
+
+    /* Сетка на телефоне: потолок рядов (2 карточки в ряду) и без одинокой
+       карточки в последнем ряду. Скрывается только отображение, DOM один. */
+    .kcs-gs__track--rows-1:not(.kcs-gs__track--strip) > :nth-child(n + 3),
+    .kcs-gs__track--rows-2:not(.kcs-gs__track--strip) > :nth-child(n + 5),
+    .kcs-gs__track--rows-3:not(.kcs-gs__track--strip) > :nth-child(n + 7),
+    .kcs-gs__track:not(.kcs-gs__track--strip) > :last-child:nth-child(odd):not(:first-child) {
+        display: none;
+    }
+
+    /* Лента: карточки уходят за край экрана, следующая выглядывает на ~48px —
+       видно, что ряд листается. Поле ленты равно боковому полю секции:
+       --ys-section-h-padding задаёт ya-kit-section-layout (на телефоне — из
+       h-padding-mobile, пустое значение — из настроек темы), им же
+       ya-kit-section-layout-row делает боковой отступ строки. Так же выводит
+       ленту к краям платформенный FullBleedScrollRow. Фолбэк 0px — лента
+       без выхода к краям, если секция вне ya-kit-section-layout. */
+    .kcs-gs__track--strip {
+        display: flex;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        margin-inline: calc(var(--ys-section-h-padding, 0px) * -1);
+        padding-inline: var(--ys-section-h-padding, 0px);
+        scroll-padding-inline: var(--ys-section-h-padding, 0px);
+    }
+
+    .kcs-gs__track--strip::-webkit-scrollbar {
+        display: none;
+    }
+
+    .kcs-gs__track--strip > * {
+        flex: 0 0 calc((100% - var(--kcs-gs-gap-touch)) / 2 - var(--ys-spacing-300));
+        scroll-snap-align: start;
+    }
+
+    .kcs-gs__track--strip.kcs-gs__track--touch-1 > * {
+        flex-basis: calc(100% - var(--ys-spacing-600));
+    }
+
+    /* Карусель: платформенная карусель читает отступ под «выглядывание»
+       следующего слайда из этой переменной на ширинах до 768px. */
+    .kcs-gs__carousel {
+        --ys-carousel-offset: var(--ys-spacing-600);
+    }
+
+    .kcs-gs__more > * {
+        width: 100%;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
     }
 }

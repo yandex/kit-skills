@@ -8,16 +8,71 @@
     is-fullscreen={{settings.section.isFullscreen}}
 >
     <ya-kit-section-layout-row>
-        <div class="split {{if settings.mediaLeft 'split_media-left'}}">
-            <ya-kit-v-stack class="split__text" gap="300" justify-content="center" align-items="flex-start">
-                <ya-kit-text as="h3" size="2xl" weight="semibold">{{settings.titleText}}</ya-kit-text>
-                <div class="split__content">
-                    <ya-kit-markdown markup={{settings.contentText}} />
+        <div class="split {{if settings.mediaLeft 'split_media-left'}} {{if (or settings.image.filePath settings.imageMobile.filePath) 'split_has-media' 'split_text-only'}} {{if (eql settings.titlePlacement 'above') 'split_title-above'}} split_surface-{{settings.surface}} {{if (and settings.surface (not (eql settings.surface 'none'))) 'split_panel'}} {{if settings.joined 'split_joined'}} split_touch-{{settings.touchOrder}} {{if (or settings.imageMobile.filePath (and settings.mediaRatioTouch (not (eql settings.mediaRatioTouch 'same')))) 'split_touch-media'}} split_list-{{settings.listStyle}}">
+            {{#if (eql settings.titlePlacement 'above')}}
+                {{#if (or settings.eyebrowText settings.titleText)}}
+                    <div class="split__head">
+                        {{#if settings.eyebrowText}}
+                            <ya-kit-text class="split__eyebrow" size="xs" weight="medium" color="secondary">{{settings.eyebrowText}}</ya-kit-text>
+                        {{/if}}
+                        {{#if settings.titleText}}
+                            <ya-kit-text class="split__title" as="h2" size="{{when globals.typography.titleSize globals.typography.titleSize '2xl'}}" weight="semibold">{{settings.titleText}}</ya-kit-text>
+                        {{/if}}
+                    </div>
+                {{/if}}
+            {{/if}}
+            <div class="split__text {{skinRounded '200'}}">
+                <div class="split__stack">
+                    {{#unless (eql settings.titlePlacement 'above')}}
+                        {{#if (or settings.eyebrowText settings.titleText)}}
+                            <div class="split__heading">
+                                {{#if settings.eyebrowText}}
+                                    <ya-kit-text class="split__eyebrow" size="xs" weight="medium" color="secondary">{{settings.eyebrowText}}</ya-kit-text>
+                                {{/if}}
+                                {{#if settings.titleText}}
+                                    <ya-kit-text class="split__title" as="h2" size="{{when globals.typography.titleSize globals.typography.titleSize '2xl'}}" weight="semibold">{{settings.titleText}}</ya-kit-text>
+                                {{/if}}
+                            </div>
+                        {{/if}}
+                    {{/unless}}
+                    {{#if settings.contentText}}
+                        <div class="split__content">
+                            <ya-kit-markdown markup={{settings.contentText}} />
+                        </div>
+                    {{/if}}
+                    {{#if (and settings.buttonText settings.buttonUrl.link)}}
+                        <div class="split__cta">
+                            <ya-kit-button class="split__btn" color="{{if settings.buttonColor settings.buttonColor 'primary'}}" size="lg" to={{settings.buttonUrl.link}}>{{settings.buttonText}}</ya-kit-button>
+                        </div>
+                    {{/if}}
+                    {{#if settings.noteText}}
+                        {{#unless (and (eql settings.notePlacement 'media') (or settings.image.filePath settings.imageMobile.filePath))}}
+                            <ya-kit-text class="split__note" size="xs" color="secondary">{{formatLineBreaks settings.noteText}}</ya-kit-text>
+                        {{/unless}}
+                    {{/if}}
                 </div>
-            </ya-kit-v-stack>
-            <div class="split__media">
-                <ya-kit-image class="split__image" src={{settings.image}} fit="cover" aspect-ratio="4:3" rounded="200" />
             </div>
+            {{#if (or settings.image.filePath settings.imageMobile.filePath)}}
+                <figure class="split__media">
+                    {{#if settings.image.filePath}}
+                        <ya-kit-image class="split__image split__image_desktop" src={{settings.image}} alt="{{if settings.imageAlt settings.imageAlt settings.titleText}}" fit="cover" aspect-ratio="{{if settings.mediaRatio settings.mediaRatio '4:3'}}" rounded="{{if settings.joined '0' '200'}}" />
+                    {{else}}
+                        <ya-kit-image class="split__image split__image_desktop" src={{settings.imageMobile}} alt="{{if settings.imageAlt settings.imageAlt settings.titleText}}" fit="cover" aspect-ratio="{{if settings.mediaRatio settings.mediaRatio '4:3'}}" rounded="{{if settings.joined '0' '200'}}" />
+                    {{/if}}
+                    {{#if (or settings.imageMobile.filePath (and settings.mediaRatioTouch (not (eql settings.mediaRatioTouch 'same'))))}}
+                        {{#if settings.imageMobile.filePath}}
+                            <ya-kit-image class="split__image split__image_touch" src={{settings.imageMobile}} alt="{{if settings.imageAlt settings.imageAlt settings.titleText}}" fit="cover" aspect-ratio="{{if (and settings.mediaRatioTouch (not (eql settings.mediaRatioTouch 'same'))) settings.mediaRatioTouch (if settings.mediaRatio settings.mediaRatio '4:3')}}" rounded="{{if settings.joined '0' '200'}}" />
+                        {{else}}
+                            <ya-kit-image class="split__image split__image_touch" src={{settings.image}} alt="{{if settings.imageAlt settings.imageAlt settings.titleText}}" fit="cover" aspect-ratio="{{settings.mediaRatioTouch}}" rounded="{{if settings.joined '0' '200'}}" />
+                        {{/if}}
+                    {{/if}}
+                    {{#if (and settings.noteText (eql settings.notePlacement 'media'))}}
+                        <figcaption class="split__caption">
+                            <ya-kit-text class="split__note" size="xs" color="secondary">{{formatLineBreaks settings.noteText}}</ya-kit-text>
+                        </figcaption>
+                    {{/if}}
+                </figure>
+            {{/if}}
         </div>
     </ya-kit-section-layout-row>
 </ya-kit-section-layout>

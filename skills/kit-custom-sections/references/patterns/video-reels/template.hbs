@@ -1,0 +1,85 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+{{#if (join (mapBy settings.modules "video.fileId") "")}}
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        {{#if (eql settings.playback "queue")}}
+            <ya-kit-video-queue>
+                <ya-kit-carousel
+                    class="kcs-reels kcs-reels--{{settings.frameRatio}} kcs-reels--touch{{settings.columnsTouch}}"
+                    columns="{{settings.columns}}"
+                    columns-touch="{{settings.columnsTouch}}"
+                    h-gap="{{settings.hGap}}"
+                    autoplay="{{settings.autoplay}}"
+                    autoplay-delay="{{settings.autoplayDelay}}"
+                    controls-alignment="{{settings.controlsAlignment}}"
+                    controls-size="{{settings.controlsSize}}"
+                >
+                    {{#each settings.modules as |m|}}
+                        {{#if m.video.fileId}}
+                            <ya-kit-module module-id={{m.id}} class="kcs-reel">
+                                <div class="kcs-reel__frame {{skinRounded 250}}">
+                                    <ya-kit-video class="kcs-reel__video" src={{m.video}} fit="cover" is-autoplay="true" is-muted="true" />
+                                </div>
+                                {{#if m.caption}}
+                                    <ya-kit-text class="kcs-reel__caption" size="md" weight="medium" lines="2">{{m.caption}}</ya-kit-text>
+                                {{/if}}
+                                {{#if m.linkText}}
+                                    {{#if m.link.link}}
+                                        <ya-kit-link class="kcs-reel__link" to="{{m.link.link}}" size="sm" weight="medium" lines="1">{{m.linkText}}</ya-kit-link>
+                                    {{/if}}
+                                {{/if}}
+                            </ya-kit-module>
+                        {{/if}}
+                    {{/each}}
+                </ya-kit-carousel>
+            </ya-kit-video-queue>
+        {{else}}
+            <ya-kit-carousel
+                class="kcs-reels kcs-reels--{{settings.frameRatio}} kcs-reels--touch{{settings.columnsTouch}}"
+                columns="{{settings.columns}}"
+                columns-touch="{{settings.columnsTouch}}"
+                h-gap="{{settings.hGap}}"
+                autoplay="{{settings.autoplay}}"
+                autoplay-delay="{{settings.autoplayDelay}}"
+                controls-alignment="{{settings.controlsAlignment}}"
+                controls-size="{{settings.controlsSize}}"
+            >
+                {{#each settings.modules as |m|}}
+                    {{#if m.video.fileId}}
+                        <ya-kit-module module-id={{m.id}} class="kcs-reel">
+                            <div class="kcs-reel__frame {{skinRounded 250}}">
+                                {{#if (eql settings.playback "background")}}
+                                    <ya-kit-video class="kcs-reel__video" src={{m.video}} fit="cover" skin-variant="default" is-skinless="true" is-autoplay="true" is-muted="true" is-loop="true" />
+                                {{else}}
+                                    <ya-kit-video class="kcs-reel__video" src={{m.video}} fit="cover" is-autoplay="false" is-muted="false" />
+                                {{/if}}
+                            </div>
+                            {{#if m.caption}}
+                                <ya-kit-text class="kcs-reel__caption" size="md" weight="medium" lines="2">{{m.caption}}</ya-kit-text>
+                            {{/if}}
+                            {{#if m.linkText}}
+                                {{#if m.link.link}}
+                                    <ya-kit-link class="kcs-reel__link" to="{{m.link.link}}" size="sm" weight="medium" lines="1">{{m.linkText}}</ya-kit-link>
+                                {{/if}}
+                            {{/if}}
+                        </ya-kit-module>
+                    {{/if}}
+                {{/each}}
+            </ya-kit-carousel>
+        {{/if}}
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+{{/if}}
+</div>

@@ -1,0 +1,231 @@
+/* Полоса ключевых цифр. Цифра не заголовок: разметка dt, а не h*; потолок
+   размера держится под шкалой h1 hero (48px компьютер, 40px планшет, 32px
+   телефон). Цвета только токенами палитры секции; фирменный цвет палитре
+   не подчиняется, поэтому он выбирается явно (valueColor). */
+
+.kcs-stats {
+    --kcs-stats-cols: 4;
+    --kcs-stats-gap-x: var(--ys-spacing-400);
+    --kcs-stats-gap-y: var(--ys-spacing-600);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--kcs-stats-gap-y) var(--kcs-stats-gap-x);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--ys-font-family);
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-stats_cols-3 {
+    --kcs-stats-cols: 3;
+}
+
+.kcs-stats_cols-2 {
+    --kcs-stats-cols: 2;
+}
+
+/* Цифр меньше, чем колонок: ряд делится между ними поровну, пустых ячеек
+   справа нет. */
+.kcs-stats_cols-4.kcs-stats_n-3 {
+    --kcs-stats-cols: 3;
+}
+
+.kcs-stats_cols-4.kcs-stats_n-2,
+.kcs-stats_cols-3.kcs-stats_n-2 {
+    --kcs-stats-cols: 2;
+}
+
+.kcs-stats.kcs-stats_n-1 {
+    --kcs-stats-cols: 1;
+}
+
+/* Неполный последний ряд при выравнивании по центру встаёт по центру,
+   а не прилипает к левому краю. */
+.kcs-stats_center {
+    justify-content: center;
+    text-align: center;
+}
+
+.kcs-stats_left {
+    justify-content: flex-start;
+    text-align: left;
+}
+
+/* ya-kit-module рендерит div: dl, внутри div с парой dt и dd, валиден.
+   container-type даёт единицы cqi: цифра масштабируется от ширины своей
+   колонки, а не от окна, и не вылезает из узкой колонки. */
+.kcs-stats__item {
+    flex: 0 0 calc((100% - (var(--kcs-stats-cols) - 1) * var(--kcs-stats-gap-x)) / var(--kcs-stats-cols));
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+    min-width: 0;
+    container-type: inline-size;
+}
+
+.kcs-stats__value {
+    margin: 0;
+    font-size: clamp(32px, 3.6vw, 48px);
+    font-size: clamp(28px, 18cqi, 48px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums lining-nums;
+    overflow-wrap: break-word;
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-stats_weight-normal .kcs-stats__value {
+    font-weight: 400;
+}
+
+.kcs-stats_weight-medium .kcs-stats__value {
+    font-weight: 500;
+}
+
+.kcs-stats_weight-bold .kcs-stats__value {
+    font-weight: 700;
+}
+
+/* Фирменный цвет общий для витрины и от палитры секции не зависит: на
+   тёмной или цветной палитре цифра может потеряться (см. preview). */
+.kcs-stats_value-brand .kcs-stats__value {
+    color: var(--ys-color-token-brand-primary);
+}
+
+.kcs-stats__caption {
+    max-width: 32ch;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--ys-color-token-text-secondary);
+    overflow-wrap: break-word;
+    text-wrap: balance;
+}
+
+.kcs-stats_center .kcs-stats__caption {
+    margin-inline: auto;
+}
+
+.kcs-stats_caption-upper .kcs-stats__caption {
+    font-size: 14px;
+    line-height: 1.35;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Линия над цифрой: рамка только сверху, поэтому любой перенос ряда
+   выглядит одинаково. Скругление темы здесь не нужно. */
+.kcs-stats_lined {
+    --kcs-stats-gap-y: var(--ys-spacing-500);
+}
+
+.kcs-stats_lined .kcs-stats__item {
+    padding-top: var(--ys-spacing-300);
+    border-top: 1px solid var(--ys-color-token-border-secondary);
+    border-radius: 0;
+}
+
+.kcs-stats_cards {
+    --kcs-stats-gap-x: var(--ys-spacing-300);
+    --kcs-stats-gap-y: var(--ys-spacing-300);
+}
+
+.kcs-stats_cards .kcs-stats__item {
+    padding: var(--ys-spacing-500) var(--ys-spacing-400);
+    background: var(--ys-background-neutral);
+}
+
+.kcs-stats-note {
+    max-width: 48rem;
+    margin: 0;
+    white-space: pre-line;
+}
+
+.kcs-stats-note_center {
+    margin-inline: auto;
+    text-align: center;
+}
+
+/* Планшет: четыре колонки дают цифре меньше 150px, поэтому два ряда по два.
+   Три цифры остаются в один ряд. Потолок размера 40px, как у h1 hero. */
+@media (max-width: 1023px) {
+    .kcs-stats_cols-4 {
+        --kcs-stats-cols: 2;
+    }
+
+    .kcs-stats_cards .kcs-stats__item {
+        padding: var(--ys-spacing-400) var(--ys-spacing-300);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-stats__value {
+        font-size: 36px;
+        font-size: clamp(28px, 18cqi, 40px);
+    }
+}
+
+@media (max-width: 767px) {
+    .kcs-stats__value {
+        font-size: 32px;
+        font-size: clamp(24px, 18cqi, 32px);
+    }
+}
+
+/* Телефон: две колонки при любом выборе (короткие цифры помещаются
+   по две, одна колонка растягивает полосу на полэкрана). */
+@media (max-width: 599px) {
+    .kcs-stats_cols-3,
+    .kcs-stats_cols-4,
+    .kcs-stats_cols-4.kcs-stats_n-3 {
+        --kcs-stats-cols: 2;
+    }
+
+    .kcs-stats {
+        --kcs-stats-gap-x: var(--ys-spacing-200);
+        --kcs-stats-gap-y: var(--ys-spacing-400);
+    }
+
+    .kcs-stats_cards {
+        --kcs-stats-gap-x: var(--ys-spacing-150);
+        --kcs-stats-gap-y: var(--ys-spacing-150);
+    }
+
+    .kcs-stats_cards .kcs-stats__item {
+        padding: var(--ys-spacing-300) var(--ys-spacing-200);
+    }
+
+    .kcs-stats_lined .kcs-stats__item {
+        padding-top: var(--ys-spacing-200);
+    }
+
+    .kcs-stats__item {
+        gap: var(--ys-spacing-100);
+    }
+
+    .kcs-stats__caption {
+        font-size: 14px;
+    }
+
+    .kcs-stats_caption-upper .kcs-stats__caption {
+        font-size: 12px;
+        letter-spacing: 0.04em;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

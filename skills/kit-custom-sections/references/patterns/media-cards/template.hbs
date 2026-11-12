@@ -1,0 +1,96 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if (or settings.titleText settings.introText)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-mc-head kcs-mc-head_{{settings.titleAlign}} kcs-mc-head_theme-{{globals.typography.titleAlign}}">
+                {{#if settings.titleText}}
+                    <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+                {{/if}}
+                {{#if settings.introText}}
+                    <ya-kit-text class="kcs-mc-head__intro" size="lg" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{settings.introText}}</ya-kit-text>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        {{#if (eql settings.layout 'carousel')}}
+            <ya-kit-carousel
+                class="kcs-mc kcs-mc_carousel kcs-mc_cols-{{settings.columns}} kcs-mc_m-{{settings.mobileView}} kcs-mc_r-{{replace settings.imageRatio ':' '-'}} kcs-mc_card-{{settings.cardStyle}} kcs-mc_label-{{settings.labelStyle}} kcs-mc_align-{{settings.align}}"
+                columns="{{settings.columns}}"
+                columns-touch="1"
+                h-gap="300"
+                controls-alignment="edges"
+                controls-size="md"
+            >
+                {{#each settings.modules as |card|}}
+                    <ya-kit-module module-id={{card.id}} class="kcs-mc__item">
+                        <article class="kcs-mc__card {{skinRounded 150}}">
+                            {{#if card.image.filePath}}
+                                <div class="kcs-mc__media">
+                                    <ya-kit-image class="kcs-mc__image" src={{card.image}} alt="{{when (isEmpty card.imageAlt) card.title card.imageAlt}}" fit="cover" aspect-ratio="{{when (eql settings.imageRatio 'circle') '1:1' settings.imageRatio}}" background-color="neutral" />
+                                </div>
+                            {{/if}}
+                            <div class="kcs-mc__body">
+                                {{#if card.title}}
+                                    <ya-kit-text class="kcs-mc__title" as="h3" size="lg" weight="semibold" color="inherit">{{card.title}}</ya-kit-text>
+                                {{/if}}
+                                {{#if card.subtitle}}
+                                    <ya-kit-text class="kcs-mc__subtitle" size="sm" color="secondary">{{card.subtitle}}</ya-kit-text>
+                                {{/if}}
+                                {{#if card.text}}
+                                    <ya-kit-text class="kcs-mc__text" size="md">{{card.text}}</ya-kit-text>
+                                {{/if}}
+                                {{#if card.linkText}}
+                                    {{#if card.link.link}}
+                                        <ya-kit-link class="kcs-mc__link" to="{{card.link.link}}" size="md" weight="medium">{{card.linkText}}</ya-kit-link>
+                                    {{/if}}
+                                {{/if}}
+                            </div>
+                        </article>
+                    </ya-kit-module>
+                {{/each}}
+            </ya-kit-carousel>
+        {{else}}
+            <div
+                class="kcs-mc kcs-mc_grid kcs-mc_cols-{{settings.columns}} kcs-mc_m-{{settings.mobileView}} kcs-mc_r-{{replace settings.imageRatio ':' '-'}} kcs-mc_card-{{settings.cardStyle}} kcs-mc_label-{{settings.labelStyle}} kcs-mc_align-{{settings.align}}"
+                style="--kcs-mc-bleed: var(--ys-spacing-{{settings.section.hPaddingMobile}}, 0px)"
+            >
+                {{#each settings.modules as |card|}}
+                    <ya-kit-module module-id={{card.id}} class="kcs-mc__item">
+                        <article class="kcs-mc__card {{skinRounded 150}}">
+                            {{#if card.image.filePath}}
+                                <div class="kcs-mc__media">
+                                    <ya-kit-image class="kcs-mc__image" src={{card.image}} alt="{{when (isEmpty card.imageAlt) card.title card.imageAlt}}" fit="cover" aspect-ratio="{{when (eql settings.imageRatio 'circle') '1:1' settings.imageRatio}}" background-color="neutral" />
+                                </div>
+                            {{/if}}
+                            <div class="kcs-mc__body">
+                                {{#if card.title}}
+                                    <ya-kit-text class="kcs-mc__title" as="h3" size="lg" weight="semibold" color="inherit">{{card.title}}</ya-kit-text>
+                                {{/if}}
+                                {{#if card.subtitle}}
+                                    <ya-kit-text class="kcs-mc__subtitle" size="sm" color="secondary">{{card.subtitle}}</ya-kit-text>
+                                {{/if}}
+                                {{#if card.text}}
+                                    <ya-kit-text class="kcs-mc__text" size="md">{{card.text}}</ya-kit-text>
+                                {{/if}}
+                                {{#if card.linkText}}
+                                    {{#if card.link.link}}
+                                        <ya-kit-link class="kcs-mc__link" to="{{card.link.link}}" size="md" weight="medium">{{card.linkText}}</ya-kit-link>
+                                    {{/if}}
+                                {{/if}}
+                            </div>
+                        </article>
+                    </ya-kit-module>
+                {{/each}}
+            </div>
+        {{/if}}
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

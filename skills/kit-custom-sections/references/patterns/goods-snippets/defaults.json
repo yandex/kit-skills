@@ -1,21 +1,38 @@
 {
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
   "dataSource": {
     "id": "",
     "slug": "",
     "type": "category"
   },
-  "count": 6,
+  "showAllText": "Смотреть все",
+  "count": 8,
+  "layout": "grid-strip",
   "columns": 4,
-  "titleText": "Популярное",
-  "titleAlign": "default",
-  "palette": "default",
+  "columnsTouch": 2,
+  "maxRowsTouch": 2,
+  "hGap": "300",
+  "vGap": "600",
+  "card": {
+    "titleLines": 2,
+    "discount": "default",
+    "showBadges": true,
+    "showFavourite": true,
+    "cartButton": "default",
+    "hideCartButtonTouch": true,
+    "addToCartText": "В корзину",
+    "outOfStockText": "Нет в наличии",
+    "split": "disabled",
+    "payDiscount": "disabled"
+  },
   "section": {
     "isFullscreen": "default",
-    "hPaddingDesktop": "800",
     "hPaddingMobile": "200",
     "paddingTop": "single",
     "paddingBottom": "single"
   },
-  "verticalRhythm": "500",
-  "verticalRhythmTouch": "300"
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
 }

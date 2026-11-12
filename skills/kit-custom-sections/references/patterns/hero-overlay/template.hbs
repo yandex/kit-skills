@@ -1,0 +1,54 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        <div
+            class="kcs-ov kcs-ov--{{settings.overlay.type}} kcs-ov--tone-{{when (eql settings.overlay.tone 'palette') 'palette' 'inverse'}} kcs-ov--v-{{settings.content.valign}} kcs-ov--h-{{settings.content.align}} kcs-ov--vm-{{if (eql settings.content.valignMobile 'same') settings.content.valign settings.content.valignMobile}} {{cn (if (eql settings.frame.ratioMobile 'screen') 'kcs-ov--screen-m' '') (if settings.frame.headerSpace 'kcs-ov--header-space' '')}}"
+            style="--ov-r: {{replace settings.frame.ratio ':' '/'}}; --ov-rm: {{replace (if (eql settings.frame.ratioMobile 'screen') '3:4' settings.frame.ratioMobile) ':' '/'}}; --ov-h: {{settings.content.align}}; --ov-v: {{settings.content.valign}}; --ov-hm: {{if (eql settings.content.alignMobile 'same') settings.content.align settings.content.alignMobile}}; --ov-vm: {{if (eql settings.content.valignMobile 'same') settings.content.valign settings.content.valignMobile}}; --ov-fp: {{settings.frame.focus}}; --ov-o: {{divide (if settings.overlay.opacity settings.overlay.opacity 0) 100}};{{if settings.overlay.color (add ' --ov-c: ' settings.overlay.color) ''}};{{if settings.content.textColor (add ' --ov-t: ' settings.content.textColor) ''}}"
+        >
+            <div class="kcs-ov__frame {{skinRounded (if settings.frame.rounded '200' '0')}}">
+                {{#if settings.image.filePath}}
+                    <ya-kit-image class="kcs-ov__img kcs-ov__img_d" src={{settings.image}} alt="{{settings.imageAlt}}" fit="cover" aspect-ratio="{{settings.frame.ratio}}" rounded="{{if settings.frame.rounded '200' '0'}}" />
+                {{/if}}
+                {{#if settings.imageMobile.filePath}}
+                    <ya-kit-image class="kcs-ov__img kcs-ov__img_m" src={{settings.imageMobile}} alt="{{settings.imageAlt}}" fit="cover" aspect-ratio="{{if (eql settings.frame.ratioMobile 'screen') '3:4' settings.frame.ratioMobile}}" rounded="{{if settings.frame.rounded '200' '0'}}" />
+                {{else}}
+                    {{#if settings.image.filePath}}
+                        <ya-kit-image class="kcs-ov__img kcs-ov__img_m" src={{settings.image}} alt="{{settings.imageAlt}}" fit="cover" aspect-ratio="{{if (eql settings.frame.ratioMobile 'screen') '3:4' settings.frame.ratioMobile}}" rounded="{{if settings.frame.rounded '200' '0'}}" />
+                    {{/if}}
+                {{/if}}
+                <div class="kcs-ov__tint"></div>
+                <div class="kcs-ov__content">
+                    <ya-kit-v-stack class="kcs-ov__stack" gap="300">
+                        {{#if (eql settings.headingLevel 'h1')}}
+                            <ya-kit-text class="kcs-ov__title" as="h1" size="4xl" weight="bold" color="inherit">{{formatLineBreaks settings.title}}</ya-kit-text>
+                        {{else}}
+                            <ya-kit-text class="kcs-ov__title" as="h2" size="4xl" weight="bold" color="inherit">{{formatLineBreaks settings.title}}</ya-kit-text>
+                        {{/if}}
+                        {{#if settings.text}}
+                            <ya-kit-text class="kcs-ov__text" size="lg" color="inherit">{{formatLineBreaks settings.text}}</ya-kit-text>
+                        {{/if}}
+                        {{#unless (isEmpty settings.modules)}}
+                            <div class="kcs-ov__actions">
+                                {{#each settings.modules as |module|}}
+                                    {{#if (and module.text module.link.link)}}
+                                        <ya-kit-module module-id={{module.id}} class="kcs-ov__action">
+                                            <ya-kit-button class="kcs-ov__btn" color="{{module.color}}" size="lg" to={{module.link.link}}>{{module.text}}</ya-kit-button>
+                                        </ya-kit-module>
+                                    {{/if}}
+                                {{/each}}
+                            </div>
+                        {{/unless}}
+                    </ya-kit-v-stack>
+                </div>
+            </div>
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

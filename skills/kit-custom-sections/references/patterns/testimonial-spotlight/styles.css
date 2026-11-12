@@ -1,0 +1,227 @@
+/* Отзыв крупной цитатой: один отзыв на слайд, на любой ширине без подглядывания
+   соседнего слайда. Трек карусели меняется только через хук data-carousel-track
+   (хешированные классы карусели не трогаем); свайп доводится до целого слайда. */
+.kcs-ts {
+    width: 100%;
+}
+
+.kcs-ts [data-carousel-track='true'] {
+    --ys-carousel-offset: 0px;
+    scroll-snap-type: x mandatory;
+}
+
+/* Слайды одной высоты (по самому длинному отзыву), содержимое по центру:
+   стрелки карусели стоят на середине высоты и попадают на середину цитаты. */
+.kcs-ts__slide {
+    display: flex;
+    min-width: 0;
+}
+
+.kcs-ts__card {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ys-spacing-300);
+    box-sizing: border-box;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Подложка «панель»: мягкий вторичный фон палитры и скругление темы. */
+.kcs-ts_surface-panel .kcs-ts__card {
+    padding: var(--ys-spacing-1000) var(--ys-spacing-800);
+    background: var(--ys-background-secondary);
+    border-radius: var(--ys-current-skin-border-radius);
+}
+
+.kcs-ts__stars {
+    display: flex;
+    gap: var(--ys-spacing-50);
+    color: var(--ys-color-token-brand-primary);
+}
+
+/* Звёзды цветом текста: для палитры, чей фон близок к цвету бренда. */
+.kcs-ts_stars-text .kcs-ts__stars {
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-ts__star {
+    display: block;
+    flex: none;
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.kcs-ts__star_empty {
+    fill: var(--ys-color-token-border-secondary);
+}
+
+/* Цитата — не заголовок: собственная шкала выделенной цитаты (rules.md).
+   Размер атома перебивается классом: скоуп секции #id сильнее класса атома. */
+.kcs-ts__quote {
+    max-width: 26em;
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    white-space: pre-line;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+    quotes: '\00AB' '\00BB' '\201E' '\201C';
+}
+
+.kcs-ts__quote::before {
+    content: open-quote;
+}
+
+.kcs-ts__quote::after {
+    content: close-quote;
+}
+
+.kcs-ts_size-s .kcs-ts__quote {
+    font-size: 28px;
+    line-height: 1.3;
+}
+
+.kcs-ts_size-l .kcs-ts__quote {
+    font-size: 40px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+}
+
+.kcs-ts__author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ys-spacing-150);
+    min-width: 0;
+    margin-top: var(--ys-spacing-100);
+}
+
+.kcs-ts__photo {
+    flex: none;
+    width: 56px;
+}
+
+.kcs-ts__byline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-25);
+    min-width: 0;
+    text-align: center;
+}
+
+.kcs-ts__author_photo .kcs-ts__byline {
+    text-align: left;
+}
+
+.kcs-ts__name,
+.kcs-ts__caption {
+    text-align: inherit;
+}
+
+.kcs-ts__count {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+}
+
+.kcs-ts__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* Стрелки карусели (от 768px): «по краям» на экранах до 1450px платформа
+   ставит внутрь, в 48px от края, кнопка до 48px. Поле 112px по бокам
+   держит текст вне зоны стрелок на любой ширине. */
+@media (min-width: 768px) {
+    .kcs-ts_arrows-edges .kcs-ts__card,
+    .kcs-ts_arrows-leftRight .kcs-ts__card {
+        padding-left: var(--ys-spacing-1200);
+        padding-right: var(--ys-spacing-1200);
+    }
+}
+
+/* Планшет: цитата на шаг мельче, панель ниже. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-ts__quote {
+        font-size: 28px;
+        line-height: 1.3;
+    }
+
+    .kcs-ts_size-s .kcs-ts__quote {
+        font-size: 24px;
+    }
+
+    .kcs-ts_size-l .kcs-ts__quote {
+        font-size: 32px;
+        line-height: 1.25;
+    }
+
+    .kcs-ts_surface-panel .kcs-ts__card {
+        padding-top: var(--ys-spacing-800);
+        padding-bottom: var(--ys-spacing-800);
+    }
+}
+
+/* Телефон: стрелок у карусели нет (листают свайпом), номер отзыва
+   подсказывает, что отзывов несколько. */
+@media (max-width: 767px) {
+    .kcs-ts__card {
+        gap: var(--ys-spacing-200);
+    }
+
+    .kcs-ts_surface-panel .kcs-ts__card {
+        padding: var(--ys-spacing-600) var(--ys-spacing-300);
+    }
+
+    .kcs-ts__star {
+        width: 18px;
+        height: 18px;
+    }
+
+    .kcs-ts__quote {
+        font-size: 22px;
+        line-height: 1.35;
+        letter-spacing: 0;
+    }
+
+    .kcs-ts_size-s .kcs-ts__quote {
+        font-size: 20px;
+        line-height: 1.4;
+    }
+
+    .kcs-ts_size-l .kcs-ts__quote {
+        font-size: 24px;
+        line-height: 1.3;
+        letter-spacing: 0;
+    }
+
+    .kcs-ts__photo {
+        width: 48px;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

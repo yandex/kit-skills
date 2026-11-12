@@ -1,0 +1,15 @@
+id: logo-wall
+version: 2
+title: "Логотипы партнёров"
+purpose: "Логотипы партнёров, клиентов или изданий: сетка с подписями и ссылками или бегущая строка"
+origin: "handmade"
+fingerprint: "1ddd39db3434be89d2e3079b1974b3734201e3d204f9bc1a8e9589b32a50f2b1"
+docs_fingerprint: "1ddd39db3434be89d2e3079b1974b3734201e3d204f9bc1a8e9589b32a50f2b1"
+applied_patches: ""
+keywords: "логотипы, логотипов, стена логотипов, лента логотипов, логотипы партнёров, логотипы клиентов, партнёры, партнеры, нам доверяют, логотипы сми, публикации сми, сми, logo wall, строка логотипов, логотипы брендов"
+pages: "main, landing"
+controllers: ""
+answers_required: "modules"
+alternatives: "social-feed, ticker-band"
+rhythm: "0"
+rhythm_touch: "0"

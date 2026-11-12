@@ -1,0 +1,33 @@
+{
+  "start": "classic",
+  "looks": [
+    {
+      "name": "classic",
+      "title": "Логотип слева, меню строкой",
+      "description": "Вид по умолчанию.",
+      "settings": {}
+    },
+    {
+      "name": "center-logo",
+      "title": "Логотип по центру",
+      "description": "Меню слева, кнопки справа; меню строкой с 1280px.",
+      "settings": {
+        "layout": {
+          "logoPosition": "center",
+          "navMode": "wide"
+        }
+      }
+    },
+    {
+      "name": "mega",
+      "title": "Мега-меню, высокая строка",
+      "description": "Для каталога с глубоким меню.",
+      "settings": {
+        "layout": {
+          "dropdown": "mega",
+          "barHeight": "spacious"
+        }
+      }
+    }
+  ]
+}

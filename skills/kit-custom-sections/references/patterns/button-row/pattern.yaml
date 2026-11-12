@@ -1,0 +1,14 @@
+id: button-row
+version: 2
+title: "Кнопка или ссылка-полоса"
+purpose: "Отдельное действие между секциями: выровненная кнопка или ссылка-полоса во всю ширину"
+origin: "handmade"
+fingerprint: "ccf7e8c37b983ef33062ae5819fbbda0499212bed94a287e1be13075fc3824c5"
+docs_fingerprint: "ccf7e8c37b983ef33062ae5819fbbda0499212bed94a287e1be13075fc3824c5"
+applied_patches: ""
+keywords: "отдельная кнопка, отдельную кнопку, смотреть все, ссылка-полоса, полоса-ссылка, большая ссылка, link bar, кнопка смотреть все"
+pages: "main, landing, listing, pdp"
+controllers: ""
+answers_required: "text, link"
+rhythm: "0"
+rhythm_touch: "0"

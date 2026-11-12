@@ -1,0 +1,37 @@
+{
+  "palette": "default",
+  "view": {
+    "showTitle": true,
+    "fallbackTitle": "Каталог",
+    "emptyText": "Ничего не нашлось"
+  },
+  "controls": {
+    "showFilters": true,
+    "showSorting": true,
+    "sortLabel": "current",
+    "showPagination": true
+  },
+  "grid": {
+    "columns": 4,
+    "rows": 6,
+    "columnsTouch": 2,
+    "gapless": false
+  },
+  "card": {
+    "order": "theme",
+    "showVendor": false,
+    "showBadges": true,
+    "badgePosition": "bottom-left",
+    "cartButton": "default",
+    "addToCartText": "В корзину",
+    "outOfStockText": "Нет в наличии"
+  },
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

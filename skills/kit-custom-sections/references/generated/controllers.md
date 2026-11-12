@@ -3,43 +3,51 @@
 
 # Контроллеры данных
 
-Всего 36. Дефолтный алиас — `as="controller"`. Payload собирается фронтом динамически, поэтому у каждой записи статус источника.
+Всего 44. Дефолтный алиас — `as="controller"`. Payload собирается фронтом динамически, поэтому у каждой записи статус источника. Атрибуты с пометкой «(код)» взяты из пропсов контроллера, «обязателен» — в типе пропсов без `?`, зачёркнутые движок не читает.
 
 | Тег | Атрибуты | Статус |
 |---|---|---|
+| `ya-kit-accordion-group-controller` | — | только в коде |
 | `ya-kit-blog-detail-controller` | `as` | payload описан в доке |
 | `ya-kit-blog-listing-controller` | `as`, `per-page` | payload описан в доке |
-| `ya-kit-boundary-controller` | — | payload описан в доке |
+| `ya-kit-boundary-controller` | `as` | payload описан в доке |
 | `ya-kit-breadcrumbs-controller` | `as` | payload описан в доке |
-| `ya-kit-carousel-controller` | — | payload описан в доке |
+| `ya-kit-carousel-controller` | `as` | payload описан в доке |
 | `ya-kit-categories-controller` | `as`, `include-images` | payload описан в доке |
 | `ya-kit-collections-listing-controller` | `as`, `source` | payload описан в доке |
-| `ya-kit-company-controller` | `as` | payload описан в доке |
-| `ya-kit-countdown-controller` | — | payload описан в доке |
-| `ya-kit-delivery-options-controller` | `as`, `location`, `product` | payload описан в доке |
+| `ya-kit-company-controller` | `as` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-copy-to-clipboard-controller` | — | только в коде |
+| `ya-kit-countdown-controller` | `as`, `date`, `on-complete` | payload описан в доке |
+| `ya-kit-delivery-options-controller` | `as`, `location`, `product` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-discount-ladder-controller` | `as`, `per-page` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
 | `ya-kit-drag-controller` | `as`, `is-disabled`, `axis` | payload описан в доке |
-| `ya-kit-email-subscription-controller` | `as`, `enable-agreement`, `promocode` | payload описан в доке |
+| `ya-kit-email-subscription-controller` | `as`, `enable-agreement`, `promocode` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
 | `ya-kit-favourite-products-controller` | `as` | payload описан в доке |
 | `ya-kit-featured-blog-controller` | `as`, `tags`, `count` | payload описан в доке |
-| `ya-kit-featured-products-controller` | `as`, `data-source`, `count` | payload описан в доке |
-| `ya-kit-field-controller` | — | payload описан в доке |
+| `ya-kit-featured-products-controller` | `as`, `data-source`, `count`, `is-feed` (код), `per-page` (код) | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-field-controller` | `as`, `value`, `is-disabled`, `on-change` | payload описан в доке |
 | `ya-kit-gift-slot-controller` | `slot`, `as` | payload описан в доке |
 | `ya-kit-gift-snippet-controller` | `gift`, `as` | payload описан в доке |
 | `ya-kit-gifts-controller` | `as` | payload описан в доке |
-| `ya-kit-intersection-controller` | — | payload описан в доке |
+| `ya-kit-infinite-scroll-controller` | — | только в коде |
+| `ya-kit-intersection-controller` | `as`, `threshold`, `threshold-step`, `root-margin`, `trigger-once` | payload описан в доке |
 | `ya-kit-location-controller` | `as` | payload описан в доке |
 | `ya-kit-menu-controller` | `as`, `menu` | payload описан в доке |
 | `ya-kit-metrika-controller` | `as`, `goal`, `strategy` | payload описан в доке |
-| `ya-kit-product-detail-controller` | — | payload описан в доке |
-| `ya-kit-product-snippet-controller` | `as`, `product` | payload описан в доке |
-| `ya-kit-products-filters-controller` | — | payload описан в доке |
-| `ya-kit-products-listing-controller` | — | payload описан в доке |
-| `ya-kit-promocode-controller` | `as`, `promocode-id` | payload описан в доке |
+| `ya-kit-product-detail-controller` | `as` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-product-feedback-listing-controller` | `as` (код), `per-page` (код) | только в коде; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-product-feedback-media-list-controller` | `as` (код) | только в коде; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-product-feedback-viewer-controller` | `as` (код) | только в коде; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-product-snippet-controller` | `as`, `product` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-products-filters-controller` | `as`, `schema`, `initial-value`, `on-submit` | payload описан в доке |
+| `ya-kit-products-group-controller` | `as` (код), `variant-ids` (код, обязателен) | только в коде; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-products-listing-controller` | `as`, `per-page`, `on-filters-did-changed` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
+| `ya-kit-promocode-controller` | `as`, `promocode-id` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
 | `ya-kit-resize-controller` | `as` | payload описан в доке |
 | `ya-kit-scroll-controller` | — | только в коде |
-| `ya-kit-self-pickup-controller` | `as`, `location`, `product`, `quantity` | payload описан в доке |
+| `ya-kit-self-pickup-controller` | `as`, `location`, `product`, ~~`quantity`~~ (не действует) | payload описан в доке |
 | `ya-kit-shopping-cart-bundle-controller` | `bundle`, `as` | payload описан в доке |
-| `ya-kit-shopping-cart-controller` | `as` | payload описан в доке |
+| `ya-kit-shopping-cart-controller` | `as` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |
 | `ya-kit-toggle-controller` | `as`, `initial-value` | payload описан в доке |
 | `ya-kit-user-controller` | `as` | payload описан в доке |
-| `ya-kit-value-controller` | `as`, `initial-value` | payload описан в доке |
+| `ya-kit-value-controller` | `as`, `initial-value` | payload описан в доке; поля по коду — `references/manual/controller-payloads.md` |

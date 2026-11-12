@@ -1,0 +1,102 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        <ya-kit-breadcrumbs-controller as="crumbs">
+            <div class="kcs-subnav kcs-subnav_style_{{settings.view.style}} kcs-subnav_align_{{settings.view.align}} kcs-subnav_show-{{when settings.view.showOn settings.view.showOn 'all'}} {{if settings.view.activeFirstTouch 'kcs-subnav_active-first'}} {{if settings.view.topBorder 'kcs-subnav_top-border'}} {{if settings.view.bottomBorder 'kcs-subnav_bottom-border'}}">
+                {{#if (eql settings.source 'menu')}}
+                    <ya-kit-menu-controller menu={{settings.menu}} as="nav">
+                        {{#if (gte (length nav.model.items) 1)}}
+                            <nav class="kcs-subnav__bar kcs-subnav__part" aria-label="Разделы каталога">
+                                <ul class="kcs-subnav__list">
+                                    {{#each nav.model.items as |item|}}
+                                        <li class="kcs-subnav__item">
+                                            <ya-kit-link class="kcs-subnav__link {{skinRounded 100}}" to={{item.url}}>{{item.title}}</ya-kit-link>
+                                            {{#each crumbs.model as |crumb|}}
+                                                {{#if (and (eql crumb.url item.url) (notEql crumb.url '/'))}}
+                                                    <span class="kcs-subnav__mark" aria-hidden="true"></span>
+                                                {{/if}}
+                                            {{/each}}
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            </nav>
+                        {{/if}}
+                    </ya-kit-menu-controller>
+                {{else}}
+                    {{#if (and settings.masthead.showBreadcrumbs (gte (length crumbs.model) 2))}}
+                        <ya-kit-breadcrumbs class="kcs-subnav__crumbs kcs-subnav__part" items={{crumbs.model}} />
+                    {{/if}}
+                    <ya-kit-categories-controller as="cats" include-images="{{notEql settings.masthead.cover 'none'}}">
+                        {{#if (and cats.isLoading (or route.context.path.categorySlug route.context.facetCollection.categorySlug))}}
+                            <ya-kit-skeleton class="kcs-subnav__skeleton kcs-subnav__part" variant="rect" rounded="100" width="60%" />
+                        {{else}}
+                            {{#with (call cats.selectById (when route.context.path.categorySlug route.context.path.categorySlug route.context.facetCollection.categorySlug)) as |current|}}
+                                {{#if (notEql settings.masthead.cover 'none')}}
+                                    {{#with (when route.context.collection.media route.context.collection.media current.media) as |cover|}}
+                                        <div class="kcs-subnav__cover kcs-subnav__cover_{{settings.masthead.cover}} kcs-subnav__part">
+                                            <ya-kit-image class="kcs-subnav__image" src={{cover}} fit="cover" rounded="200" alt="{{when route.context.collection route.context.collection.title current.title}}" />
+                                        </div>
+                                    {{/with}}
+                                {{/if}}
+                                {{#if settings.masthead.showTitle}}
+                                    <ya-kit-section-title class="kcs-subnav__title kcs-subnav__part" text="{{when route.context.collection route.context.collection.title current.title}}" />
+                                {{/if}}
+                                {{#with (when (gte (length current.children) 1) current.children (when current.parentId (get (call cats.selectById current.parentId) 'children') cats.model)) as |items|}}
+                                    {{#if (or (gte (length current.children) 1) (and settings.view.siblingsOnLeaf (gte (length items) 2)))}}
+                                        <nav class="kcs-subnav__bar kcs-subnav__part" aria-label="Подкатегории">
+                                            <ul class="kcs-subnav__list">
+                                                {{#if settings.view.allText}}
+                                                    {{#with (when (gte (length current.children) 1) current (call cats.selectById current.parentId)) as |hub|}}
+                                                        <li class="kcs-subnav__item {{if (eql hub.id current.id) 'kcs-subnav__item_active'}}">
+                                                            {{#if (eql hub.id current.id)}}
+                                                                <span class="kcs-subnav__link kcs-subnav__link_active {{skinRounded 100}}" aria-current="page">{{settings.view.allText}}</span>
+                                                            {{else}}
+                                                                <ya-kit-link class="kcs-subnav__link {{skinRounded 100}}" to={{hub.url}}>{{settings.view.allText}}</ya-kit-link>
+                                                            {{/if}}
+                                                        </li>
+                                                    {{/with}}
+                                                {{/if}}
+                                                {{#each items as |item|}}
+                                                    {{#unless item.isHiddenInMenu}}
+                                                        <li class="kcs-subnav__item {{if (eql item.id current.id) 'kcs-subnav__item_active'}}">
+                                                            {{#if (eql item.id current.id)}}
+                                                                <span class="kcs-subnav__link kcs-subnav__link_active {{skinRounded 100}}" aria-current="page">{{item.title}}</span>
+                                                            {{else}}
+                                                                <ya-kit-link class="kcs-subnav__link {{skinRounded 100}}" to={{item.url}}>{{item.title}}</ya-kit-link>
+                                                            {{/if}}
+                                                        </li>
+                                                    {{/unless}}
+                                                {{/each}}
+                                            </ul>
+                                        </nav>
+                                    {{/if}}
+                                {{/with}}
+                            {{else}}
+                                {{#if route.context.collection}}
+                                    {{#if (notEql settings.masthead.cover 'none')}}
+                                        {{#with route.context.collection.media as |cover|}}
+                                            <div class="kcs-subnav__cover kcs-subnav__cover_{{settings.masthead.cover}} kcs-subnav__part">
+                                                <ya-kit-image class="kcs-subnav__image" src={{cover}} fit="cover" rounded="200" alt="{{route.context.collection.title}}" />
+                                            </div>
+                                        {{/with}}
+                                    {{/if}}
+                                    {{#if settings.masthead.showTitle}}
+                                        <ya-kit-section-title class="kcs-subnav__title kcs-subnav__part" text="{{route.context.collection.title}}" />
+                                    {{/if}}
+                                {{/if}}
+                            {{/with}}
+                        {{/if}}
+                    </ya-kit-categories-controller>
+                {{/if}}
+            </div>
+        </ya-kit-breadcrumbs-controller>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

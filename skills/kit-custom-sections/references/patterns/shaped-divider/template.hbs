@@ -1,0 +1,28 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    class="kcs-edge-back kcs-edge-back_{{settings.backdropTone}}"
+    palette={{settings.backdropPalette}}
+    background={{settings.backdropTone}}
+    is-fullscreen="enabled"
+    h-padding-desktop="0"
+    h-padding-mobile="0"
+    padding-top="none"
+    padding-bottom="none"
+>
+    <ya-kit-section-layout
+        palette={{settings.palette}}
+        background="none"
+        is-fullscreen="enabled"
+        h-padding-desktop="0"
+        h-padding-mobile="0"
+        padding-top="none"
+        padding-bottom="none"
+    >
+        <div
+            class="kcs-edge kcs-edge_{{settings.shape}} kcs-edge_{{settings.edge}} kcs-edge_{{settings.direction}} kcs-edge_period-{{settings.period}} kcs-edge_fill-{{settings.tone}}"
+            style="--kcs-edge-d: var(--ys-spacing-{{settings.depth}}); --kcs-edge-d-touch: var(--ys-spacing-{{settings.depthTouch}})"
+            aria-hidden="true"
+        ></div>
+    </ya-kit-section-layout>
+</ya-kit-section-layout>
+</div>

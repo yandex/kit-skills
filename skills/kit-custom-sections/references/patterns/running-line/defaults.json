@@ -3,7 +3,6 @@
   "isBlurry": false,
   "section": {
     "isFullscreen": "default",
-    "hPaddingDesktop": "800",
     "hPaddingMobile": "200",
     "paddingTop": "single",
     "paddingBottom": "single"
@@ -11,9 +10,9 @@
   "modules": [
     {
       "id": "m1",
-      "title": "Доставка по всей России"
+      "title": ""
     }
   ],
-  "verticalRhythm": "500",
-  "verticalRhythmTouch": "300"
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
 }

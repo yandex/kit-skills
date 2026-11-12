@@ -8,23 +8,25 @@
     is-fullscreen={{settings.section.isFullscreen}} 
 >
     <ya-kit-toggle-controller as="filtersState">
-        <ya-kit-products-listing-controller per-page="3" as="listing" on-filters-did-changed={{filtersState.onSetFalsy}}>
+        <ya-kit-products-listing-controller per-page="{{settings.perPage}}" as="listing" on-filters-did-changed={{filtersState.onSetFalsy}}>
             <ya-kit-section-layout-row>
                 <ya-kit-section-title>
                     {{#if route.context.collection}}
                         {{route.context.collection.title}}
-                    {{elseif controller.isLoading}}
-                        <ya-kit-skeleton variant="text" width="200px" />
                     {{elseif route.context.query.query}}
                         Результаты по запросу: {{route.context.query.query}}
+                    {{elseif listing.model.categories.selected}}
+                        {{listing.model.categories.selected.title}}
+                    {{elseif listing.isLoading}}
+                        <ya-kit-skeleton variant="text" width="200px" />
                     {{else}}
-                        Результаты поиска
+                        Каталог
                     {{/if}}
                 </ya-kit-section-title>
             </ya-kit-section-layout-row>
             <ya-kit-section-layout-row>
                 <ya-kit-h-stack justify-content="space-between" gap="100">
-                    <ya-kit-clickable-area on-press={{filtersState.onSetTruthy}}>
+                    <ya-kit-clickable-area class="kcs-listing-filters-toggle" on-press={{filtersState.onSetTruthy}}>
                         <ya-kit-h-stack align-items="center" gap="150">
                             <svg width="24" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                 <path d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z"></path>
@@ -47,11 +49,11 @@
                 </ya-kit-h-stack>
             </ya-kit-section-layout-row>
             <ya-kit-section-layout-row>
-                <ya-kit-drawer class="drawer" is-open={{filtersState.isOpen}} variant="left" on-close={{filtersState.onSetFalsy}}>
-                    <ya-kit-v-stack gap="150" class="drawer__content">
+                <ya-kit-drawer class="kcs-listing-drawer" is-open={{filtersState.isOpen}} variant="left" on-close={{filtersState.onSetFalsy}}>
+                    <ya-kit-v-stack gap="150" class="kcs-listing-drawer__content">
                         <ya-kit-text size="xl" weight="semibold">Фильтры</ya-kit-text>
                         <ya-kit-products-filters
-                            class="drawer__filters"
+                            class="kcs-listing-drawer__filters"
                             schema={{listing.model.filters.schema}}
                             value={{listing.model.filters.values}}
                             category={{listing.model.categories.selected}}
@@ -62,7 +64,7 @@
                 </ya-kit-drawer>
                 <ya-kit-v-stack gap="300" class="list" align-items="stretch">
                     {{#if (and (eql listing.model.items.length 0) listing.isLoading)}}
-                    	{{#repeat 5}}
+                    	{{#repeat settings.perPage}}
                      		<ya-kit-h-stack gap="300" class="list-item" align-items="center">
                                 <ya-kit-skeleton class="list-item__image-wrapper" aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}" />
                                 <div class="list-item__body">
@@ -87,7 +89,7 @@
                                 <ya-kit-h-stack gap="300" class="list-item" align-items="center">
                                     <ya-kit-link to="{{product.url}}" class="list-item__image-wrapper {{skinRounded 100}}">
                                         <ya-kit-paranja>
-                                            <ya-kit-image src="{{product.mediaItems.0.payload}}" aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}" />
+                                            <ya-kit-image src="{{first (filterImages product.mediaItems)}}" alt="{{product.name}}" aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}" />
                                         </ya-kit-paranja>
                                     </ya-kit-link>
                                     <div class="list-item__body">
@@ -111,11 +113,11 @@
                                     </div>
                                 </ya-kit-h-stack>
                             </ya-kit-product-snippet-controller> 
-                            {{#if (lt (add index 1) productsController.model.items.length)}}
+                            {{#if (lt (add index 1) listing.model.items.length)}}
                                 <div class="divider"></div>
                             {{/if}}
                         {{/each}}
-                        {{#if listing.model.pagination}}
+                        {{#if (gt listing.model.pagination.total 1)}}
                             <ya-kit-v-stack align-items="center">
                                 <ya-kit-pagination
                                     current="{{listing.model.pagination.current}}"

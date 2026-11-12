@@ -1,0 +1,193 @@
+/* Лента-разделитель: одна строка фраз, бесконечная прокрутка без JS.
+   CSS скоупится по шаблону, а не по инстансу: все регуляторы (скорость,
+   зазор, поля) приходят инлайн-переменными инстанса, поэтому несколько лент
+   на странице с разными настройками не мешают друг другу. У каждой
+   переменной есть фолбэк. Keyframes не скоупятся платформой — отсюда
+   уникальный префикс kcs-tb-. */
+.kcs-tb {
+    display: flex;
+    align-items: center;
+    gap: var(--kcs-tb-gap, var(--ys-spacing-400));
+    padding-top: var(--kcs-tb-pad, var(--ys-spacing-200));
+    padding-bottom: var(--kcs-tb-pad, var(--ys-spacing-200));
+    overflow: hidden;
+    color: var(--ys-color-token-text-primary);
+}
+
+/* lined — тонкие линии сверху и снизу: видна на светлой теме без акцента */
+.kcs-tb_lined {
+    border-top: 1px solid var(--ys-color-token-border-primary);
+    border-bottom: 1px solid var(--ys-color-token-border-primary);
+}
+
+/* filled — подложка акцентного цвета темы и парный контрастный текст */
+.kcs-tb_filled {
+    background: var(--ys-color-token-brand-primary);
+    color: var(--ys-color-token-brand-primary-contrast);
+}
+
+.kcs-tb__lead {
+    flex-shrink: 0;
+    margin: 0;
+    padding-left: var(--ys-spacing-800);
+    white-space: nowrap;
+}
+
+.kcs-tb__viewport {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Маска работает только по альфе: токен даёт непрозрачный цвет, transparent — прозрачный */
+.kcs-tb_fade .kcs-tb__viewport {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, var(--ys-color-token-text-primary) var(--ys-spacing-1000), var(--ys-color-token-text-primary) calc(100% - var(--ys-spacing-1000)), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, var(--ys-color-token-text-primary) var(--ys-spacing-1000), var(--ys-color-token-text-primary) calc(100% - var(--ys-spacing-1000)), transparent 100%);
+}
+
+/* Дорожка = 16 одинаковых наборов фраз (канонический + 15 копий в шаблоне).
+   Круг анимации сдвигает её ровно на один набор (100% / 16 = 6.25%), поэтому
+   шов невидим, а длительность круга = время прохода одного набора. */
+.kcs-tb__track {
+    display: flex;
+    width: max-content;
+    animation: kcs-tb-loop var(--kcs-tb-dur, 18s) linear infinite;
+    will-change: transform;
+}
+
+.kcs-tb_right .kcs-tb__track {
+    animation-direction: reverse;
+}
+
+.kcs-tb__set {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--kcs-tb-gap, var(--ys-spacing-400));
+    padding-right: var(--kcs-tb-gap, var(--ys-spacing-400));
+}
+
+/* Канонический набор обёрнут в ya-kit-module, копии — в span: коробки
+   выровнены, чтобы все наборы были одной ширины и круг не дёргался. */
+.kcs-tb__item {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--kcs-tb-gap, var(--ys-spacing-400));
+    margin: 0;
+    padding: 0;
+    border: 0;
+    white-space: nowrap;
+}
+
+.kcs-tb_upper .kcs-tb__text,
+.kcs-tb_upper .kcs-tb__lead {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.kcs-tb__sep {
+    display: inline-flex;
+    align-items: center;
+}
+
+.kcs-tb__glyph {
+    opacity: 0.6;
+}
+
+.kcs-tb__sep-img {
+    display: block;
+    height: 0.9em;
+    width: auto;
+    max-width: 3em;
+    object-fit: contain;
+}
+
+@keyframes kcs-tb-loop {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(-6.25%, 0, 0);
+    }
+}
+
+/* Пауза только у устройств с настоящим hover: тап на iOS залипает в :hover */
+@media (hover: hover) {
+    .kcs-tb_pausable:hover .kcs-tb__track {
+        animation-play-state: paused;
+    }
+}
+
+@media (max-width: 767px) {
+    .kcs-tb {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--ys-spacing-100);
+    }
+
+    .kcs-tb__lead {
+        padding-left: var(--ys-spacing-200);
+        padding-right: var(--ys-spacing-200);
+        white-space: normal;
+    }
+
+    .kcs-tb__track {
+        animation-duration: var(--kcs-tb-dur-touch, 20s);
+    }
+
+    .kcs-tb_fade .kcs-tb__viewport {
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, var(--ys-color-token-text-primary) var(--ys-spacing-500), var(--ys-color-token-text-primary) calc(100% - var(--ys-spacing-500)), transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0, var(--ys-color-token-text-primary) var(--ys-spacing-500), var(--ys-color-token-text-primary) calc(100% - var(--ys-spacing-500)), transparent 100%);
+    }
+}
+
+/* Без анимации: один читаемый набор фраз, перенос по строкам, по центру */
+@media (prefers-reduced-motion: reduce) {
+    .kcs-tb__track {
+        width: auto;
+        animation: none;
+    }
+
+    .kcs-tb__dup {
+        display: none;
+    }
+
+    .kcs-tb__set {
+        flex: 1 1 auto;
+        min-width: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: var(--ys-spacing-100);
+        padding-left: var(--ys-spacing-200);
+        padding-right: var(--ys-spacing-200);
+    }
+
+    .kcs-tb__item {
+        white-space: normal;
+    }
+
+    .kcs-tb__set > :last-child .kcs-tb__sep {
+        display: none;
+    }
+
+    .kcs-tb_fade .kcs-tb__viewport {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

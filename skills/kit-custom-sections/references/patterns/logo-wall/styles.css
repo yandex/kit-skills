@@ -1,0 +1,255 @@
+/* Значения инстанса (колонки, высота логотипа, число логотипов) приходят
+   inline-переменными: css скоупится по шаблону, два инстанса делят одну
+   таблицу стилей. Рамка логотипа 5:2 (aspect-ratio атома) высотой --kcs-logos-h,
+   логотип вписан в неё через fit=contain. */
+.kcs-logos {
+    --kcs-logos-h: var(--kcs-logos-height, var(--ys-spacing-800));
+    --kcs-logos-gap: var(--ys-spacing-300);
+    --kcs-logos-gap-x: var(--ys-spacing-600);
+    --kcs-logos-step: 3.5s;
+}
+
+.kcs-logos_bg-neutral {
+    --kcs-logos-gap-x: var(--ys-spacing-300);
+}
+
+.kcs-logos_speed-slow {
+    --kcs-logos-step: 5s;
+}
+
+.kcs-logos_speed-fast {
+    --kcs-logos-step: 2.2s;
+}
+
+.kcs-logos__module {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+.kcs-logos__tile {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--ys-spacing-150);
+    padding: var(--ys-spacing-100);
+    color: var(--ys-color-token-text-primary);
+    text-align: center;
+    text-decoration: none;
+}
+
+.kcs-logos_bg-neutral .kcs-logos__tile {
+    padding: var(--ys-spacing-300) var(--ys-spacing-250);
+    background: var(--ys-background-neutral);
+}
+
+.kcs-logos__logo,
+.kcs-logos__word {
+    width: calc(var(--kcs-logos-h) * 2.5);
+    max-width: 100%;
+}
+
+.kcs-logos__word {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 5 / 2;
+    overflow-wrap: anywhere;
+}
+
+.kcs-logos__caption {
+    max-width: 36ch;
+}
+
+.kcs-logos__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.kcs-logos__tile_link {
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.kcs-logos__tile_link:focus-visible {
+    outline: 2px solid var(--ys-color-token-brand-primary);
+    outline-offset: 2px;
+}
+
+.kcs-logos_mono .kcs-logos__logo {
+    filter: grayscale(1);
+    opacity: 0.7;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.kcs-logos_mono .kcs-logos__tile_link:focus-visible .kcs-logos__logo {
+    filter: none;
+    opacity: 1;
+}
+
+@media (hover: hover) {
+    .kcs-logos__tile_link:hover {
+        transform: translateY(-2px);
+    }
+
+    .kcs-logos_mono .kcs-logos__cell:hover .kcs-logos__logo,
+    .kcs-logos_mono .kcs-logos__item:hover .kcs-logos__logo {
+        filter: none;
+        opacity: 1;
+    }
+
+    .kcs-logos_pause .kcs-logos__viewport:hover .kcs-logos__track {
+        animation-play-state: paused;
+    }
+}
+
+/* Сетка: flex-wrap с равными ячейками, неполный последний ряд по центру.
+   Минус 0.5px страхует от переноса последней ячейки из-за округления. */
+.kcs-logos__grid {
+    --kcs-logos-n: var(--kcs-logos-cols, 5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--kcs-logos-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-logos__cell {
+    display: flex;
+    flex: 0 0 calc((100% - (var(--kcs-logos-n) - 1) * var(--kcs-logos-gap)) / var(--kcs-logos-n) - 0.5px);
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* Лента: две одинаковые группы, трек уезжает на -50% (ровно одна группа).
+   Группа не уже окна ленты (100cqw), поэтому стык не виден и при 3-4 логотипах;
+   padding-right группы равен промежутку — шаг на стыке тот же, что внутри. */
+.kcs-logos__viewport {
+    overflow: hidden;
+    container-type: inline-size;
+}
+
+.kcs-logos__viewport_fade {
+    -webkit-mask-image: linear-gradient(90deg, transparent, var(--ys-color-token-text-primary) 8%, var(--ys-color-token-text-primary) 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, var(--ys-color-token-text-primary) 8%, var(--ys-color-token-text-primary) 92%, transparent);
+}
+
+.kcs-logos__track {
+    display: flex;
+    width: max-content;
+    animation: kcs-logo-wall-scroll calc(8s + var(--kcs-logos-count, 8) * var(--kcs-logos-step)) linear infinite;
+}
+
+.kcs-logos__group {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: stretch;
+    justify-content: space-around;
+    gap: var(--kcs-logos-gap-x);
+    box-sizing: border-box;
+    min-width: 100vw;
+    min-width: 100cqw;
+    margin: 0;
+    padding: 0 var(--kcs-logos-gap-x) 0 0;
+    list-style: none;
+}
+
+.kcs-logos__item {
+    display: flex;
+    flex: 0 0 auto;
+}
+
+.kcs-logos__item .kcs-logos__logo,
+.kcs-logos__item .kcs-logos__word {
+    max-width: none;
+}
+
+@keyframes kcs-logo-wall-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 1199px) {
+    .kcs-logos__grid {
+        --kcs-logos-n: min(var(--kcs-logos-cols, 5), 4);
+    }
+}
+
+@media (max-width: 767px) {
+    .kcs-logos {
+        --kcs-logos-h: calc(var(--kcs-logos-height, var(--ys-spacing-800)) * 0.75);
+        --kcs-logos-gap: var(--ys-spacing-200);
+        --kcs-logos-gap-x: var(--ys-spacing-400);
+    }
+
+    .kcs-logos_bg-neutral {
+        --kcs-logos-gap-x: var(--ys-spacing-200);
+    }
+
+    .kcs-logos_bg-neutral .kcs-logos__tile {
+        padding: var(--ys-spacing-200) var(--ys-spacing-150);
+    }
+
+    .kcs-logos__grid {
+        --kcs-logos-n: var(--kcs-logos-cols-touch, 2);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-logos__track {
+        width: auto;
+        animation: none;
+    }
+
+    .kcs-logos__group {
+        flex: 1 1 auto;
+        flex-wrap: wrap;
+        justify-content: center;
+        min-width: 0;
+        padding: 0;
+        row-gap: var(--kcs-logos-gap);
+    }
+
+    .kcs-logos__group_copy {
+        display: none;
+    }
+
+    .kcs-logos__viewport_fade {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .kcs-logos__tile_link {
+        transition: none;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

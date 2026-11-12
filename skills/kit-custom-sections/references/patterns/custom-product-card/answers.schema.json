@@ -6,13 +6,180 @@
       "type": "string",
       "title": "Палитра (id из настроек магазина)"
     },
+    "gallery": {
+      "type": "object",
+      "title": "Галерея",
+      "properties": {
+        "layout": {
+          "type": "string",
+          "enum": [
+            "thumbnail",
+            "grid"
+          ],
+          "title": "thumbnail — большое фото и миниатюры, галерея липкая; grid — сетка фото в две колонки"
+        }
+      }
+    },
+    "subtitle": {
+      "type": "string",
+      "title": "Строка под названием. Общая для всех товаров, на странице которых стоит секция: на основной странице товара оставлять пустой"
+    },
+    "showRating": {
+      "type": "boolean",
+      "title": "Рейтинг и число отзывов"
+    },
+    "trust": {
+      "type": "object",
+      "title": "Артикул и остаток",
+      "properties": {
+        "showSku": {
+          "type": "boolean",
+          "title": "Показывать артикул"
+        },
+        "showStock": {
+          "type": "boolean",
+          "title": "Показывать остаток"
+        },
+        "stockThreshold": {
+          "type": "number",
+          "title": "Остаток виден, когда штук не больше порога; 0 — всегда"
+        }
+      }
+    },
+    "buy": {
+      "type": "object",
+      "title": "Покупка",
+      "properties": {
+        "addToCartText": {
+          "type": "string",
+          "title": "Текст кнопки покупки"
+        },
+        "goToCartText": {
+          "type": "string",
+          "title": "Текст кнопки, когда товар в корзине"
+        },
+        "subscribeText": {
+          "type": "string",
+          "title": "Текст кнопки подписки на поступление"
+        },
+        "outOfStockText": {
+          "type": "string",
+          "title": "Надпись у товара не в наличии"
+        },
+        "priceInButton": {
+          "type": "boolean",
+          "title": "Цена на кнопке покупки"
+        },
+        "showSplit": {
+          "type": "boolean",
+          "title": "Бейдж Сплита (виден при включённом Сплите)"
+        },
+        "stickyMobile": {
+          "type": "boolean",
+          "title": "Панель покупки у нижнего края экрана на телефоне"
+        }
+      }
+    },
+    "benefits": {
+      "type": "object",
+      "title": "Преимущества у кнопки покупки",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Заголовок (можно пустой)"
+        },
+        "text": {
+          "type": "string",
+          "title": "Markdown-список, общий для всех товаров страницы, например «- Гарантия 2 года\\n- Возврат 30 дней» или «- Ручная работа\\n- Натуральные материалы»"
+        },
+        "style": {
+          "type": "string",
+          "enum": [
+            "list",
+            "chips"
+          ],
+          "title": "list — список, chips — плашки"
+        }
+      }
+    },
+    "details": {
+      "type": "object",
+      "title": "Раскрывающиеся блоки",
+      "properties": {
+        "expandedRow": {
+          "type": "string",
+          "enum": [
+            "none",
+            "modules",
+            "description",
+            "characteristics",
+            "delivery"
+          ],
+          "title": "Какой блок раскрыт сразу (modules — первый свой блок)"
+        },
+        "showDescription": {
+          "type": "boolean",
+          "title": "Описание товара"
+        },
+        "descriptionTitle": {
+          "type": "string",
+          "title": "Заголовок описания"
+        },
+        "showCharacteristics": {
+          "type": "boolean",
+          "title": "Все характеристики товара"
+        },
+        "characteristicsTitle": {
+          "type": "string",
+          "title": "Заголовок характеристик"
+        },
+        "showDelivery": {
+          "type": "boolean",
+          "title": "Доставка в город покупателя"
+        },
+        "deliveryTitle": {
+          "type": "string",
+          "title": "Заголовок доставки"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Свои блоки перед описанием. С characteristicTitle блок показывает значение этой характеристики у каждого товара и пропадает у товара без неё; без неё — текст text с заголовком label, общий для всех товаров страницы",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Заголовок блока (для характеристики можно пустой)"
+          },
+          "characteristicTitle": {
+            "type": "string",
+            "title": "Название характеристики как в кабинете, например «Материал», «Комплектация», «Уход», «Гарантия», «Размеры»"
+          },
+          "view": {
+            "type": "string",
+            "enum": [
+              "text",
+              "chips"
+            ],
+            "title": "text или chips (значение через запятую — плашками)"
+          },
+          "text": {
+            "type": "string",
+            "title": "Markdown блока без характеристики"
+          }
+        },
+        "required": []
+      }
+    },
     "verticalRhythm": {
       "type": "string",
-      "title": "Вертикальный отступ блока (spacing-токен, например 500 = 40px с каждой стороны)"
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
     },
     "verticalRhythmTouch": {
       "type": "string",
-      "title": "Вертикальный отступ на телефоне (spacing-токен)"
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
     }
   },
   "required": []

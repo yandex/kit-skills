@@ -1,0 +1,28 @@
+{
+  "start": "cards",
+  "looks": [
+    {
+      "name": "cards",
+      "title": "Карточки контактов",
+      "description": "Три колонки карточек с иконками.",
+      "settings": {}
+    },
+    {
+      "name": "rows",
+      "title": "Нумерованные строки",
+      "description": "Контакты строками с номерами.",
+      "settings": {
+        "variant": "rows",
+        "numbered": true
+      }
+    },
+    {
+      "name": "buttons",
+      "title": "Кнопки-ссылки",
+      "description": "Телефон, почта и соцсети кнопками.",
+      "settings": {
+        "variant": "buttons"
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "start": "panel-center",
+  "looks": [
+    {
+      "name": "panel-center",
+      "title": "Подписка на панели по центру",
+      "description": "Поле и кнопка в одной рамке.",
+      "settings": {
+        "form": {
+          "variant": "inline-pill"
+        }
+      }
+    },
+    {
+      "name": "two-columns",
+      "title": "Текст слева, форма справа",
+      "description": "Две колонки на компьютере.",
+      "settings": {
+        "layout": "two-columns"
+      }
+    },
+    {
+      "name": "plain-left",
+      "title": "Без подложки у левого края",
+      "description": "Кнопка под полем.",
+      "settings": {
+        "layout": "left",
+        "surface": "plain",
+        "form": {
+          "variant": "stacked"
+        }
+      }
+    }
+  ]
+}

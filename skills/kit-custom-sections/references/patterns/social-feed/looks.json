@@ -1,0 +1,31 @@
+{
+  "start": "featured",
+  "looks": [
+    {
+      "name": "featured",
+      "title": "Крупная первая публикация",
+      "description": "Четыре колонки, первая 2×2, шапка split.",
+      "settings": {
+        "layout": "featured",
+        "columns": "4",
+        "headerAlign": "split"
+      }
+    },
+    {
+      "name": "mosaic",
+      "title": "Мозаика без зазоров",
+      "description": "Шесть колонок, лента на телефоне.",
+      "settings": {
+        "columns": "6",
+        "gap": "0",
+        "touchLayout": "scroll"
+      }
+    },
+    {
+      "name": "grid",
+      "title": "Ровная сетка (вид v1)",
+      "description": "Три колонки, шапка по центру.",
+      "settings": {}
+    }
+  ]
+}

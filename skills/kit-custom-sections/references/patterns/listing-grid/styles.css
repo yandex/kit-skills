@@ -1,0 +1,282 @@
+/* Панель над сеткой: «Фильтры» слева, сортировка прижата вправо (и без фильтров). */
+.kcs-listing-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--ys-spacing-300);
+    min-height: 44px;
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-listing-controls__button {
+    min-height: 44px;
+}
+
+.kcs-listing-controls__sort {
+    margin-left: auto;
+}
+
+/* Сетка: колонки из настроек через custom properties, три порога — десктоп,
+   планшет (не больше трёх колонок), телефон (columnsTouch). */
+.kcs-listing {
+    --kcs-listing-gap-x: var(--ys-spacing-300);
+    --kcs-listing-gap-y: var(--ys-spacing-600);
+    display: grid;
+    grid-template-columns: repeat(var(--kcs-listing-columns, 4), minmax(0, 1fr));
+    column-gap: var(--kcs-listing-gap-x);
+    row-gap: var(--kcs-listing-gap-y);
+    width: 100%;
+}
+
+.kcs-listing-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-200);
+    min-width: 0;
+}
+
+/* Подложка и обводка карточки — по теме (productSnippet.general), как у нативной:
+   фото во всю ширину карточки без своего скругления, текст с полями 8px. */
+.kcs-listing-card_bg-secondary,
+.kcs-listing-card_bg-neutral,
+.kcs-listing-card_border-yes {
+    position: relative;
+    overflow: hidden;
+    padding-bottom: var(--ys-spacing-150);
+    border-radius: var(--ys-current-skin-border-radius);
+}
+
+.kcs-listing-card_bg-secondary {
+    background-color: var(--ys-background-secondary);
+}
+
+.kcs-listing-card_bg-neutral {
+    background-color: var(--ys-background-neutral);
+}
+
+.kcs-listing-card_border-yes::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--ys-color-token-border-primary);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.kcs-listing-card_bg-secondary .kcs-listing-card__media,
+.kcs-listing-card_bg-neutral .kcs-listing-card__media,
+.kcs-listing-card_border-yes .kcs-listing-card__media {
+    border-radius: 0;
+}
+
+.kcs-listing-card_bg-secondary .kcs-listing-card__info,
+.kcs-listing-card_bg-neutral .kcs-listing-card__info,
+.kcs-listing-card_border-yes .kcs-listing-card__info,
+.kcs-listing-card_bg-secondary .kcs-listing-card__actions,
+.kcs-listing-card_bg-neutral .kcs-listing-card__actions,
+.kcs-listing-card_border-yes .kcs-listing-card__actions {
+    padding: 0 var(--ys-spacing-100);
+}
+
+/* Плотная стена: фото встык на общей подложке, текст с внутренним полем.
+   Идёт после правил подложки темы — в стене поля и углы задаёт она. */
+.kcs-listing_gapless-true {
+    --kcs-listing-gap-x: 0px;
+    --kcs-listing-gap-y: 0px;
+}
+
+.kcs-listing_gapless-true .kcs-listing-card {
+    padding-bottom: 0;
+    border-radius: 0;
+}
+
+.kcs-listing_gapless-true .kcs-listing-card__media {
+    border-radius: 0;
+}
+
+.kcs-listing_gapless-true .kcs-listing-card__info,
+.kcs-listing_gapless-true .kcs-listing-card__actions {
+    padding: 0 var(--ys-spacing-200) var(--ys-spacing-400);
+}
+
+.kcs-listing-card__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-200);
+    color: inherit;
+    text-decoration: none;
+}
+
+.kcs-listing-card__link:focus-visible {
+    outline: 2px solid var(--ys-color-token-brand-primary);
+    outline-offset: 4px;
+}
+
+/* Подложка под фото — из темы (productSnippet.photo.backgroundColor у ya-kit-image). */
+.kcs-listing-card__media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--ys-current-skin-border-radius);
+}
+
+.kcs-listing-card__fill {
+    position: absolute;
+    inset: 0;
+}
+
+.kcs-listing-card__image {
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+/* Товара нет: приглушено только фото, плашка «Нет в наличии» поверх — в полную силу. */
+.kcs-listing-card_soldout .kcs-listing-card__image {
+    opacity: 0.6;
+}
+
+.kcs-listing-card__badges {
+    position: absolute;
+    left: var(--ys-spacing-150);
+    bottom: var(--ys-spacing-150);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-50);
+    max-width: calc(100% - 2 * var(--ys-spacing-150));
+    pointer-events: none;
+}
+
+.kcs-listing-card__badges_top-left {
+    top: var(--ys-spacing-150);
+    bottom: auto;
+}
+
+/* Фон и цвет текста бейджа — из кабинета (инлайн, как у нативной карточки);
+   без них — токены темы. */
+.kcs-listing-card__badge {
+    padding: var(--ys-spacing-25) var(--ys-spacing-100);
+    border-radius: var(--ys-current-skin-border-radius);
+    background: var(--ys-background-primary);
+    color: var(--ys-color-token-text-primary);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* Порядок строк карточки: по умолчанию название, затем цена; цена поднимается
+   наверх настройкой price-first или темой (theme + price-desc). */
+.kcs-listing-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-50);
+    min-width: 0;
+}
+
+.kcs-listing-card__info_price-first .kcs-listing-card__price,
+.kcs-listing-card__info_theme.kcs-listing-card__info_theme-price-desc .kcs-listing-card__price {
+    order: -1;
+}
+
+.kcs-listing-card__vendor {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.kcs-listing-card__actions {
+    display: grid;
+    margin-top: auto;
+}
+
+.kcs-listing-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ys-spacing-200);
+    padding: var(--ys-spacing-1000) var(--ys-spacing-300);
+    color: var(--ys-color-token-text-secondary);
+    text-align: center;
+}
+
+.kcs-listing-pagination {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--ys-spacing-800);
+}
+
+@media (hover: hover) {
+    .kcs-listing-card__link:hover .kcs-listing-card__image {
+        transform: scale(1.04);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-listing-card__image {
+        transition: none;
+    }
+
+    .kcs-listing-card__link:hover .kcs-listing-card__image {
+        transform: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-listing {
+        grid-template-columns: repeat(var(--kcs-listing-columns-tablet, 3), minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .kcs-listing {
+        --kcs-listing-gap-x: var(--ys-spacing-150);
+        --kcs-listing-gap-y: var(--ys-spacing-400);
+        grid-template-columns: repeat(var(--kcs-listing-columns-touch, 2), minmax(0, 1fr));
+    }
+
+    .kcs-listing_gapless-true {
+        --kcs-listing-gap-x: 0px;
+        --kcs-listing-gap-y: 0px;
+    }
+
+    .kcs-listing_gapless-true .kcs-listing-card__info,
+    .kcs-listing_gapless-true .kcs-listing-card__actions {
+        padding: 0 var(--ys-spacing-150) var(--ys-spacing-300);
+    }
+
+    .kcs-listing-card__badges {
+        left: var(--ys-spacing-100);
+        bottom: var(--ys-spacing-100);
+        max-width: calc(100% - 2 * var(--ys-spacing-100));
+    }
+
+    .kcs-listing-card__badges_top-left {
+        top: var(--ys-spacing-100);
+        bottom: auto;
+    }
+
+    .kcs-listing-card__badge {
+        font-size: 11px;
+        line-height: 14px;
+    }
+
+    .kcs-listing-empty {
+        padding: var(--ys-spacing-800) var(--ys-spacing-200);
+    }
+
+    .kcs-listing-pagination {
+        padding-top: var(--ys-spacing-500);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

@@ -1,0 +1,17 @@
+id: testimonial-spotlight
+version: 2
+title: "Отзыв крупной цитатой"
+purpose: "Один отзыв на слайд крупной цитатой по центру: звёзды, автор, подпись и фото"
+origin: "handmade"
+fingerprint: "b87ef4cdeb6669cce81cad1fd69bdca05caf29ae6d36a852afeece5884b9c9c7"
+docs_fingerprint: "b87ef4cdeb6669cce81cad1fd69bdca05caf29ae6d36a852afeece5884b9c9c7"
+applied_patches: ""
+keywords: "один отзыв, отзыв-цитата, крупная цитата, крупной цитатой, цитата покупателя, цитаты покупателей, цитата клиента, testimonial"
+pages: "main, landing"
+controllers: ""
+answers_required: "modules"
+alt_fields: "modules[].photo=modules[].photoAlt"
+alternatives: "static-reviews, media-cards"
+exit_field: "cta"
+rhythm: "0"
+rhythm_touch: "0"

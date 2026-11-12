@@ -1,0 +1,193 @@
+{
+  "title": "Ответы для крупного слова во всю ширину",
+  "type": "object",
+  "properties": {
+    "word": {
+      "type": "string",
+      "title": "Слово или короткая фраза в одну строку: до 40 знаков, для плакатного вида на телефоне — до 16"
+    },
+    "wordSource": {
+      "type": "string",
+      "enum": [
+        "text",
+        "collection"
+      ],
+      "title": "text — свой текст; collection — название категории или подборки на её странице (на остальных страницах — свой текст)"
+    },
+    "asHeading": {
+      "type": "boolean",
+      "title": "Слово — заголовок раздела h2 (не больше одного на странице; h1 не бывает)"
+    },
+    "isUppercase": {
+      "type": "boolean",
+      "title": "Прописные буквы"
+    },
+    "weight": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "medium",
+        "semibold",
+        "bold"
+      ],
+      "title": "Насыщенность"
+    },
+    "fontWidth": {
+      "type": "string",
+      "enum": [
+        "condensed",
+        "narrow",
+        "normal",
+        "wide"
+      ],
+      "title": "Класс ширины шрифта темы для подгонки кегля: condensed — Oswald, Cuprum; narrow — PT Sans, Fira Sans, Source Sans, Exo 2; wide — Montserrat, Merriweather; остальные и свой шрифт — normal"
+    },
+    "tone": {
+      "type": "string",
+      "enum": [
+        "primary",
+        "secondary",
+        "brand"
+      ],
+      "title": "Цвет надписи из палитры секции"
+    },
+    "tracking": {
+      "type": "string",
+      "enum": [
+        "tight",
+        "normal"
+      ],
+      "title": "Межбуквенный интервал"
+    },
+    "widthShare": {
+      "type": "string",
+      "enum": [
+        "30",
+        "35",
+        "40",
+        "45",
+        "50",
+        "55",
+        "60",
+        "65",
+        "70",
+        "75",
+        "80",
+        "85",
+        "90",
+        "95",
+        "100"
+      ],
+      "title": "Доля ширины под слово на компьютере, % строкой: \"30\"…\"100\" с шагом 5"
+    },
+    "widthShareMobile": {
+      "type": "string",
+      "enum": [
+        "30",
+        "35",
+        "40",
+        "45",
+        "50",
+        "55",
+        "60",
+        "65",
+        "70",
+        "75",
+        "80",
+        "85",
+        "90",
+        "95",
+        "100"
+      ],
+      "title": "Доля ширины под слово на телефоне, % строкой"
+    },
+    "align": {
+      "type": "string",
+      "enum": [
+        "start",
+        "center",
+        "end"
+      ],
+      "title": "Выравнивание"
+    },
+    "sizeCap": {
+      "type": "string",
+      "enum": [
+        "none",
+        "large",
+        "medium"
+      ],
+      "title": "Потолок кегля для коротких слов и названий категорий: large ≈ 22%, medium ≈ 14% ширины"
+    },
+    "crop": {
+      "type": "string",
+      "enum": [
+        "none",
+        "top",
+        "bottom"
+      ],
+      "title": "Срезать верх или низ букв краем полосы (только на контрастной палитре)"
+    },
+    "linkText": {
+      "type": "string",
+      "title": "Текст ссылки; пустой при заданной ссылке — ссылкой становится само слово"
+    },
+    "link": {
+      "$ref": "#/definitions/LinkSource",
+      "title": "Ссылка: объект {link, linkId} (linkId можно пустым)"
+    },
+    "linkPosition": {
+      "type": "string",
+      "enum": [
+        "end",
+        "below"
+      ],
+      "title": "Ссылка справа на линии слова или под словом"
+    },
+    "showArrow": {
+      "type": "boolean",
+      "title": "Стрелка у ссылки"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции: переданные ключи заменяют дефолт, остальные остаются",
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "На весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Поля на компьютере"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Поля на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
+    }
+  },
+  "required": [
+    "word"
+  ]
+}

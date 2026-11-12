@@ -1,0 +1,24 @@
+{
+  "start": "bar",
+  "looks": [
+    {
+      "name": "bar",
+      "title": "Ссылка-полоса со стрелкой",
+      "description": "Во всю ширину под полкой.",
+      "settings": {
+        "variant": "bar",
+        "showArrow": true
+      }
+    },
+    {
+      "name": "button-center",
+      "title": "Кнопка по центру",
+      "description": "Крупная кнопка под блоком.",
+      "settings": {
+        "variant": "button",
+        "align": "center",
+        "size": "lg"
+      }
+    }
+  ]
+}

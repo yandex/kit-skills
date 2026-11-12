@@ -1,0 +1,17 @@
+id: section-intro
+version: 2
+title: "Заголовок-вступление и манифест"
+purpose: "Крупный заголовок раздела над блоком или короткий манифест: заголовок, вводный текст, теги-ценности, логотип магазина, ссылка"
+origin: "handmade"
+fingerprint: "2e07d5a491c18e93dfb3e3ab95e8d9673da37e564a25815dd89aea21fd9a883e"
+docs_fingerprint: "2e07d5a491c18e93dfb3e3ab95e8d9673da37e564a25815dd89aea21fd9a883e"
+applied_patches: ""
+keywords: "вступление, интро, intro, заголовок раздела, заголовок подборки, манифест, манифест бренда, философия, миссия, кредо, ценности, теги ценностей, вступительный текст"
+pages: "main, landing, pdp"
+controllers: "ya-kit-company-controller"
+answers_required: "titleText"
+alternatives: "type-band, hero"
+rhythm: "0"
+rhythm_touch: "0"
+rhythm_bottom: "0"
+rhythm_bottom_touch: "0"

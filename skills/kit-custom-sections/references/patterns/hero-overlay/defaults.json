@@ -1,0 +1,54 @@
+{
+  "palette": "default",
+  "title": "",
+  "text": "",
+  "headingLevel": "h2",
+  "image": {
+    "fileId": "",
+    "filePath": ""
+  },
+  "imageMobile": {
+    "fileId": "",
+    "filePath": ""
+  },
+  "imageAlt": "",
+  "frame": {
+    "ratio": "2:1",
+    "ratioMobile": "1:1",
+    "focus": "center",
+    "rounded": true,
+    "headerSpace": false
+  },
+  "content": {
+    "align": "start",
+    "valign": "end",
+    "alignMobile": "same",
+    "valignMobile": "same",
+    "textColor": ""
+  },
+  "overlay": {
+    "type": "gradient",
+    "tone": "inverse",
+    "color": "",
+    "opacity": 50
+  },
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "text": "",
+      "link": {
+        "link": "",
+        "linkId": ""
+      },
+      "color": "primary"
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

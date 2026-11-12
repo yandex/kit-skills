@@ -1,19 +1,35 @@
 {
   "palette": "default",
-  "titleText": "О бренде",
-  "contentText": "Расскажите здесь историю бренда.",
+  "eyebrowText": "",
+  "titleText": "",
+  "titlePlacement": "column",
+  "contentText": "",
+  "listStyle": "default",
+  "buttonText": "",
+  "buttonUrl": {
+    "link": "",
+    "linkId": ""
+  },
+  "buttonColor": "primary",
+  "noteText": "",
+  "notePlacement": "text",
   "image": {
     "fileId": "",
     "filePath": ""
   },
+  "imageAlt": "",
   "mediaLeft": false,
+  "mediaRatio": "4:3",
+  "mediaRatioTouch": "same",
+  "touchOrder": "same",
+  "surface": "none",
+  "joined": false,
   "section": {
     "isFullscreen": "default",
-    "hPaddingDesktop": "800",
     "hPaddingMobile": "200",
     "paddingTop": "single",
     "paddingBottom": "single"
   },
-  "verticalRhythm": "500",
-  "verticalRhythmTouch": "300"
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
 }

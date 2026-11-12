@@ -1,0 +1,29 @@
+{
+  "start": "poster",
+  "looks": [
+    {
+      "name": "poster",
+      "title": "Слово во всю ширину",
+      "description": "Вордмарк или название раздела.",
+      "settings": {}
+    },
+    {
+      "name": "shelf-head",
+      "title": "Шапка полки",
+      "description": "Слово на половину ширины, «Смотреть все» в строке.",
+      "settings": {
+        "widthShare": "50",
+        "widthShareMobile": "70"
+      }
+    },
+    {
+      "name": "condensed-brand",
+      "title": "Узкий шрифт цветом бренда",
+      "description": "Плакатное слово.",
+      "settings": {
+        "fontWidth": "condensed",
+        "tone": "brand"
+      }
+    }
+  ]
+}

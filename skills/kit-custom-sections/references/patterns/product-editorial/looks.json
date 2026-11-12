@@ -1,0 +1,19 @@
+{
+  "start": "photo-right",
+  "looks": [
+    {
+      "name": "photo-right",
+      "title": "Фото справа",
+      "description": "Товар и кнопка слева.",
+      "settings": {}
+    },
+    {
+      "name": "photo-left",
+      "title": "Фото слева",
+      "description": "Зеркально.",
+      "settings": {
+        "mediaLeft": true
+      }
+    }
+  ]
+}

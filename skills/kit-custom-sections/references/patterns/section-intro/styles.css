@@ -1,0 +1,373 @@
+/* Заголовок раздела, вступление или манифест. Две шкалы заголовка из правил каталога:
+   дисплейная шкала hero (52 / 40 / 34px) и секционная — размер заголовка темы, как у
+   нативных секций; третьей нет. px — только у размеров шрифта, высоты тега и логотипа;
+   цвета и отступы — токены темы. */
+.kcs-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--ys-spacing-300);
+    min-width: 0;
+    border-radius: var(--ys-current-skin-border-radius, 0);
+}
+
+.kcs-intro__head,
+.kcs-intro__side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.kcs-intro__side {
+    gap: var(--ys-spacing-400);
+}
+
+.kcs-intro__title {
+    margin: 0;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+}
+
+/* Дисплейная шкала — шкала hero 52/40/34px. */
+.kcs-intro_size-display .kcs-intro__title {
+    max-width: 18em;
+    font-size: 52px;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+}
+
+/* Секционная шкала: размер заголовка темы (атрибут size из
+   globals.typography.titleSize), как у заголовков нативных секций; свой кегль
+   здесь не задаётся. */
+.kcs-intro_size-section .kcs-intro__title {
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.kcs-intro__meta {
+    margin: var(--ys-spacing-150) 0 0;
+    line-height: 1.4;
+}
+
+/* Лид не выключается по ширине: короткая колонка с justify даёт «реки».
+   pre-line сохраняет абзацы, введённые в TextArea. */
+.kcs-intro__lead {
+    max-width: 62ch;
+    margin: 0;
+    line-height: 1.5;
+    text-align: start;
+    text-wrap: pretty;
+    hyphens: auto;
+    hyphenate-limit-chars: 8 4 3;
+    white-space: pre-line;
+}
+
+.kcs-intro__muted {
+    color: var(--ys-color-token-text-secondary);
+}
+
+/* Логотип магазина: высота задаёт размер, ширина — по пропорциям, широкий знак
+   вписывается в 320px без искажения. Скругление секции на знак не наследуется. */
+.kcs-intro__logo {
+    --ys-current-skin-border-radius: 0;
+    width: auto;
+    max-width: min(100%, 320px);
+    height: 72px;
+    margin-bottom: var(--ys-spacing-300);
+    background-color: transparent;
+}
+
+.kcs-intro__logo img:last-child {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    object-position: 0 50%;
+}
+
+/* Теги-ценности: не ссылки. Радиус из темы (skinRounded 150): у острой темы
+   квадратные, у мягкой — таблетки. */
+.kcs-intro__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-200);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-intro__chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: var(--ys-spacing-100) var(--ys-spacing-300);
+    color: var(--ys-color-token-text-primary);
+    border-radius: var(--ys-current-skin-border-radius, 0);
+}
+
+.kcs-intro_chips-outline .kcs-intro__chip {
+    border: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-intro_chips-filled .kcs-intro__chip {
+    background-color: var(--ys-background-secondary);
+}
+
+.kcs-intro_chips-text .kcs-intro__chip {
+    min-height: 0;
+    padding-inline: 0;
+}
+
+.kcs-intro_chips-text .kcs-intro__chip + .kcs-intro__chip::before {
+    content: "·";
+    margin-inline-end: var(--ys-spacing-200);
+    color: var(--ys-color-token-text-secondary);
+}
+
+/* Ссылка: контурная кнопка или текст со стрелкой; зона нажатия не меньше 44px. */
+.kcs-intro__more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ys-spacing-100);
+    min-height: 44px;
+    color: var(--ys-color-token-text-primary);
+    text-decoration: none;
+    border-radius: var(--ys-current-skin-border-radius, 0);
+}
+
+.kcs-intro__more_pill {
+    padding: 0 var(--ys-spacing-400);
+    border: 1px solid var(--ys-color-token-border-primary);
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.kcs-intro__arrow {
+    flex-shrink: 0;
+    transition: transform 150ms ease;
+}
+
+.kcs-intro__more:focus-visible {
+    outline: 2px solid var(--ys-color-token-text-primary);
+    outline-offset: 2px;
+}
+
+/* Кликабелен весь блок, но ссылка одна: ::after ссылки растянут на блок —
+   ни вложенных ссылок, ни второй остановки табом. */
+.kcs-intro_link-block {
+    position: relative;
+}
+
+.kcs-intro_link-block .kcs-intro__more::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.kcs-intro_link-block:has(.kcs-intro__more:focus-visible) {
+    outline: 2px solid var(--ys-color-token-text-primary);
+    outline-offset: 2px;
+}
+
+/* Раскладки. Стопка — колонка; две колонки — только когда справа есть лид или
+   ссылка (иначе шаблон выводит стопку); полоса — заголовок слева, справа лид и
+   ссылка, прижатая к низу. */
+.kcs-intro_stacked.kcs-intro_align-center .kcs-intro__head,
+.kcs-intro_stacked.kcs-intro_align-center .kcs-intro__side {
+    align-items: center;
+}
+
+.kcs-intro_stacked.kcs-intro_align-center .kcs-intro__title,
+.kcs-intro_stacked.kcs-intro_align-center .kcs-intro__meta,
+.kcs-intro_stacked.kcs-intro_align-center .kcs-intro__lead {
+    text-align: center;
+}
+
+.kcs-intro_stacked.kcs-intro_align-center .kcs-intro__chips {
+    justify-content: center;
+}
+
+.kcs-intro_stacked.kcs-intro_align-center .kcs-intro__logo img:last-child {
+    object-position: 50% 50%;
+}
+
+.kcs-intro_split {
+    grid-template-columns: minmax(0, 1fr) fit-content(50%);
+    column-gap: var(--ys-spacing-800);
+    align-items: start;
+}
+
+/* Справа одна ссылка: при выравнивании по верху колонки встают по центру друг
+   друга — ссылка высотой 44px, прижатая к верху, смотрится сдвинутой относительно
+   строки заголовка. */
+.kcs-intro_split.kcs-intro_valign-start:has(> .kcs-intro__side > .kcs-intro__more:only-child) {
+    align-items: center;
+}
+
+.kcs-intro_split.kcs-intro_valign-center {
+    align-items: center;
+}
+
+.kcs-intro_split.kcs-intro_valign-end {
+    align-items: end;
+}
+
+.kcs-intro_band {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
+    column-gap: var(--ys-spacing-800);
+    row-gap: var(--ys-spacing-400);
+    align-items: stretch;
+}
+
+.kcs-intro_band .kcs-intro__head {
+    align-self: start;
+}
+
+.kcs-intro_band .kcs-intro__head:only-child {
+    grid-column: 1 / -1;
+}
+
+.kcs-intro_band .kcs-intro__more {
+    margin-top: auto;
+    align-self: flex-end;
+}
+
+/* Две тонкие линии сверху и снизу; при включённой подложке поля берёт подложка. */
+.kcs-intro_framed {
+    padding-block: var(--ys-spacing-500);
+    border-block: 1px solid var(--ys-color-token-border-primary);
+    border-radius: 0;
+}
+
+.kcs-intro_surface-secondary {
+    background-color: var(--ys-background-secondary);
+}
+
+.kcs-intro_surface-neutral {
+    background-color: var(--ys-background-neutral);
+}
+
+.kcs-intro_surface-secondary,
+.kcs-intro_surface-neutral {
+    padding: var(--ys-spacing-600) var(--ys-spacing-700);
+}
+
+.kcs-intro_surface-secondary.kcs-intro_chips-filled .kcs-intro__chip {
+    background-color: var(--ys-background-primary);
+}
+
+.kcs-intro_bleed-enabled {
+    border-radius: 0;
+}
+
+@media (hover: hover) {
+    .kcs-intro__more_pill:hover,
+    .kcs-intro_link-block:hover .kcs-intro__more_pill {
+        color: var(--ys-background-primary);
+        background-color: var(--ys-color-token-text-primary);
+        border-color: var(--ys-color-token-text-primary);
+    }
+
+    .kcs-intro__more_arrow:hover .kcs-intro__arrow,
+    .kcs-intro_link-block:hover .kcs-intro__arrow {
+        transform: translateX(4px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-intro__more_pill,
+    .kcs-intro__arrow {
+        transition: none;
+    }
+
+    .kcs-intro__more_arrow:hover .kcs-intro__arrow,
+    .kcs-intro_link-block:hover .kcs-intro__arrow {
+        transform: none;
+    }
+}
+
+/* Планшет 768–1023: средняя ступень шкалы hero. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-intro_size-display .kcs-intro__title {
+        font-size: 40px;
+        line-height: 1.1;
+    }
+
+    .kcs-intro_split,
+    .kcs-intro_band {
+        column-gap: var(--ys-spacing-500);
+    }
+
+    .kcs-intro_band {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+    }
+
+    .kcs-intro__logo {
+        height: 56px;
+    }
+
+    .kcs-intro_surface-secondary,
+    .kcs-intro_surface-neutral {
+        padding: var(--ys-spacing-500);
+    }
+}
+
+/* Телефон: одна колонка в порядке логотип, заголовок, характеристика, лид, теги,
+   ссылка; второй картинки не нужно, горизонтальной прокрутки нет. */
+@media (max-width: 767px) {
+    .kcs-intro,
+    .kcs-intro_split,
+    .kcs-intro_band {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: var(--ys-spacing-300);
+    }
+
+    .kcs-intro__side {
+        gap: var(--ys-spacing-300);
+    }
+
+    .kcs-intro__title {
+        hyphens: auto;
+        hyphenate-limit-chars: 10 4 4;
+    }
+
+    .kcs-intro_size-display .kcs-intro__title {
+        font-size: 34px;
+        line-height: 1.12;
+    }
+
+    .kcs-intro__lead {
+        font-size: 17px;
+    }
+
+    .kcs-intro__muted {
+        display: block;
+        margin-top: var(--ys-spacing-100);
+    }
+
+    .kcs-intro__logo {
+        height: 44px;
+    }
+
+    .kcs-intro_framed {
+        padding-block: var(--ys-spacing-300);
+    }
+
+    .kcs-intro_surface-secondary,
+    .kcs-intro_surface-neutral {
+        padding: var(--ys-spacing-400) var(--ys-spacing-300);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры; нижний задаётся отдельно от верхнего:
+   блок-заголовок стоит вплотную над следующей секцией. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-bottom, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-bottom-touch, 0px));
+    }
+}

@@ -1,0 +1,17 @@
+id: divider-rows
+version: 2
+title: "Строки с разделителями — параметры, состав, прайс"
+purpose: "Строки «название — значение» с тонкими линиями: состав, характеристики, прайс услуг, кому подойдёт"
+origin: "handmade"
+fingerprint: "37ffc7ac8b184a46dca8d59161779d4191c500cb249ceb2d0ef78787539de3ca"
+docs_fingerprint: "37ffc7ac8b184a46dca8d59161779d4191c500cb249ceb2d0ef78787539de3ca"
+applied_patches: ""
+keywords: "технические характеристики, характеристики изделия, список характеристик, основные параметры, параметры изделия, спецификация, габариты, пищевая ценность, кбжу, ингредиенты, дозировка, дозировки, состав продукта, прайс, прайс-лист, стоимость услуг, кому подойдёт, кому подойдет, кому подходит, divider rows, spec list"
+pages: "main, landing"
+controllers: ""
+answers_required: "modules"
+alt_fields: "image=imageAlt"
+alternatives: "pdp-product-facts, faq-accordion, steps"
+exit_field: "cta"
+rhythm: "0"
+rhythm_touch: "0"

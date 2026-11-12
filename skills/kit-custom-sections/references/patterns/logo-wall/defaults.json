@@ -1,0 +1,69 @@
+{
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "layout": "grid",
+  "columns": "5",
+  "columnsTouch": "2",
+  "logoHeight": "800",
+  "tileBackground": "none",
+  "grayscale": false,
+  "speed": "normal",
+  "pauseOnHover": true,
+  "fadeEdges": true,
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "name": "",
+      "link": {
+        "link": "",
+        "linkId": ""
+      },
+      "caption": ""
+    },
+    {
+      "id": "m2",
+      "name": "",
+      "link": {
+        "link": "",
+        "linkId": ""
+      },
+      "caption": ""
+    },
+    {
+      "id": "m3",
+      "name": "",
+      "link": {
+        "link": "",
+        "linkId": ""
+      },
+      "caption": ""
+    },
+    {
+      "id": "m4",
+      "name": "",
+      "link": {
+        "link": "",
+        "linkId": ""
+      },
+      "caption": ""
+    },
+    {
+      "id": "m5",
+      "name": "",
+      "link": {
+        "link": "",
+        "linkId": ""
+      },
+      "caption": ""
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

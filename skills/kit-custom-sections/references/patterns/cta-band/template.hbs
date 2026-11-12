@@ -8,16 +8,25 @@
     is-fullscreen={{settings.section.isFullscreen}}
 >
     <ya-kit-section-layout-row>
-        <div class="band {{skinRounded 200}}">
-            <ya-kit-v-stack class="band__text" gap="100" align-items="flex-start">
-                <ya-kit-text as="h3" size="2xl" weight="bold">{{settings.titleText}}</ya-kit-text>
-                {{#if settings.subtitleText}}
-                    <ya-kit-text size="md" color="secondary">{{settings.subtitleText}}</ya-kit-text>
-                {{/if}}
-            </ya-kit-v-stack>
-            <div class="band__cta">
-                <ya-kit-button color="primary" size="lg" to={{settings.buttonUrl.link}}>{{settings.buttonText}}</ya-kit-button>
-            </div>
+        <div
+            class="band band_surface-{{settings.surface}} {{if (eql settings.layout 'centered') 'band_centered'}} {{if (eql settings.titleSize 'display') 'band_title-display'}} {{skinRounded 200}}"
+            style="--kcs-cta-pad: var(--ys-spacing-{{settings.innerPadding}})"
+        >
+            {{#if (or settings.titleText settings.subtitleText)}}
+                <ya-kit-v-stack class="band__text" gap="{{if (eql settings.titleSize 'display') '300' '100'}}" align-items="{{if (eql settings.layout 'centered') 'center' 'flex-start'}}">
+                    {{#if settings.titleText}}
+                        <ya-kit-text class="band__title" as="h2" size="{{when globals.typography.titleSize globals.typography.titleSize '2xl'}}" weight="bold" align="{{if (eql settings.layout 'centered') 'center' 'left'}}">{{settings.titleText}}</ya-kit-text>
+                    {{/if}}
+                    {{#if settings.subtitleText}}
+                        <ya-kit-text class="band__subtitle" size="{{if settings.textSize settings.textSize 'md'}}" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}" align="{{if (eql settings.layout 'centered') 'center' 'left'}}">{{formatLineBreaks settings.subtitleText}}</ya-kit-text>
+                    {{/if}}
+                </ya-kit-v-stack>
+            {{/if}}
+            {{#if (and settings.buttonText settings.buttonUrl.link)}}
+                <div class="band__cta">
+                    <ya-kit-button color="{{if settings.buttonColor settings.buttonColor 'primary'}}" size="{{if settings.buttonSize settings.buttonSize 'lg'}}" to={{settings.buttonUrl.link}}>{{settings.buttonText}}</ya-kit-button>
+                </div>
+            {{/if}}
         </div>
     </ya-kit-section-layout-row>
 </ya-kit-section-layout>

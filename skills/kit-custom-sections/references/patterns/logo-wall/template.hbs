@@ -1,0 +1,90 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <div
+            class="kcs-logos kcs-logos_bg-{{settings.tileBackground}} kcs-logos_speed-{{settings.speed}} {{if settings.grayscale 'kcs-logos_mono' ''}} {{if settings.pauseOnHover 'kcs-logos_pause' ''}}"
+            style="--kcs-logos-height: var(--ys-spacing-{{settings.logoHeight}}); --kcs-logos-cols: {{settings.columns}}; --kcs-logos-cols-touch: {{settings.columnsTouch}}; --kcs-logos-count: {{length settings.modules}}"
+        >
+            {{#if (eql settings.layout "marquee")}}
+                <div class="kcs-logos__viewport {{if settings.fadeEdges 'kcs-logos__viewport_fade' ''}}">
+                    <div class="kcs-logos__track">
+                        <ul class="kcs-logos__group" role="list">
+                            {{#each settings.modules as |m|}}
+                                <li class="kcs-logos__item">
+                                    <ya-kit-module module-id={{m.id}} class="kcs-logos__module">
+                                        <div class="kcs-logos__tile {{skinRounded 150}}">
+                                            {{#if m.image.filePath}}
+                                                <ya-kit-image class="kcs-logos__logo" src={{m.image}} fit="contain" aspect-ratio="5:2" alt="{{m.name}}" />
+                                            {{else}}
+                                                <ya-kit-text as="span" size="lg" weight="semibold" align="center" class="kcs-logos__word">{{m.name}}</ya-kit-text>
+                                            {{/if}}
+                                        </div>
+                                    </ya-kit-module>
+                                </li>
+                            {{/each}}
+                        </ul>
+                        <ul class="kcs-logos__group kcs-logos__group_copy" aria-hidden="true">
+                            {{#each settings.modules as |m|}}
+                                <li class="kcs-logos__item">
+                                    <div class="kcs-logos__tile {{skinRounded 150}}">
+                                        {{#if m.image.filePath}}
+                                            <ya-kit-image class="kcs-logos__logo" src={{m.image}} fit="contain" aspect-ratio="5:2" alt="" />
+                                        {{else}}
+                                            <ya-kit-text as="span" size="lg" weight="semibold" align="center" class="kcs-logos__word">{{m.name}}</ya-kit-text>
+                                        {{/if}}
+                                    </div>
+                                </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            {{else}}
+                <ul class="kcs-logos__grid" role="list">
+                    {{#each settings.modules as |m|}}
+                        <li class="kcs-logos__cell">
+                            <ya-kit-module module-id={{m.id}} class="kcs-logos__module">
+                                {{#if m.link.link}}
+                                    <ya-kit-link to={{m.link.link}} class="kcs-logos__tile kcs-logos__tile_link {{skinRounded 150}}">
+                                        {{#if m.image.filePath}}
+                                            <ya-kit-image class="kcs-logos__logo" src={{m.image}} fit="contain" aspect-ratio="5:2" alt="" />
+                                            <span class="kcs-logos__sr">{{m.name}}</span>
+                                        {{else}}
+                                            <ya-kit-text as="span" size="lg" weight="semibold" align="center" class="kcs-logos__word">{{m.name}}</ya-kit-text>
+                                        {{/if}}
+                                        {{#if m.caption}}
+                                            <ya-kit-text size="sm" color="secondary" align="center" class="kcs-logos__caption">{{m.caption}}</ya-kit-text>
+                                        {{/if}}
+                                    </ya-kit-link>
+                                {{else}}
+                                    <div class="kcs-logos__tile {{skinRounded 150}}">
+                                        {{#if m.image.filePath}}
+                                            <ya-kit-image class="kcs-logos__logo" src={{m.image}} fit="contain" aspect-ratio="5:2" alt="{{m.name}}" />
+                                        {{else}}
+                                            <ya-kit-text as="span" size="lg" weight="semibold" align="center" class="kcs-logos__word">{{m.name}}</ya-kit-text>
+                                        {{/if}}
+                                        {{#if m.caption}}
+                                            <ya-kit-text size="sm" color="secondary" align="center" class="kcs-logos__caption">{{m.caption}}</ya-kit-text>
+                                        {{/if}}
+                                    </div>
+                                {{/if}}
+                            </ya-kit-module>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{/if}}
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

@@ -1,0 +1,14 @@
+{
+  "texts": {
+    "modules[].name": [
+      "Параметр"
+    ],
+    "modules[].value": [
+      "Значение"
+    ],
+    "modules[].description": [
+      "Короткое пояснение"
+    ]
+  },
+  "typical": {}
+}

@@ -1,0 +1,69 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if (or settings.titleText settings.leadText)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-steps-intro kcs-steps-intro_{{settings.titleAlign}} kcs-steps-intro_theme-{{globals.typography.titleAlign}}">
+                {{#if settings.titleText}}
+                    <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+                {{/if}}
+                {{#if settings.leadText}}
+                    <ya-kit-text class="kcs-steps-intro__lead kcs-steps-pre" size="lg" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{settings.leadText}}</ya-kit-text>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <ol
+            role="list"
+            class="kcs-steps kcs-steps_{{settings.style}} kcs-steps_{{settings.desktopLayout}} kcs-steps_m-{{settings.mobileMode}} kcs-steps_num-{{settings.numbering}} kcs-steps_cols-{{settings.columns}} kcs-steps_n-{{length settings.modules}}"
+            style="--kcs-bleed: var(--ys-spacing-{{settings.section.hPaddingMobile}}, 0px)"
+        >
+            {{#each settings.modules as |step|}}
+                <li class="kcs-steps__item">
+                    <ya-kit-module module-id={{step.id}} class="kcs-steps__card {{skinRounded 150}}">
+                        <div class="kcs-steps__head">
+                            <ya-kit-text class="kcs-steps__title" as="h3" size="lg" weight="semibold">{{step.title}}</ya-kit-text>
+                        </div>
+                        <div class="kcs-steps__body">
+                            {{#if step.image.filePath}}
+                                <div class="kcs-steps__media">
+                                    <ya-kit-image src={{step.image}} alt="{{when (isEmpty step.imageAlt) step.title step.imageAlt}}" fit="cover" aspect-ratio="4:3" rounded="100" />
+                                </div>
+                            {{/if}}
+                            {{#if step.text}}
+                                <ya-kit-text class="kcs-steps__text kcs-steps-pre" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{step.text}}</ya-kit-text>
+                            {{/if}}
+                            {{#if step.note}}
+                                <ya-kit-text class="kcs-steps__note kcs-steps-pre" size="xs" color="secondary">{{step.note}}</ya-kit-text>
+                            {{/if}}
+                        </div>
+                    </ya-kit-module>
+                </li>
+            {{/each}}
+        </ol>
+    </ya-kit-section-layout-row>
+    {{#if settings.noteText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-text class="kcs-steps-footnote kcs-steps-footnote_{{settings.titleAlign}} kcs-steps-pre" size="sm" color="secondary">{{settings.noteText}}</ya-kit-text>
+        </ya-kit-section-layout-row>
+    {{/if}}
+    {{#if (and settings.cta.link.link settings.cta.text)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-exit" style="display: flex; justify-content: {{if (or (eql settings.titleAlign 'center') (and (eql settings.titleAlign 'default') (eql globals.typography.titleAlign 'center'))) 'center' 'flex-start'}}">
+                {{#if (eql settings.cta.style 'link')}}
+                    <ya-kit-link to={{settings.cta.link.link}} weight="medium" decoration="underline">{{settings.cta.text}} →</ya-kit-link>
+                {{else}}
+                    <ya-kit-button to={{settings.cta.link.link}}>{{settings.cta.text}}</ya-kit-button>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
+</ya-kit-section-layout>
+</div>

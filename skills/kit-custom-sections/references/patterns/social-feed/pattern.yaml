@@ -1,0 +1,16 @@
+id: social-feed
+version: 2
+title: "Лента соцсетей"
+purpose: "Заголовок с кнопками соцсетей магазина и сетка публикаций-ссылок; без публикаций — полоса с призывом подписаться"
+origin: "handmade"
+fingerprint: "f2ff712dea2354f9c8179fddde69195929c79dd8eccefd0cc102c936cece9dda"
+docs_fingerprint: "f2ff712dea2354f9c8179fddde69195929c79dd8eccefd0cc102c936cece9dda"
+applied_patches: ""
+keywords: "соцсети, соцсетях, социальные сети, социальных сетях, лента соцсетей, посты соцсетей, ugc, хештег, телеграм-канал, подписчики, подписчиков, соцсетей, телеграм, вконтакте"
+pages: "main, landing, pdp"
+controllers: "ya-kit-company-controller"
+answers_required: "modules"
+alt_fields: "modules[].image=modules[].alt"
+alternatives: "video-reels, tile-mosaic"
+rhythm: "0"
+rhythm_touch: "0"

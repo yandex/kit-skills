@@ -1,0 +1,29 @@
+{
+  "start": "rows",
+  "looks": [
+    {
+      "name": "rows",
+      "title": "Строки с линиями",
+      "description": "Название слева, значение справа — состав, характеристики.",
+      "settings": {}
+    },
+    {
+      "name": "two-columns-chips",
+      "title": "Две колонки, названия чипсами",
+      "description": "Короткий список параметров в две колонки.",
+      "settings": {
+        "columns": "2",
+        "nameStyle": "chip"
+      }
+    },
+    {
+      "name": "price-list",
+      "title": "Прайс",
+      "description": "Контрастные линии, пояснение под названием.",
+      "settings": {
+        "descriptionPosition": "below",
+        "lineStyle": "contrast"
+      }
+    }
+  ]
+}

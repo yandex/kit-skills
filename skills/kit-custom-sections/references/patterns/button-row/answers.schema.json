@@ -1,0 +1,79 @@
+{
+  "title": "Ответы для кнопки или ссылки-полосы",
+  "type": "object",
+  "properties": {
+    "text": {
+      "type": "string",
+      "title": "Текст кнопки или полосы (коротко: 1–4 слова)"
+    },
+    "link": {
+      "$ref": "#/definitions/LinkSource",
+      "title": "Ссылка: объект {link, linkId} (linkId можно пустым)"
+    },
+    "variant": {
+      "type": "string",
+      "enum": [
+        "button",
+        "bar"
+      ],
+      "title": "Вид: button — кнопка платформы, bar — ссылка-полоса во всю ширину"
+    },
+    "align": {
+      "type": "string",
+      "enum": [
+        "flex-start",
+        "center",
+        "flex-end"
+      ],
+      "title": "Выравнивание кнопки или текста в полосе"
+    },
+    "color": {
+      "type": "string",
+      "enum": [
+        "primary",
+        "secondary",
+        "neutral",
+        "outlined",
+        "flat"
+      ],
+      "title": "Цвет кнопки (только button)"
+    },
+    "size": {
+      "type": "string",
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "title": "Размер кнопки (только button)"
+    },
+    "fullWidthMobile": {
+      "type": "boolean",
+      "title": "Кнопка во всю ширину на телефоне (только button)"
+    },
+    "showArrow": {
+      "type": "boolean",
+      "title": "Стрелка после текста (только bar)"
+    },
+    "hideOnMobile": {
+      "type": "boolean",
+      "title": "Скрыть секцию на телефоне"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
+    }
+  },
+  "required": [
+    "text",
+    "link"
+  ]
+}

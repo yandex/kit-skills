@@ -1,0 +1,43 @@
+{
+  "palette": "default",
+  "bandStyle": "filled",
+  "leadText": "",
+  "textSize": "lg",
+  "textWeight": "semibold",
+  "isUppercase": false,
+  "separatorText": "•",
+  "separatorImage": {
+    "fileId": "",
+    "filePath": ""
+  },
+  "gap": "400",
+  "bandPadding": "200",
+  "duration": 18,
+  "durationTouch": 20,
+  "direction": "left",
+  "pauseOnHover": true,
+  "fadeEdges": false,
+  "section": {
+    "isFullscreen": "enabled",
+    "hPaddingMobile": "0",
+    "paddingTop": "none",
+    "paddingBottom": "none",
+    "hPaddingDesktop": "0"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "text": ""
+    },
+    {
+      "id": "m2",
+      "text": ""
+    },
+    {
+      "id": "m3",
+      "text": ""
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

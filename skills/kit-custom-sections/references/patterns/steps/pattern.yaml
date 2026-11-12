@@ -1,0 +1,17 @@
+id: steps
+version: 3
+title: "Шаги — как это работает"
+purpose: "Пронумерованные шаги процесса: как заказать, доставка, уход, как это работает"
+origin: "handmade"
+fingerprint: "8c647af0dcb796fecf9c99a9cdeb1144f1066d04df9426ae0084b988062183f3"
+docs_fingerprint: "8c647af0dcb796fecf9c99a9cdeb1144f1066d04df9426ae0084b988062183f3"
+applied_patches: ""
+keywords: "шаги, шаг, этапы, этап, работает, how it works, steps, процесс, инструкция, пошагово, порядок действий, оформление заказа, нумерованные, пронумерованные"
+pages: "main, landing, pdp"
+controllers: ""
+answers_required: "modules"
+alt_fields: "modules[].image=modules[].imageAlt"
+alternatives: "advantages, divider-rows, cards-with-drawer"
+exit_field: "cta"
+rhythm: "0"
+rhythm_touch: "0"

@@ -1,0 +1,202 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "text": {
+      "type": "string",
+      "title": "Текст кнопки или полосы",
+      "default": ""
+    },
+    "link": {
+      "$ref": "#/definitions/LinkSource",
+      "title": "Ссылка"
+    },
+    "variant": {
+      "type": "string",
+      "title": "Вид",
+      "enum": [
+        "button",
+        "bar"
+      ],
+      "options": [
+        "Кнопка",
+        "Ссылка-полоса во всю ширину"
+      ],
+      "default": "button"
+    },
+    "align": {
+      "type": "string",
+      "title": "Выравнивание (кнопки или текста в полосе)",
+      "enum": [
+        "flex-start",
+        "center",
+        "flex-end"
+      ],
+      "options": [
+        "Слева",
+        "По центру",
+        "Справа"
+      ],
+      "default": "center"
+    },
+    "color": {
+      "type": "string",
+      "title": "Цвет кнопки (только кнопка)",
+      "enum": [
+        "primary",
+        "secondary",
+        "neutral",
+        "outlined",
+        "flat"
+      ],
+      "options": [
+        "Основной",
+        "Вторичный",
+        "Нейтральный",
+        "С обводкой",
+        "Без фона"
+      ],
+      "default": "outlined"
+    },
+    "size": {
+      "type": "string",
+      "title": "Размер кнопки (только кнопка)",
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "options": [
+        "Маленький",
+        "Средний",
+        "Большой"
+      ],
+      "default": "lg"
+    },
+    "fullWidthMobile": {
+      "type": "boolean",
+      "title": "Кнопка во всю ширину на телефоне (только кнопка)",
+      "default": true
+    },
+    "showArrow": {
+      "type": "boolean",
+      "title": "Стрелка после текста (только полоса)",
+      "default": true
+    },
+    "hideOnMobile": {
+      "type": "boolean",
+      "title": "Скрыть на телефоне",
+      "default": false
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "text",
+    "link",
+    "section"
+  ]
+}

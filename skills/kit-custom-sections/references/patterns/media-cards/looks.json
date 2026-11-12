@@ -1,0 +1,38 @@
+{
+  "start": "panel",
+  "looks": [
+    {
+      "name": "panel",
+      "title": "Карточки на подложке",
+      "description": "Фото 4:3 и текст на панели палитры.",
+      "settings": {
+        "cardStyle": "panel",
+        "imageRatio": "4:3"
+      }
+    },
+    {
+      "name": "circles",
+      "title": "Круглые портреты",
+      "description": "Команда и мастера: круглое фото, текст по центру.",
+      "settings": {
+        "imageRatio": "circle",
+        "align": "center",
+        "columns": "4"
+      }
+    },
+    {
+      "name": "carousel",
+      "title": "Карусель",
+      "description": "Карусель по три, на телефоне лентой.",
+      "settings": {
+        "layout": "carousel"
+      }
+    },
+    {
+      "name": "plain",
+      "title": "Фото 3:4 без подложки (вид v1)",
+      "description": "Сетка в три колонки.",
+      "settings": {}
+    }
+  ]
+}

@@ -1,0 +1,369 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "word": {
+      "type": "string",
+      "title": "Слово или короткая фраза (в одну строку, до 40 знаков)",
+      "maxLength": 40,
+      "default": ""
+    },
+    "wordSource": {
+      "type": "string",
+      "title": "Откуда брать текст",
+      "enum": [
+        "text",
+        "collection"
+      ],
+      "options": [
+        "Свой текст",
+        "Название категории или подборки (на её странице, иначе свой текст)"
+      ],
+      "default": "text"
+    },
+    "asHeading": {
+      "type": "boolean",
+      "title": "Это заголовок раздела (h2)",
+      "default": false
+    },
+    "isUppercase": {
+      "type": "boolean",
+      "title": "Прописные буквы",
+      "default": true
+    },
+    "weight": {
+      "type": "string",
+      "title": "Насыщенность",
+      "enum": [
+        "normal",
+        "medium",
+        "semibold",
+        "bold"
+      ],
+      "options": [
+        "Обычная",
+        "Средняя",
+        "Полужирная",
+        "Жирная"
+      ],
+      "default": "bold"
+    },
+    "fontWidth": {
+      "type": "string",
+      "title": "Ширина букв шрифта темы (подгонка размера)",
+      "enum": [
+        "condensed",
+        "narrow",
+        "normal",
+        "wide"
+      ],
+      "options": [
+        "Сжатый: Oswald, Cuprum, Roboto Condensed",
+        "Узкий: PT Sans, Fira Sans, Source Sans, Exo 2",
+        "Обычный: Inter, Manrope, Onest, Roboto и большинство",
+        "Широкий: Montserrat, Merriweather"
+      ],
+      "default": "normal"
+    },
+    "tone": {
+      "type": "string",
+      "title": "Цвет надписи",
+      "enum": [
+        "primary",
+        "secondary",
+        "brand"
+      ],
+      "options": [
+        "Основной текст палитры",
+        "Второстепенный текст палитры",
+        "Фирменный цвет"
+      ],
+      "default": "primary"
+    },
+    "tracking": {
+      "type": "string",
+      "title": "Межбуквенный интервал",
+      "enum": [
+        "tight",
+        "normal"
+      ],
+      "options": [
+        "Плотный",
+        "Обычный"
+      ],
+      "default": "tight"
+    },
+    "widthShare": {
+      "type": "string",
+      "title": "Какую часть ширины занимает слово — компьютер",
+      "enum": [
+        "30",
+        "35",
+        "40",
+        "45",
+        "50",
+        "55",
+        "60",
+        "65",
+        "70",
+        "75",
+        "80",
+        "85",
+        "90",
+        "95",
+        "100"
+      ],
+      "options": [
+        "30%",
+        "35%",
+        "40%",
+        "45%",
+        "50%",
+        "55%",
+        "60%",
+        "65%",
+        "70%",
+        "75%",
+        "80%",
+        "85%",
+        "90%",
+        "95%",
+        "100%"
+      ],
+      "component": "slider",
+      "default": "100"
+    },
+    "widthShareMobile": {
+      "type": "string",
+      "title": "Какую часть ширины занимает слово — телефон",
+      "enum": [
+        "30",
+        "35",
+        "40",
+        "45",
+        "50",
+        "55",
+        "60",
+        "65",
+        "70",
+        "75",
+        "80",
+        "85",
+        "90",
+        "95",
+        "100"
+      ],
+      "options": [
+        "30%",
+        "35%",
+        "40%",
+        "45%",
+        "50%",
+        "55%",
+        "60%",
+        "65%",
+        "70%",
+        "75%",
+        "80%",
+        "85%",
+        "90%",
+        "95%",
+        "100%"
+      ],
+      "component": "slider",
+      "default": "100"
+    },
+    "align": {
+      "type": "string",
+      "title": "Выравнивание",
+      "enum": [
+        "start",
+        "center",
+        "end"
+      ],
+      "options": [
+        "Слева",
+        "По центру",
+        "Справа"
+      ],
+      "default": "start"
+    },
+    "sizeCap": {
+      "type": "string",
+      "title": "Ограничить высоту букв (для коротких слов)",
+      "enum": [
+        "none",
+        "large",
+        "medium"
+      ],
+      "options": [
+        "Без ограничения",
+        "Крупно",
+        "Умеренно"
+      ],
+      "default": "none"
+    },
+    "crop": {
+      "type": "string",
+      "title": "Срезать край надписи (на контрастной палитре)",
+      "enum": [
+        "none",
+        "top",
+        "bottom"
+      ],
+      "options": [
+        "Не срезать",
+        "Сверху",
+        "Снизу"
+      ],
+      "default": "none"
+    },
+    "linkText": {
+      "type": "string",
+      "title": "Текст ссылки (пусто — ссылкой станет само слово)",
+      "default": "Смотреть все"
+    },
+    "link": {
+      "$ref": "#/definitions/LinkSource",
+      "title": "Ссылка"
+    },
+    "linkPosition": {
+      "type": "string",
+      "title": "Где ссылка",
+      "enum": [
+        "end",
+        "below"
+      ],
+      "options": [
+        "Справа на линии слова",
+        "Под словом"
+      ],
+      "default": "end"
+    },
+    "showArrow": {
+      "type": "boolean",
+      "title": "Стрелка у ссылки",
+      "default": true
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "word",
+    "wordSource",
+    "weight",
+    "fontWidth",
+    "tone",
+    "tracking",
+    "widthShare",
+    "widthShareMobile",
+    "align",
+    "sizeCap",
+    "crop",
+    "linkPosition",
+    "section"
+  ]
+}

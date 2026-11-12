@@ -1,0 +1,215 @@
+/* Ряды услуг: в каждом ряду пара фото (или одно фото) и текст с кнопкой.
+   Одна разметка на все ширины: раскладку задают модификаторы .srows,
+   чётность ряда для чередования считает шаблон (класс srows__row_odd).
+   Цвета только токенами палитры. */
+
+/* ---------- шапка блока ---------- */
+.srows-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+    padding-bottom: var(--ys-spacing-200);
+}
+
+.srows-head_center,
+.srows-head_default.srows-head_theme-center {
+    align-items: center;
+    text-align: center;
+}
+
+.srows-head__intro {
+    max-width: 44rem;
+    white-space: pre-line;
+}
+
+/* ---------- ряды: база — одна колонка, фото сверху ---------- */
+.srows {
+    --srows-media: 3fr;
+    --srows-body: 2fr;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ys-spacing-800);
+}
+
+.srows_media-half {
+    --srows-media: 1fr;
+    --srows-body: 1fr;
+}
+
+.srows__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--ys-spacing-300);
+    align-items: start;
+    min-width: 0;
+}
+
+.srows__media,
+.srows__photo {
+    min-width: 0;
+}
+
+.srows__media_pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--ys-spacing-100);
+}
+
+.srows__body {
+    min-width: 0;
+    max-width: 44rem;
+}
+
+.srows__title {
+    text-wrap: balance;
+}
+
+/* ---------- описание (markdown) ----------
+   Движок рисует абзацы и пункты мелким кеглем с отступом 1em между пунктами,
+   а пункт «рыхлого» списка оборачивает в абзац — отсюда двойные интервалы.
+   Здесь кегль основного текста и плотный список. */
+.srows__text {
+    width: 100%;
+}
+
+.srows .srows__text > :first-child {
+    margin-top: 0;
+}
+
+.srows .srows__text > :last-child {
+    margin-bottom: 0;
+}
+
+.srows .srows__text p,
+.srows .srows__text li {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.srows .srows__text ul,
+.srows .srows__text ol {
+    margin: 0;
+    padding-left: 1.25em;
+}
+
+.srows .srows__text li {
+    margin: 0;
+}
+
+.srows .srows__text li:not(:last-child) {
+    margin-bottom: var(--ys-spacing-100);
+}
+
+.srows .srows__text li > p {
+    margin: 0;
+}
+
+.srows .srows__text li::marker {
+    color: var(--ys-color-token-text-secondary);
+}
+
+.srows__cta {
+    padding-top: var(--ys-spacing-200);
+}
+
+/* ---------- десктоп от 1024: две колонки ----------
+   wide — фото 3/5 ширины, half — поровну. Текст выровнен по верхнему краю
+   фото. Справа и через ряд при чередовании колонки меняются местами. */
+@media (min-width: 1024px) {
+    .srows__row {
+        grid-template-columns: minmax(0, var(--srows-media)) minmax(0, var(--srows-body));
+        column-gap: var(--ys-spacing-400);
+    }
+
+    .srows_side-right .srows__row,
+    .srows_side-alternate .srows__row_odd {
+        grid-template-columns: minmax(0, var(--srows-body)) minmax(0, var(--srows-media));
+    }
+
+    .srows_side-right .srows__media,
+    .srows_side-alternate .srows__row_odd .srows__media {
+        order: 2;
+    }
+
+    /* Ряд без фото — одна колонка текста, без пустого места под фото. */
+    .srows .srows__row.srows__row_text-only {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .srows__body {
+        max-width: 36rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .srows__row {
+        column-gap: var(--ys-spacing-600);
+    }
+}
+
+/* ---------- планшет 768–1023: ряд в одну колонку, фото сверху ---------- */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .srows {
+        gap: var(--ys-spacing-700);
+    }
+}
+
+/* ---------- телефон до 767 ---------- */
+@media (max-width: 767px) {
+    .srows-head {
+        padding-bottom: var(--ys-spacing-100);
+    }
+
+    .srows {
+        gap: var(--ys-spacing-600);
+    }
+
+    .srows__row {
+        row-gap: var(--ys-spacing-250);
+    }
+
+    /* Пара фото — лента с прокруткой пальцем: первое фото крупно, второе
+       выглядывает. Лента выходит под поля секции ровно на отступ секции
+       на телефоне (--srows-bleed из hPaddingMobile), первое фото стоит на
+       линии текста, горизонтального скролла страницы нет. */
+    .srows__media_pair {
+        display: flex;
+        gap: var(--ys-spacing-100);
+        margin-inline: calc(-1 * var(--srows-bleed, var(--ys-spacing-200)));
+        padding-inline: var(--srows-bleed, var(--ys-spacing-200));
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: var(--srows-bleed, var(--ys-spacing-200));
+        scrollbar-width: none;
+    }
+
+    .srows__media_pair::-webkit-scrollbar {
+        display: none;
+    }
+
+    .srows__media_pair .srows__photo {
+        flex: 0 0 82%;
+        scroll-snap-align: start;
+    }
+
+    .srows__cta,
+    .srows__button {
+        width: 100%;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

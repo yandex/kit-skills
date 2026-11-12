@@ -1,0 +1,1012 @@
+/* Шапка в слоте: обёртка ритма и контейнер секции не должны становиться
+   коробкой, иначе position: sticky ограничится их высотой и шапка
+   не залипнет. Контейнер секции витрина уже рисует с display: contents. */
+.kcs-rhythm {
+    display: contents;
+}
+
+/* Липкость даёт ya-kit-sticky (position: sticky и отступ под другими
+   закреплёнными блоками). z-index как у нативной шапки: выпадающие меню
+   и меню-бургер лежат поверх контента страницы. */
+.kcs-hdr {
+    --kcs-hdr-h: 56px;
+    --kcs-hdr-hd: 72px;
+    z-index: 500;
+    width: 100%;
+}
+
+.kcs-hdr_static {
+    position: relative;
+}
+
+.kcs-hdr_h_compact {
+    --kcs-hdr-h: 52px;
+    --kcs-hdr-hd: 60px;
+}
+
+.kcs-hdr_h_spacious {
+    --kcs-hdr-h: 64px;
+    --kcs-hdr-hd: 88px;
+}
+
+.kcs-hdr__layout {
+    overflow: visible;
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-hdr_border .kcs-hdr__layout {
+    border-bottom: 1px solid var(--ys-color-token-border-primary);
+}
+
+/* Сбросы через :where() — нулевая специфичность, чтобы правила классов ниже
+   их перекрывали. Внутри :where() один селектор: изолятор витрины делит
+   список селекторов по запятым, не глядя на скобки. */
+.kcs-hdr :where(ul) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-hdr :where(button),
+.kcs-hdr :where(input) {
+    font: inherit;
+    color: inherit;
+}
+
+.kcs-hdr a:focus-visible,
+.kcs-hdr button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+/* Строка шапки. Телефон и планшет: бургер, логотип, кнопки. */
+.kcs-hdr__row {
+    position: relative;
+}
+
+/* Контейнер запроса для navMode auto: меню строкой или бургер решает ширина
+   колонки темы, а не окна (при узкой теме окно 1440px, а колонка 900px — меню
+   переносилось бы во вторую строку). На обёртке строки, а не на корне шапки:
+   контейнер становится блоком отсчёта для fixed-потомков, а панель-бургер
+   лежит вне строки. Контейнер — свой контекст наложения: z-index 3 держит
+   выпадающие меню над строкой поиска и вторым меню, как раньше. */
+.kcs-hdr__barbox {
+    position: relative;
+    z-index: 3;
+    container-type: inline-size;
+    container-name: kcs-hdr-bar;
+}
+
+.kcs-hdr__bar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "burger logo actions";
+    align-items: center;
+    column-gap: var(--ys-spacing-100);
+    min-height: var(--kcs-hdr-h);
+}
+
+.kcs-hdr_logo_center .kcs-hdr__bar {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+.kcs-hdr__burger {
+    grid-area: burger;
+    justify-self: start;
+    margin-left: -10px;
+}
+
+.kcs-hdr__logo {
+    grid-area: logo;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    max-width: 48vw;
+    color: inherit;
+    text-decoration: none;
+}
+
+.kcs-hdr_logo_center .kcs-hdr__logo {
+    justify-self: center;
+}
+
+.kcs-hdr__logo-box,
+.kcs-hdr__logo-main,
+.kcs-hdr__logo-touch {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.kcs-hdr__logo-box_split .kcs-hdr__logo-main {
+    display: none;
+}
+
+/* Ширину логотипа задаёт мерчант в px, высота следует пропорциям файла, но не
+   выше строки шапки минус 16px: квадратный знак или вертикальный логотип при
+   ширине по умолчанию иначе раздувал бы строку вдвое. Внутренний img атома
+   (разметка движка, в доке её нет) вписывает файл в эту высоту целиком. */
+.kcs-hdr__logo-img {
+    --kcs-logo-hmax: calc(var(--kcs-hdr-h) - 16px);
+    display: block;
+    width: var(--kcs-logo-w-touch, 112px);
+    max-width: 100%;
+}
+
+.kcs-hdr__logo-img img {
+    max-height: var(--kcs-logo-hmax);
+    object-fit: contain;
+    object-position: left center;
+}
+
+.kcs-hdr_logo_center .kcs-hdr__logo-img img {
+    object-position: center;
+}
+
+.kcs-hdr__wordmark {
+    display: block;
+    max-width: 52vw;
+    overflow: hidden;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.kcs-hdr__nav {
+    grid-area: nav;
+    display: none;
+    align-self: stretch;
+    min-width: 0;
+}
+
+.kcs-hdr__actions {
+    grid-area: actions;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: var(--ys-spacing-25);
+    margin-right: -10px;
+}
+
+.kcs-hdr__btn {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: transparent;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.kcs-hdr__btn:hover {
+    background-color: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+/* Избранное, кабинет и поле поиска — только на компьютере;
+   на телефоне они в меню-бургере. */
+.kcs-hdr__desk {
+    display: none;
+}
+
+.kcs-hdr__badge {
+    position: absolute;
+    top: 4px;
+    right: 2px;
+    box-sizing: border-box;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background-color: var(--ys-color-token-brand-primary);
+    color: var(--ys-color-token-brand-primary-contrast);
+    box-shadow: 0 0 0 2px var(--ys-background-primary);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: center;
+}
+
+/* Меню строкой (показывается с 1024 или 1280 px, см. медиазапросы ниже).
+   Страховка от длинного меню: пункты, которым не хватило строки, переносятся
+   на вторую строку в своей колонке, а не наезжают на логотип, поиск и кнопки;
+   строка шапки при этом становится выше. Многоточием обрезается только пункт
+   длиннее всей колонки. Колонку меню не обрезаем overflow: выпадающие списки —
+   потомки пунктов, их бы срезало вместе с меню. Меню на 6+ пунктов — navMode
+   wide и без поля поиска. */
+.kcs-hdr__menu {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: stretch;
+    gap: 0 var(--ys-spacing-350);
+    min-height: 100%;
+    min-width: 0;
+}
+
+.kcs-hdr__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.kcs-hdr_drop_mega .kcs-hdr__item {
+    position: static;
+}
+
+.kcs-hdr__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 40px;
+    color: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.kcs-hdr__link-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kcs-hdr__link::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 6px;
+    left: 0;
+    height: 2px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.2s ease;
+}
+
+.kcs-hdr__item:hover .kcs-hdr__link::after,
+.kcs-hdr__link:focus-visible::after {
+    transform: scaleX(1);
+}
+
+.kcs-hdr__caret {
+    flex: none;
+    opacity: 0.6;
+    transition: transform 0.2s ease;
+}
+
+.kcs-hdr__item_parent:hover .kcs-hdr__caret,
+.kcs-hdr__item_parent:focus-within .kcs-hdr__caret {
+    transform: rotate(180deg);
+}
+
+.kcs-hdr_caps .kcs-hdr__link,
+.kcs-hdr_caps .kcs-hdr__sub-link {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Выпадающий список: наведение или фокус с клавиатуры, без скрипта.
+   Задержка скрытия 0.18 с прощает неточное движение мыши. */
+.kcs-hdr__drop {
+    position: absolute;
+    top: 100%;
+    left: calc(-1 * var(--ys-spacing-250));
+    z-index: 3;
+    min-width: 240px;
+    max-width: 320px;
+    padding: var(--ys-spacing-150) 0;
+    border: 1px solid var(--ys-color-token-border-primary);
+    border-radius: var(--ys-current-skin-border-radius, 0px);
+    background-color: var(--ys-background-primary);
+    box-shadow: 0 24px 48px -20px color-mix(in srgb, var(--ys-color-token-text-primary) 28%, transparent);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+}
+
+/* У двух последних пунктов список открывается влево: на узком компьютере
+   он не уходит за правый край экрана. */
+.kcs-hdr__item:nth-last-child(-n + 2) > .kcs-hdr__drop {
+    right: calc(-1 * var(--ys-spacing-250));
+    left: auto;
+}
+
+.kcs-hdr__item_parent:hover > .kcs-hdr__drop,
+.kcs-hdr__item_parent:focus-within > .kcs-hdr__drop {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+}
+
+.kcs-hdr__drop-list {
+    max-height: calc(100vh - var(--kcs-hdr-hd) - 48px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.kcs-hdr__drop-link,
+.kcs-hdr__drop-sublink {
+    display: block;
+    padding: var(--ys-spacing-100) var(--ys-spacing-250);
+    color: inherit;
+    font-size: 15px;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.kcs-hdr__drop-link:hover,
+.kcs-hdr__drop-sublink:hover {
+    background-color: color-mix(in srgb, var(--ys-color-token-text-primary) 6%, transparent);
+}
+
+.kcs-hdr__drop-sub {
+    padding-bottom: var(--ys-spacing-50);
+}
+
+.kcs-hdr__drop-sublink {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: var(--ys-spacing-450);
+    color: var(--ys-color-token-text-secondary);
+    font-size: 14px;
+}
+
+.kcs-hdr__drop-sublink:hover {
+    color: var(--ys-color-token-text-primary);
+}
+
+/* Мега-меню: панель во всю ширину под строкой шапки, второй уровень —
+   колонки, третий — ссылки под ними. */
+.kcs-hdr_drop_mega .kcs-hdr__drop {
+    right: 0;
+    left: 0;
+    min-width: 0;
+    max-width: none;
+    padding: var(--ys-spacing-400) var(--ys-section-h-padding, 32px) var(--ys-spacing-500);
+    border-width: 1px 0;
+    border-radius: 0;
+    box-shadow: 0 32px 48px -32px color-mix(in srgb, var(--ys-color-token-text-primary) 24%, transparent);
+    transform: translateY(-4px);
+}
+
+.kcs-hdr_drop_mega .kcs-hdr__item:nth-last-child(-n + 2) > .kcs-hdr__drop {
+    right: 0;
+    left: 0;
+}
+
+.kcs-hdr_drop_mega .kcs-hdr__drop-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--ys-spacing-400) var(--ys-spacing-500);
+    max-height: calc(100vh - var(--kcs-hdr-hd) - 96px);
+    margin: 0 auto;
+}
+
+/* Ширина «как у секций магазина»: колонки мега-меню по краю контента темы. */
+.kcs-hdr_w_theme.kcs-hdr_drop_mega .kcs-hdr__drop-list {
+    max-width: calc(var(--ys-section-max-width, 1400px) - 2 * var(--ys-section-h-padding, 0px));
+}
+
+.kcs-hdr_drop_mega .kcs-hdr__drop-link {
+    padding: 0 0 var(--ys-spacing-100);
+    font-weight: 600;
+}
+
+.kcs-hdr_drop_mega .kcs-hdr__drop-sublink {
+    padding: 6px 0;
+}
+
+.kcs-hdr_drop_mega .kcs-hdr__drop-link:hover,
+.kcs-hdr_drop_mega .kcs-hdr__drop-sublink:hover {
+    background-color: transparent;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* Поле поиска в шапке (вариант «Поле в шапке на компьютере»). */
+.kcs-hdr__field {
+    align-items: center;
+    gap: var(--ys-spacing-100);
+    width: clamp(180px, 18vw, 280px);
+    height: 40px;
+    margin-right: var(--ys-spacing-100);
+    padding: 0 var(--ys-spacing-200);
+    border: 1px solid var(--ys-color-token-border-primary);
+    border-radius: var(--ys-current-skin-border-radius, 20px);
+    background-color: var(--ys-background-secondary);
+    transition: border-color 0.15s ease;
+}
+
+.kcs-hdr__field:focus-within,
+.kcs-hdr__find-box:focus-within {
+    border-color: var(--ys-color-token-text-primary);
+}
+
+.kcs-hdr__field-icon {
+    flex: none;
+    opacity: 0.6;
+}
+
+.kcs-hdr__field-input,
+.kcs-hdr__find-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    font-size: 15px;
+}
+
+.kcs-hdr__field-input::placeholder,
+.kcs-hdr__find-input::placeholder {
+    color: var(--ys-color-token-placeholder);
+    opacity: 1;
+}
+
+/* Строка поиска под шапкой. 16px в поле: iOS не приближает страницу при фокусе. */
+.kcs-hdr__find {
+    border-top: 1px solid var(--ys-color-token-border-secondary);
+    animation: kcs-hdr-drop 0.18s ease-out;
+}
+
+.kcs-hdr__find-form {
+    display: flex;
+    align-items: center;
+    gap: var(--ys-spacing-100);
+    margin: 0;
+    padding: var(--ys-spacing-150) 0;
+}
+
+.kcs-hdr__find-form > .kcs-hdr__btn {
+    margin-right: -10px;
+}
+
+.kcs-hdr__find-box {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--ys-spacing-100);
+    min-width: 0;
+    height: 52px;
+    padding: 0 4px 0 var(--ys-spacing-200);
+    border: 1px solid var(--ys-color-token-border-primary);
+    border-radius: var(--ys-current-skin-border-radius, 26px);
+    background-color: var(--ys-background-secondary);
+    transition: border-color 0.15s ease;
+}
+
+.kcs-hdr__find-input {
+    font-size: 16px;
+}
+
+.kcs-hdr__find-go {
+    flex: none;
+    height: 44px;
+    padding: 0 var(--ys-spacing-250);
+    border: 0;
+    border-radius: var(--ys-current-skin-border-radius, 22px);
+    background-color: var(--ys-color-token-brand-primary);
+    color: var(--ys-color-token-brand-primary-contrast);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
+/* Строка второго меню. Ссылки, город и контакт — не ниже 44px и здесь,
+   и в меню-бургере: на планшете в альбомной ориентации эта строка
+   тоже нажимается пальцем. Телефон: одна строка с прокруткой до краёв экрана,
+   правый край растворяется маской — видно, что ряд листается. */
+.kcs-hdr__sub {
+    display: none;
+    border-top: 1px solid var(--ys-color-token-border-secondary);
+}
+
+.kcs-hdr__sub_touch {
+    display: block;
+}
+
+.kcs-hdr__sub-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ys-spacing-300);
+    min-height: 44px;
+}
+
+.kcs-hdr__sub-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0 calc(-1 * var(--ys-section-h-padding, 16px));
+    padding: 0 var(--ys-section-h-padding, 16px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 32px), transparent);
+    mask-image: linear-gradient(to right, black calc(100% - 32px), transparent);
+}
+
+.kcs-hdr__sub-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.kcs-hdr__sub-list {
+    display: flex;
+    align-items: center;
+    gap: var(--ys-spacing-250);
+    width: max-content;
+    padding-right: 32px;
+}
+
+.kcs-hdr__sub-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--ys-color-token-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.kcs-hdr__sub-link:hover {
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-hdr__utils {
+    display: none;
+    flex: none;
+    align-items: center;
+    gap: var(--ys-spacing-300);
+}
+
+.kcs-hdr__chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ys-spacing-100);
+    max-width: 260px;
+    height: 44px;
+    padding: 0 var(--ys-spacing-200);
+    border: 0;
+    border-radius: var(--ys-current-skin-border-radius, 22px);
+    background-color: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Контур чипа — псевдоэлемент: зона нажатия всегда 44px, а на компьютере
+   контур ниже (36px) и не упирается в границы строки второго меню. */
+.kcs-hdr__chip::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--ys-color-token-border-primary);
+    border-radius: inherit;
+    pointer-events: none;
+    transition: border-color 0.15s ease;
+}
+
+.kcs-hdr__chip:hover::before {
+    border-color: var(--ys-color-token-text-primary);
+}
+
+.kcs-hdr__chip-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.kcs-hdr__contact {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ys-spacing-100);
+    min-height: 44px;
+    color: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.kcs-hdr__contact:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* Меню-бургер: панель слева на всю высоту экрана, переход по уровням
+   меню внутри панели, «Назад» возвращает на уровень выше. */
+.kcs-hdr__drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+}
+
+.kcs-hdr__scrim {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    border: 0;
+    background-color: color-mix(in srgb, var(--ys-color-token-text-primary) 45%, transparent);
+    cursor: pointer;
+    animation: kcs-hdr-fade 0.2s ease-out;
+}
+
+.kcs-hdr__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(88vw, 400px);
+    height: 100%;
+    background-color: var(--ys-background-primary);
+    color: var(--ys-color-token-text-primary);
+    box-shadow: 16px 0 48px -24px color-mix(in srgb, var(--ys-color-token-text-primary) 40%, transparent);
+    animation: kcs-hdr-slide 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.kcs-hdr__panel-top {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ys-spacing-100);
+    min-height: var(--kcs-hdr-h);
+    padding: 0 6px 0 var(--ys-spacing-250);
+    border-bottom: 1px solid var(--ys-color-token-border-secondary);
+}
+
+.kcs-hdr__panel-title {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.kcs-hdr__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 44px;
+    margin-left: -8px;
+    padding: 0 8px;
+    border: 0;
+    background-color: transparent;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.kcs-hdr__panel-body {
+    flex: 1 1 auto;
+    padding: var(--ys-spacing-100) var(--ys-spacing-250) var(--ys-spacing-500);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.kcs-hdr__plist + .kcs-hdr__plist {
+    margin-top: var(--ys-spacing-200);
+    padding-top: var(--ys-spacing-150);
+    border-top: 1px solid var(--ys-color-token-border-secondary);
+}
+
+.kcs-hdr__pitem {
+    border-bottom: 1px solid var(--ys-color-token-border-secondary);
+}
+
+/* Под последним пунктом линии нет: список ниже отбит своей верхней линией. */
+.kcs-hdr__pitem:last-child {
+    border-bottom: 0;
+}
+
+.kcs-hdr__plist_minor .kcs-hdr__pitem {
+    border-bottom: 0;
+}
+
+.kcs-hdr__prow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ys-spacing-150);
+    width: 100%;
+    min-height: 52px;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    color: inherit;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.3;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.kcs-hdr__plist_minor .kcs-hdr__prow {
+    min-height: 44px;
+    color: var(--ys-color-token-text-secondary);
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.kcs-hdr__prow_icon {
+    justify-content: flex-start;
+}
+
+.kcs-hdr__prow_all {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2px;
+    min-height: 64px;
+}
+
+.kcs-hdr__all-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.kcs-hdr__all-hint {
+    color: var(--ys-color-token-text-secondary);
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.kcs-hdr__pmeta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ys-spacing-150) var(--ys-spacing-300);
+    margin-top: var(--ys-spacing-300);
+}
+
+@keyframes kcs-hdr-slide {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: none;
+    }
+}
+
+@keyframes kcs-hdr-fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes kcs-hdr-drop {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Компьютер: высота строки, ширина логотипа, кнопки кабинета и избранного,
+   строка второго меню с городом и контактом справа. */
+@media (min-width: 1024px) {
+    .kcs-hdr__bar {
+        column-gap: var(--ys-spacing-200);
+        min-height: var(--kcs-hdr-hd);
+    }
+
+    .kcs-hdr__logo {
+        max-width: none;
+    }
+
+    .kcs-hdr__logo-img {
+        --kcs-logo-hmax: calc(var(--kcs-hdr-hd) - 16px);
+        width: var(--kcs-logo-w, 140px);
+    }
+
+    .kcs-hdr__logo-box_split .kcs-hdr__logo-main {
+        display: flex;
+    }
+
+    .kcs-hdr__logo-touch {
+        display: none;
+    }
+
+    .kcs-hdr__wordmark {
+        max-width: 360px;
+        font-size: 24px;
+    }
+
+    .kcs-hdr__actions {
+        gap: var(--ys-spacing-50);
+    }
+
+    .kcs-hdr__desk {
+        display: inline-flex;
+    }
+
+    .kcs-hdr_search_field .kcs-hdr__find-btn {
+        display: none;
+    }
+
+    .kcs-hdr__find-form {
+        max-width: 880px;
+        margin: 0 auto;
+        padding: var(--ys-spacing-200) 0;
+    }
+
+    .kcs-hdr__sub {
+        display: block;
+    }
+
+    .kcs-hdr__sub-nav {
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .kcs-hdr__sub-list {
+        flex-wrap: wrap;
+        gap: 0 var(--ys-spacing-300);
+        width: auto;
+        padding-right: 0;
+    }
+
+    .kcs-hdr__sub-link {
+        font-size: 13px;
+    }
+
+    .kcs-hdr__utils {
+        display: flex;
+        margin-left: auto;
+    }
+
+    .kcs-hdr__chip {
+        padding: 0 var(--ys-spacing-150);
+    }
+
+    .kcs-hdr__chip::before {
+        inset: 4px 0;
+    }
+
+}
+
+/* auto: меню строкой, когда колонка темы не уже 960px (окно 1024px с полями темы
+   32px); в более узкой колонке — бургер, даже на широком окне. Панель-бургер
+   рисуется только открытой, поэтому медиазапросом её не прячем. */
+@container kcs-hdr-bar (min-width: 960px) {
+    .kcs-hdr_nav_auto .kcs-hdr__burger {
+        display: none;
+    }
+
+    .kcs-hdr_nav_auto .kcs-hdr__nav {
+        display: flex;
+    }
+
+    .kcs-hdr_nav_auto .kcs-hdr__bar {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-areas: "logo nav actions";
+        column-gap: var(--ys-spacing-500);
+    }
+
+    .kcs-hdr_nav_auto.kcs-hdr_logo_center .kcs-hdr__bar {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        grid-template-areas: "nav logo actions";
+    }
+}
+
+/* Узкий компьютер: пункты плотнее, чтобы меню строкой поместилось; поле
+   поиска уступает место меню и сворачивается в кнопку, как на телефоне. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .kcs-hdr_search_field .kcs-hdr__field {
+        display: none;
+    }
+
+    .kcs-hdr_search_field .kcs-hdr__find-btn {
+        display: inline-flex;
+    }
+
+    .kcs-hdr__menu {
+        column-gap: var(--ys-spacing-250);
+    }
+
+    .kcs-hdr__link {
+        font-size: 14px;
+    }
+
+    .kcs-hdr_nav_auto .kcs-hdr__bar {
+        column-gap: var(--ys-spacing-300);
+    }
+}
+
+/* «С 1280 px — для длинного меню». */
+@media (min-width: 1280px) {
+    .kcs-hdr_nav_wide .kcs-hdr__burger,
+    .kcs-hdr_nav_wide .kcs-hdr__drawer {
+        display: none;
+    }
+
+    .kcs-hdr_nav_wide .kcs-hdr__nav {
+        display: flex;
+    }
+
+    .kcs-hdr_nav_wide .kcs-hdr__bar {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-areas: "logo nav actions";
+        column-gap: var(--ys-spacing-500);
+    }
+
+    .kcs-hdr_nav_wide.kcs-hdr_logo_center .kcs-hdr__bar {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        grid-template-areas: "nav logo actions";
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-hdr__scrim,
+    .kcs-hdr__panel,
+    .kcs-hdr__find {
+        animation: none;
+    }
+
+    .kcs-hdr__drop,
+    .kcs-hdr__link::after,
+    .kcs-hdr__caret,
+    .kcs-hdr__btn {
+        transition: none;
+    }
+}
+
+/* Избранное — контурное сердце, как у нативной карточки товара: внутренний путь
+   иконки без своего fill прозрачный, контур рисуется цветом текста. */
+.kcs-hdr__fav-icon {
+    fill: transparent;
+    --ys-color-stroke: currentColor;
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

@@ -1,0 +1,403 @@
+/* Лента соцсетей: шапка (заголовок, подзаголовок, плашка аккаунта, кнопки
+   соцсетей из кабинета) и сетка фото-ссылок на публикации. Значения инстанса
+   (колонки, пропорция, зазор) приходят inline-переменными: css скоупится по
+   шаблону, а не по инстансу. Зазор между шапкой и сеткой — gap колонки, он
+   пропадает сам, когда одного из блоков нет. */
+.kcs-social {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-400);
+    min-width: 0;
+}
+
+/* Нечего показать (нет публикаций, плашки и сетей в кабинете) — блок не
+   рисуется и не оставляет пустой полосы (где поддержан :has). */
+.kcs-rhythm:not(:has(.kcs-social)) {
+    display: none;
+}
+
+/* --- Шапка --------------------------------------------------------------- */
+
+.kcs-social__head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-200);
+    min-width: 0;
+}
+
+.kcs-social__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-100);
+    max-width: 40rem;
+    min-width: 0;
+}
+
+.kcs-social__title {
+    margin: 0;
+}
+
+.kcs-social__lead {
+    margin: 0;
+    white-space: pre-line;
+}
+
+.kcs-social_head-center .kcs-social__head {
+    align-items: center;
+    text-align: center;
+}
+
+.kcs-social_head-center .kcs-social__intro {
+    align-items: center;
+}
+
+.kcs-social__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ys-spacing-100);
+    min-width: 0;
+}
+
+.kcs-social_head-center .kcs-social__actions {
+    justify-content: center;
+}
+
+.kcs-social__nets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-100);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-social_head-center .kcs-social__nets {
+    justify-content: center;
+}
+
+.kcs-social__net-item {
+    display: flex;
+}
+
+/* Кнопки соцсетей и плашка аккаунта — контурные, как тонкая обводка
+   карточек темы; при наведении инвертируются. Круг у кнопок — всегда круг,
+   как у нативного подвала. */
+.kcs-social__net,
+.kcs-social__handle {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    color: var(--ys-color-token-text-primary);
+    background: transparent;
+    border: 1px solid var(--ys-color-token-border-primary);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.kcs-social__net {
+    position: relative;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.kcs-social__handle {
+    max-width: 100%;
+    padding: 0 var(--ys-spacing-250);
+    border-radius: var(--ys-current-skin-border-radius, 999px);
+}
+
+.kcs-social__handle-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Имя сети для чтения с экрана: у кнопки видна только иконка. */
+.kcs-social__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* --- Сетка публикаций ---------------------------------------------------- */
+
+.kcs-social__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--kcs-social-cols, 3), minmax(0, 1fr));
+    gap: var(--kcs-social-gap, var(--ys-spacing-100));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Подписи под фото: строкам нужен воздух больше, чем колонкам. */
+.kcs-social_captions .kcs-social__grid {
+    row-gap: calc(var(--kcs-social-gap, var(--ys-spacing-100)) + var(--ys-spacing-200));
+}
+
+.kcs-social__cell {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.kcs-social__module {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ys-spacing-100);
+    min-width: 0;
+}
+
+/* Кадр держит пропорцию и скругление темы; сам тайл (ссылка или блок)
+   растянут по кадру и обрезает фото. Обрезка — на тайле, а не на кадре,
+   чтобы кольцо фокуса ссылки не срезалось. */
+.kcs-social__frame {
+    position: relative;
+    flex: none;
+    aspect-ratio: var(--kcs-social-ratio, 1 / 1);
+    border-radius: var(--ys-current-skin-border-radius, 0px);
+}
+
+.kcs-social_gap-0 .kcs-social__frame {
+    border-radius: 0;
+}
+
+.kcs-social__tile {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+    background: var(--ys-background-neutral);
+    border-radius: inherit;
+}
+
+/* Атом ya-kit-image без aspect-ratio: корень атома растягивается по тайлу,
+   внутренний img атома заполняет его (fit="cover" даёт object-fit). */
+.kcs-social__img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+}
+
+.kcs-social__img img {
+    height: 100%;
+    transition: transform 0.4s ease;
+}
+
+.kcs-social__tile_link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--ys-color-token-text-primary);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.kcs-social__badge {
+    position: absolute;
+    top: var(--ys-spacing-150);
+    right: var(--ys-spacing-150);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--ys-color-token-text-primary);
+    background: var(--ys-background-primary);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.kcs-social__caption {
+    margin: 0;
+}
+
+/* --- Состояния ----------------------------------------------------------- */
+
+@media (hover: hover) and (pointer: fine) {
+    .kcs-social__net:hover,
+    .kcs-social__handle:hover {
+        color: var(--ys-background-primary);
+        background: var(--ys-color-token-text-primary);
+        border-color: var(--ys-color-token-text-primary);
+    }
+
+    .kcs-social__tile_link:hover::after {
+        opacity: 0.12;
+    }
+
+    .kcs-social__tile_link:hover .kcs-social__img img {
+        transform: scale(1.04);
+    }
+}
+
+.kcs-social__net:focus-visible,
+.kcs-social__handle:focus-visible,
+.kcs-social__tile_link:focus-visible {
+    outline: 2px solid var(--ys-color-token-brand-primary);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-social__net,
+    .kcs-social__handle,
+    .kcs-social__img img,
+    .kcs-social__tile_link::after {
+        transition: none;
+    }
+
+    .kcs-social__tile_link:hover .kcs-social__img img {
+        transform: none;
+    }
+}
+
+/* --- Компьютер и планшет (от 768px) -------------------------------------- */
+
+@media (min-width: 768px) {
+    /* Заголовок слева, ссылки справа, по центру высоты текстового блока:
+       ровно и с одним заголовком, и с подзаголовком в полосе. */
+    .kcs-social_head-split .kcs-social__head {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--ys-spacing-400);
+    }
+
+    .kcs-social_head-split .kcs-social__actions {
+        justify-content: flex-end;
+        margin-left: auto;
+    }
+
+    .kcs-social_head-split .kcs-social__nets {
+        justify-content: flex-end;
+    }
+
+    /* Первая публикация крупно: ячейка 2×2. Ряды равной высоты (1fr), чтобы
+       крупный кадр совпадал с двумя рядами соседей и при неполном ряде. */
+    .kcs-social_featured .kcs-social__grid {
+        grid-auto-rows: 1fr;
+    }
+
+    .kcs-social_featured .kcs-social__cell:first-child:not(:only-child) {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .kcs-social_featured .kcs-social__cell:first-child:not(:only-child) .kcs-social__frame {
+        flex: 1 1 auto;
+        min-height: 0;
+        aspect-ratio: auto;
+    }
+
+    /* Секция без боковых полей (мозаика во всю ширину): шапке поля свои. */
+    .kcs-social_flush-d .kcs-social__head {
+        padding-right: var(--ys-spacing-800);
+        padding-left: var(--ys-spacing-800);
+    }
+}
+
+/* Планшет 768–1023: пять и шесть колонок сжимаются до трёх. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-social_c5 .kcs-social__grid,
+    .kcs-social_c6 .kcs-social__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .kcs-social_flush-d .kcs-social__head {
+        padding-right: var(--ys-spacing-400);
+        padding-left: var(--ys-spacing-400);
+    }
+}
+
+/* --- Телефон (до 767px) -------------------------------------------------- */
+
+@media (max-width: 767px) {
+    .kcs-social {
+        gap: var(--ys-spacing-300);
+    }
+
+    .kcs-social__net,
+    .kcs-social__handle {
+        height: 44px;
+    }
+
+    .kcs-social__net {
+        width: 44px;
+    }
+
+    .kcs-social__grid {
+        grid-template-columns: repeat(var(--kcs-social-cols-touch, 2), minmax(0, 1fr));
+    }
+
+    .kcs-social__badge {
+        top: var(--ys-spacing-100);
+        right: var(--ys-spacing-100);
+    }
+
+    /* Первая публикация крупно: на телефоне — во всю ширину сетки. */
+    .kcs-social_featured.kcs-social_touch-grid .kcs-social__cell:first-child {
+        grid-column: 1 / -1;
+    }
+
+    /* Лента с прокруткой: ряд уходит под край экрана (поля секции
+       компенсируются), следующая плитка выглядывает на 0.35 ширины. */
+    .kcs-social_touch-scroll .kcs-social__grid {
+        grid-auto-flow: column;
+        grid-template-columns: none;
+        grid-auto-columns: calc((100% - (var(--kcs-social-cols-touch, 2) - 1) * var(--kcs-social-gap, var(--ys-spacing-100))) / (var(--kcs-social-cols-touch, 2) + 0.35));
+        margin-right: calc(-1 * var(--kcs-social-bleed, 0px));
+        margin-left: calc(-1 * var(--kcs-social-bleed, 0px));
+        padding-right: var(--kcs-social-bleed, 0px);
+        padding-left: var(--kcs-social-bleed, 0px);
+        scroll-padding-left: var(--kcs-social-bleed, 0px);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .kcs-social_touch-scroll .kcs-social__grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .kcs-social_touch-scroll .kcs-social__cell {
+        scroll-snap-align: start;
+    }
+
+    .kcs-social_flush-m .kcs-social__head {
+        padding-right: var(--ys-spacing-200);
+        padding-left: var(--ys-spacing-200);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

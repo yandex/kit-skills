@@ -1,0 +1,106 @@
+{
+  "title": "Ответы для навигации по подкатегориям",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "enum": [
+        "current",
+        "menu"
+      ],
+      "title": "Источник пунктов. current — подкатегории текущей категории: секцию ставят на страницу категории, на других страницах её не видно. menu — пункты первого уровня меню магазина, любая страница, нужен menu"
+    },
+    "menu": {
+      "$ref": "#/definitions/MenuId",
+      "title": "id меню для source=menu — из настроек нативного слота: kit.py section show --id <id слота шапки>, поля modules.main.menu / modules.additional.menu"
+    },
+    "view": {
+      "type": "object",
+      "title": "Ряд ссылок",
+      "properties": {
+        "style": {
+          "type": "string",
+          "enum": [
+            "links",
+            "chips"
+          ],
+          "title": "links — текстовые ссылки с чертой у активной; chips — контурные кнопки-чипсы"
+        },
+        "align": {
+          "type": "string",
+          "enum": [
+            "start",
+            "center"
+          ],
+          "title": "Выравнивание ряда на десктопе (на телефоне всегда слева)"
+        },
+        "allText": {
+          "type": "string",
+          "title": "Первый пункт, ведущий на родительскую категорию (пусто — без пункта)"
+        },
+        "siblingsOnLeaf": {
+          "type": "boolean",
+          "title": "В категории без подкатегорий показывать соседние категории"
+        },
+        "topBorder": {
+          "type": "boolean",
+          "title": "Линия над рядом"
+        },
+        "bottomBorder": {
+          "type": "boolean",
+          "title": "Линия под рядом"
+        },
+        "activeFirstTouch": {
+          "type": "boolean",
+          "title": "На телефоне активный пункт первым в ряду (по умолчанию true; «Все» — после него)"
+        },
+        "showOn": {
+          "type": "string",
+          "enum": [
+            "all",
+            "touch"
+          ],
+          "title": "all — везде (по умолчанию); touch — только на телефоне, когда на компьютере ряд повторяет меню шапки"
+        }
+      }
+    },
+    "masthead": {
+      "type": "object",
+      "title": "Шапка категории (только source=current)",
+      "properties": {
+        "showBreadcrumbs": {
+          "type": "boolean",
+          "title": "Хлебные крошки — только если нативный листинг заменён или его крошки выключены"
+        },
+        "showTitle": {
+          "type": "boolean",
+          "title": "Название категории (h2) — только если нативный листинг заменён: у него свой заголовок"
+        },
+        "cover": {
+          "type": "string",
+          "enum": [
+            "none",
+            "slim",
+            "banner"
+          ],
+          "title": "Обложка из картинки категории в кабинете: none, slim (5:1), banner (7:2)"
+        }
+      }
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
+    }
+  },
+  "required": [
+    "source"
+  ]
+}

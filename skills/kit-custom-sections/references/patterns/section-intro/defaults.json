@@ -1,0 +1,35 @@
+{
+  "palette": "default",
+  "titleText": "",
+  "headingLevel": "h2",
+  "titleSize": "display",
+  "metaText": "",
+  "leadText": "",
+  "leadMutedText": "",
+  "linkText": "Смотреть все",
+  "linkUrl": {
+    "link": "",
+    "linkId": ""
+  },
+  "linkStyle": "pill",
+  "linkArea": "link",
+  "layout": "split",
+  "align": "left",
+  "alignItems": "start",
+  "surface": "none",
+  "framed": false,
+  "modules": [],
+  "chipStyle": "outline",
+  "logoSource": "none",
+  "logoTone": "default",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "none"
+  },
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0",
+  "verticalRhythmBottom": "0",
+  "verticalRhythmBottomTouch": "0"
+}

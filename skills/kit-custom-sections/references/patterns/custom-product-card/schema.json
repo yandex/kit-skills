@@ -1,7 +1,237 @@
 {
-  "title": "",
   "type": "object",
+  "title": "",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
+    "gallery": {
+      "type": "object",
+      "title": "Галерея",
+      "properties": {
+        "layout": {
+          "type": "string",
+          "title": "Раскладка фото на компьютере",
+          "description": "На телефоне всегда лента со свайпом. Размер, заполнение и фон фото — из настроек темы",
+          "enum": [
+            "thumbnail",
+            "grid"
+          ],
+          "options": [
+            "Большое фото и миниатюры, галерея липкая",
+            "Сетка в две колонки"
+          ],
+          "default": "thumbnail"
+        }
+      }
+    },
+    "subtitle": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Строка под названием",
+      "description": "Одинакова для всех товаров, на странице которых стоит секция. Текст про один товар — только в варианте страницы, назначенном этому товару",
+      "default": ""
+    },
+    "showRating": {
+      "type": "boolean",
+      "title": "Рейтинг и число отзывов",
+      "description": "Виден, когда отзывы включены в магазине и у товара они есть",
+      "default": true
+    },
+    "trust": {
+      "type": "object",
+      "title": "Артикул и остаток",
+      "properties": {
+        "showSku": {
+          "type": "boolean",
+          "title": "Показывать артикул",
+          "default": false
+        },
+        "showStock": {
+          "type": "boolean",
+          "title": "Показывать остаток на складе",
+          "default": false
+        },
+        "stockThreshold": {
+          "type": "number",
+          "title": "Показывать остаток, когда штук не больше",
+          "description": "0 — показывать всегда",
+          "unit": "шт.",
+          "step": 1,
+          "minimum": 0,
+          "maximum": 100,
+          "default": 5
+        }
+      }
+    },
+    "buy": {
+      "type": "object",
+      "title": "Покупка",
+      "properties": {
+        "addToCartText": {
+          "type": "string",
+          "title": "Текст кнопки покупки",
+          "default": "В корзину"
+        },
+        "goToCartText": {
+          "type": "string",
+          "title": "Текст кнопки, когда товар уже в корзине",
+          "default": "Перейти в корзину"
+        },
+        "subscribeText": {
+          "type": "string",
+          "title": "Текст кнопки подписки на поступление",
+          "description": "Кнопка видна у товара не в наличии, когда в настройках магазина включён показ отсутствующих товаров",
+          "default": "Узнать о поступлении"
+        },
+        "outOfStockText": {
+          "type": "string",
+          "title": "Надпись у товара не в наличии",
+          "default": "Нет в наличии"
+        },
+        "priceInButton": {
+          "type": "boolean",
+          "title": "Цена на кнопке покупки",
+          "default": false
+        },
+        "showSplit": {
+          "type": "boolean",
+          "title": "Бейдж Сплита под ценой",
+          "description": "Виден, только когда Сплит включён в настройках магазина",
+          "default": true
+        },
+        "stickyMobile": {
+          "type": "boolean",
+          "title": "Панель покупки у нижнего края экрана на телефоне",
+          "default": true
+        }
+      }
+    },
+    "benefits": {
+      "type": "object",
+      "title": "Преимущества у кнопки покупки",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Заголовок (можно пустой)",
+          "default": ""
+        },
+        "text": {
+          "$ref": "#/definitions/MarkdownContent",
+          "title": "Пункты списком",
+          "description": "Одинаковы для всех товаров, на странице которых стоит секция. Пусто — блока нет",
+          "default": ""
+        },
+        "style": {
+          "type": "string",
+          "title": "Вид списка",
+          "enum": [
+            "list",
+            "chips"
+          ],
+          "options": [
+            "Список",
+            "Плашки"
+          ],
+          "default": "list"
+        }
+      }
+    },
+    "details": {
+      "type": "object",
+      "title": "Раскрывающиеся блоки",
+      "properties": {
+        "expandedRow": {
+          "type": "string",
+          "title": "Какой блок раскрыт сразу",
+          "enum": [
+            "none",
+            "modules",
+            "description",
+            "characteristics",
+            "delivery"
+          ],
+          "options": [
+            "Все свёрнуты",
+            "Первый свой блок",
+            "Описание",
+            "Характеристики",
+            "Доставка"
+          ],
+          "default": "description"
+        },
+        "showDescription": {
+          "type": "boolean",
+          "title": "Описание товара",
+          "default": true
+        },
+        "descriptionTitle": {
+          "type": "string",
+          "title": "Заголовок описания",
+          "default": "Описание"
+        },
+        "showCharacteristics": {
+          "type": "boolean",
+          "title": "Все характеристики товара",
+          "description": "Характеристика, вынесенная в свой блок, в общий список не попадает, если в блоке её название записано точно как в каталоге",
+          "default": true
+        },
+        "characteristicsTitle": {
+          "type": "string",
+          "title": "Заголовок характеристик",
+          "default": "Характеристики"
+        },
+        "showDelivery": {
+          "type": "boolean",
+          "title": "Доставка в город покупателя",
+          "default": true
+        },
+        "deliveryTitle": {
+          "type": "string",
+          "title": "Заголовок доставки",
+          "default": "Доставка"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Свои блоки",
+      "description": "Идут перед описанием. Блок с характеристикой показывает её значение у каждого товара и пропадает у товара без неё",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Заголовок блока",
+            "description": "Для блока с характеристикой можно пустой — тогда её название",
+            "default": ""
+          },
+          "characteristicTitle": {
+            "type": "string",
+            "title": "Характеристика из каталога",
+            "description": "Название как в кабинете, например: Материал, Комплектация, Уход, Гарантия, Размеры. Регистр и пробелы по краям не важны",
+            "default": ""
+          },
+          "view": {
+            "type": "string",
+            "title": "Вид значения характеристики",
+            "enum": [
+              "text",
+              "chips"
+            ],
+            "options": [
+              "Текст",
+              "Плашки через запятую"
+            ],
+            "default": "text"
+          },
+          "text": {
+            "$ref": "#/definitions/MarkdownContent",
+            "title": "Текст блока без характеристики",
+            "description": "Одинаков для всех товаров, на странице которых стоит секция",
+            "default": ""
+          }
+        }
+      }
+    },
     "palette": {
       "$ref": "#/definitions/Palette",
       "title": "Палитра цветов"
@@ -69,8 +299,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ блока (токен темы, с каждой стороны)",
-      "default": "200"
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
     },
     "verticalRhythmTouch": {
       "type": "string",
@@ -104,8 +334,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ на телефоне (токен темы)",
-      "default": "100"
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
     }
   },
   "required": [

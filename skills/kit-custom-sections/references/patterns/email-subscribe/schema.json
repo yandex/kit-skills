@@ -1,0 +1,311 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "promo": {
+      "$ref": "#/definitions/PromocodeSource",
+      "title": "Промокод за подписку (необязательно)",
+      "longDescription": "Если выбрать промокод, заголовок покажет размер скидки, а платформа отправит код на почту подписчика. Без промокода форма работает как обычная подписка."
+    },
+    "headline": {
+      "type": "string",
+      "title": "Заголовок",
+      "default": ""
+    },
+    "headlineWithPromo": {
+      "type": "string",
+      "title": "Заголовок, когда выбран промокод (размер скидки встанет после текста)",
+      "default": ""
+    },
+    "text": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Текст под заголовком",
+      "default": ""
+    },
+    "terms": {
+      "type": "object",
+      "title": "Условия промокода",
+      "properties": {
+        "firstOrder": {
+          "type": "string",
+          "title": "Если промокод только на первый заказ",
+          "default": "Только на первый заказ"
+        },
+        "minOrder": {
+          "type": "string",
+          "title": "Если у промокода есть минимальная сумма (сумма встанет после текста)",
+          "default": "При заказе от"
+        }
+      }
+    },
+    "form": {
+      "type": "object",
+      "title": "Поле и кнопка",
+      "required": [
+        "buttonText"
+      ],
+      "properties": {
+        "placeholder": {
+          "type": "string",
+          "title": "Подсказка в поле",
+          "default": "Ваш e-mail"
+        },
+        "buttonText": {
+          "type": "string",
+          "title": "Текст кнопки",
+          "default": "Подписаться"
+        },
+        "buttonColor": {
+          "type": "string",
+          "title": "Цвет кнопки",
+          "enum": [
+            "primary",
+            "secondary",
+            "neutral",
+            "outlined",
+            "flat"
+          ],
+          "options": [
+            "Основной",
+            "Второстепенный",
+            "Нейтральный",
+            "С обводкой",
+            "Без фона"
+          ],
+          "default": "primary"
+        },
+        "controlSize": {
+          "type": "string",
+          "title": "Размер поля и кнопки",
+          "enum": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "options": [
+            "Компактный",
+            "Средний",
+            "Крупный"
+          ],
+          "default": "lg"
+        },
+        "variant": {
+          "type": "string",
+          "title": "Вид формы",
+          "enum": [
+            "row",
+            "inline-pill",
+            "stacked"
+          ],
+          "options": [
+            "Поле и кнопка рядом",
+            "Кнопка внутри поля",
+            "Кнопка под полем"
+          ],
+          "default": "row"
+        }
+      }
+    },
+    "consent": {
+      "type": "object",
+      "title": "Согласие",
+      "required": [
+        "mode",
+        "text"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "title": "Как получать согласие",
+          "enum": [
+            "checkbox",
+            "notice"
+          ],
+          "options": [
+            "Галочка, которую ставит покупатель",
+            "Только текст под формой"
+          ],
+          "default": "checkbox"
+        },
+        "text": {
+          "$ref": "#/definitions/MarkdownContent",
+          "title": "Текст согласия (не называйте в нём кнопку)",
+          "default": "Подписываясь, вы соглашаетесь на обработку персональных данных и получение рассылки. [Политика конфиденциальности](/privacy)"
+        }
+      }
+    },
+    "success": {
+      "type": "object",
+      "title": "После подписки",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Заголовок",
+          "default": "Готово"
+        },
+        "text": {
+          "$ref": "#/definitions/TextArea",
+          "title": "Текст",
+          "default": "Вы подписались на рассылку."
+        },
+        "textWithPromo": {
+          "$ref": "#/definitions/TextArea",
+          "title": "Текст, когда выбран промокод",
+          "default": "Промокод придёт на указанную почту."
+        }
+      }
+    },
+    "layout": {
+      "type": "string",
+      "title": "Расположение",
+      "enum": [
+        "center",
+        "left",
+        "two-columns"
+      ],
+      "options": [
+        "По центру",
+        "Слева",
+        "Две колонки"
+      ],
+      "default": "center"
+    },
+    "surface": {
+      "type": "string",
+      "title": "Фон блока",
+      "enum": [
+        "panel",
+        "plain"
+      ],
+      "options": [
+        "На подложке",
+        "Без подложки"
+      ],
+      "default": "panel"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "headline",
+    "form",
+    "consent",
+    "section"
+  ]
+}

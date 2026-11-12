@@ -3,68 +3,86 @@
 
 # Хелперы DSL Mystique
 
-Инлайн: 54 имён / 53 функций (алиасы: `cn` -> className, `if` -> when). Блочных: 6 (неизвестный блочный хелпер РОНЯЕТ секцию).
+Инлайн: 72 имён / 71 функций (алиасы: `cn` -> className, `if` -> when). Блочных: 6 (неизвестный блочный хелпер РОНЯЕТ секцию).
 
-Предупреждения: `or` возвращает boolean и не годится как текстовый fallback; i18n-хелперов нет; тройные скобки `{{{ }}}` не существуют; `{{!-- --}}` печатается как текст.
+Предупреждения: `or`, `and` и `isEmpty` возвращают boolean — текстовый fallback делается тернарным `when`: `{{when (isEmpty x) "запасной" x}}`. Строковые хелперы, кроме `split`, приводят аргумент через `String()`: для отсутствующего значения напечатают «undefined» или «null» (`truncate x 5` -> «unde…»), а `startsWith`/`includes`/`endsWith` могут ложно вернуть `true` — сначала проверка `isEmpty` или блок `{{#if x}}`. i18n-хелперов нет; тройные скобки `{{{ }}}` не существуют; `{{!-- --}}` печатается как текст.
 
 ## Инлайн-хелперы
 
-| Имя | Группа | Функция |
-|---|---|---|
-| `at` | array | at |
-| `first` | array | first |
-| `join` | array | join |
-| `last` | array | last |
-| `length` | array | length |
-| `slice` | array | slice |
-| `eql` | comparison | eql |
-| `notEql` | comparison | notEql |
-| `gt` | comparison | gt |
-| `gte` | comparison | gte |
-| `lt` | comparison | lt |
-| `lte` | comparison | lte |
-| `cn` | css | className (алиас className) |
-| `skinAspectRatio` | css | skinAspectRatio |
-| `skinBackground` | css | skinBackground |
-| `skinBorderColor` | css | skinBorderColor |
-| `skinRounded` | css | skinRounded |
-| `formatDate` | formatting | formatDate |
-| `formatLineBreaks` | formatting | formatLineBreaks |
-| `formatPhoneNumber` | formatting | formatPhoneNumber |
-| `formatPrice` | formatting | formatPrice |
-| `pluralize` | formatting | pluralize |
-| `bind` | functions | bind |
-| `call` | functions | call |
-| `compose` | functions | compose |
-| `if` | logic | when (алиас when) |
-| `when` | logic | when |
-| `unless` | logic | unless |
-| `not` | logic | not |
-| `and` | logic | and |
-| `or` | logic | or |
-| `add` | math | add |
-| `subtract` | math | subtract |
-| `multiply` | math | multiply |
-| `divide` | math | divide |
-| `max` | math | max |
-| `min` | math | min |
-| `ceil` | math | ceil |
-| `floor` | math | floor |
-| `round` | math | round |
-| `ratio` | math | ratio |
-| `filterImages` | media | filterImages |
-| `imageUrl` | media | imageUrl |
-| `get` | object | get |
-| `stringify` | object | stringify |
-| `lower` | string | lower |
-| `lowerFirst` | string | lowerFirst |
-| `upper` | string | upper |
-| `upperFirst` | string | upperFirst |
-| `startsWith` | string | startsWith |
-| `endsWith` | string | endsWith |
-| `includes` | string | includes |
-| `padStart` | string | padStart |
-| `padEnd` | string | padEnd |
+| Имя | Группа | Функция | Поведение |
+|---|---|---|---|
+| `at` | array | at | `at arr i` — элемент по индексу или `null` |
+| `filter` | array | filter | `filter arr pred` — элементы, для которых функция `pred` вернула истину; `pred` — из `fn`/`pipe`: `filter settings.modules (fn "get" "answer")` — модули с непустым ответом. Не массив или `pred` не функция -> `[]` |
+| `filterBy` | array | filterBy | `filterBy arr "a.b" value` — элементы, у которых поле по пути строго (`===`) равно value; не массив -> `[]` |
+| `findBy` | array | findBy | `findBy arr "a.b" value` — первый такой элемент или `null` (сравнение строгое, `"5"` ≠ `5`) |
+| `first` | array | first | первый элемент массива или `null` |
+| `join` | array | join | `join arr [sep=","]` — строка; не массив -> `null` |
+| `last` | array | last | последний элемент массива или `null` |
+| `length` | array | length | длина массива; не массив -> `0` (для `count="{{length …}}"` у карусели) |
+| `mapBy` | array | mapBy | `mapBy arr "a.b"` — массив значений поля; не массив -> `null`, не `[]` |
+| `slice` | array | slice | не массив -> `[]` |
+| `eql` | comparison | eql |  |
+| `notEql` | comparison | notEql |  |
+| `gt` | comparison | gt |  |
+| `gte` | comparison | gte |  |
+| `lt` | comparison | lt |  |
+| `lte` | comparison | lte |  |
+| `cn` | css | className (алиас className) |  |
+| `modifier` | css | modifier | `modifier "префикс" "имя" value` — класс-модификатор: `префикс_имя_value`, для `true` — `префикс_имя`; `false`, `""`, `null`, `undefined` -> пустая строка |
+| `skinAspectRatio` | css | skinAspectRatio |  |
+| `skinBackground` | css | skinBackground |  |
+| `skinBorderColor` | css | skinBorderColor |  |
+| `skinRounded` | css | skinRounded |  |
+| `formatDate` | formatting | formatDate |  |
+| `formatLineBreaks` | formatting | formatLineBreaks |  |
+| `formatPhoneNumber` | formatting | formatPhoneNumber |  |
+| `formatPrice` | formatting | formatPrice |  |
+| `pluralize` | formatting | pluralize |  |
+| `bind` | functions | bind | `bind f a …` — `f` с подставленными первыми аргументами; не функция -> `null` |
+| `call` | functions | call | `call f a …` — вызов `f(a, …)`; не функция -> `null` |
+| `compose` | functions | compose | `compose f g …` — функция, которая вызывает все функции по очереди с одними аргументами (обработчик на несколько действий); нефункции отбрасываются, ни одной -> `null` |
+| `fn` | functions | fn | `fn "имя" [арг…]` — функция одного значения из хелпера: `fn "get" "question"` даёт `x -> get x "question"`, доп. аргументы идут после значения. Неизвестное имя -> `null`. Для `filter` и `pipe` |
+| `pipe` | functions | pipe | `pipe f g …` — функция `x -> g(f(x))`, слева направо; без аргументов или с нефункцией среди них -> `null` |
+| `default` | logic | defaultValue (алиас defaultValue) | `default x запасное` — запасное только для `null` и `undefined`; `""`, `0` и `false` остаются (текстовый fallback на пустую строку — `when`) |
+| `if` | logic | when (алиас when) | то же, что `when` (инлайн-форма) |
+| `when` | logic | when | тернарный: `when cond a b`; это и есть текстовый fallback |
+| `unless` | logic | unless |  |
+| `not` | logic | not |  |
+| `and` | logic | and | boolean |
+| `isEmpty` | logic | isEmpty | boolean: `true` для `null`, `undefined`, `""`, `[]`, `{}`; `0`, `false` и строка из пробелов — не пустые. Fallback текста: `when (isEmpty x) "запасной" x` |
+| `or` | logic | or | boolean, не значение: как текстовый fallback не годится |
+| `add` | math | add |  |
+| `subtract` | math | subtract |  |
+| `multiply` | math | multiply |  |
+| `divide` | math | divide |  |
+| `max` | math | max |  |
+| `min` | math | min |  |
+| `ceil` | math | ceil |  |
+| `floor` | math | floor |  |
+| `round` | math | round |  |
+| `ratio` | math | ratio |  |
+| `filterImages` | media | filterImages | `filterImages mediaItems` — payload-ы фото (ImageModel[]), видео пропускается. Не массив (`undefined`, `null`) — исключение, секция падает: настройку из схемы защищать `{{#if}}`. Первое фото товара: `first (filterImages product.mediaItems)` (у товара `mediaItems` по коду всегда массив) |
+| `imageUrl` | media | imageUrl | `imageUrl image [alias="orig"]` — URL файла (размер по алиасу, если он есть у картинки); пустая картинка -> `null` |
+| `mediaPreview` | media | mediaPreview | `mediaPreview media` (целая MediaModel) — для фото ImageModel, для видео строка-URL первого кадра, иначе `null`; результат — в `src` у `ya-kit-image` |
+| `isValidImage` | media | isValidImage | boolean: картинка из настроек годится к показу — объект с непустыми строками `fileId` и `filePath`; `sizes` необязателен, а если есть — массив, где у каждого размера непустой `alias` и числовая `width` (у `alias: optimize` ширина не нужна). Пустой выбор картинки, не объект, `fileId`/`filePath` не строкой -> `false` |
+| `get` | object | get | `get obj "a.b"` — значение по пути через точку; `undefined` -> `null` |
+| `stringify` | object | stringify |  |
+| `lower` | string | lower | приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `lowerFirst` | string | lowerFirst | приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `upper` | string | upper | приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `upperFirst` | string | upperFirst | приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `startsWith` | string | startsWith | `startsWith x prefix [position]`; `x` приводится через `String()`: `null` даёт «null», и проверка может ложно пройти |
+| `endsWith` | string | endsWith | `endsWith x suffix [endPosition]`; `x` приводится через `String()`: `endsWith undefined "ed"` -> `true` |
+| `includes` | string | includes | `includes x part [position]`; `x` приводится через `String()`: `null` даёт «null», и проверка может ложно пройти |
+| `padStart` | string | padStart | приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `padEnd` | string | padEnd | приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `split` | string | split | `split x [sep=","] [limit]` — массив строк; `null`/`undefined` -> `[]` (единственный строковый хелпер без ловушки `String()`) |
+| `substring` | string | substring | `substring x start [end]`; приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `trim` | string | trim | приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `replace` | string | replace | `replace x find repl` — первое вхождение литерала (не регэксп); приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `replaceAll` | string | replaceAll | `replaceAll x find repl` — все вхождения литерала, спецсимволы регэкспов экранируются; приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `truncate` | string | truncate | `truncate x n [suffix="…"]` — длина в символах (кодовых точках), суффикс входит в лимит; приводит аргумент через `String()`: на `null`/`undefined` вернёт строку «null»/«undefined» — проверять `isEmpty` до вызова |
+| `jsonLdSchema` | structuredData | jsonLdSchema | `jsonLdSchema "Тип" model` — объект schema.org для `ya-kit-json-ld model=`. Типы: `FAQPage` (model — массив `{question, answer}`, пустой -> `null`; вопросы без ответа хелпер не отбрасывает — фильтровать в шаблоне), `Product`, `Article`, `BlogPosting`, `BreadcrumbList`, `ItemList`, `OfferCatalog`, `Organization` (model — модели платформы, как у нативных виджетов), `VideoObject` (model — объект `{name, payload}`: `payload` — VideoModel из настроек; у ролика без обработанного видео и первого кадра -> `null`). Неизвестный тип, model не объект или ошибка преобразования -> `null`: вызов оборачивать в `{{#with … as |ld|}}` |
 
 ## Блочные хелперы
 

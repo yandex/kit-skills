@@ -1,0 +1,284 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок",
+      "default": ""
+    },
+    "titleAlign": {
+      "$ref": "#/definitions/SectionTitleAlign",
+      "title": "Расположение заголовка"
+    },
+    "playback": {
+      "type": "string",
+      "title": "Воспроизведение",
+      "enum": [
+        "queue",
+        "tap",
+        "background"
+      ],
+      "options": [
+        "Сами, по очереди, без звука (звук — кнопкой на ролике)",
+        "По нажатию, со звуком",
+        "Фоном без кнопок (короткие беззвучные ролики)"
+      ],
+      "default": "queue"
+    },
+    "frameRatio": {
+      "type": "string",
+      "title": "Формат карточки",
+      "enum": [
+        "9x16",
+        "4x5",
+        "1x1"
+      ],
+      "options": [
+        "Вертикальный 9:16",
+        "Вертикальный 4:5",
+        "Квадрат 1:1"
+      ],
+      "default": "9x16"
+    },
+    "columns": {
+      "type": "number",
+      "title": "Роликов в ряду на компьютере",
+      "minimum": 3,
+      "maximum": 6,
+      "step": 1,
+      "default": 4
+    },
+    "columnsTouch": {
+      "type": "number",
+      "title": "Роликов в ряду на телефоне",
+      "minimum": 1,
+      "maximum": 2,
+      "step": 1,
+      "default": 1
+    },
+    "hGap": {
+      "type": "string",
+      "title": "Отступ между роликами",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "400",
+        "500",
+        "600",
+        "700"
+      ],
+      "options": [
+        "0",
+        "2 px",
+        "4 px",
+        "8 px",
+        "12 px",
+        "16 px",
+        "20 px",
+        "24 px",
+        "32 px",
+        "40 px",
+        "48 px",
+        "56 px"
+      ],
+      "default": "200"
+    },
+    "autoplay": {
+      "type": "boolean",
+      "title": "Листать карусель автоматически (ролики будут уезжать во время просмотра)",
+      "default": false
+    },
+    "autoplayDelay": {
+      "type": "number",
+      "title": "Интервал автолистания",
+      "minimum": 3000,
+      "maximum": 15000,
+      "step": 500,
+      "unit": "мс",
+      "default": 6000
+    },
+    "controlsAlignment": {
+      "type": "string",
+      "title": "Стрелки карусели",
+      "enum": [
+        "none",
+        "edges",
+        "leftRight",
+        "left",
+        "right"
+      ],
+      "options": [
+        "Без стрелок",
+        "По краям",
+        "Слева и справа поверх роликов",
+        "Обе слева",
+        "Обе справа"
+      ],
+      "default": "edges"
+    },
+    "controlsSize": {
+      "type": "string",
+      "title": "Размер стрелок",
+      "enum": [
+        "xs",
+        "sm",
+        "md",
+        "lg"
+      ],
+      "options": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "default": "md"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Ролики",
+      "totalMaximum": 12,
+      "items": {
+        "type": "object",
+        "properties": {
+          "video": {
+            "$ref": "#/definitions/VideoModel",
+            "title": "Видео"
+          },
+          "caption": {
+            "type": "string",
+            "title": "Подпись под роликом (необязательно)",
+            "default": ""
+          },
+          "linkText": {
+            "type": "string",
+            "title": "Текст ссылки под подписью (необязательно)",
+            "default": ""
+          },
+          "link": {
+            "$ref": "#/definitions/LinkSource",
+            "title": "Ссылка, например на товар из ролика"
+          }
+        },
+        "required": [
+          "video"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section",
+    "modules"
+  ]
+}

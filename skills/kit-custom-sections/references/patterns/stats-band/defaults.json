@@ -1,0 +1,50 @@
+{
+  "cta": {
+    "text": "",
+    "link": {
+      "link": "",
+      "linkId": ""
+    },
+    "style": "button"
+  },
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "center",
+  "columns": "4",
+  "align": "center",
+  "style": "plain",
+  "valueColor": "text",
+  "valueWeight": "semibold",
+  "captionCase": "upper",
+  "noteText": "",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "value": "",
+      "caption": ""
+    },
+    {
+      "id": "m2",
+      "value": "",
+      "caption": ""
+    },
+    {
+      "id": "m3",
+      "value": "",
+      "caption": ""
+    },
+    {
+      "id": "m4",
+      "value": "",
+      "caption": ""
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

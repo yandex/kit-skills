@@ -2,25 +2,148 @@
   "title": "Ответы для hero-секции",
   "type": "object",
   "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "title": "Цвет описаний и лида: primary — основной (по умолчанию); secondary — приглушённый: смесь 64% текста с фоном, на светло-сером фоне с текстом средней яркости не дотягивает до 4,5:1"
+    },
     "titleText": {
       "type": "string",
-      "title": "Заголовок (главное сообщение)"
+      "title": "Заголовок (главное сообщение): до 60 знаков, перенос строки — \\n"
+    },
+    "eyebrowText": {
+      "type": "string",
+      "title": "Надзаголовок над заголовком: до 32 знаков (коллекция, сезон), можно пустым"
+    },
+    "headingLevel": {
+      "type": "string",
+      "enum": [
+        "h2",
+        "h1"
+      ],
+      "title": "h2 по умолчанию; h1 даёт второй h1 на странице (витрина сама делает h1 заголовок главного блока или первой секции ниже) — только по решению владельца"
     },
     "subtitleText": {
       "type": "string",
-      "title": "Подзаголовок (1–2 предложения)"
+      "title": "Подзаголовок: 1–2 предложения, до 140 знаков"
+    },
+    "textAlign": {
+      "type": "string",
+      "enum": [
+        "left",
+        "center"
+      ],
+      "title": "Выравнивание текста; center — для блока без фото"
     },
     "buttonText": {
       "type": "string",
-      "title": "Текст CTA-кнопки"
+      "title": "Текст CTA-кнопки; кнопка выводится, только когда заданы и подпись, и ссылка buttonUrl"
     },
     "buttonUrl": {
       "$ref": "#/definitions/LinkSource",
       "title": "Ссылка: объект {link, linkId} (linkId можно пустым)"
     },
+    "buttonColor": {
+      "type": "string",
+      "enum": [
+        "primary",
+        "secondary",
+        "outlined"
+      ],
+      "title": "Стиль кнопки: primary по умолчанию"
+    },
+    "modules": {
+      "type": "array",
+      "title": "Значки доверия под кнопкой, до четырёх: подпись 2–4 слова и иконка; без значков ключ не передавать",
+      "items": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string",
+            "enum": [
+              "check",
+              "delivery",
+              "box",
+              "credit-card",
+              "coins",
+              "percent",
+              "gift",
+              "lock",
+              "clock",
+              "reload",
+              "star",
+              "heart",
+              "shop",
+              "location",
+              "phone",
+              "none"
+            ],
+            "title": "Иконка ya-kit-icon цвета текста; star — залитая, heart — контуром; none — без иконки"
+          },
+          "text": {
+            "type": "string",
+            "title": "Подпись: «Доставка от 1 дня», «Гарантия 2 года»"
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    },
     "image": {
       "$ref": "#/definitions/ImageModel",
-      "title": "Изображение: {fileId, filePath}. Из вывода kit.py media upload берётся fileId = поле `id`, filePath = `public_path` — как есть вывод не вставлять"
+      "title": "Изображение: {fileId, filePath[, metadata]}. Из вывода kit.py media upload берётся fileId = поле `id`, filePath = `public_path`, а если в выводе есть непустой `file_metadata.thumb_hash` — metadata = {thumbHash: file_metadata.thumb_hash, backgroundColors: file_metadata.background_colors} (размытое превью при загрузке). Как есть вывод не вставлять"
+    },
+    "imageMobile": {
+      "$ref": "#/definitions/ImageModel",
+      "title": "Фото для телефона 4:3, необязательно: тот же формат, что image; заменяет image на телефоне, без image не показывается"
+    },
+    "imageAlt": {
+      "type": "string",
+      "title": "Описание фото (alt): обязательно, если передан image"
+    },
+    "mediaRatio": {
+      "type": "string",
+      "enum": [
+        "4:3",
+        "1:1",
+        "3:4"
+      ],
+      "title": "Пропорции фото на компьютере; для панели лучше 1:1"
+    },
+    "mobileOrder": {
+      "type": "string",
+      "enum": [
+        "text",
+        "media"
+      ],
+      "title": "Порядок на телефоне: text — сначала текст, media — сначала фото"
+    },
+    "layout": {
+      "type": "string",
+      "enum": [
+        "inset",
+        "panel"
+      ],
+      "title": "inset — текст и фото с зазором; panel — панель 50/50: заливка текстовой половины впритык к фото"
+    },
+    "panelSurface": {
+      "type": "string",
+      "enum": [
+        "secondary",
+        "neutral",
+        "brand",
+        "inverse",
+        "palette"
+      ],
+      "title": "Заливка текстовой половины панели: secondary — светлый оттенок, neutral, brand — фирменный цвет, inverse — тёмная на светлой теме, palette — без заливки"
+    },
+    "mediaLeft": {
+      "type": "boolean",
+      "title": "Фото слева (зеркально) на компьютере"
     },
     "palette": {
       "type": "string",
@@ -28,11 +151,11 @@
     },
     "verticalRhythm": {
       "type": "string",
-      "title": "Вертикальный отступ блока (spacing-токен, например 500 = 40px с каждой стороны)"
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
     },
     "verticalRhythmTouch": {
       "type": "string",
-      "title": "Вертикальный отступ на телефоне (spacing-токен)"
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
     }
   },
   "required": [

@@ -1,0 +1,295 @@
+/* Фото, подложка и текст лежат в одной ячейке сетки. Высоту кадра задаёт
+   пропорция: у фото — атрибут aspect-ratio атома, у пустого кадра — та же
+   пропорция в css. Текст длиннее кадра растягивает ячейку и не обрезается:
+   overflow: clip не делает кадр контейнером прокрутки. */
+.kcs-ov__frame {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 1fr;
+    aspect-ratio: var(--ov-r, 2 / 1);
+    overflow: clip;
+    border-radius: var(--ys-current-skin-border-radius, 0px);
+    background-color: var(--ys-background-neutral);
+    color: var(--ov-t, var(--ov-ink));
+}
+
+.kcs-ov__frame > * {
+    grid-area: 1 / 1;
+}
+
+.kcs-ov__img {
+    z-index: 0;
+    align-self: stretch;
+    width: 100%;
+}
+
+/* Внутренний img атома (разметка движка, в доке её нет): заполнить кадр,
+   когда текст вытянул ячейку выше пропорции, и держать точку фокуса. */
+.kcs-ov__img img {
+    height: 100%;
+    object-position: var(--ov-fp, center);
+}
+
+.kcs-ov__img_m {
+    display: none;
+}
+
+/* Тон подложки. inverse (по умолчанию) — подложка цвета текста палитры, текст
+   цвета её фона: на светлой палитре это тёмная дымка и светлый текст, фото не
+   белеет. palette — наоборот, для тёмной палитры или светлого фото. Цвета
+   снимаются один раз на корне (--ov-fill / --ov-ink), а внутри блока текста
+   токены темы переназначаются на них, как у заливок hero: кнопки outlined и
+   secondary остаются видны на дымке. */
+.kcs-ov {
+    --ov-fill: var(--ys-color-token-text-primary);
+    --ov-ink: var(--ys-background-primary);
+    --ov-flat: 0;
+    --ov-scrim: 1;
+}
+
+.kcs-ov--tone-palette {
+    --ov-fill: var(--ys-background-primary);
+    --ov-ink: var(--ys-color-token-text-primary);
+}
+
+.kcs-ov--tone-inverse .kcs-ov__content {
+    --ys-color-token-text-primary: var(--ov-t, var(--ov-ink));
+    --ys-color-token-text-secondary: color-mix(in srgb, var(--ov-t, var(--ov-ink)) 78%, transparent);
+    --ys-color-token-brand-primary: var(--ov-ink);
+    --ys-color-token-brand-primary-contrast: var(--ov-fill);
+    --ys-background-secondary: color-mix(in srgb, var(--ov-ink) 16%, transparent);
+    --ys-background-neutral: color-mix(in srgb, var(--ov-ink) 12%, transparent);
+    --ys-color-token-border-primary: color-mix(in srgb, var(--ov-ink) 40%, transparent);
+    --ys-color-token-border-secondary: color-mix(in srgb, var(--ov-ink) 64%, transparent);
+}
+
+/* Подложка двух видов. Ровная (--ov-flat) закрывает весь кадр. Градиент
+   (--ov-scrim) лежит за блоком текста от края кадра со стороны текста, плотный
+   под строками и сходит на нет за 25% высоты блока над ним: на компьютере это
+   около половины кадра 2:1, фото выше остаётся чистым. Текст по центру по
+   вертикали получает ровную. */
+.kcs-ov--v-start {
+    --ov-dir: to bottom;
+    --ov-top: 0%;
+    --ov-bottom: -25%;
+}
+
+.kcs-ov--v-center {
+    --ov-flat: 1;
+    --ov-scrim: 0;
+}
+
+/* Текст сбоку и по центру по вертикали: вместо ровной вуали на весь кадр —
+   горизонтальный градиент со стороны текста примерно на 60% ширины, фото с
+   другой стороны остаётся чистым. Ровная подложка — только тексту по центру
+   кадра. Компьютер и планшет; на телефоне блок текста во всю ширину. */
+@media (min-width: 768px) {
+    .kcs-ov--v-center.kcs-ov--h-start,
+    .kcs-ov--v-center.kcs-ov--h-end {
+        --ov-flat: 0;
+        --ov-scrim: 1;
+        --ov-top: -300%;
+        --ov-bottom: -300%;
+    }
+
+    .kcs-ov--v-center.kcs-ov--h-start {
+        --ov-dir: to right;
+    }
+
+    .kcs-ov--v-center.kcs-ov--h-end {
+        --ov-dir: to left;
+    }
+
+    .kcs-ov--v-center.kcs-ov--h-start .kcs-ov__content::before {
+        right: 40%;
+    }
+
+    .kcs-ov--v-center.kcs-ov--h-end .kcs-ov__content::before {
+        left: 40%;
+    }
+}
+
+.kcs-ov.kcs-ov--tint {
+    --ov-flat: 1;
+    --ov-scrim: 0;
+}
+
+.kcs-ov.kcs-ov--none {
+    --ov-flat: 0;
+    --ov-scrim: 0;
+}
+
+.kcs-ov__tint {
+    z-index: 1;
+    align-self: stretch;
+    pointer-events: none;
+    background-color: var(--ov-c, var(--ov-fill));
+    opacity: calc(var(--ov-o, 0.5) * var(--ov-flat, 0));
+}
+
+.kcs-ov__content {
+    z-index: 2;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: var(--ov-h, start);
+    align-self: var(--ov-v, end);
+    padding: clamp(var(--ys-spacing-400), 4vw, var(--ys-spacing-800));
+    text-align: var(--ov-h, start);
+}
+
+.kcs-ov__content::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: var(--ov-top, -25%);
+    right: 0;
+    bottom: var(--ov-bottom, 0%);
+    left: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+        var(--ov-dir, to top),
+        var(--ov-c, var(--ov-fill)) 0%,
+        color-mix(in srgb, var(--ov-c, var(--ov-fill)) 85%, transparent) 40%,
+        color-mix(in srgb, var(--ov-c, var(--ov-fill)) 45%, transparent) 70%,
+        transparent 100%
+    );
+    opacity: calc(var(--ov-o, 0.5) * var(--ov-scrim, 1));
+}
+
+.kcs-ov--header-space .kcs-ov__content {
+    padding-top: calc(clamp(var(--ys-spacing-400), 4vw, var(--ys-spacing-800)) + var(--ys-sticky-offset, var(--ys-spacing-700)));
+}
+
+.kcs-ov__stack {
+    max-width: 46rem;
+    align-items: var(--ov-h, start);
+}
+
+/* Шкала заголовка — та же, что у h1 в hero (52/40/34px): третьего масштаба
+   заголовков каталог не заводит. Размерных токенов шрифта нет, поэтому px.
+   Длинное слово переносится по слогам, в крайнем случае рвётся, а не уходит под
+   обрез кадра (overflow: clip). */
+.kcs-ov__title {
+    font-size: 52px;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.kcs-ov__text {
+    max-width: 36rem;
+}
+
+.kcs-ov__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: var(--ov-h, start);
+    gap: var(--ys-spacing-200);
+    padding-top: var(--ys-spacing-100);
+}
+
+.kcs-ov__actions:empty {
+    display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-ov__title {
+        font-size: 40px;
+        line-height: 1.1;
+    }
+}
+
+@media (max-width: 767px) {
+    .kcs-ov__frame {
+        aspect-ratio: var(--ov-rm, 1 / 1);
+    }
+
+    .kcs-ov__img_d {
+        display: none;
+    }
+
+    .kcs-ov__img_m {
+        display: block;
+    }
+
+    .kcs-ov--vm-start {
+        --ov-dir: to bottom;
+        --ov-top: 0%;
+        --ov-bottom: -25%;
+        --ov-flat: 0;
+        --ov-scrim: 1;
+    }
+
+    .kcs-ov--vm-center {
+        --ov-flat: 1;
+        --ov-scrim: 0;
+    }
+
+    .kcs-ov--vm-end {
+        --ov-dir: to top;
+        --ov-top: -25%;
+        --ov-bottom: 0%;
+        --ov-flat: 0;
+        --ov-scrim: 1;
+    }
+
+    /* Во весь экран телефона: высота окна минус липкая шапка и верхний
+       ритм-отступ блока; фото растягивается внутренним img атома. Пропорцию
+       кадра снимаем: иначе min-height через неё раздул бы ширину за экран. */
+    .kcs-ov--screen-m .kcs-ov__frame {
+        aspect-ratio: auto;
+        min-height: calc(100vh - var(--ys-sticky-offset, 0px) - var(--kcs-rhythm-touch, 0px));
+        min-height: calc(100svh - var(--ys-sticky-offset, 0px) - var(--kcs-rhythm-touch, 0px));
+    }
+
+    .kcs-ov__content {
+        align-items: stretch;
+        align-self: var(--ov-vm, end);
+        padding: var(--ys-spacing-400) var(--ys-spacing-300);
+        text-align: var(--ov-hm, start);
+    }
+
+    .kcs-ov--header-space .kcs-ov__content {
+        padding-top: calc(var(--ys-spacing-400) + var(--ys-sticky-offset, var(--ys-spacing-700)));
+    }
+
+    .kcs-ov__stack {
+        max-width: none;
+        align-items: var(--ov-hm, start);
+    }
+
+    .kcs-ov__title {
+        font-size: 34px;
+        line-height: 1.12;
+    }
+
+    /* Кнопки на телефоне — столбиком во всю ширину блока: под большой палец. */
+    .kcs-ov__actions {
+        flex-direction: column;
+        align-self: stretch;
+    }
+
+    .kcs-ov__btn {
+        width: 100%;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

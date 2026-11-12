@@ -1,0 +1,15 @@
+id: video-reels
+version: 2
+title: "Карусель коротких видео"
+purpose: "Карусель вертикальных роликов: видеоотзывы, распаковки, демонстрации товара с подписью и ссылкой под роликом"
+origin: "handmade"
+fingerprint: "5b4dffbd8f76833eb7e672fe0ebf1856bddf247d0457186dc2327f7cb3cfc140"
+docs_fingerprint: "5b4dffbd8f76833eb7e672fe0ebf1856bddf247d0457186dc2327f7cb3cfc140"
+applied_patches: ""
+keywords: "видео, видеоотзывы, ролик, рилсы, reels, shorts, короткие ролики, вертикальные ролики, ролики покупателей, рилсы соцсетей, видео соцсетей, видеообзоры"
+pages: "main, landing, pdp"
+controllers: ""
+answers_required: "titleText"
+alternatives: "social-feed, media-cards"
+rhythm: "0"
+rhythm_touch: "0"

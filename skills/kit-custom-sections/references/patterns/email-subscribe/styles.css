@@ -1,0 +1,282 @@
+.subscribe {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ys-spacing-400);
+    box-sizing: border-box;
+}
+
+/* Подложка: вторичный фон палитры и скругление темы (skinRounded 200 на корне). */
+.subscribe_surface_panel {
+    padding: var(--ys-spacing-700) var(--ys-spacing-800);
+    background: var(--ys-background-secondary);
+    border-radius: var(--ys-current-skin-border-radius);
+}
+
+.subscribe__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-150);
+    min-width: 0;
+}
+
+.subscribe__title {
+    text-wrap: balance;
+}
+
+.subscribe__title-skeleton {
+    display: block;
+    max-width: 17.5rem;
+}
+
+.subscribe__value {
+    color: var(--ys-color-token-discount);
+    white-space: nowrap;
+}
+
+.subscribe__text {
+    white-space: pre-line;
+}
+
+.subscribe__terms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-100);
+}
+
+.subscribe__term {
+    padding: var(--ys-spacing-25) var(--ys-spacing-150);
+    border: 1px solid var(--ys-color-token-border-primary);
+    border-radius: 999px;
+}
+
+.subscribe__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+    min-width: 0;
+}
+
+/* Поле и кнопка одной высоты: оба берут размер из form.controlSize. */
+.subscribe__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--ys-spacing-150);
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.subscribe__input {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.subscribe__submit {
+    flex: 0 0 auto;
+}
+
+.subscribe__form_stacked .subscribe__controls {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.subscribe__form_stacked .subscribe__submit {
+    width: 100%;
+}
+
+/* Кнопка внутри поля: рамку рисует обёртка, поле без рамки (color flat),
+   кнопка стоит в обёртке с отступом 4px. Скругление обёртки — токен темы
+   (skinRounded 150) плюс этот отступ, чтобы углы кнопки шли концентрично;
+   у темы без скруглений токен равен 0, calc не вычисляется и углы остаются прямыми. */
+.subscribe__form_inline-pill .subscribe__controls {
+    gap: var(--ys-spacing-50);
+    padding: var(--ys-spacing-50);
+    background: var(--ys-background-primary);
+    border: 1px solid var(--ys-color-token-border-primary);
+    border-radius: calc(var(--ys-current-skin-border-radius) + var(--ys-spacing-50));
+    transition: border-color 150ms ease;
+}
+
+.subscribe__form_inline-pill .subscribe__controls:hover {
+    border-color: var(--ys-color-token-border-secondary);
+}
+
+.subscribe__form_inline-pill .subscribe__controls:focus-within {
+    border-color: var(--ys-color-token-text-primary);
+}
+
+.subscribe__form_inline-pill .subscribe__controls.subscribe__controls_error {
+    border-color: var(--ys-color-token-error);
+}
+
+/* Размер подписи ошибки — ya-kit-text size="xs" внутри, цвет наследуется отсюда. */
+.subscribe__error {
+    margin: 0;
+    color: var(--ys-color-token-error);
+}
+
+.subscribe__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ys-spacing-150);
+    text-align: left;
+    cursor: pointer;
+}
+
+.subscribe__consent_notice {
+    cursor: default;
+}
+
+.subscribe__checkbox {
+    flex: 0 0 auto;
+}
+
+.subscribe__consent-text {
+    min-width: 0;
+}
+
+.subscribe__consent-text p {
+    margin: 0;
+    color: var(--ys-color-token-text-secondary);
+}
+
+.subscribe__success {
+    display: flex;
+    align-items: center;
+    gap: var(--ys-spacing-300);
+    grid-column: 1 / -1;
+}
+
+.subscribe__success-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    color: var(--ys-color-token-brand-primary-contrast);
+    background: var(--ys-color-token-brand-primary);
+    border-radius: 999px;
+}
+
+.subscribe__success-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-100);
+    min-width: 0;
+}
+
+/* Расположение «слева» и «по центру»: одна колонка шириной до 36rem. */
+.subscribe_layout_left .subscribe__intro,
+.subscribe_layout_left .subscribe__form,
+.subscribe_layout_center .subscribe__intro,
+.subscribe_layout_center .subscribe__form {
+    width: 100%;
+    max-width: 36rem;
+}
+
+.subscribe_layout_center {
+    justify-items: center;
+    text-align: center;
+}
+
+.subscribe_layout_center .subscribe__intro,
+.subscribe_layout_center .subscribe__terms {
+    align-items: center;
+    justify-content: center;
+}
+
+
+.subscribe_layout_center .subscribe__consent {
+    justify-content: center;
+}
+
+.subscribe_layout_center .subscribe__consent_notice,
+.subscribe_layout_center .subscribe__consent_notice p {
+    text-align: center;
+}
+
+.subscribe_layout_center .subscribe__consent_notice p {
+    margin: 0 auto;
+}
+
+.subscribe_layout_center .subscribe__success {
+    flex-direction: column;
+    text-align: center;
+}
+
+/* «Две колонки» до 1024px — одна колонка, как «слева». */
+.subscribe_layout_two-columns .subscribe__intro,
+.subscribe_layout_two-columns .subscribe__form {
+    max-width: 40rem;
+}
+
+@media (min-width: 1024px) {
+    .subscribe_layout_two-columns {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: center;
+        column-gap: var(--ys-spacing-1000);
+    }
+
+    .subscribe_layout_two-columns .subscribe__intro,
+    .subscribe_layout_two-columns .subscribe__form {
+        max-width: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .subscribe_surface_panel {
+        padding: var(--ys-spacing-600);
+    }
+}
+
+/* Телефон: поле и кнопка всегда друг под другом на всю ширину. */
+@media (max-width: 767px) {
+    .subscribe {
+        gap: var(--ys-spacing-300);
+    }
+
+    .subscribe_surface_panel {
+        padding: var(--ys-spacing-400) var(--ys-spacing-300);
+    }
+
+    .subscribe__controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .subscribe__submit {
+        width: 100%;
+    }
+
+    .subscribe__success {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--ys-spacing-200);
+    }
+
+    .subscribe_layout_center .subscribe__success {
+        align-items: center;
+    }
+
+    .subscribe__success-icon {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

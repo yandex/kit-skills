@@ -6,20 +6,23 @@
     "type": "category"
   },
   "cover": {
-    "title": "Подборка недели",
-    "description": "Выбрали для вас лучшее.",
+    "title": "",
+    "description": "",
+    "buttonText": "",
     "url": {
-      "link": "/",
+      "link": "",
       "linkId": ""
     }
   },
+  "count": 6,
+  "columnsTouch": 2,
+  "coverSide": "left",
   "section": {
     "isFullscreen": "default",
-    "hPaddingDesktop": "800",
     "hPaddingMobile": "200",
     "paddingTop": "single",
     "paddingBottom": "single"
   },
-  "verticalRhythm": "500",
-  "verticalRhythmTouch": "300"
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
 }

@@ -1,0 +1,14 @@
+id: shaped-divider
+version: 2
+title: "Фигурный край — волна, фестоны, дуга"
+purpose: "Декоративный фигурный переход (волна, фестоны, зубцы, дуга, скос) между блоками разных палитр; чаще всего — край перед закрывающей подпиской и подвалом"
+origin: "handmade"
+fingerprint: "1b4951584e7511145d7a569bf5ab0cc6b619d51762fe931f05b624b72c8763b1"
+docs_fingerprint: "1b4951584e7511145d7a569bf5ab0cc6b619d51762fe931f05b624b72c8763b1"
+applied_patches: ""
+keywords: "фигурный край, волнистый край, зубчатый край, фигурный переход, волна, фестоны, зубцы, дуга, скос, фигурный разделитель, декоративная граница, shaped divider, wave divider"
+pages: "main, landing, listing, pdp, cart"
+controllers: ""
+answers_required: "palette, tone"
+rhythm: "0"
+rhythm_touch: "0"

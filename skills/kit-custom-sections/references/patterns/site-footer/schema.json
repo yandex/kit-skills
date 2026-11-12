@@ -1,0 +1,372 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "about": {
+      "type": "object",
+      "title": "Бренд",
+      "properties": {
+        "headline": {
+          "type": "string",
+          "title": "Над описанием",
+          "enum": [
+            "logo",
+            "title",
+            "none"
+          ],
+          "options": [
+            "Логотип",
+            "Название",
+            "Ничего"
+          ],
+          "default": "logo"
+        },
+        "logoImage": {
+          "$ref": "#/definitions/ImageModel",
+          "title": "Свой логотип для подвала (пусто — логотип из настроек магазина)"
+        },
+        "invertedLogo": {
+          "type": "boolean",
+          "title": "Светлый логотип из настроек магазина — для тёмной палитры",
+          "default": false
+        },
+        "logoSize": {
+          "type": "string",
+          "title": "Размер логотипа",
+          "enum": [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ],
+          "options": [
+            "Крошечный",
+            "Маленький",
+            "Средний",
+            "Большой",
+            "Огромный"
+          ],
+          "default": "lg"
+        },
+        "title": {
+          "type": "string",
+          "title": "Название (пусто — название магазина)",
+          "default": ""
+        },
+        "description": {
+          "$ref": "#/definitions/TextArea",
+          "title": "Короткое описание магазина"
+        },
+        "enableSocialNetworks": {
+          "type": "boolean",
+          "title": "Кнопки соцсетей из настроек магазина «О компании»",
+          "default": true
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Колонки меню",
+      "items": {
+        "type": "object",
+        "required": [
+          "menu"
+        ],
+        "properties": {
+          "menu": {
+            "$ref": "#/definitions/MenuId",
+            "title": "Меню"
+          },
+          "menuTitle": {
+            "type": "string",
+            "title": "Заголовок колонки (пусто — без заголовка)",
+            "default": ""
+          }
+        }
+      }
+    },
+    "contacts": {
+      "type": "object",
+      "title": "Контакты",
+      "longDescription": "Адрес, телефон, режим работы и почта берутся из настроек магазина «О компании» — здесь только выбор, что показать",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Заголовок колонки",
+          "default": "Контакты"
+        },
+        "showAddress": {
+          "type": "boolean",
+          "title": "Адрес",
+          "default": true
+        },
+        "showPhone": {
+          "type": "boolean",
+          "title": "Телефон",
+          "default": true
+        },
+        "showWorkingMode": {
+          "type": "boolean",
+          "title": "Режим работы",
+          "default": true
+        },
+        "showMail": {
+          "type": "boolean",
+          "title": "Email",
+          "default": true
+        }
+      }
+    },
+    "legalInfo": {
+      "type": "object",
+      "title": "Нижняя строка",
+      "properties": {
+        "copyrightText": {
+          "type": "string",
+          "title": "Копирайт",
+          "default": ""
+        },
+        "menu": {
+          "$ref": "#/definitions/MenuId",
+          "title": "Меню документов (оферта, доставка, политика)"
+        }
+      }
+    },
+    "view": {
+      "type": "object",
+      "title": "Вид",
+      "properties": {
+        "layout": {
+          "type": "string",
+          "title": "Раскладка",
+          "enum": [
+            "split",
+            "center"
+          ],
+          "options": [
+            "Бренд слева, колонки справа",
+            "Всё по центру"
+          ],
+          "default": "split"
+        },
+        "width": {
+          "type": "string",
+          "title": "Ширина содержимого (фон всегда на всю ширину)",
+          "enum": [
+            "theme",
+            "full"
+          ],
+          "options": [
+            "Как у остальных секций магазина",
+            "На всю ширину экрана"
+          ],
+          "default": "theme"
+        },
+        "columnsTouch": {
+          "type": "string",
+          "title": "Колонки меню на телефоне",
+          "enum": [
+            "accordion",
+            "grid"
+          ],
+          "options": [
+            "Свёрнуты, раскрываются по нажатию",
+            "Открыты, по две в ряд"
+          ],
+          "default": "accordion"
+        },
+        "dividers": {
+          "type": "boolean",
+          "title": "Тонкие линии: сверху подвала и над нижней строкой",
+          "default": true
+        }
+      }
+    },
+    "ticker": {
+      "type": "object",
+      "title": "Бегущая фраза сверху подвала",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Фраза (пусто — полосы нет)",
+          "default": ""
+        },
+        "separator": {
+          "type": "string",
+          "title": "Знак между повторами",
+          "default": "•"
+        },
+        "size": {
+          "type": "string",
+          "title": "Размер текста",
+          "enum": [
+            "s",
+            "m",
+            "l"
+          ],
+          "options": [
+            "Мелкий",
+            "Средний",
+            "Крупный"
+          ],
+          "default": "m"
+        },
+        "speed": {
+          "type": "string",
+          "title": "Скорость",
+          "enum": [
+            "slow",
+            "normal",
+            "fast"
+          ],
+          "options": [
+            "Медленно",
+            "Обычно",
+            "Быстро"
+          ],
+          "default": "normal"
+        }
+      }
+    },
+    "wordmark": {
+      "type": "object",
+      "title": "Надпись во всю ширину внизу",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "title": "Что показать",
+          "enum": [
+            "none",
+            "text",
+            "image"
+          ],
+          "options": [
+            "Ничего",
+            "Текст во всю ширину",
+            "Картинку леттеринга"
+          ],
+          "default": "none"
+        },
+        "text": {
+          "type": "string",
+          "title": "Текст (пусто — название магазина)",
+          "default": ""
+        },
+        "image": {
+          "$ref": "#/definitions/ImageModel",
+          "title": "Картинка леттеринга (SVG или PNG с прозрачным фоном)"
+        },
+        "alt": {
+          "type": "string",
+          "title": "Описание картинки для незрячих (пусто — название магазина)",
+          "default": ""
+        }
+      }
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "properties": {
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section"
+  ]
+}

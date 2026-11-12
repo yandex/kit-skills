@@ -1,0 +1,30 @@
+{
+  "start": "filled",
+  "looks": [
+    {
+      "name": "filled",
+      "title": "Залитая лента",
+      "description": "Тонкая полоса на подложке.",
+      "settings": {}
+    },
+    {
+      "name": "lined-large",
+      "title": "Крупная лента с линиями",
+      "description": "Прописные xl между линиями.",
+      "settings": {
+        "bandStyle": "lined",
+        "textSize": "xl",
+        "isUppercase": true
+      }
+    },
+    {
+      "name": "plain-small",
+      "title": "Мелкая строка без подложки",
+      "description": "Служебная полоса.",
+      "settings": {
+        "bandStyle": "plain",
+        "textSize": "sm"
+      }
+    }
+  ]
+}

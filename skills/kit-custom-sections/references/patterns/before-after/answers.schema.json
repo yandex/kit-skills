@@ -2,6 +2,28 @@
   "title": "Ответы для секции до/после",
   "type": "object",
   "properties": {
+    "cta": {
+      "type": "object",
+      "title": "Выход из блока: {text, link: {link, linkId}, style: button|link} — кнопка или ссылка под содержимым по линии заголовка; без ссылки или подписи не выводится. Информационный блок ведёт дальше: кнопку класть сюда, а не отдельной секцией button-row",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Подпись: куда ведёт"
+        },
+        "link": {
+          "$ref": "#/definitions/LinkSource",
+          "title": "Ссылка: объект {link, linkId} (linkId можно пустым)"
+        },
+        "style": {
+          "type": "string",
+          "enum": [
+            "button",
+            "link"
+          ],
+          "title": "button (по умолчанию) или link — ссылка со стрелкой"
+        }
+      }
+    },
     "titleText": {
       "type": "string",
       "title": "Заголовок секции"
@@ -25,7 +47,7 @@
       "properties": {
         "image": {
           "$ref": "#/definitions/ImageModel",
-          "title": "Изображение: {fileId, filePath}. Из вывода kit.py media upload берётся fileId = поле `id`, filePath = `public_path` — как есть вывод не вставлять"
+          "title": "Изображение: {fileId, filePath[, metadata]}. Из вывода kit.py media upload берётся fileId = поле `id`, filePath = `public_path`, а если в выводе есть непустой `file_metadata.thumb_hash` — metadata = {thumbHash: file_metadata.thumb_hash, backgroundColors: file_metadata.background_colors} (размытое превью при загрузке). Как есть вывод не вставлять"
         }
       }
     },
@@ -35,17 +57,17 @@
       "properties": {
         "image": {
           "$ref": "#/definitions/ImageModel",
-          "title": "Изображение: {fileId, filePath}. Из вывода kit.py media upload берётся fileId = поле `id`, filePath = `public_path` — как есть вывод не вставлять"
+          "title": "Изображение: {fileId, filePath[, metadata]}. Из вывода kit.py media upload берётся fileId = поле `id`, filePath = `public_path`, а если в выводе есть непустой `file_metadata.thumb_hash` — metadata = {thumbHash: file_metadata.thumb_hash, backgroundColors: file_metadata.background_colors} (размытое превью при загрузке). Как есть вывод не вставлять"
         }
       }
     },
     "verticalRhythm": {
       "type": "string",
-      "title": "Вертикальный отступ блока (spacing-токен, например 500 = 40px с каждой стороны)"
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
     },
     "verticalRhythmTouch": {
       "type": "string",
-      "title": "Вертикальный отступ на телефоне (spacing-токен)"
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
     }
   },
   "required": [

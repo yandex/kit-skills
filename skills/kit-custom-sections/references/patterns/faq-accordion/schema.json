@@ -2,17 +2,120 @@
   "title": "",
   "type": "object",
   "properties": {
+    "cta": {
+      "type": "object",
+      "title": "Кнопка или ссылка дальше",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Подпись: куда ведёт («Все условия доставки»)",
+          "default": ""
+        },
+        "link": {
+          "$ref": "#/definitions/LinkSource",
+          "title": "Ссылка"
+        },
+        "style": {
+          "type": "string",
+          "title": "Вид",
+          "enum": [
+            "button",
+            "link"
+          ],
+          "options": [
+            "Кнопка",
+            "Ссылка со стрелкой"
+          ],
+          "default": "button"
+        }
+      }
+    },
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
     "palette": {
       "$ref": "#/definitions/Palette",
       "title": "Палитра цветов"
     },
     "titleText": {
       "type": "string",
-      "title": "Заголовок"
+      "title": "Заголовок",
+      "default": ""
     },
     "titleAlign": {
       "$ref": "#/definitions/SectionTitleAlign",
       "title": "Расположение заголовка"
+    },
+    "subtitleText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Подзаголовок (необязательно)"
+    },
+    "layout": {
+      "type": "string",
+      "title": "Раскладка вопросов",
+      "enum": [
+        "single",
+        "two-columns"
+      ],
+      "options": [
+        "Одна колонка",
+        "Две колонки (на телефоне одна)"
+      ],
+      "default": "single"
+    },
+    "view": {
+      "type": "string",
+      "title": "Вид вопросов",
+      "enum": [
+        "dividers",
+        "cards"
+      ],
+      "options": [
+        "Линии между вопросами",
+        "Карточки на подложке"
+      ],
+      "default": "dividers"
+    },
+    "answerLayout": {
+      "type": "string",
+      "title": "Где ответ (смещение — только в одной колонке, на телефоне ответ под вопросом)",
+      "enum": [
+        "below",
+        "offset"
+      ],
+      "options": [
+        "Под вопросом",
+        "Со смещением: в правой половине"
+      ],
+      "default": "below"
+    },
+    "icon": {
+      "type": "string",
+      "title": "Иконка раскрытия",
+      "enum": [
+        "plus",
+        "chevron"
+      ],
+      "options": [
+        "Плюс и минус",
+        "Стрелка"
+      ],
+      "default": "plus"
+    },
+    "expandFirst": {
+      "type": "boolean",
+      "title": "Первый вопрос открыт",
+      "default": true
     },
     "section": {
       "type": "object",
@@ -47,6 +150,7 @@
     },
     "modules": {
       "type": "array",
+      "title": "Вопросы и ответы",
       "items": {
         "type": "object",
         "properties": {
@@ -65,8 +169,7 @@
           "question",
           "answer"
         ]
-      },
-      "title": "Модуль"
+      }
     },
     "verticalRhythm": {
       "type": "string",
@@ -100,8 +203,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ блока (токен темы, с каждой стороны)",
-      "default": "500"
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
     },
     "verticalRhythmTouch": {
       "type": "string",
@@ -135,13 +238,11 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ на телефоне (токен темы)",
-      "default": "300"
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
     }
   },
   "required": [
-    "titleAlign",
-    "titleText",
     "section",
     "modules"
   ]

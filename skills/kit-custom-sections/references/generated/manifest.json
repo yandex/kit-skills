@@ -1,21 +1,21 @@
 {
   "generator_version": "0.1.0",
-  "generated_at": "2026-08-10",
+  "generated_at": "2026-11-01",
   "sources": [
     {
       "source_id": "atoms_registry",
       "source_kind": "trunk-code",
-      "content_sha256": "5b7fccaec38899dba02504c6437282eb0fc6cb8e9d458543a6e429b126fe735f"
+      "content_sha256": "aa7b35c048c974d1fbf0769cb2780e5d328e7f2255615b1f3d59369ea7e5e628"
     },
     {
       "source_id": "b2b_ref_constants",
       "source_kind": "trunk-code",
-      "content_sha256": "cb7f400aa131b2a81450c77b950ebe5aec9b1d01bf5c6044a54266880304df82"
+      "content_sha256": "2fa02421fc46079b3d88e19da832d6bae58303da8201164de1e1af3427caf2d6"
     },
     {
       "source_id": "denormalize",
       "source_kind": "trunk-code",
-      "content_sha256": "dec636af2938a36b9ea8d01dc5bbb7ceee367686755bcb73ee11c9b96ae8d2d2"
+      "content_sha256": "64f4f6bba23eddff317a022ce9694647a4017a153833d926519d34d0c259010d"
     },
     {
       "source_id": "docs_root",
@@ -25,12 +25,12 @@
     {
       "source_id": "fragment_validation",
       "source_kind": "trunk-code",
-      "content_sha256": "e3bc20f5e656d060ef196b4e588723619db2c511578821a5e47f54c20208daf9"
+      "content_sha256": "69f2501a63da3a1773d73b57bda19c81020ced74076ab90efa5f8284f95b12ac"
     },
     {
       "source_id": "generate_schema",
       "source_kind": "trunk-code",
-      "content_sha256": "0ac71041be95cef06a7048ebc345abbb419af5d3b1471d0d9820109959998ce6"
+      "content_sha256": "d23879e1d452f1ac0c9b374201620257048e0a977a5ac1ee12ce197209d8f856"
     },
     {
       "source_id": "helpers_dir",
@@ -38,19 +38,34 @@
       "content_sha256": "-"
     },
     {
+      "source_id": "icons_assets",
+      "source_kind": "trunk-code",
+      "content_sha256": "-"
+    },
+    {
+      "source_id": "icons_index",
+      "source_kind": "trunk-code",
+      "content_sha256": "97aa420f37ae92a539c1b0214ba153296ccdb743b2baebc9e5a639e651a8935c"
+    },
+    {
       "source_id": "interpreter",
       "source_kind": "trunk-code",
       "content_sha256": "fd71ba9aebf15d6829e9ba89a212318f890320ec4a76c5a1db8c742618fd6ce8"
     },
     {
+      "source_id": "json_schema_refs",
+      "source_kind": "trunk-code",
+      "content_sha256": "3ff822cf2ee9487bbef28b89bfbf51888b247f33fb4caaf9624a01ecdd80d4e3"
+    },
+    {
       "source_id": "kit_json_schema",
       "source_kind": "trunk-code",
-      "content_sha256": "b4a79f64e5bf6dfb449b738fdedc67d0a04d03a4be38927e7d8626dedae4b5ce"
+      "content_sha256": "7b8eb44be31f6c21313254f9ac65fff3b11bfb5459efc2202f758a50147a0d97"
     },
     {
       "source_id": "palette_tokens",
       "source_kind": "trunk-code",
-      "content_sha256": "0eba023e8b5afb2acb218067b395936d9616516aa4223cd2eec1f1ce09d818c7"
+      "content_sha256": "0feb3ba694a0a0e5f73e4e70f30cb3df20fab2ec085e02d111708694f2a6ac55"
     },
     {
       "source_id": "spacing_css",
@@ -70,44 +85,52 @@
     {
       "source_id": "theme_vars",
       "source_kind": "trunk-code",
-      "content_sha256": "4299a85fdf6cba2897a6d168c1bb5c08c80d76a8fa52c54ccec493dfe68f65f3"
+      "content_sha256": "b677e67d1e37b5fde2284706f00645bf796346ce855d3a6bd1376ab1a8ca55be"
     }
   ],
   "counters": {
     "tags_builtin": 8,
-    "tags_controllers": 36,
-    "tags_atoms": 50,
-    "tags_total": 94,
-    "helpers_inline_names": 54,
-    "helpers_inline_functions": 53,
+    "tags_controllers": 44,
+    "tags_atoms": 62,
+    "tags_total": 114,
+    "helpers_inline_names": 72,
+    "helpers_inline_functions": 71,
     "helpers_block": 6,
     "spacing_tokens": 28,
     "spacing_slider": 27,
-    "reserved_refs": 20,
+    "reserved_refs": 21,
     "service_refs": 5,
-    "schema_extra_tags": 17,
+    "schema_extra_tags": 20,
     "form_extra_keywords": 1,
-    "element_blacklist": 2
+    "element_blacklist": 2,
+    "form_only_refs": 0,
+    "icons": 76
   },
   "coverage": {
-    "tags_documented": 74,
-    "tags_total": 94,
-    "attributes_source": "public-docs"
+    "tags_documented": 77,
+    "tags_total": 114,
+    "tags_with_code_attributes": 34,
+    "attributes_source": "public-docs + code-overrides"
   },
   "manual_gaps": [
-    "payload контроллеров: реестр из кода, тела payload — из доки; для недокументированных контроллеров payload неизвестен",
-    "атрибуты атомов: только из таблиц доки (Tier C заблокирован: нет pnpm/node_modules); attributes_source: public-docs",
-    "hero / advantages / CTA-полоса / text+media split: в официальной доке отсутствуют, паттерны написаны вручную — их разметка не подтверждена платформой, в отличие от импортированных из доки"
+    "payload контроллеров: реестр из кода, тела payload — из доки; payload контроллеров без доки и поля, которых дока не знает, — references/manual/controller-payloads.md (ручной слой по коду)",
+    "атрибуты тегов: таблицы доки + ручной слой по коду движка для тегов, где дока отстаёт (у тегов с пометкой «код» в tags.md); полного разбора TS-пропсов нет",
+    "поведение хелперов: генератор видит только имена; семантика (fallback, null/undefined, форма результата) — в helpers.md рукописными примечаниями",
+    "handmade-паттерны (origin: handmade в pattern.yaml, список — references/patterns/INDEX.md): в официальной доке таких секций нет, паттерны написаны вручную из атомов реестра — их разметка не подтверждена платформой, в отличие от импортированных из доки",
+    "goods-snippets с версии 3: рукописная переработка doc-примера полки — раскладки (лента, потолок рядов на телефоне) и карточка по настройкам темы платформой не подтверждены; выход ленты к краям экрана читает --ys-section-h-padding — переменная сверена по коду ya-kit-section-layout в транке, рендером не проверена",
+    "faq-accordion с версии 2: рукописная переработка doc-примера FAQ — две колонки, ответ со смещением, карточки и иконки платформой не подтверждены; с версии 3 — разметка FAQPage через ya-kit-json-ld и jsonLdSchema (как у нативного Faq по коду транка), на витрине не проверена",
+    "custom-product-card с версии 2: рукописная переработка doc-примера карточки товара — липкая панель покупки на телефоне, свои блоки из характеристик, рейтинг и бейдж Сплита платформой не подтверждены",
+    "goods-cover с версии 3: рукописная переработка doc-примера полки с обложкой — заголовок h2 размера темы, подпись кнопки настройкой, две карточки в ряду на телефоне и сторона обложки платформой не подтверждены"
   ],
-  "bff_build_version": "910f99ec8a22a9c9ca7ee3508a3a95123ad627e6cb1f9ffb16a7bf6aff5b39a8",
+  "bff_build_version": "4da89441280e54021a296e3e5646eb605923a73b7c909a8728761444c403b245",
   "files": {
-    "registry.json": "6d1d4ae212f29d2228705f74bcfe06c0cfce84442c0dee7571198fe7350fddb6",
-    "tags.md": "c63ce51ff039071d8ca37d13e7092a655ad2cab3bf1ea878922a002824c85e71",
-    "helpers.md": "bec0491789d06e33e4b242e628c9b4645c9a9b9079efc09906f95184e29e6a4e",
-    "controllers.md": "6c299684e0670923bfa50d676c07dae208bd9eea48fb8dabfc6a8517edb93411",
-    "tokens.md": "ef02606beb09655e3a885591a943b8dc6ee478e179e6ff160f7b2198bfa097c1",
-    "schema-keywords.md": "c5d14620850c92e5b4c603e56a957fb93460cc91206538696b2532f9bdabc951",
-    "data-context.md": "8a91073cfb29319e0ba1376ce83e522d06ef79a39cfdc6fc38b72ee181c1b4cf",
-    "definitions.json": "f72c0e76be67dcd564fbd66b153ef5bd87dfd555f82219567dc65c1c360f6d82"
+    "registry.json": "e7f9e3dbcc86802e426951332d1da2e9abc508d6fb115ffe63cbc0de9672b7a0",
+    "tags.md": "907c34401875240cf9e961d778cf3c4a633890f1a2869f829e7bce81dfe16180",
+    "helpers.md": "e2abf9c87448311a881488232aa65693ffc5420934b610b621a166b2da80ffd2",
+    "controllers.md": "31a1a8a4d07bd26d95871e360598ba27d798e4ba1a4a47e19182ab2b1d40a7bf",
+    "tokens.md": "4be47e61daf074651edce695d9ff8e1d18d2aabe3d86578f9bde235d376a29b0",
+    "schema-keywords.md": "07fe914ee166d3dc818d674cf99d02ba95b3a06e466a939c259c3b731d30188c",
+    "data-context.md": "a2e54ef9d396b6bd266e0521e69ab2b27cf0e7b00fddebbc5e22f9b2061a1d3f",
+    "definitions.json": "a9e47c4445153b355622eeb5bdca3473d4ef7d236e65d384379b95e1bf264156"
   }
 }

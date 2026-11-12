@@ -2,27 +2,158 @@
   "title": "",
   "type": "object",
   "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
     "palette": {
       "$ref": "#/definitions/Palette",
       "title": "Палитра цветов"
     },
+    "layout": {
+      "type": "string",
+      "title": "Расположение",
+      "enum": [
+        "split",
+        "centered"
+      ],
+      "options": [
+        "Текст слева, кнопка справа",
+        "Всё по центру"
+      ],
+      "default": "split"
+    },
     "titleText": {
       "type": "string",
-      "title": "Заголовок"
+      "title": "Заголовок",
+      "description": "Пусто — полоса без заголовка"
+    },
+    "titleSize": {
+      "type": "string",
+      "title": "Размер заголовка",
+      "enum": [
+        "section",
+        "display"
+      ],
+      "options": [
+        "Как у заголовков секций",
+        "Крупный, как на первом экране"
+      ],
+      "default": "section"
     },
     "subtitleText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Текст под заголовком",
+      "description": "Одна-две строки; перенос строки — Enter. Пусто — без текста"
+    },
+    "textSize": {
       "type": "string",
-      "title": "Подзаголовок",
-      "default": ""
+      "title": "Размер текста",
+      "enum": [
+        "md",
+        "lg",
+        "xl"
+      ],
+      "options": [
+        "Обычный",
+        "Крупный",
+        "Очень крупный"
+      ],
+      "default": "md"
     },
     "buttonText": {
       "type": "string",
       "title": "Текст кнопки",
-      "default": "Смотреть"
+      "default": ""
     },
     "buttonUrl": {
       "$ref": "#/definitions/LinkSource",
-      "title": "Ссылка кнопки"
+      "title": "Ссылка кнопки",
+      "description": "Без ссылки кнопка не выводится"
+    },
+    "buttonColor": {
+      "type": "string",
+      "title": "Цвет кнопки",
+      "enum": [
+        "primary",
+        "secondary",
+        "neutral",
+        "outlined",
+        "flat"
+      ],
+      "options": [
+        "Основной",
+        "Вторичный",
+        "Нейтральный",
+        "С обводкой",
+        "Без фона"
+      ],
+      "default": "primary"
+    },
+    "buttonSize": {
+      "type": "string",
+      "title": "Размер кнопки",
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "options": [
+        "Маленький",
+        "Средний",
+        "Большой"
+      ],
+      "default": "lg"
+    },
+    "surface": {
+      "type": "string",
+      "title": "Подложка",
+      "enum": [
+        "none",
+        "secondary",
+        "neutral"
+      ],
+      "options": [
+        "Без подложки",
+        "Вторичный фон темы",
+        "Нейтральный фон темы"
+      ],
+      "default": "secondary"
+    },
+    "innerPadding": {
+      "type": "string",
+      "title": "Поле внутри полосы сверху и снизу",
+      "description": "На телефоне не больше 32px",
+      "enum": [
+        "0",
+        "200",
+        "300",
+        "400",
+        "500",
+        "600",
+        "800",
+        "1000"
+      ],
+      "options": [
+        "Нет",
+        "16px",
+        "24px",
+        "32px",
+        "40px",
+        "48px",
+        "64px",
+        "80px"
+      ],
+      "default": "500"
     },
     "section": {
       "type": "object",
@@ -87,8 +218,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ блока (токен темы, с каждой стороны)",
-      "default": "500"
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
     },
     "verticalRhythmTouch": {
       "type": "string",
@@ -122,12 +253,11 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ на телефоне (токен темы)",
-      "default": "300"
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
     }
   },
   "required": [
-    "titleText",
     "buttonText",
     "buttonUrl",
     "section"

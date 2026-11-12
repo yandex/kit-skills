@@ -1,19 +1,26 @@
 {
+  "descriptionTone": "primary",
   "palette": "default",
-  "titleText": "Готовы начать?",
+  "layout": "split",
+  "titleText": "",
+  "titleSize": "section",
   "subtitleText": "",
-  "buttonText": "Смотреть каталог",
+  "textSize": "md",
+  "buttonText": "",
   "buttonUrl": {
     "link": "/",
     "linkId": ""
   },
+  "buttonColor": "primary",
+  "buttonSize": "lg",
+  "surface": "secondary",
+  "innerPadding": "500",
   "section": {
     "isFullscreen": "default",
-    "hPaddingDesktop": "800",
     "hPaddingMobile": "200",
     "paddingTop": "single",
     "paddingBottom": "single"
   },
-  "verticalRhythm": "500",
-  "verticalRhythmTouch": "300"
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
 }

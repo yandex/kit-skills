@@ -1,0 +1,65 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if (or settings.titleText settings.introText)}}
+        <ya-kit-section-layout-row>
+            <div class="srows-head srows-head_{{settings.titleAlign}} srows-head_theme-{{globals.typography.titleAlign}}">
+                {{#if settings.titleText}}
+                    <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+                {{/if}}
+                {{#if settings.introText}}
+                    <ya-kit-text class="srows-head__intro" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{settings.introText}}</ya-kit-text>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <div
+            class="srows srows_media-{{settings.mediaWidth}} srows_side-{{settings.mediaSide}}"
+            style="--srows-bleed: var(--ys-spacing-{{settings.section.hPaddingMobile}})"
+        >
+            {{#each settings.modules as |m index|}}
+                <ya-kit-module module-id={{m.id}} class="srows__row {{if (notEql (floor (divide index 2)) (divide index 2)) 'srows__row_odd'}} {{unless m.image.filePath 'srows__row_text-only'}}">
+                    {{#if m.image.filePath}}
+                        <div class="srows__media {{if m.image2.filePath 'srows__media_pair'}}">
+                            {{#if m.image2.filePath}}
+                                <div class="srows__photo">
+                                    <ya-kit-image src={{m.image}} alt="{{when m.imageAlt m.imageAlt m.title}}" fit="cover" aspect-ratio={{settings.mediaRatio}} rounded="200" />
+                                </div>
+                                <div class="srows__photo">
+                                    <ya-kit-image src={{m.image2}} alt="{{when m.image2Alt m.image2Alt m.title}}" fit="cover" aspect-ratio={{settings.mediaRatio}} rounded="200" />
+                                </div>
+                            {{else}}
+                                <ya-kit-image src={{m.image}} alt="{{when m.imageAlt m.imageAlt m.title}}" fit="cover" aspect-ratio="{{if (eql settings.mediaRatio '1:1') '2:1' '4:3'}}" rounded="200" />
+                            {{/if}}
+                        </div>
+                    {{/if}}
+                    <ya-kit-v-stack class="srows__body" gap="200" align-items="flex-start">
+                        {{#if settings.titleText}}
+                            <ya-kit-text class="srows__title" as="h3" size="lg" weight="semibold">{{m.title}}</ya-kit-text>
+                        {{else}}
+                            <ya-kit-text class="srows__title" as="h2" size="{{when globals.typography.titleSize globals.typography.titleSize '2xl'}}" weight="semibold">{{m.title}}</ya-kit-text>
+                        {{/if}}
+                        {{#if m.text}}
+                            <div class="srows__text">
+                                <ya-kit-markdown markup={{m.text}} />
+                            </div>
+                        {{/if}}
+                        {{#if (and m.buttonText m.buttonUrl.link)}}
+                            <div class="srows__cta">
+                                <ya-kit-button class="srows__button" color={{settings.buttonColor}} size="md" to={{m.buttonUrl.link}}>{{m.buttonText}}</ya-kit-button>
+                            </div>
+                        {{/if}}
+                    </ya-kit-v-stack>
+                </ya-kit-module>
+            {{/each}}
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

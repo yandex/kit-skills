@@ -1,36 +1,71 @@
 <div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+{{#with (jsonLdSchema 'FAQPage' (filter (filter settings.modules (fn 'get' 'question')) (fn 'get' 'answer'))) as |faqLd|}}
+    <ya-kit-json-ld model="{{faqLd}}" />
+{{/with}}
 <ya-kit-section-layout
     palette={{settings.palette}}
     padding-top={{settings.section.paddingTop}}
     padding-bottom={{settings.section.paddingBottom}}
     h-padding-desktop={{settings.section.hPaddingDesktop}}
     h-padding-mobile={{settings.section.hPaddingMobile}}
-    is-fullscreen={{settings.section.isFullscreen}} 
+    is-fullscreen={{settings.section.isFullscreen}}
 >
+    {{#if (or settings.titleText settings.subtitleText)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-faq-head kcs-faq-head_{{settings.titleAlign}} kcs-faq-head_theme-{{globals.typography.titleAlign}}">
+                {{#if settings.titleText}}
+                    <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+                {{/if}}
+                {{#if settings.subtitleText}}
+                    <ya-kit-text class="kcs-faq-head__lead" size="lg" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{settings.subtitleText}}</ya-kit-text>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
     <ya-kit-section-layout-row>
-        <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" /> 
+        <div class="kcs-faq kcs-faq_layout-{{settings.layout}} kcs-faq_view-{{settings.view}} kcs-faq_answer-{{settings.answerLayout}} kcs-faq_align-{{settings.titleAlign}} kcs-faq_theme-{{globals.typography.titleAlign}} kcs-faq_tone-{{when settings.descriptionTone settings.descriptionTone 'primary'}}">
+            {{#each settings.modules as |item index|}}
+                {{#if (and item.question item.answer)}}
+                    <ya-kit-module module-id={{item.id}} class="kcs-faq__item {{when (eql settings.view 'cards') (skinRounded 150) ''}}">
+                        <ya-kit-accordion class="kcs-faq__acc" default-expanded="{{and (eql index 0) (not (eql settings.expandFirst false))}}">
+                            <ya-kit-accordion-header>
+                                <ya-kit-text class="kcs-faq__q" as="h3" size="xl" weight="semibold">{{item.question}}</ya-kit-text>
+                                <span class="kcs-faq__icon" aria-hidden="true">
+                                    {{#if (eql settings.icon 'chevron')}}
+                                        <svg class="kcs-faq__chevron" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path d="M6 9l6 6 6-6"></path>
+                                        </svg>
+                                    {{else}}
+                                        <svg class="kcs-faq__plus" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path d="M5 12h14"></path>
+                                            <path class="kcs-faq__plus-bar" d="M12 5v14"></path>
+                                        </svg>
+                                    {{/if}}
+                                </span>
+                            </ya-kit-accordion-header>
+                            <ya-kit-accordion-body>
+                                <div class="kcs-faq__answer">
+                                    <div class="kcs-faq__text">
+                                        <ya-kit-markdown markup={{item.answer}} />
+                                    </div>
+                                </div>
+                            </ya-kit-accordion-body>
+                        </ya-kit-accordion>
+                    </ya-kit-module>
+                {{/if}}
+            {{/each}}
+        </div>
     </ya-kit-section-layout-row>
-    <ya-kit-section-layout-row>  
-        {{#each settings.modules as |module index|}}
-            <ya-kit-module module-id={{module.id}} class="item {{skinRounded 150}}">
-                <ya-kit-accordion default-expanded="{{eql index 0}}">
-                    <ya-kit-accordion-header>
-                        <ya-kit-text as="h3" size="xl" weight="semibold">{{module.question}}</ya-kit-text>
-                        <svg class="item__icon-minus" focusable="false" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1" >
-                            <path d="M19 13H5v-2h14z"></path>
-                        </svg>
-                        <svg class="item__icon-plus" focusable="false" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1" >
-                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"></path>
-                        </svg>
-                    </ya-kit-accordion-header>
-                    <ya-kit-accordion-body>
-                        <div class="item__answer">
-                            <ya-kit-markdown  markup={{module.answer}} />
-                        </div>
-                    </ya-kit-accordion-body>
-                </ya-kit-accordion>
-            </ya-kit-module>
-        {{/each}} 
-    </ya-kit-section-layout-row>
+    {{#if (and settings.cta.link.link settings.cta.text)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-exit" style="display: flex; justify-content: {{if (or (eql settings.titleAlign 'center') (and (eql settings.titleAlign 'default') (eql globals.typography.titleAlign 'center'))) 'center' 'flex-start'}}">
+                {{#if (eql settings.cta.style 'link')}}
+                    <ya-kit-link to={{settings.cta.link.link}} weight="medium" decoration="underline">{{settings.cta.text}} →</ya-kit-link>
+                {{else}}
+                    <ya-kit-button to={{settings.cta.link.link}}>{{settings.cta.text}}</ya-kit-button>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
 </ya-kit-section-layout>
 </div>

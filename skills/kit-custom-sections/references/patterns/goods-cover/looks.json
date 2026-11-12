@@ -1,0 +1,27 @@
+{
+  "start": "cover-left",
+  "looks": [
+    {
+      "name": "cover-left",
+      "title": "Обложка слева",
+      "description": "Две карточки в ряду на телефоне.",
+      "settings": {}
+    },
+    {
+      "name": "cover-right",
+      "title": "Обложка справа",
+      "description": "Полка первой, рассказ после.",
+      "settings": {
+        "coverSide": "right"
+      }
+    },
+    {
+      "name": "big-cards-phone",
+      "title": "Крупная карточка на телефоне",
+      "description": "Одна карточка в ряду на телефоне.",
+      "settings": {
+        "columnsTouch": 1
+      }
+    }
+  ]
+}

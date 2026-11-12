@@ -1,0 +1,28 @@
+{
+  "start": "accordion",
+  "looks": [
+    {
+      "name": "accordion",
+      "title": "Аккордеон",
+      "description": "Как нативная карточка.",
+      "settings": {}
+    },
+    {
+      "name": "rows-chips",
+      "title": "Строки с подписями-чипсами",
+      "description": "Все характеристики открыты строками.",
+      "settings": {
+        "layout": "rows",
+        "labelStyle": "chip"
+      }
+    },
+    {
+      "name": "columns",
+      "title": "Две колонки",
+      "description": "Короткие значения в две колонки.",
+      "settings": {
+        "layout": "columns"
+      }
+    }
+  ]
+}

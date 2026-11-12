@@ -1,0 +1,288 @@
+/* Заголовок секции и вводный текст */
+/* Без align-items в базовом правиле: заголовок секции не сжимается до ширины
+   текста и сам встаёт по теме; «как в теме» с центром — по центру и лид. */
+.kcs-mc-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+}
+
+.kcs-mc-head_center,
+.kcs-mc-head_default.kcs-mc-head_theme-center {
+    align-items: center;
+    text-align: center;
+}
+
+.kcs-mc-head__intro {
+    max-width: 44rem;
+    white-space: pre-line;
+}
+
+/* Сетка: колонки задаёт модификатор, ряды выравниваются по самой высокой карточке */
+.kcs-mc {
+    width: 100%;
+}
+
+.kcs-mc_grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--ys-spacing-500) var(--ys-spacing-300);
+}
+
+.kcs-mc_grid.kcs-mc_cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kcs-mc_grid.kcs-mc_cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Модуль растягивается сеткой или треком карусели, карточка — вслед за ним:
+   подложки карточек в ряду одной высоты без height: 100% */
+.kcs-mc__item {
+    display: flex;
+    min-width: 0;
+}
+
+.kcs-mc__card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+}
+
+/* Фото: скругление из темы (skinRounded 150 на карточке), пока грузится — нейтральная подложка */
+.kcs-mc__media {
+    overflow: hidden;
+    border-radius: var(--ys-current-skin-border-radius, 0px);
+    background: var(--ys-background-neutral);
+}
+
+.kcs-mc__image {
+    display: block;
+    width: 100%;
+}
+
+.kcs-mc_r-circle .kcs-mc__media {
+    width: 72%;
+    max-width: 12.5rem;
+    border-radius: 999px;
+}
+
+.kcs-mc_align-center.kcs-mc_r-circle .kcs-mc__media {
+    align-self: center;
+}
+
+/* Текст карточки */
+.kcs-mc__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-100);
+    padding-top: var(--ys-spacing-200);
+    min-width: 0;
+}
+
+.kcs-mc_align-center .kcs-mc__body {
+    align-items: center;
+    text-align: center;
+}
+
+.kcs-mc__title {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.kcs-mc__subtitle {
+    margin-top: calc(-1 * var(--ys-spacing-50));
+    line-height: 1.35;
+}
+
+.kcs-mc__text {
+    max-width: 100%;
+    line-height: 1.45;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.kcs-mc__link {
+    margin-top: var(--ys-spacing-50);
+}
+
+/* Плашка: инвертированная пара токенов палитры, в тёмной палитре инвертируется вместе с ней */
+.kcs-mc_label-chip .kcs-mc__title {
+    display: inline-block;
+    padding: var(--ys-spacing-50) var(--ys-spacing-150);
+    border-radius: calc(var(--ys-current-skin-border-radius, 0px) / 2);
+    background: var(--ys-color-token-text-primary);
+    color: var(--ys-background-primary);
+}
+
+/* Карточка на подложке: фото в край, текст с полями, ссылка прижата к низу */
+.kcs-mc_card-panel .kcs-mc__card {
+    overflow: hidden;
+    border-radius: var(--ys-current-skin-border-radius, 0px);
+    background: var(--ys-background-neutral);
+}
+
+.kcs-mc_card-panel .kcs-mc__media {
+    border-radius: 0;
+}
+
+.kcs-mc_card-panel .kcs-mc__body {
+    padding: var(--ys-spacing-300);
+}
+
+.kcs-mc_card-panel .kcs-mc__link {
+    margin-top: auto;
+    padding-top: var(--ys-spacing-100);
+}
+
+.kcs-mc_card-panel.kcs-mc_r-circle .kcs-mc__media {
+    margin: var(--ys-spacing-300) var(--ys-spacing-300) 0;
+    border-radius: 999px;
+    background: var(--ys-background-primary);
+}
+
+/* Планшет: четыре в ряд — слишком узко для текста, сетка 2x2, карусель показывает три */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-mc_grid.kcs-mc_cols-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kcs-mc_carousel.kcs-mc_cols-4 [data-carousel-track='true'] {
+        --ys-carousel-slides: 3;
+    }
+}
+
+/* Телефон */
+@media (max-width: 767px) {
+    .kcs-mc-head__intro {
+        font-size: 16px;
+    }
+
+    .kcs-mc_grid {
+        gap: var(--ys-spacing-400) var(--ys-spacing-200);
+    }
+
+    .kcs-mc_grid.kcs-mc_m-one {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .kcs-mc_grid.kcs-mc_m-two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--ys-spacing-300) var(--ys-spacing-150);
+    }
+
+    /* Лента: одна разметка, сетка превращается в горизонтальную прокрутку и выходит
+       под поля секции ровно на hPaddingMobile; следующая карточка выглядывает */
+    /* width: auto — иначе width: 100% базового .kcs-mc с отрицательными полями
+       только сдвигает ленту влево, и справа она обрывается за 32px до края. */
+    .kcs-mc_grid.kcs-mc_m-scroll {
+        display: flex;
+        align-items: stretch;
+        width: auto;
+        gap: var(--ys-spacing-200);
+        margin-inline: calc(-1 * var(--kcs-mc-bleed, 0px));
+        padding-inline: var(--kcs-mc-bleed, 0px);
+        scroll-padding-inline: var(--kcs-mc-bleed, 0px);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .kcs-mc_grid.kcs-mc_m-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .kcs-mc_grid.kcs-mc_m-scroll .kcs-mc__item {
+        flex: 0 0 78%;
+        scroll-snap-align: start;
+    }
+
+    .kcs-mc_grid.kcs-mc_m-scroll.kcs-mc_r-4-3 .kcs-mc__item {
+        flex-basis: 84%;
+    }
+
+    .kcs-mc_grid.kcs-mc_m-scroll.kcs-mc_r-circle .kcs-mc__item {
+        flex-basis: 58%;
+    }
+
+    /* Карусель: зазор 16px; лента — край следующей карточки, одна — без края, две — по две */
+    .kcs-mc_carousel [data-carousel-track='true'] {
+        --ys-current-skin-h-gap: var(--ys-spacing-200);
+    }
+
+    .kcs-mc_carousel.kcs-mc_m-scroll [data-carousel-track='true'] {
+        --ys-carousel-offset: 22%;
+    }
+
+    .kcs-mc_carousel.kcs-mc_m-scroll.kcs-mc_r-circle [data-carousel-track='true'] {
+        --ys-carousel-offset: 40%;
+    }
+
+    .kcs-mc_carousel.kcs-mc_m-one [data-carousel-track='true'] {
+        --ys-carousel-offset: 0px;
+    }
+
+    .kcs-mc_carousel.kcs-mc_m-two [data-carousel-track='true'] {
+        --ys-carousel-slides: 2;
+        --ys-carousel-offset: 0px;
+    }
+
+    .kcs-mc__body {
+        padding-top: var(--ys-spacing-150);
+    }
+
+    .kcs-mc_card-panel .kcs-mc__body {
+        padding: var(--ys-spacing-200);
+    }
+
+    .kcs-mc_card-panel.kcs-mc_r-circle .kcs-mc__media {
+        margin: var(--ys-spacing-200) var(--ys-spacing-200) 0;
+    }
+
+    /* Две в ряд: ~170px на карточку — шрифт на ступень меньше, поля плотнее */
+    .kcs-mc_m-two .kcs-mc__title {
+        font-size: 16px;
+    }
+
+    .kcs-mc_m-two .kcs-mc__subtitle {
+        font-size: 13px;
+    }
+
+    .kcs-mc_m-two .kcs-mc__text {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .kcs-mc_m-two.kcs-mc_label-chip .kcs-mc__title {
+        padding: var(--ys-spacing-25) var(--ys-spacing-100);
+    }
+
+    .kcs-mc_m-two.kcs-mc_card-panel .kcs-mc__body {
+        padding: var(--ys-spacing-150);
+    }
+
+    .kcs-mc_m-two.kcs-mc_card-panel.kcs-mc_r-circle .kcs-mc__media {
+        margin: var(--ys-spacing-150) var(--ys-spacing-150) 0;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

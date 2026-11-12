@@ -1,0 +1,40 @@
+{
+  "cta": {
+    "text": "",
+    "link": {
+      "link": "",
+      "linkId": ""
+    },
+    "style": "button"
+  },
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "quoteSize": "m",
+  "surface": "plain",
+  "showRating": true,
+  "ratingColor": "brand",
+  "showCounter": true,
+  "autoplay": false,
+  "autoplayDelay": 6000,
+  "controlsAlignment": "edges",
+  "controlsSize": "md",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "text": "",
+      "rating": 5,
+      "author": "",
+      "caption": "",
+      "photoAlt": ""
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

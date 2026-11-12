@@ -1,0 +1,307 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "cta": {
+      "type": "object",
+      "title": "Кнопка или ссылка дальше",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Подпись: куда ведёт («Все условия доставки»)",
+          "default": ""
+        },
+        "link": {
+          "$ref": "#/definitions/LinkSource",
+          "title": "Ссылка"
+        },
+        "style": {
+          "type": "string",
+          "title": "Вид",
+          "enum": [
+            "button",
+            "link"
+          ],
+          "options": [
+            "Кнопка",
+            "Ссылка со стрелкой"
+          ],
+          "default": "button"
+        }
+      }
+    },
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок",
+      "default": ""
+    },
+    "titleAlign": {
+      "$ref": "#/definitions/SectionTitleAlign",
+      "title": "Расположение заголовка"
+    },
+    "descriptionPosition": {
+      "type": "string",
+      "title": "Пояснение на компьютере и планшете",
+      "enum": [
+        "right",
+        "below"
+      ],
+      "options": [
+        "В средней колонке, как в таблице",
+        "Под названием"
+      ],
+      "default": "right"
+    },
+    "columns": {
+      "type": "string",
+      "title": "Колонок строк на компьютере",
+      "enum": [
+        "1",
+        "2"
+      ],
+      "options": [
+        "Одна",
+        "Две (без изображения)"
+      ],
+      "default": "1"
+    },
+    "icons": {
+      "type": "string",
+      "title": "Иконки слева от строк",
+      "enum": [
+        "none",
+        "sm",
+        "md",
+        "lg"
+      ],
+      "options": [
+        "Без иконок",
+        "Маленькие",
+        "Средние",
+        "Крупные"
+      ],
+      "default": "none"
+    },
+    "nameStyle": {
+      "type": "string",
+      "title": "Оформление названий",
+      "enum": [
+        "plain",
+        "chip",
+        "outline"
+      ],
+      "options": [
+        "Обычный текст",
+        "Плашка с заливкой",
+        "Плашка в рамке"
+      ],
+      "default": "plain"
+    },
+    "lineStyle": {
+      "type": "string",
+      "title": "Линии между строками",
+      "enum": [
+        "subtle",
+        "contrast"
+      ],
+      "options": [
+        "Тонкие светлые",
+        "Цветом текста"
+      ],
+      "default": "subtle"
+    },
+    "image": {
+      "$ref": "#/definitions/ImageModel",
+      "title": "Изображение сбоку (необязательно)"
+    },
+    "imageAlt": {
+      "type": "string",
+      "title": "Описание изображения для незрячих и поиска (пусто — заголовок)",
+      "default": ""
+    },
+    "imagePosition": {
+      "type": "string",
+      "title": "Изображение",
+      "enum": [
+        "right",
+        "left"
+      ],
+      "options": [
+        "Справа (на телефоне под строками)",
+        "Слева (на телефоне над строками)"
+      ],
+      "default": "right"
+    },
+    "imageRatio": {
+      "type": "string",
+      "title": "Пропорции изображения",
+      "enum": [
+        "4:3",
+        "1:1",
+        "3:4"
+      ],
+      "options": [
+        "4:3, горизонтальное",
+        "1:1, квадрат",
+        "3:4, вертикальное"
+      ],
+      "default": "4:3"
+    },
+    "noteText": {
+      "$ref": "#/definitions/MarkdownContent",
+      "title": "Сноска под строками"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Строки",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Название",
+            "default": ""
+          },
+          "value": {
+            "type": "string",
+            "title": "Значение справа: количество, размер, цена (можно пусто)",
+            "default": ""
+          },
+          "description": {
+            "$ref": "#/definitions/TextArea",
+            "title": "Пояснение (можно пусто)"
+          },
+          "icon": {
+            "$ref": "#/definitions/ImageModel",
+            "title": "Иконка (видна, если в секции включены иконки)"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section",
+    "modules"
+  ]
+}

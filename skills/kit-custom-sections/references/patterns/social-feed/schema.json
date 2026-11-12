@@ -1,0 +1,300 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок",
+      "default": ""
+    },
+    "leadText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Подзаголовок"
+    },
+    "headerAlign": {
+      "type": "string",
+      "title": "Расположение заголовка",
+      "enum": [
+        "center",
+        "left",
+        "split"
+      ],
+      "options": [
+        "По центру",
+        "Слева",
+        "Заголовок слева, ссылки справа"
+      ],
+      "default": "center"
+    },
+    "showNetworks": {
+      "type": "boolean",
+      "title": "Кнопки соцсетей из настроек магазина",
+      "default": true
+    },
+    "handleText": {
+      "type": "string",
+      "title": "Имя аккаунта на кнопке-плашке, например @название",
+      "default": ""
+    },
+    "profileLink": {
+      "$ref": "#/definitions/LinkSource",
+      "title": "Ссылка на профиль (плашка видна, когда заданы имя и ссылка)"
+    },
+    "layout": {
+      "type": "string",
+      "title": "Раскладка публикаций",
+      "enum": [
+        "grid",
+        "featured"
+      ],
+      "options": [
+        "Ровная сетка",
+        "Первая публикация крупно"
+      ],
+      "default": "grid"
+    },
+    "columns": {
+      "type": "string",
+      "title": "Колонок на компьютере (на планшете 5 и 6 становятся 3)",
+      "enum": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "default": "3"
+    },
+    "columnsTouch": {
+      "type": "string",
+      "title": "Колонок на телефоне",
+      "enum": [
+        "2",
+        "3"
+      ],
+      "default": "2"
+    },
+    "touchLayout": {
+      "type": "string",
+      "title": "Публикации на телефоне",
+      "enum": [
+        "grid",
+        "scroll"
+      ],
+      "options": [
+        "Сетка",
+        "Лента с прокруткой"
+      ],
+      "default": "grid"
+    },
+    "tileRatio": {
+      "type": "string",
+      "title": "Пропорции фото",
+      "enum": [
+        "1/1",
+        "4/5",
+        "3/4"
+      ],
+      "options": [
+        "Квадрат",
+        "4:5",
+        "3:4"
+      ],
+      "default": "1/1"
+    },
+    "gap": {
+      "type": "string",
+      "title": "Расстояние между фото",
+      "enum": [
+        "0",
+        "50",
+        "100",
+        "200",
+        "300"
+      ],
+      "options": [
+        "Без отступов",
+        "4 px",
+        "8 px",
+        "16 px",
+        "24 px"
+      ],
+      "default": "100"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Публикации (до 12; без фото публикация не показывается)",
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "$ref": "#/definitions/ImageModel",
+            "title": "Фото публикации"
+          },
+          "alt": {
+            "type": "string",
+            "title": "Описание фото: что на нём (для незрячих и поисковиков)",
+            "default": ""
+          },
+          "link": {
+            "$ref": "#/definitions/LinkSource",
+            "title": "Ссылка на публикацию (откроется в новой вкладке)"
+          },
+          "network": {
+            "type": "string",
+            "title": "Значок соцсети на фото",
+            "enum": [
+              "",
+              "telegram",
+              "vk",
+              "dzen",
+              "ok",
+              "youtube",
+              "tiktok",
+              "rhythm",
+              "max"
+            ],
+            "options": [
+              "Без значка",
+              "Telegram",
+              "ВКонтакте",
+              "Дзен",
+              "Одноклассники",
+              "YouTube",
+              "TikTok",
+              "Ритм",
+              "Макс"
+            ],
+            "default": ""
+          },
+          "caption": {
+            "type": "string",
+            "title": "Подпись под фото (до двух строк)",
+            "default": ""
+          }
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section"
+  ]
+}

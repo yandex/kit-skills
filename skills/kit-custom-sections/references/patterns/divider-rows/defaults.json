@@ -1,0 +1,67 @@
+{
+  "cta": {
+    "text": "",
+    "link": {
+      "link": "",
+      "linkId": ""
+    },
+    "style": "button"
+  },
+  "descriptionTone": "primary",
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "descriptionPosition": "right",
+  "columns": "1",
+  "icons": "none",
+  "nameStyle": "plain",
+  "lineStyle": "subtle",
+  "image": {
+    "fileId": "",
+    "filePath": ""
+  },
+  "imageAlt": "",
+  "imagePosition": "right",
+  "imageRatio": "4:3",
+  "noteText": "",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "name": "",
+      "value": "",
+      "description": "",
+      "icon": {
+        "fileId": "",
+        "filePath": ""
+      }
+    },
+    {
+      "id": "m2",
+      "name": "",
+      "value": "",
+      "description": "",
+      "icon": {
+        "fileId": "",
+        "filePath": ""
+      }
+    },
+    {
+      "id": "m3",
+      "name": "",
+      "value": "",
+      "description": "",
+      "icon": {
+        "fileId": "",
+        "filePath": ""
+      }
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

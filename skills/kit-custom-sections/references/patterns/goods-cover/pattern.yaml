@@ -1,14 +1,15 @@
 id: goods-cover
-version: 1
+version: 3
 title: "Полка товаров с обложкой"
-purpose: "Текстовая обложка (заголовок + описание + кнопка) рядом с каруселью товаров"
-origin: "doc-example: example/shelf-goods/goods-cover.md"
-fingerprint: "bcb13364c0267681fbd651706d6bb37e9b5a589fd406344b41dc0b33d645e837"
+purpose: "Текстовая обложка (заголовок, описание, кнопка) рядом с каруселью товаров"
+origin: "handmade (переработка doc-example: example/shelf-goods/goods-cover.md)"
+fingerprint: "7e21bc9ec4e667d0a2f34bdaea196ec1f49cc8ddace8144e58b6f45a60181b8b"
 docs_fingerprint: "5e1611b42257f4488ef379980c66264e32d10901b56038142543c363fdf03e1a"
-applied_patches: "fix-hpadding-touch, fix-value-keyword-cover-title"
-keywords: "полка с обложкой, товары с баннером, подборка с описанием, cover"
+applied_patches: ""
+keywords: "обложкой, текстовая обложка, обложка полки, cover, обложка карусели, текст карусель товаров"
 pages: "main, landing"
 controllers: "ya-kit-featured-products-controller"
 answers_required: "cover"
-rhythm: "500"
-rhythm_touch: "300"
+alternatives: "goods-snippets, product-editorial, section-intro"
+rhythm: "0"
+rhythm_touch: "0"

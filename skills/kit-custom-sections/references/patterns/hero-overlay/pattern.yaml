@@ -1,0 +1,16 @@
+id: hero-overlay
+version: 2
+title: "Баннер с текстом поверх фото"
+purpose: "Фото на всю ширину блока с живым заголовком, текстом и до двух кнопок поверх; своё выравнивание и кадр на телефоне"
+origin: "handmade"
+fingerprint: "0fb61461cd48296ab5ef476dab9f6f6cb4f18eae6632e9438394b219121b8e1e"
+docs_fingerprint: "0fb61461cd48296ab5ef476dab9f6f6cb4f18eae6632e9438394b219121b8e1e"
+applied_patches: ""
+keywords: "надпись поверх, текст поверх, текстом поверх, поверх фото, весь экран, затемнение, полноэкранный баннер, overlay, оверлей, затемнённое фото"
+pages: "main, landing, listing"
+controllers: ""
+answers_required: "title, image, imageAlt"
+alt_fields: "image=imageAlt, imageMobile=imageAlt"
+alternatives: "hero, tile-mosaic"
+rhythm: "0"
+rhythm_touch: "0"

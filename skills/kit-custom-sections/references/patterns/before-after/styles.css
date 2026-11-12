@@ -45,15 +45,17 @@
     transform: translate(-50%, -50%);
 }
 
-/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
-.kcs-rhythm {
-    padding-top: var(--kcs-rhythm, 0px);
-    padding-bottom: var(--kcs-rhythm, 0px);
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
 }
 
 @media (max-width: 767px) {
-    .kcs-rhythm {
-        padding-top: var(--kcs-rhythm-touch, 0px);
-        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
     }
 }

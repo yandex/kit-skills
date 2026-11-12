@@ -1,0 +1,14 @@
+id: contact-cards
+version: 2
+title: "Контакты"
+purpose: "Контакты из настроек магазина (телефоны, почта, адреса, режим работы, соцсети) карточками, строками или кнопками-мультиссылкой; свои строки — реквизиты, отделы, ссылки"
+origin: "handmade"
+fingerprint: "b0eee374ebd0bb432a276f0a45d793a551a3d20406f28dfa79435ea5b2a70fc4"
+docs_fingerprint: "b0eee374ebd0bb432a276f0a45d793a551a3d20406f28dfa79435ea5b2a70fc4"
+applied_patches: ""
+keywords: "контакт, контакты, связаться, свяжитесь, реквизиты, реквизит, телефон, телефоны, почта, почте, электронная почта, адрес, адреса, часы работы, режим работы, мессенджеры, мессенджер, мультиссылка, link in bio, визитка"
+pages: "main, landing"
+controllers: "ya-kit-company-controller"
+answers_required: ""
+rhythm: "0"
+rhythm_touch: "0"

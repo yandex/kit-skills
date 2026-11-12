@@ -1,0 +1,11 @@
+{
+  "texts": {
+    "modules[].title": [
+      "Быстрая доставка"
+    ],
+    "modules[].description": [
+      "Отправляем в день заказа."
+    ]
+  },
+  "typical": {}
+}

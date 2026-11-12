@@ -1,23 +1,44 @@
 {
+  "descriptionTone": "primary",
   "palette": "default",
-  "titleText": "Магазин, в который возвращаются",
+  "layout": "inset",
+  "panelSurface": "secondary",
+  "mediaLeft": false,
+  "eyebrowText": "",
+  "titleText": "",
+  "headingLevel": "h2",
   "subtitleText": "",
-  "buttonText": "Перейти в каталог",
+  "textAlign": "left",
+  "buttonText": "",
   "buttonUrl": {
     "link": "",
     "linkId": ""
   },
+  "buttonColor": "primary",
   "image": {
     "fileId": "",
     "filePath": ""
   },
+  "imageMobile": {
+    "fileId": "",
+    "filePath": ""
+  },
+  "imageAlt": "",
+  "mediaRatio": "4:3",
+  "mobileOrder": "text",
   "section": {
     "isFullscreen": "default",
-    "hPaddingDesktop": "800",
     "hPaddingMobile": "200",
     "paddingTop": "single",
     "paddingBottom": "single"
   },
-  "verticalRhythm": "500",
-  "verticalRhythmTouch": "300"
+  "modules": [
+    {
+      "id": "m1",
+      "icon": "check",
+      "text": ""
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
 }

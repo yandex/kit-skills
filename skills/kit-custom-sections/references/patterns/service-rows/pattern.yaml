@@ -1,0 +1,16 @@
+id: service-rows
+version: 3
+title: "Услуги: ряды с фото"
+purpose: "Ряды услуг или направлений: пара фото (или одно фото), название, markdown-описание со списком и кнопка в каждом ряду; фото слева, справа или чередуются"
+origin: "handmade"
+fingerprint: "7cfb4231f18332894c22728e6dc293adf2c34a4823b060bdfa69a59093490489"
+docs_fingerprint: "7cfb4231f18332894c22728e6dc293adf2c34a4823b060bdfa69a59093490489"
+applied_patches: ""
+keywords: "наши услуги, список услуг, направления работы, направления деятельности, что мы делаем, занимаемся, b2b, бизнеса, корпоративным клиентам, корпоративных клиентов, services, две фотографии, пара фото"
+pages: "main, landing"
+controllers: ""
+answers_required: "modules"
+alt_fields: "modules[].image=modules[].imageAlt, modules[].image2=modules[].image2Alt"
+alternatives: "text-media-split, cards-with-drawer, media-cards"
+rhythm: "0"
+rhythm_touch: "0"

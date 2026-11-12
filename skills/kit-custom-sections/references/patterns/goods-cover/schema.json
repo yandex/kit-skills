@@ -14,9 +14,7 @@
       "type": "object",
       "title": "Обложка",
       "required": [
-        "title",
-        "description",
-        "url"
+        "title"
       ],
       "properties": {
         "title": {
@@ -28,11 +26,47 @@
           "$ref": "#/definitions/MarkdownContent",
           "title": "Описание"
         },
+        "buttonText": {
+          "type": "string",
+          "title": "Подпись кнопки",
+          "description": "Например «Все бестселлеры». Кнопка видна, когда заданы и подпись, и ссылка",
+          "default": ""
+        },
         "url": {
           "$ref": "#/definitions/LinkSource",
-          "title": "Ссылка"
+          "title": "Ссылка кнопки"
         }
       }
+    },
+    "count": {
+      "type": "number",
+      "title": "Сколько товаров в карусели",
+      "unit": "шт.",
+      "step": 1,
+      "minimum": 3,
+      "maximum": 8,
+      "default": 6
+    },
+    "columnsTouch": {
+      "type": "number",
+      "title": "Карточек в ряду на телефоне",
+      "step": 1,
+      "minimum": 1,
+      "maximum": 2,
+      "default": 2
+    },
+    "coverSide": {
+      "type": "string",
+      "title": "Обложка на компьютере",
+      "enum": [
+        "left",
+        "right"
+      ],
+      "options": [
+        "Слева от полки",
+        "Справа от полки"
+      ],
+      "default": "left"
     },
     "section": {
       "type": "object",
@@ -97,8 +131,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ блока (токен темы, с каждой стороны)",
-      "default": "500"
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
     },
     "verticalRhythmTouch": {
       "type": "string",
@@ -132,12 +166,14 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ на телефоне (токен темы)",
-      "default": "300"
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
     }
   },
   "required": [
     "cover",
+    "count",
+    "columnsTouch",
     "section"
   ]
 }

@@ -1,0 +1,247 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "labelPositionTouch": {
+      "type": "string",
+      "title": "Подпись на телефоне",
+      "enum": [
+        "above",
+        "side"
+      ],
+      "options": [
+        "Над значением",
+        "Рядом — только для коротких значений"
+      ],
+      "default": "above"
+    },
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок секции (можно пустой)",
+      "default": ""
+    },
+    "titleAlign": {
+      "$ref": "#/definitions/SectionTitleAlign",
+      "title": "Расположение заголовка"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "layout": {
+      "type": "string",
+      "title": "Раскладка",
+      "enum": [
+        "accordion",
+        "rows",
+        "columns"
+      ],
+      "options": [
+        "Аккордеон",
+        "Строки",
+        "Две колонки"
+      ],
+      "default": "accordion"
+    },
+    "labelStyle": {
+      "type": "string",
+      "title": "Оформление подписи",
+      "description": "Только для строк и двух колонок",
+      "enum": [
+        "plain",
+        "chip",
+        "outline"
+      ],
+      "options": [
+        "Обычная подпись",
+        "Плашка",
+        "Контур"
+      ],
+      "default": "plain"
+    },
+    "expandFirst": {
+      "type": "boolean",
+      "title": "Раскрыть первый пункт",
+      "description": "Только для аккордеона",
+      "default": false
+    },
+    "showDescription": {
+      "type": "boolean",
+      "title": "Показать описание товара",
+      "description": "Нативная карточка уже показывает описание — включайте, если отключили его там",
+      "default": false
+    },
+    "descriptionTitle": {
+      "type": "string",
+      "title": "Заголовок описания",
+      "default": "О товаре"
+    },
+    "showOtherSpecs": {
+      "type": "boolean",
+      "title": "Показать остальные характеристики",
+      "description": "Для случая, когда модуль характеристик в нативной карточке выключен; характеристики выбора варианта не выводятся",
+      "default": false
+    },
+    "otherSpecsTitle": {
+      "type": "string",
+      "title": "Заголовок остальных характеристик",
+      "default": "Характеристики"
+    },
+    "modules": {
+      "type": "array",
+      "title": "Характеристики из каталога",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "characteristicTitle": {
+            "type": "string",
+            "title": "Название характеристики в каталоге",
+            "description": "Как в кабинете, например: Материал, Размеры, Комплектация, Уход, Гарантия",
+            "default": ""
+          },
+          "label": {
+            "type": "string",
+            "title": "Подпись вместо названия (необязательно)",
+            "default": ""
+          },
+          "view": {
+            "type": "string",
+            "title": "Вид значения",
+            "description": "Плашки — для перечислений через запятую",
+            "enum": [
+              "text",
+              "chips"
+            ],
+            "options": [
+              "Текст",
+              "Плашки"
+            ],
+            "default": "text"
+          }
+        },
+        "required": [
+          "characteristicTitle"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section",
+    "modules"
+  ]
+}

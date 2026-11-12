@@ -1,0 +1,30 @@
+{
+  "start": "timeline",
+  "looks": [
+    {
+      "name": "timeline",
+      "title": "Шаги строками",
+      "description": "Номер слева, текст справа, без подложек — читается как инструкция.",
+      "settings": {
+        "style": "plain",
+        "desktopLayout": "list",
+        "numbering": "number"
+      }
+    },
+    {
+      "name": "plain-row",
+      "title": "Ряд без карточек",
+      "description": "Шаги в ряд без подложек, на телефоне лентой.",
+      "settings": {
+        "style": "plain",
+        "mobileMode": "scroll"
+      }
+    },
+    {
+      "name": "cards",
+      "title": "Карточки с номером 01 (вид v1)",
+      "description": "Карточки в ряд, номер с ведущим нулём.",
+      "settings": {}
+    }
+  ]
+}

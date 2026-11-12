@@ -1,47 +1,296 @@
-.item:not(:last-child) {
+/* FAQ-аккордеон. Одна разметка на все режимы: раскладку, вид вопросов, место
+   ответа и выравнивание выбирают классы-модификаторы списка. Правила написаны
+   через :not() от значений по умолчанию, поэтому настройки без новых ключей
+   рисуются как значения по умолчанию: одна колонка, разделители, ответ под
+   вопросом. Раскрытие и высоту тела держит ya-kit-accordion: своих max-height
+   и обрезки здесь нет. Цвета только токенами палитры. */
+
+/* ---------- заголовок и подзаголовок ---------- */
+/* Без align-items в базовом правиле: заголовок не сжимается до ширины текста. */
+.kcs-faq-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+}
+
+.kcs-faq-head_center,
+.kcs-faq-head_default.kcs-faq-head_theme-center {
+    align-items: center;
+    text-align: center;
+}
+
+.kcs-faq-head__lead {
+    max-width: 48rem;
+    line-height: 1.45;
+    white-space: pre-line;
+}
+
+/* ---------- список ---------- */
+.kcs-faq {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.kcs-faq__item {
+    min-width: 0;
+}
+
+/* Разделители: линия между вопросами, у последнего линии нет (как в нативном Faq). */
+.kcs-faq:not(.kcs-faq_view-cards) .kcs-faq__item:not(:last-child) {
     border-bottom: 1px solid var(--ys-color-token-border-primary);
 }
 
-.item__answer {
-    padding-bottom: var(--ys-spacing-200);
+/* Заголовок по центру: список сужается и встаёт под ним — длинные линии на всю
+   ширину под центрированным заголовком выглядят оторванными. */
+.kcs-faq_align-center:not(.kcs-faq_layout-two-columns):not(.kcs-faq_answer-offset),
+.kcs-faq_align-default.kcs-faq_theme-center:not(.kcs-faq_layout-two-columns):not(.kcs-faq_answer-offset) {
+    width: 100%;
+    max-width: 56rem;
+    margin-inline: auto;
 }
 
-.item [data-icon="true"] {
+/* ---------- строка вопроса (header атома) ---------- */
+.kcs-faq__acc [aria-expanded] {
+    align-items: flex-start;
+    gap: var(--ys-spacing-300);
+    padding: var(--ys-spacing-300) 0;
+    cursor: pointer;
+}
+
+.kcs-faq__acc [aria-expanded]:focus-visible {
+    outline: 2px solid var(--ys-color-token-brand-primary);
+    outline-offset: 2px;
+}
+
+/* Своя иконка вместо встроенной стрелки атома. */
+.kcs-faq__acc [data-icon="true"] {
     display: none;
 }
 
-
-.item .item__icon-minus,
-.item .item__icon-plus {
-    width: 28px;
-    fill: var(--ys-color-token-border-primary);
+.kcs-faq__q {
+    flex: 1 1 auto;
+    min-width: 0;
+    line-height: 1.3;
+    overflow-wrap: break-word;
 }
 
-.item .item__icon-plus {
+/* Иконка стоит на высоте первой строки вопроса: 20px x 1.3 = 26px. */
+.kcs-faq__icon {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 26px;
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-faq__icon svg {
     display: block;
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-.item .item__icon-minus {
-    display: none; 
+/* Плюс превращается в минус: вертикальная черта ложится на горизонтальную. */
+.kcs-faq__plus-bar {
+    transform-box: fill-box;
+    transform-origin: center;
 }
 
-.item [aria-expanded="true"] .item__icon-plus {
-    display: none;
+.kcs-faq__acc [aria-expanded="true"] .kcs-faq__plus-bar {
+    transform: rotate(90deg);
 }
 
-.item [aria-expanded="true"] .item__icon-minus {
-    display: block;
+.kcs-faq__acc [aria-expanded="true"] .kcs-faq__chevron {
+    transform: rotate(180deg);
 }
 
-/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
-.kcs-rhythm {
-    padding-top: var(--kcs-rhythm, 0px);
-    padding-bottom: var(--kcs-rhythm, 0px);
+@media (hover: hover) {
+    .kcs-faq__acc [aria-expanded]:hover .kcs-faq__icon {
+        color: var(--ys-color-token-text-primary);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .kcs-faq__plus-bar,
+    .kcs-faq__chevron {
+        transition: transform 0.25s ease;
+    }
+}
+
+/* Тело атома раскрывается анимацией max-height — при reduced motion без неё. */
+@media (prefers-reduced-motion: reduce) {
+    .kcs-faq__acc [aria-expanded] + div {
+        transition: none;
+    }
+}
+
+/* ---------- ответ ---------- */
+/* Правый отступ = иконка + промежуток: текст ответа кончается там же, где вопрос. */
+.kcs-faq__answer {
+    padding: 0 var(--ys-spacing-600) var(--ys-spacing-300) 0;
+}
+
+.kcs-faq__text {
+    max-width: 48rem;
+}
+
+.kcs-faq__text p,
+.kcs-faq__text li {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ys-color-token-text-primary);
+}
+
+/* Приглушённые ответы — только по выбору (descriptionTone secondary): вторичный
+   цвет — смесь 64% текста с фоном, на светло-сером фоне ниже 4,5:1. */
+.kcs-faq_tone-secondary .kcs-faq__text p,
+.kcs-faq_tone-secondary .kcs-faq__text li {
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-faq__text li:not(:last-child) {
+    margin-bottom: var(--ys-spacing-100);
+}
+
+/* Заголовок внутри ответа (markdown #) не спорит с вопросом и секцией. */
+.kcs-faq__text h1,
+.kcs-faq__text h2,
+.kcs-faq__text h3,
+.kcs-faq__text h4,
+.kcs-faq__text h5,
+.kcs-faq__text h6 {
+    margin: var(--ys-spacing-200) 0 var(--ys-spacing-100);
+    font-size: 18px;
+    line-height: 1.35;
+}
+
+.kcs-faq__text > :first-child {
+    margin-top: 0;
+}
+
+.kcs-faq__text > :last-child {
+    margin-bottom: 0;
+}
+
+/* ---------- вид «карточки» ---------- */
+.kcs-faq_view-cards {
+    gap: var(--ys-spacing-150);
+}
+
+.kcs-faq_view-cards .kcs-faq__item {
+    padding: 0 var(--ys-spacing-400);
+    background: var(--ys-background-neutral);
+}
+
+/* ---------- компьютер и планшет ---------- */
+@media (min-width: 768px) {
+    /* Две колонки: сетка на одном списке, вопросы идут по строкам слева направо. */
+    .kcs-faq_layout-two-columns {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        column-gap: var(--ys-spacing-800);
+    }
+
+    /* Разделители в сетке: линия под каждым вопросом, у последнего ряда тоже.
+       Ячейки ряда растягиваются на высоту открытого соседа — линии ряда
+       остаются на одном уровне. */
+    .kcs-faq_layout-two-columns:not(.kcs-faq_view-cards) .kcs-faq__item {
+        border-bottom: 1px solid var(--ys-color-token-border-primary);
+    }
+
+    /* Карточки в сетке не растягиваются: открытая карточка растит только себя. */
+    .kcs-faq_layout-two-columns.kcs-faq_view-cards {
+        align-items: start;
+        gap: var(--ys-spacing-200);
+    }
+
+    /* В колонке ответу нужна вся её ширина: без отступа под иконкой. */
+    .kcs-faq_layout-two-columns .kcs-faq__answer {
+        padding-right: 0;
+    }
+
+    /* Ответ со смещением: пустая левая половина, текст — в правой.
+       В двух колонках не работает — ответу осталась бы четверть ширины. */
+    .kcs-faq_answer-offset:not(.kcs-faq_layout-two-columns) .kcs-faq__answer {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        column-gap: var(--ys-spacing-600);
+    }
+
+    .kcs-faq_answer-offset:not(.kcs-faq_layout-two-columns) .kcs-faq__answer::before {
+        content: "";
+    }
+}
+
+/* Планшет: в двух колонках вопросу мало места — шрифт вопроса как у плиток. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-faq_layout-two-columns {
+        column-gap: var(--ys-spacing-500);
+    }
+
+    .kcs-faq_layout-two-columns .kcs-faq__q {
+        font-size: 18px;
+    }
+
+    .kcs-faq_layout-two-columns .kcs-faq__icon {
+        height: 24px;
+    }
+
+    .kcs-faq_layout-two-columns.kcs-faq_view-cards .kcs-faq__item {
+        padding: 0 var(--ys-spacing-300);
+    }
+}
+
+/* ---------- телефон ---------- */
+@media (max-width: 767px) {
+    .kcs-faq-head__lead {
+        font-size: 16px;
+    }
+
+    .kcs-faq__acc [aria-expanded] {
+        gap: var(--ys-spacing-200);
+        padding: var(--ys-spacing-200) 0;
+    }
+
+    .kcs-faq__q {
+        font-size: 18px;
+    }
+
+    .kcs-faq__icon {
+        height: 24px;
+    }
+
+    .kcs-faq__answer {
+        padding: 0 0 var(--ys-spacing-250);
+    }
+
+    .kcs-faq_view-cards {
+        gap: var(--ys-spacing-100);
+    }
+
+    .kcs-faq_view-cards .kcs-faq__item {
+        padding: 0 var(--ys-spacing-200);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
 }
 
 @media (max-width: 767px) {
-    .kcs-rhythm {
-        padding-top: var(--kcs-rhythm-touch, 0px);
-        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
     }
 }

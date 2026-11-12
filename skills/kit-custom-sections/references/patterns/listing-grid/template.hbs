@@ -1,0 +1,167 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-toggle-controller as="filtersState">
+        <ya-kit-products-listing-controller as="listing" per-page="{{multiply settings.grid.columns settings.grid.rows}}" on-filters-did-changed={{filtersState.onSetFalsy}}>
+            {{#unless (eql settings.view.showTitle false)}}
+                <ya-kit-section-layout-row>
+                    <ya-kit-text as="h1" size="{{globals.typography.titleSize}}" weight="semibold" align="{{globals.typography.titleAlign}}">
+                        {{#if route.context.collection}}
+                            {{route.context.collection.title}}
+                        {{elseif route.context.query.query}}
+                            Результаты поиска: {{route.context.query.query}}
+                        {{elseif listing.model.categories.selected}}
+                            {{listing.model.categories.selected.title}}
+                        {{elseif listing.isLoading}}
+                            <ya-kit-skeleton variant="text" width="240px" />
+                        {{else}}
+                            {{settings.view.fallbackTitle}}
+                        {{/if}}
+                    </ya-kit-text>
+                </ya-kit-section-layout-row>
+            {{/unless}}
+            {{#unless (and (eql settings.controls.showFilters false) (eql settings.controls.showSorting false))}}
+                <ya-kit-section-layout-row>
+                    <div class="kcs-listing-controls">
+                        {{#unless (eql settings.controls.showFilters false)}}
+                            <ya-kit-clickable-area class="kcs-listing-controls__button" on-press={{filtersState.onSetTruthy}}>
+                                <ya-kit-h-stack align-items="center" gap="100">
+                                    <ya-kit-icon name="filter" size="20" color="inherit" />
+                                    <ya-kit-text size="md">Фильтры</ya-kit-text>
+                                </ya-kit-h-stack>
+                            </ya-kit-clickable-area>
+                            <ya-kit-drawer is-open={{filtersState.isOpen}} variant="left" on-close={{filtersState.onSetFalsy}}>
+                                <div style="box-sizing: border-box; display: flex; flex-direction: column; gap: var(--ys-spacing-300); width: 400px; max-width: 100%; min-height: 100%; padding: var(--ys-spacing-300);">
+                                    <div style="padding-right: var(--ys-spacing-600);">
+                                        <ya-kit-text size="xl" weight="semibold">Фильтры</ya-kit-text>
+                                    </div>
+                                    <ya-kit-products-filters
+                                        schema={{listing.model.filters.schema}}
+                                        value={{listing.model.filters.values}}
+                                        category={{listing.model.categories.selected}}
+                                        categories={{listing.model.categories.items}}
+                                        on-submit={{listing.onFiltersChange}}
+                                    />
+                                </div>
+                            </ya-kit-drawer>
+                        {{/unless}}
+                        {{#unless (eql settings.controls.showSorting false)}}
+                            <div class="kcs-listing-controls__sort">
+                                <ya-kit-products-sorting
+                                    value={{listing.model.sorting.option.value}}
+                                    options={{listing.model.sorting.options}}
+                                    on-change={{listing.onSortingChange}}
+                                >
+                                    <ya-kit-h-stack align-items="center" gap="50">
+                                        <ya-kit-text size="md">{{#if (and (eql settings.controls.sortLabel "current") listing.model.sorting.option.displayText)}}{{listing.model.sorting.option.displayText}}{{else}}Сортировка{{/if}}</ya-kit-text>
+                                        <ya-kit-icon name="arrow-down" size="20" color="inherit" />
+                                    </ya-kit-h-stack>
+                                </ya-kit-products-sorting>
+                            </div>
+                        {{/unless}}
+                    </div>
+                </ya-kit-section-layout-row>
+            {{/unless}}
+            <ya-kit-section-layout-row>
+                <div class="kcs-listing kcs-listing_gapless-{{settings.grid.gapless}}" style="--kcs-listing-columns: {{settings.grid.columns}}; --kcs-listing-columns-tablet: {{min settings.grid.columns 3}}; --kcs-listing-columns-touch: {{settings.grid.columnsTouch}};">
+                    {{#if (and (eql listing.model.items.length 0) listing.isLoading)}}
+                        {{#repeat (multiply settings.grid.columns settings.grid.rows)}}
+                            <div class="kcs-listing-card" aria-hidden="true">
+                                <div class="{{cn 'kcs-listing-card__media' (skinRounded 100) (skinAspectRatio globals.productSnippet.photo.aspectRatio)}}">
+                                    <div class="kcs-listing-card__fill">
+                                        <ya-kit-skeleton variant="rect" width="100%" height="100%" />
+                                    </div>
+                                </div>
+                                <div class="kcs-listing-card__info">
+                                    <ya-kit-skeleton variant="text" width="80%" />
+                                    <ya-kit-skeleton variant="text" width="40%" />
+                                </div>
+                            </div>
+                        {{/repeat}}
+                    {{else}}
+                        {{#each listing.model.items as |product|}}
+                            <ya-kit-product-snippet-controller as="snippet" product="{{product}}">
+                                <div class="kcs-listing-card kcs-listing-card_bg-{{globals.productSnippet.general.background}} kcs-listing-card_border-{{globals.productSnippet.general.enableBorder}} {{skinRounded 100}} {{when (lt product.totalQuantity 1) 'kcs-listing-card_soldout' ''}}">
+                                    <ya-kit-link to="{{product.url}}" class="kcs-listing-card__link">
+                                        <div class="{{cn 'kcs-listing-card__media' (skinRounded 100)}}">
+                                            <ya-kit-image
+                                                class="kcs-listing-card__image"
+                                                src="{{first (filterImages product.mediaItems)}}"
+                                                alt="{{product.name}}"
+                                                aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}"
+                                                fit="{{globals.productSnippet.photo.fit}}"
+                                                background-color="{{globals.productSnippet.photo.backgroundColor}}"
+                                                enable-paranja="{{globals.productSnippet.photo.enableParanja}}"
+                                            />
+                                            {{#if (or (lt product.totalQuantity 1) (and (notEql settings.card.showBadges false) (gt (length (slice product.badges 0 globals.features.badges)) 0)))}}
+                                                <div class="kcs-listing-card__badges kcs-listing-card__badges_{{settings.card.badgePosition}}">
+                                                    {{#if (lt product.totalQuantity 1)}}
+                                                        <span class="kcs-listing-card__badge">{{when (isEmpty settings.card.outOfStockText) "Нет в наличии" settings.card.outOfStockText}}</span>
+                                                    {{/if}}
+                                                    {{#unless (eql settings.card.showBadges false)}}
+                                                        {{#each (slice product.badges 0 globals.features.badges) as |badge|}}
+                                                            <span class="kcs-listing-card__badge" style="background-color: {{badge.backgroundColor}}; color: {{badge.color}};">{{badge.label}}</span>
+                                                        {{/each}}
+                                                    {{/unless}}
+                                                </div>
+                                            {{/if}}
+                                        </div>
+                                        <div class="kcs-listing-card__info kcs-listing-card__info_{{settings.card.order}} kcs-listing-card__info_theme-{{globals.productSnippet.general.order}}">
+                                            {{#if (and settings.card.showVendor product.brand)}}
+                                                <ya-kit-text class="kcs-listing-card__vendor" size="xs" color="secondary" lines="1">{{product.brand}}</ya-kit-text>
+                                            {{/if}}
+                                            <ya-kit-text class="kcs-listing-card__name" size="{{globals.productSnippet.title.titleSize}}" lines="2">{{product.name}}</ya-kit-text>
+                                            <ya-kit-prices
+                                                class="kcs-listing-card__price"
+                                                size="{{globals.productSnippet.price.pricesSize}}"
+                                                weight="{{globals.productSnippet.price.priceTextWeight}}"
+                                                enable-discount="{{globals.productSnippet.discount.enableDiscount}}"
+                                                price="{{product.price}}"
+                                                final-price="{{product.finalPrice}}"
+                                            />
+                                        </div>
+                                    </ya-kit-link>
+                                    {{#if (or (eql settings.card.cartButton "enabled") (and (notEql settings.card.cartButton "disabled") (notEql globals.productSnippet.buttons.buttonColorInListing "none")))}}
+                                        {{#if (gt snippet.quantity 0)}}
+                                            <div class="kcs-listing-card__actions">
+                                                <ya-kit-input-stepper size="sm" value="{{snippet.quantity}}" on-change="{{snippet.onUpdateQuantity}}" />
+                                            </div>
+                                        {{elseif (gte product.totalQuantity 1)}}
+                                            <div class="kcs-listing-card__actions">
+                                                <ya-kit-button size="sm" color="{{when (or (eql globals.productSnippet.buttons.buttonColorInListing 'secondary') (eql globals.productSnippet.buttons.buttonColorInListing 'neutral')) globals.productSnippet.buttons.buttonColorInListing 'primary'}}" width="max" on-press="{{snippet.onAddToCart}}">{{when (isEmpty settings.card.addToCartText) "В корзину" settings.card.addToCartText}}</ya-kit-button>
+                                            </div>
+                                        {{/if}}
+                                    {{/if}}
+                                </div>
+                            </ya-kit-product-snippet-controller>
+                        {{/each}}
+                    {{/if}}
+                </div>
+                {{#if (and (eql listing.model.items.length 0) (not listing.isLoading))}}
+                    <div class="kcs-listing-empty">
+                        <ya-kit-icon name="search" size="32" color="secondary" />
+                        <ya-kit-text size="lg" weight="medium" align="center">{{when (isEmpty settings.view.emptyText) "Ничего не нашлось" settings.view.emptyText}}</ya-kit-text>
+                    </div>
+                {{/if}}
+                {{#unless (eql settings.controls.showPagination false)}}
+                    {{#if (gt listing.model.pagination.total 1)}}
+                        <div class="kcs-listing-pagination">
+                            <ya-kit-pagination
+                                current="{{listing.model.pagination.current}}"
+                                total="{{listing.model.pagination.total}}"
+                                on-page-change="{{listing.onPageChange}}"
+                            />
+                        </div>
+                    {{/if}}
+                {{/unless}}
+            </ya-kit-section-layout-row>
+        </ya-kit-products-listing-controller>
+    </ya-kit-toggle-controller>
+</ya-kit-section-layout>
+</div>

@@ -1,0 +1,50 @@
+{
+  "descriptionTone": "primary",
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "intro": "",
+  "variant": "cards",
+  "columns": "3",
+  "showIcons": true,
+  "numbered": false,
+  "storeContacts": {
+    "phone": true,
+    "mail": true,
+    "address": true,
+    "addressOnMap": true,
+    "workingMode": true,
+    "socialNetworks": true
+  },
+  "socialLabel": "Соцсети и мессенджеры",
+  "logo": {
+    "show": false,
+    "inverted": false,
+    "image": {
+      "fileId": "",
+      "filePath": ""
+    }
+  },
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "kind": "text",
+      "icon": "auto",
+      "label": "",
+      "value": "",
+      "link": {
+        "link": "",
+        "linkId": ""
+      },
+      "note": ""
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

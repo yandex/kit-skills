@@ -1,0 +1,275 @@
+/* Секция без содержимого (не та страница, лист без соседей, пустое меню)
+   не оставляет пустого отступа над листингом. */
+.kcs-rhythm:not(:has(.kcs-subnav__part)) {
+    display: none;
+}
+
+.kcs-subnav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-300);
+    min-width: 0;
+}
+
+.kcs-subnav__title + .kcs-subnav__bar {
+    margin-top: calc(-1 * var(--ys-spacing-100));
+}
+
+/* Обложка категории: соотношение задаёт секция, а не атом картинки,
+   чтобы на телефоне полоса становилась выше. */
+.kcs-subnav__cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5 / 1;
+}
+
+.kcs-subnav__cover_banner {
+    aspect-ratio: 7 / 2;
+}
+
+.kcs-subnav__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.kcs-subnav__image img {
+    width: 100%;
+    height: 100%;
+}
+
+/* Ряд ссылок: на десктопе переносится, на телефоне листается в одну строку. */
+.kcs-subnav__bar {
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.kcs-subnav__bar::-webkit-scrollbar {
+    display: none;
+}
+
+.kcs-subnav_top-border .kcs-subnav__bar {
+    border-top: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-subnav_bottom-border .kcs-subnav__bar {
+    border-bottom: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-subnav__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 var(--ys-spacing-300);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-subnav_align_center .kcs-subnav__list {
+    justify-content: center;
+}
+
+.kcs-subnav__item {
+    flex: 0 0 auto;
+}
+
+.kcs-subnav__mark {
+    display: none;
+}
+
+.kcs-subnav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.kcs-subnav__link:focus-visible {
+    outline: 2px solid var(--ys-color-token-brand-primary);
+    outline-offset: -2px;
+}
+
+/* Стиль «ссылки»: вторичный цвет, активный пункт — основной цвет и черта 2px. */
+.kcs-subnav_style_links .kcs-subnav__link {
+    min-height: var(--ys-spacing-600);
+    color: var(--ys-color-token-text-secondary);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.kcs-subnav_style_links .kcs-subnav__link::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.2s ease;
+}
+
+.kcs-subnav_style_links .kcs-subnav__link_active,
+.kcs-subnav_style_links .kcs-subnav__item:has(.kcs-subnav__mark) .kcs-subnav__link {
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-subnav_style_links .kcs-subnav__link_active::after,
+.kcs-subnav_style_links .kcs-subnav__item:has(.kcs-subnav__mark) .kcs-subnav__link::after {
+    transform: scaleX(1);
+}
+
+/* Скелетон на время загрузки категорий — высотой будущего ряда. */
+.kcs-subnav__skeleton {
+    display: block;
+    height: var(--ys-spacing-600);
+}
+
+/* Стиль «чипсы»: контур из токена границы, скругление из темы,
+   активный пункт — инверсия цветов палитры. */
+.kcs-subnav_style_chips .kcs-subnav__list {
+    gap: var(--ys-spacing-100);
+}
+
+.kcs-subnav_style_chips .kcs-subnav__bar {
+    padding-block: var(--ys-spacing-150);
+}
+
+.kcs-subnav_style_chips .kcs-subnav__skeleton {
+    height: var(--ys-spacing-500);
+    margin-block: var(--ys-spacing-150);
+}
+
+.kcs-subnav_style_chips .kcs-subnav__link {
+    min-height: var(--ys-spacing-500);
+    padding: 0 var(--ys-spacing-200);
+    border: 1px solid var(--ys-color-token-border-primary);
+    border-radius: var(--ys-current-skin-border-radius);
+    color: var(--ys-color-token-text-primary);
+    background: var(--ys-background-primary);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.kcs-subnav_style_chips .kcs-subnav__link_active,
+.kcs-subnav_style_chips .kcs-subnav__item:has(.kcs-subnav__mark) .kcs-subnav__link {
+    border-color: var(--ys-color-token-text-primary);
+    color: var(--ys-background-primary);
+    background: var(--ys-color-token-text-primary);
+}
+
+@media (hover: hover) {
+    .kcs-subnav_style_links .kcs-subnav__link:hover {
+        color: var(--ys-color-token-text-primary);
+    }
+
+    .kcs-subnav_style_chips .kcs-subnav__link:hover {
+        border-color: var(--ys-color-token-text-primary);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-subnav__link,
+    .kcs-subnav__link::after {
+        transition: none;
+    }
+}
+
+/* Планшет: ряд плотнее, перенос строк сохраняется. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-subnav__list {
+        gap: 0 var(--ys-spacing-250);
+    }
+}
+
+/* Телефон: одна строка с прокруткой пальцем, край ряда растворяется,
+   цели касания не ниже 44px, обложка выше. */
+@media (max-width: 767px) {
+    .kcs-subnav {
+        gap: var(--ys-spacing-200);
+    }
+
+    .kcs-subnav__title + .kcs-subnav__bar {
+        margin-top: calc(-1 * var(--ys-spacing-50));
+    }
+
+    .kcs-subnav__cover {
+        aspect-ratio: 5 / 2;
+    }
+
+    .kcs-subnav__cover_banner {
+        aspect-ratio: 2 / 1;
+    }
+
+    .kcs-subnav__bar {
+        -webkit-mask-image: linear-gradient(to left, transparent, var(--ys-background-primary) var(--ys-spacing-300));
+        mask-image: linear-gradient(to left, transparent, var(--ys-background-primary) var(--ys-spacing-300));
+    }
+
+    .kcs-subnav__list,
+    .kcs-subnav_style_chips .kcs-subnav__list {
+        flex-wrap: nowrap;
+        width: max-content;
+        min-width: 100%;
+        padding-inline-end: var(--ys-spacing-300);
+    }
+
+    .kcs-subnav_align_center .kcs-subnav__list {
+        justify-content: flex-start;
+    }
+
+    .kcs-subnav_style_links .kcs-subnav__list {
+        gap: 0 var(--ys-spacing-250);
+    }
+
+    .kcs-subnav_style_chips .kcs-subnav__link {
+        min-height: calc(var(--ys-spacing-500) + var(--ys-spacing-50));
+    }
+}
+
+/* Телефон: активный пункт первым в ряду (view.activeFirstTouch, по умолчанию
+   включено), «Все» — сразу после него; иначе на узком экране активный пункт
+   уезжает за край ряда. Пункт меню (source menu) активен по метке крошек. */
+@media (max-width: 767px) {
+    .kcs-subnav_active-first .kcs-subnav__item_active {
+        order: -1;
+    }
+
+    .kcs-subnav_active-first .kcs-subnav__item:has(.kcs-subnav__mark) {
+        order: -1;
+    }
+}
+
+/* view.showOn touch: ряд только на телефоне — на компьютере он повторял бы
+   меню шапки. Секция скрывается целиком, вместе с отступами. */
+@media (min-width: 768px) {
+    .kcs-rhythm:has(.kcs-subnav_show-touch) {
+        display: none;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

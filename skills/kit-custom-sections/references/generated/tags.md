@@ -3,63 +3,75 @@
 
 # Теги DSL Mystique (реестр движка)
 
-Всего тегов: 94 = 8 builtin + 36 контроллеров + 50 атомов. Два тега без префикса `ya-kit`: `yandex-pay-badge-discount`, `yandex-pay-badge-split`.
+Всего тегов: 114 = 8 builtin + 44 контроллеров + 62 атомов. Два тега без префикса `ya-kit`: `yandex-pay-badge-discount`, `yandex-pay-badge-split`.
 
 Неизвестный тег движок молча пропускает (секция опустеет); неизвестный БЛОЧНЫЙ хелпер роняет секцию исключением.
+
+Атрибуты — из таблиц публичной доки. Пометка «(код)» — атрибут взят из пропсов компонента движка: в таблице доки его нет или тип в коде шире. «обязателен» — в типе пропсов без `?` (по коду; что будет без него, живьём не проверено). Зачёркнутый атрибут есть в доке, но движок его не читает. Булевы атрибуты пишутся со значением: `autoplay="true"` — голый `autoplay` не включает ничего.
 
 | Тег | Группа | Атрибуты | Статус атрибутов |
 |---|---|---|---|
 | `ya-kit-accordion` | atom | `class`, `default-expanded` | задокументированы |
 | `ya-kit-accordion-body` | atom | — | только в коде (доки нет) |
+| `ya-kit-accordion-group-controller` | controller | — | только в коде (доки нет) |
 | `ya-kit-accordion-header` | atom | — | только в коде (доки нет) |
 | `ya-kit-badge` | atom | — | только в коде (доки нет) |
 | `ya-kit-blog-detail-controller` | controller | `as` | задокументированы |
 | `ya-kit-blog-listing-controller` | controller | `as`, `per-page` | задокументированы |
-| `ya-kit-boundary-controller` | controller | — | задокументированы |
+| `ya-kit-boundary-controller` | controller | `as` | задокументированы |
 | `ya-kit-breadcrumbs` | atom | `class`, `items` | задокументированы |
 | `ya-kit-breadcrumbs-controller` | controller | `as` | задокументированы |
-| `ya-kit-button` | atom | `class`, `color`, `size`, `is-disabled`, `is-loading`, `on-click` | задокументированы |
-| `ya-kit-carousel` | atom | `class`, `count`, `columns`, `columns-touch`, `h-gap`, `autoplay`, `autoplay-delay`, `controls-alignment`, `controls-size` | задокументированы |
-| `ya-kit-carousel-controller` | controller | — | задокументированы |
+| `ya-kit-button` | atom | `class`, `color`, `size`, `is-disabled`, `is-loading`, `on-click`, `on-press` (код), `width` (код), `to` (код) | дока + код |
+| `ya-kit-carousel` | atom | `class`, `count`, `columns`, `columns-touch`, `h-gap`, `autoplay`, `autoplay-delay`, `controls-alignment`, `controls-size`, `disable-hover-pause` (код) | дока + код |
+| `ya-kit-carousel-controller` | controller | `as` | задокументированы |
 | `ya-kit-categories-controller` | controller | `as`, `include-images` | задокументированы |
 | `ya-kit-checkbox` | atom | `class`, `value`, `color`, `is-selected`, `is-disabled`, `is-error`, `on-change` | задокументированы |
 | `ya-kit-checkbox-group` | atom | — | только в коде (доки нет) |
-| `ya-kit-clickable-area` | atom | — | только в коде (доки нет) |
+| `ya-kit-clickable-area` | atom | `class` (код), `to` (код), `is-disabled` (код), `title` (код), `on-press` (код) | по коду (доки нет) |
+| `ya-kit-collection-snippet` | atom | — | только в коде (доки нет) |
 | `ya-kit-collections-listing-controller` | controller | `as`, `source` | задокументированы |
 | `ya-kit-company-controller` | controller | `as` | задокументированы |
-| `ya-kit-countdown-controller` | controller | — | задокументированы |
+| `ya-kit-contacts` | atom | — | только в коде (доки нет) |
+| `ya-kit-copy-to-clipboard-controller` | controller | — | только в коде (доки нет) |
+| `ya-kit-countdown-controller` | controller | `as`, `date`, `on-complete` | задокументированы |
 | `ya-kit-delivery-options-controller` | controller | `as`, `location`, `product` | задокументированы |
+| `ya-kit-discount-ladder-controller` | controller | `as`, `per-page` | задокументированы |
 | `ya-kit-drag-controller` | controller | `as`, `is-disabled`, `axis` | задокументированы |
-| `ya-kit-drawer` | atom | `class`, `is-open`, `is-closable`, `enable-overlay`, `on-close` | задокументированы |
+| `ya-kit-drawer` | atom | `class`, `is-open`, `is-closable`, `enable-overlay`, `on-close`, `variant` (код) | дока + код |
 | `ya-kit-each` | builtin | — | только в коде (доки нет) |
 | `ya-kit-else` | builtin | — | только в коде (доки нет) |
 | `ya-kit-elseif` | builtin | — | только в коде (доки нет) |
 | `ya-kit-email-subscription-controller` | controller | `as`, `enable-agreement`, `promocode` | задокументированы |
 | `ya-kit-favourite-products-controller` | controller | `as` | задокументированы |
 | `ya-kit-featured-blog-controller` | controller | `as`, `tags`, `count` | задокументированы |
-| `ya-kit-featured-products-controller` | controller | `as`, `data-source`, `count` | задокументированы |
-| `ya-kit-field-controller` | controller | — | задокументированы |
+| `ya-kit-featured-products-controller` | controller | `as`, `data-source`, `count`, `is-feed` (код), `per-page` (код) | дока + код |
+| `ya-kit-field-controller` | controller | `as`, `value`, `is-disabled`, `on-change` | задокументированы |
 | `ya-kit-form-control` | atom | `class`, `is-disabled`, `label`, `error-message` | задокументированы |
 | `ya-kit-form-control-label` | atom | `class`, `is-disabled`, `label`, `label-placement` | задокументированы |
 | `ya-kit-gift-progress-bar` | atom | `class`, `progress`, `remaining`, `is-available`, `current`, `total`, `on-select` | задокументированы |
 | `ya-kit-gift-slot-controller` | controller | `slot`, `as` | задокументированы |
-| `ya-kit-gift-slots` | atom | `class`, `on-select-gift-slot` | задокументированы |
+| `ya-kit-gift-slots` | atom | `class`, `slots`, `on-select-gift-slot` | задокументированы |
 | `ya-kit-gift-snippet-controller` | controller | `gift`, `as` | задокументированы |
 | `ya-kit-gifts-controller` | controller | `as` | задокументированы |
 | `ya-kit-grid` | atom | `class`, `count`, `columns`, `columns-touch`, `h-gap`, `v-gap` | задокументированы |
-| `ya-kit-grouping-characteristic` | atom | `class`, `characteristic`, `is-сollapsable`, `size-table`, `on-сhange` | задокументированы |
-| `ya-kit-h-stack` | atom | `class`, `flex-wrap`, `justify-content`, `align-items`, `gap` | задокументированы |
+| `ya-kit-group-layout` | atom | — | только в коде (доки нет) |
+| `ya-kit-grouping-characteristic` | atom | `class`, `characteristic`, `size-table`, `on-change` (код), `is-collapsable` (код), `enable-out-of-stock-products` (код), `is-loading` (код), ~~`is-сollapsable`~~ (не действует), ~~`on-сhange`~~ (не действует) | дока + код |
+| `ya-kit-h-stack` | atom | `class`, `flex-wrap`, `justify-content`, `align-items`, `gap`, `as` (код) | дока + код |
+| `ya-kit-icon` | atom | `class`, `name`, `size`, `color` (код) | дока + код |
 | `ya-kit-if` | builtin | — | только в коде (доки нет) |
-| `ya-kit-image` | atom | `class`, `src`, `fit`, `aspect-ratio`, `background-color`, `rounded`, `enable-paranja` | задокументированы |
-| `ya-kit-image-swiper` | atom | `class`, `items`, `fit`, `aspect-ratio`, `background-color`, `rounded`, `disable-carousel` | задокументированы |
-| `ya-kit-input` | atom | `class`, `value`, `size`, `color`, `is-disabled`, `is-error`, `on-change` | задокументированы |
-| `ya-kit-input-stepper` | atom | `class`, `value`, `size`, `min`, `max`, `on-change` | задокументированы |
-| `ya-kit-intersection-controller` | controller | — | задокументированы |
-| `ya-kit-link` | atom | `class`, `to`, `size`, `align`, `weight`, `decoration`, `lines` | задокументированы |
+| `ya-kit-image` | atom | `class`, `src`, `fit`, `aspect-ratio`, `background-color`, `rounded`, `enable-paranja`, `alt` (код), `priority` (код), `enable-preload` (код), `fallback-src` (код), `height-based` (код), `fit-within-bounds` (код) | дока + код |
+| `ya-kit-image-swiper` | atom | `class`, `items`, `fit`, `aspect-ratio`, `background-color`, `rounded`, `disable-carousel`, `is-loading` (код) | дока + код |
+| `ya-kit-infinite-scroll-controller` | controller | — | только в коде (доки нет) |
+| `ya-kit-input` | atom | `class`, `value`, `size`, `color`, `is-disabled`, `is-error`, `on-change`, `placeholder` (код), `type` (код), `autocomplete` (код), `width` (код) | дока + код |
+| `ya-kit-input-stepper` | atom | `class`, `value`, `size`, `min`, `max`, `on-change`, `width` (код) | дока + код |
+| `ya-kit-intersection-controller` | controller | `as`, `threshold`, `threshold-step`, `root-margin`, `trigger-once` | задокументированы |
+| `ya-kit-json-ld` | atom | `model` (код, обязателен) | по коду (доки нет) |
+| `ya-kit-link` | atom | `class`, `to`, `size`, `align`, `weight`, `decoration`, `lines`, `target` (код) | дока + код |
 | `ya-kit-location-controller` | controller | `as` | задокументированы |
 | `ya-kit-markdown` | atom | `class`, `markup` | задокументированы |
+| `ya-kit-media` | atom | `class` (код), `media` (код), `aspect-ratio` (код), `rounded` (код), `fit` (код), `fit-within-bounds` (код), `background-color` (код), `priority` (код), `enable-preload` (код), `enable-paranja` (код), `is-autoplay` (код), `is-muted` (код), `is-loop` (код), `is-playback-enabled` (код), `video-player-skin-variant` (код), `hidden-controls` (код), `sizes` (код), `load-original-image` (код), `on-click` (код), `on-double-click` (код) | по коду (доки нет) |
 | `ya-kit-media-gallery` | atom | `class`, `is-loading`, `items`, `layout`, `background-color`, `aspect-ratio`, `fit`, `gap`, `initial-grid-count`, `enable-paranja`, `enable-fullscreen`, `autoplay`, `priority`, `loop` | задокументированы |
-| `ya-kit-menu` | atom | — | задокументированы |
+| `ya-kit-menu` | atom | `class`, `is-open`, `variant`, `user`, `menu`, `palette`, `is-fullscreen`, `h-padding-desktop`, `h-padding-mobile`, `on-close` | задокументированы |
 | `ya-kit-menu-controller` | controller | `as`, `menu` | задокументированы |
 | `ya-kit-metrika-controller` | controller | `as`, `goal`, `strategy` | задокументированы |
 | `ya-kit-module` | atom | `class`, `module-id` | задокументированы |
@@ -67,28 +79,38 @@
 | `ya-kit-parallax` | atom | `class`, `speed` | задокументированы |
 | `ya-kit-paranja` | atom | — | только в коде (доки нет) |
 | `ya-kit-partial` | builtin | — | только в коде (доки нет) |
-| `ya-kit-prices` | atom | `class`, `price`, `final-price`, `quantity`, `size`, `weight`, `enable-discount` | задокументированы |
-| `ya-kit-product-detail-controller` | controller | — | задокументированы |
-| `ya-kit-product-snippet` | atom | `class`, `product`, `quantity`, `enable-button`, `enable-carousel`, `enable-rounding`, `enable-badges`, `on-toggle-favourite`, `on-update-quantity` | задокументированы |
+| `ya-kit-prices` | atom | `class`, `price`, `final-price`, `quantity`, `size`, `weight`, `enable-discount`, `is-loading` (код) | дока + код |
+| `ya-kit-product-detail-controller` | controller | `as` | задокументированы |
+| `ya-kit-product-feedback-card` | atom | `class` (код), `feedback` (код), `on-media-press` (код), `read-more-behavior` (код), `on-read-more-press` (код), `bordered` (код), `show-media` (код) | по коду (доки нет) |
+| `ya-kit-product-feedback-listing-controller` | controller | `as` (код), `per-page` (код) | по коду (доки нет) |
+| `ya-kit-product-feedback-media-list-controller` | controller | `as` (код) | по коду (доки нет) |
+| `ya-kit-product-feedback-media-tile` | atom | `class` (код), `media` (код), `sizes` (код), `priority` (код), `is-active` (код), `border-variant` (код), `on-click` (код) | по коду (доки нет) |
+| `ya-kit-product-feedback-overview` | atom | `class` (код), `meta` (код), `default-expanded` (код) | по коду (доки нет) |
+| `ya-kit-product-feedback-summary` | atom | `class` (код), `title` (код), `summary` (код), `reviews-page-url` (код), `is-collapsible` (код) | по коду (доки нет) |
+| `ya-kit-product-feedback-viewer-controller` | controller | `as` (код) | по коду (доки нет) |
+| `ya-kit-product-snippet` | atom | `class`, `product`, `quantity`, `enable-button`, `enable-carousel`, `enable-rounding`, `enable-badges`, `on-toggle-favourite`, `on-update-quantity`, `is-loading` (код) | дока + код |
 | `ya-kit-product-snippet-controller` | controller | `as`, `product` | задокументированы |
-| `ya-kit-products-filters` | atom | — | задокументированы |
-| `ya-kit-products-filters-controller` | controller | — | задокументированы |
-| `ya-kit-products-listing-controller` | controller | — | задокументированы |
-| `ya-kit-products-sorting` | atom | — | задокументированы |
+| `ya-kit-products-filters` | atom | `class`, `schema`, `value`, `category`, `categories`, `on-submit` | задокументированы |
+| `ya-kit-products-filters-controller` | controller | `as`, `schema`, `initial-value`, `on-submit` | задокументированы |
+| `ya-kit-products-group-controller` | controller | `as` (код), `variant-ids` (код, обязателен) | по коду (доки нет) |
+| `ya-kit-products-listing-controller` | controller | `as`, `per-page`, `on-filters-did-changed` | задокументированы |
+| `ya-kit-products-sorting` | atom | `class`, `value`, `options`, `on-change` | задокументированы |
 | `ya-kit-promocode-controller` | controller | `as`, `promocode-id` | задокументированы |
 | `ya-kit-radio` | atom | — | только в коде (доки нет) |
 | `ya-kit-radio-group` | atom | — | только в коде (доки нет) |
+| `ya-kit-rating-stars` | atom | `class` (код), `value` (код), `count` (код), `has-value` (код), `variant` (код), `empty-reviews-view` (код), `reviews-page-url` (код), `is-aria-hidden` (код) | по коду (доки нет) |
 | `ya-kit-repeat` | builtin | — | только в коде (доки нет) |
 | `ya-kit-resize-controller` | controller | `as` | задокументированы |
 | `ya-kit-scroll-controller` | controller | — | только в коде (доки нет) |
-| `ya-kit-section-layout` | atom | `class`, `background`, `palette`, `is-fullscreen`, `v-gap`, `h-padding-desktop`, `h-padding-mobile`, `padding-top`, `padding-bottom` | задокументированы |
+| `ya-kit-section-layout` | atom | `class`, `background`, `palette`, `is-fullscreen`, `v-gap`, `h-padding-desktop`, `h-padding-mobile`, `padding-top`, `padding-bottom`, `name` (код), `h-padding-mode` (код), `max-width-desktop` (код) | дока + код |
 | `ya-kit-section-layout-row` | atom | `class`, `is-sticky` | задокументированы |
-| `ya-kit-section-title` | atom | `class`, `as`, `text`, `to` | задокументированы |
-| `ya-kit-self-pickup-controller` | controller | `as`, `location`, `product`, `quantity` | задокументированы |
+| `ya-kit-section-title` | atom | `class`, `text`, `to`, `align` (код), ~~`as`~~ (не действует) | дока + код |
+| `ya-kit-self-pickup-controller` | controller | `as`, `location`, `product`, ~~`quantity`~~ (не действует) | дока + код |
 | `ya-kit-shopping-cart-bundle-controller` | controller | `bundle`, `as` | задокументированы |
 | `ya-kit-shopping-cart-controller` | controller | `as` | задокументированы |
+| `ya-kit-shopping-cart-promocode` | atom | `class` (код), `promocode` (код), `is-pending` (код), `on-apply-promocode` (код), `on-remove-promocode` (код) | по коду (доки нет) |
 | `ya-kit-shopping-cart-snippet` | atom | — | только в коде (доки нет) |
-| `ya-kit-skeleton` | atom | `class`, `variant`, `rounded`, `width`, `height` | задокументированы |
+| `ya-kit-skeleton` | atom | `class`, `variant`, `rounded`, `width`, `height`, `aspect-ratio` (код) | дока + код |
 | `ya-kit-sticky` | atom | `class`, `scope`, `is-sticky` | задокументированы |
 | `ya-kit-switch` | atom | `class`, `value`, `color`, `is-selected`, `is-disabled`, `is-error`, `on-change` | задокументированы |
 | `ya-kit-text` | atom | `class`, `as`, `color`, `size`, `align`, `weight`, `decoration`, `lines` | задокументированы |
@@ -98,8 +120,22 @@
 | `ya-kit-user-controller` | controller | `as` | задокументированы |
 | `ya-kit-v-stack` | atom | — | только в коде (доки нет) |
 | `ya-kit-value-controller` | controller | `as`, `initial-value` | задокументированы |
-| `ya-kit-video` | atom | `class`, `src`, `fit`, `aspect-ratio`, `volume`, `is-autoplay`, `is-muted`, `is-loop`, `is-skinless` | задокументированы |
-| `ya-kit-video-queue` | atom | — | только в коде (доки нет) |
+| `ya-kit-video` | atom | `class`, `src`, `fit`, `aspect-ratio`, `volume`, `is-autoplay`, `is-muted`, `is-loop`, `is-skinless`, `skin-variant` (код), `poster-variant` (код), `is-playback-enabled` (код), `hidden-controls` (код) | дока + код |
+| `ya-kit-video-queue` | atom | — | задокументированы |
 | `ya-kit-with` | builtin | — | только в коде (доки нет) |
-| `yandex-pay-badge-discount` | atom | `class`, `price`, `size` | задокументированы |
-| `yandex-pay-badge-split` | atom | `class`, `price`, `size`, `color`, `variant` | задокументированы |
+| `yandex-pay-badge-discount` | atom | `class`, `price`, `size`, `source` (код, обязателен), `product-id` (код), `variant` (код), `align` (код) | дока + код |
+| `yandex-pay-badge-split` | atom | `class`, `price`, `size`, `color`, `variant`, `product-id` (код) | дока + код |
+
+## Имена иконок `ya-kit-icon` (76)
+
+`name` — строго из этого списка, kebab-case: атом превращает имя в компонент (`whats-app` -> WhatsApp), а неизвестное имя рисует пустотой без ошибки (`whatsapp` не найдётся). Размер `size` по умолчанию 16, цвет `color` по умолчанию `primary`.
+
+`addon`, `arrow-back`, `arrow-big-left`, `arrow-big-right`, `arrow-down`, `arrow-left`, `arrow-right`, `arrow-up`, `box`, `check`, `check-mark-seal`, `circle-cross`, `clear`, `clock`, `coins`, `copy`, `credit-card`, `cross`, `delivery`, `download`, `dzen`, `edit`, `empty`, `exit`, `file-doc`, `file-docx`, `file-jpeg`, `file-jpg`, `file-pdf`, `file-png`, `file-rtf`, `file-svg`, `file-txt`, `file-webp`, `file-xls`, `file-xlsx`, `filter`, `full-screen`, `gift`, `hanger`, `heart`, `help`, `info`, `location`, `lock`, `mail`, `map-pin`, `max`, `menu`, `minus`, `notification`, `odnoklassniki`, `orders`, `pause`, `percent`, `phone`, `play`, `plus`, `reload`, `rhythm`, `search`, `shop`, `shopping-bag`, `sound-off`, `sound-on`, `spinner`, `star`, `stars`, `telegram`, `tiktok`, `trash`, `user`, `user-authorized`, `vk`, `whats-app`, `youtube`
+
+### Стиль иконок (по SVG)
+
+Одна секция — один стиль. Иконка с зашитым цветом (`hardcoded-color`, `multicolor`) рядом с иконками цвета текста не следует палитре — гейт G22 (WARNING), если шаблон или enum иконок схемы их смешивает. Залитая форма рядом с контурными тоже выглядит чужой, но G22 её не ловит: `outline` и `solid` оба цвета текста, а фирменные знаки соцсетей залиты и законно стоят рядом с контурными телефоном и почтой. Залитую звезду или сердце среди контурных иконок проверять глазами.
+
+- **outline** (56) — контурные, цвет текста: `arrow-back`, `arrow-big-left`, `arrow-big-right`, `arrow-down`, `arrow-left`, `arrow-right`, `arrow-up`, `box`, `check`, `circle-cross`, `clear`, `clock`, `coins`, `copy`, `credit-card`, `cross`, `delivery`, `download`, `edit`, `empty`, `exit`, `file-doc`, `file-docx`, `file-jpeg`, `file-jpg`, `file-pdf`, `file-png`, `file-rtf`, `file-svg`, `file-txt`, `file-webp`, `file-xls`, `file-xlsx`, `filter`, `gift`, `hanger`, `help`, `info`, `location`, `lock`, `mail`, `menu`, `minus`, `notification`, `orders`, `percent`, `phone`, `plus`, `reload`, `search`, `shop`, `shopping-bag`, `spinner`, `trash`, `user`, `user-authorized`
+- **solid** (12) — залитые формы цветом текста, в том числе фирменные знаки соцсетей и сервисов; `heart` контуром — классом с `fill: transparent; --ys-color-stroke: currentColor`, как сердце избранного у нативной карточки: `dzen`, `heart`, `max`, `odnoklassniki`, `rhythm`, `star`, `stars`, `telegram`, `tiktok`, `vk`, `whats-app`, `youtube`
+- **hardcoded-color** (8) — один зашитый цвет: палитре не следуют, на тёмной палитре тёмная иконка не видна: `addon`, `check-mark-seal`, `full-screen`, `map-pin`, `pause`, `play`, `sound-off`, `sound-on`

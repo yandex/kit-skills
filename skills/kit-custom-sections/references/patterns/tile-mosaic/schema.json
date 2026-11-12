@@ -1,0 +1,268 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок секции (можно пустой)",
+      "default": ""
+    },
+    "titleAlign": {
+      "$ref": "#/definitions/SectionTitleAlign",
+      "title": "Расположение заголовка"
+    },
+    "gap": {
+      "type": "string",
+      "title": "Зазоры между ячейками",
+      "enum": [
+        "none",
+        "compact",
+        "regular"
+      ],
+      "options": [
+        "Без зазоров",
+        "Узкие",
+        "Обычные"
+      ],
+      "default": "regular"
+    },
+    "unitRatio": {
+      "type": "string",
+      "title": "Пропорция ячейки в треть ширины",
+      "enum": [
+        "square",
+        "landscape",
+        "portrait"
+      ],
+      "options": [
+        "Квадрат 1:1",
+        "Горизонтальная 4:3",
+        "Вертикальная 3:4"
+      ],
+      "default": "square"
+    },
+    "photoTitle": {
+      "type": "string",
+      "title": "Заголовок на фото",
+      "enum": [
+        "scrim",
+        "plate"
+      ],
+      "options": [
+        "Белый текст на затемнении снизу",
+        "Плашка цвета секции"
+      ],
+      "default": "scrim"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Ячейки мозаики",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "title": "Тип ячейки",
+            "enum": [
+              "photo",
+              "text"
+            ],
+            "options": [
+              "Фото",
+              "Текстовая ячейка"
+            ],
+            "default": "photo"
+          },
+          "size": {
+            "type": "string",
+            "title": "Ширина ячейки",
+            "enum": [
+              "third",
+              "half",
+              "two-thirds",
+              "full"
+            ],
+            "options": [
+              "Треть",
+              "Половина",
+              "Две трети",
+              "Во всю ширину"
+            ],
+            "default": "third"
+          },
+          "tall": {
+            "type": "boolean",
+            "title": "Высокая (две строки)",
+            "default": false
+          },
+          "image": {
+            "$ref": "#/definitions/ImageModel",
+            "title": "Фото (для ячейки «Фото»)"
+          },
+          "imageAlt": {
+            "type": "string",
+            "title": "Описание фото для незрячих",
+            "default": ""
+          },
+          "title": {
+            "type": "string",
+            "title": "Заголовок ячейки (до 3 слов; на фото можно оставить пустым)",
+            "default": ""
+          },
+          "caption": {
+            "type": "string",
+            "title": "Подпись под заголовком (текстовая ячейка)",
+            "default": ""
+          },
+          "link": {
+            "$ref": "#/definitions/LinkSource",
+            "title": "Ссылка: вся ячейка кликабельна"
+          },
+          "fill": {
+            "type": "string",
+            "title": "Фон текстовой ячейки",
+            "enum": [
+              "none",
+              "neutral",
+              "brand"
+            ],
+            "options": [
+              "Как у секции",
+              "Нейтральная подложка",
+              "Фирменный цвет"
+            ],
+            "default": "none"
+          },
+          "touch": {
+            "type": "string",
+            "title": "На телефоне",
+            "enum": [
+              "auto",
+              "wide",
+              "hidden"
+            ],
+            "options": [
+              "Как на десктопе",
+              "На всю ширину",
+              "Скрыть на телефоне"
+            ],
+            "default": "auto"
+          }
+        },
+        "required": [
+          "kind",
+          "size"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "modules",
+    "section"
+  ]
+}

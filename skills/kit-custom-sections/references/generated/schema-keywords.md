@@ -5,7 +5,7 @@
 
 Draft-07 подмножество. Жёстко запрещены: `oneOf`, `allOf`, `if`, `then`, `else`, `patternProperties` — схема с ними не редактируется конструктором.
 
-## Нестандартные ключевые слова (extraTags генератора, 17)
+## Нестандартные ключевые слова (extraTags генератора, 20)
 
 - `component`
 - `step`
@@ -13,15 +13,18 @@ Draft-07 подмножество. Жёстко запрещены: `oneOf`, `al
 - `options`
 - `enumNames`
 - `supportedPages`
+- `canAddSections` — ключ настроек страницы (можно ли добавлять секции), в схеме секции не действует
 - `totalMaximum`
 - `totalMinimum`
 - `hidden`
 - `longDescription`
+- `maxLength`
 - `canCopy`
 - `modulesCopyWhitelist`
 - `canBeParent`
 - `alwaysComponent`
 - `optionsMap`
+- `itemIcon` — на массиве `modules` — иконка элементов в дереве секций конструктора: `image` (по умолчанию) или `link` (по коду кабинета; на кастомной секции живьём не проверено)
 - `defaultValueLabel`
 - `alias`
 
@@ -29,7 +32,9 @@ Draft-07 подмножество. Жёстко запрещены: `oneOf`, `al
 
 `hidden: true` выкидывает поле из формы. Повторяемые блоки — только массив объектов под именем `modules`; платформа сама добавляет каждому модулю `id`.
 
-## $ref: резервные типы (20) — дают контролы мерчанта
+`component: "Subsection"` на объекте верхнего уровня схемы рисует его плоской группой полей вместо сворачиваемого раздела формы (вложенные объекты и так плоские). `longDescription` у поля, группы или корня схемы рендерится как Markdown со ссылками: ссылку писать буквальным путём (`[текст](/путь)`) — плейсхолдеры маршрутов кабинета из схем нативных виджетов в кастомной схеме не раскрываются и остаются текстом.
+
+## $ref: резервные типы (21) — дают контролы мерчанта
 
 - `#/definitions/Advantage`
 - `#/definitions/BannerSlideMedia`
@@ -45,6 +50,7 @@ Draft-07 подмножество. Жёстко запрещены: `oneOf`, `al
 - `#/definitions/Palette`
 - `#/definitions/Palettes`
 - `#/definitions/ProductCard`
+- `#/definitions/ProductVariant` — выбор опубликованного варианта товара. Форма пишет в настройки объект с ключом `variantId` (остальные поля объекта у разных клиентов различаются — в шаблоне опираться только на `variantId`, например `{{mapBy settings.modules "product.variantId"}}` для `ya-kit-products-group-controller variant-ids`). Тела типа в схеме витрины нет (в `definitions.json` его тоже нет), поля значения линт не проверяет.
 - `#/definitions/ProductsSource`
 - `#/definitions/PromocodeSource`
 - `#/definitions/TextArea`

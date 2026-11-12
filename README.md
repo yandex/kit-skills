@@ -21,7 +21,7 @@ over to each other.
 | `yandex-kit-cabinet` | Catalog, prices and stock, orders, promo codes and discounts, collections, webhooks; questions to the store's AI assistant. The entry point: this is where the token is set up and access is checked. | Store token |
 | `kit-store-checkup` | Weekly store revision: published but impossible to buy, running out of stock, orders waiting or stuck, products with no photo, price or dimensions, duplicate SKUs. Read-only — every fix it finds is handed to `yandex-kit-cabinet`. | Store token |
 | `kit-storefront-constructor` | The storefront: read pages, sections and versions, edit them in a local draft, publish the result, create custom-section templates, upload images and video. | Store token |
-| `kit-custom-sections` | Builds a custom storefront section (html + css + json_schema) from a catalog of verified patterns, and checks an existing one. Uploads nothing itself — prints the `kit-storefront-constructor` commands to run. | Nothing: works offline, no token |
+| `kit-custom-sections` | Builds a custom storefront section (html + css + json_schema) from a catalog of lint-checked patterns, and checks an existing one. With the user's explicit consent it also builds a store-wide header or footer template. Uploads nothing itself — prints the `kit-storefront-constructor` commands to run. | Nothing: works offline, no token |
 
 ## Install
 

@@ -1,0 +1,14 @@
+id: listing-grid
+version: 2
+title: "Листинг сеткой"
+purpose: "Листинг категории сеткой со своей карточкой: колонки, плотность, бренд, бейджи, фильтры, сортировка"
+origin: "handmade"
+fingerprint: "dbe6c28cd578822adc5ab2f39c39785bd0a4c8840f116ba7e9302e40a8540c4d"
+docs_fingerprint: "dbe6c28cd578822adc5ab2f39c39785bd0a4c8840f116ba7e9302e40a8540c4d"
+applied_patches: ""
+keywords: "листинг сеткой, каталог сеткой, сетка каталога, бесшовная, плотный, плитка, плиткой, бренд, бейджи, товары категории"
+pages: "listing"
+controllers: "ya-kit-products-listing-controller, ya-kit-product-snippet-controller, ya-kit-toggle-controller"
+answers_required: ""
+rhythm: "0"
+rhythm_touch: "0"

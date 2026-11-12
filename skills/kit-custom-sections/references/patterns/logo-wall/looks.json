@@ -1,0 +1,29 @@
+{
+  "start": "grid",
+  "looks": [
+    {
+      "name": "grid",
+      "title": "Сетка логотипов",
+      "description": "Пять колонок, без подложек.",
+      "settings": {}
+    },
+    {
+      "name": "marquee",
+      "title": "Бегущая строка",
+      "description": "Логотипы плывут, серые до наведения.",
+      "settings": {
+        "layout": "marquee",
+        "grayscale": true
+      }
+    },
+    {
+      "name": "tiles",
+      "title": "Логотипы на плитках",
+      "description": "Четыре колонки на нейтральной подложке.",
+      "settings": {
+        "tileBackground": "neutral",
+        "columns": "4"
+      }
+    }
+  ]
+}

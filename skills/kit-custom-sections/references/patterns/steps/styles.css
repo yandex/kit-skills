@@ -1,0 +1,342 @@
+/* Пронумерованные шаги. Одна разметка на все режимы: раскладку выбирают
+   классы-модификаторы списка, номер рисует CSS-счётчик — живой текст в шрифте
+   темы, а не картинка. Цвета только токенами палитры. */
+
+.kcs-steps-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+}
+
+.kcs-steps-intro_center,
+.kcs-steps-intro_default.kcs-steps-intro_theme-center {
+    align-items: center;
+    text-align: center;
+}
+
+.kcs-steps-intro__lead,
+.kcs-steps-footnote {
+    max-width: 48rem;
+}
+
+.kcs-steps-footnote_center {
+    margin-inline: auto;
+    text-align: center;
+}
+
+.kcs-steps-pre {
+    white-space: pre-line;
+}
+
+.kcs-steps {
+    counter-reset: kcs-step;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.kcs-steps__item {
+    display: flex;
+    min-width: 0;
+}
+
+.kcs-steps__card {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+    min-width: 0;
+}
+
+.kcs-steps_cards .kcs-steps__card {
+    padding: var(--ys-spacing-400);
+    background: var(--ys-background-neutral);
+}
+
+/* Без подложки шаг отделяет тонкая линия сверху: в сетке линии складываются
+   в горизонтальную ось процесса. Скругление темы линии не нужно. */
+.kcs-steps_plain .kcs-steps__card {
+    padding-top: var(--ys-spacing-300);
+    border-top: 1px solid var(--ys-color-token-border-primary);
+    border-radius: 0;
+}
+
+.kcs-steps__head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-200);
+}
+
+/* Номер шага. Цвет — бренд, притянутый к цвету текста палитры и
+   полупрозрачный: крупная цифра читается как фон шага на любой палитре,
+   включая светлый бренд и тёмную секцию. Первая декларация — запасной цвет
+   для браузеров без color-mix. */
+.kcs-steps__head::before {
+    counter-increment: kcs-step;
+    content: counter(kcs-step);
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--ys-color-token-text-secondary);
+    color: color-mix(in srgb, color-mix(in srgb, var(--ys-color-token-brand-primary) 65%, var(--ys-color-token-text-primary)) 40%, transparent);
+}
+
+.kcs-steps_num-leading-zero .kcs-steps__head::before {
+    content: counter(kcs-step, decimal-leading-zero);
+}
+
+.kcs-steps_num-none .kcs-steps__head::before {
+    content: none;
+}
+
+/* Тело шага растворяется в карточке: картинка поднимается над номером,
+   примечание прижимается к низу — у карточек одного ряда примечания
+   стоят на одной линии. */
+.kcs-steps__body {
+    display: contents;
+}
+
+.kcs-steps__media {
+    order: -1;
+    margin-bottom: var(--ys-spacing-100);
+}
+
+.kcs-steps__note {
+    margin-top: auto;
+    padding-top: var(--ys-spacing-100);
+}
+
+/* ---------- десктоп и планшет: сетка ---------- */
+@media (min-width: 768px) {
+    .kcs-steps_grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--ys-spacing-300);
+    }
+
+    .kcs-steps_grid.kcs-steps_plain {
+        column-gap: var(--ys-spacing-400);
+        row-gap: var(--ys-spacing-600);
+    }
+
+    .kcs-steps_grid.kcs-steps_cols-2,
+    .kcs-steps_grid.kcs-steps_cols-auto.kcs-steps_n-1,
+    .kcs-steps_grid.kcs-steps_cols-auto.kcs-steps_n-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kcs-steps_grid.kcs-steps_cols-auto.kcs-steps_n-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .kcs-steps_grid.kcs-steps_cols-4,
+    .kcs-steps_grid.kcs-steps_cols-auto.kcs-steps_n-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .kcs-steps_grid.kcs-steps_cols-5,
+    .kcs-steps_grid.kcs-steps_cols-auto.kcs-steps_n-5 {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
+
+/* Планшет и узкий десктоп: четыре колонки уходят в 2x2, пять — в 3+2. */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .kcs-steps_grid.kcs-steps_cols-4,
+    .kcs-steps_grid.kcs-steps_cols-auto.kcs-steps_n-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kcs-steps_grid.kcs-steps_cols-5,
+    .kcs-steps_grid.kcs-steps_cols-auto.kcs-steps_n-5 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .kcs-steps__head::before {
+        font-size: 40px;
+    }
+
+    .kcs-steps_cards .kcs-steps__card {
+        padding: var(--ys-spacing-300);
+    }
+}
+
+/* Планшет 768–1023: пять и больше шагов — две колонки. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-steps_grid.kcs-steps_cols-5,
+    .kcs-steps_grid.kcs-steps_cols-auto,
+    .kcs-steps_grid.kcs-steps_cols-auto.kcs-steps_n-5 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ---------- десктоп и планшет: список строк ----------
+   Слева номер и заголовок, справа текст, под ним картинка и примечание.
+   Для длинных текстов и 5+ шагов. */
+@media (min-width: 768px) {
+    .kcs-steps_list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--ys-spacing-200);
+    }
+
+    .kcs-steps_list.kcs-steps_plain {
+        gap: 0;
+    }
+
+    .kcs-steps_list .kcs-steps__card {
+        display: grid;
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        align-items: start;
+        column-gap: var(--ys-spacing-600);
+    }
+
+    .kcs-steps_list.kcs-steps_cards .kcs-steps__card {
+        padding: var(--ys-spacing-500);
+    }
+
+    .kcs-steps_list.kcs-steps_plain .kcs-steps__card {
+        padding: var(--ys-spacing-500) 0;
+    }
+
+    .kcs-steps_list.kcs-steps_plain .kcs-steps__item:last-child .kcs-steps__card {
+        border-bottom: 1px solid var(--ys-color-token-border-primary);
+    }
+
+    .kcs-steps_list .kcs-steps__body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--ys-spacing-200);
+        max-width: 44rem;
+    }
+
+    .kcs-steps_list .kcs-steps__media {
+        order: 1;
+        width: 100%;
+        max-width: 28rem;
+        margin-bottom: 0;
+    }
+
+    .kcs-steps_list .kcs-steps__note {
+        order: 2;
+        margin-top: 0;
+        padding-top: 0;
+    }
+}
+
+/* ---------- телефон ---------- */
+@media (max-width: 767px) {
+    .kcs-steps_cards .kcs-steps__card {
+        padding: var(--ys-spacing-300);
+    }
+
+    .kcs-steps__head::before {
+        font-size: 36px;
+    }
+
+    /* Друг под другом: номер в левой колонке на всю высоту шага, заголовок,
+       текст, картинка и примечание — в правой, как лента процесса. */
+    .kcs-steps_m-stack {
+        display: flex;
+        flex-direction: column;
+        gap: var(--ys-spacing-200);
+    }
+
+    .kcs-steps_m-stack.kcs-steps_plain {
+        gap: var(--ys-spacing-300);
+    }
+
+    .kcs-steps_m-stack .kcs-steps__card {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: start;
+        column-gap: var(--ys-spacing-200);
+        row-gap: 0;
+    }
+
+    .kcs-steps_m-stack .kcs-steps__head {
+        display: contents;
+    }
+
+    .kcs-steps_m-stack .kcs-steps__head::before {
+        grid-column: 1;
+        grid-row: 1 / span 4;
+        min-width: 2ch;
+        font-size: 28px;
+        line-height: 1.1;
+    }
+
+    .kcs-steps_m-stack .kcs-steps__title,
+    .kcs-steps_m-stack .kcs-steps__text,
+    .kcs-steps_m-stack .kcs-steps__media,
+    .kcs-steps_m-stack .kcs-steps__note {
+        grid-column: 2;
+    }
+
+    /* Отступы внутри шага — полями, а не row-gap: пустые строки сетки у шага
+       без картинки или примечания не добавляют воздуха. */
+    .kcs-steps_m-stack .kcs-steps__text {
+        margin-top: var(--ys-spacing-100);
+    }
+
+    .kcs-steps_m-stack .kcs-steps__media {
+        order: 1;
+        margin: var(--ys-spacing-200) 0 0;
+    }
+
+    .kcs-steps_m-stack .kcs-steps__note {
+        order: 2;
+        margin-top: 0;
+    }
+
+    .kcs-steps_m-stack.kcs-steps_num-none .kcs-steps__card {
+        column-gap: 0;
+    }
+
+    /* Лента с прокруткой: карточка 80% ширины, следующая выглядывает; лента
+       выходит под поля секции ровно на отступ секции на телефоне
+       (--kcs-bleed из настройки hPaddingMobile), первая карточка стоит
+       на линии контента, горизонтального скролла страницы нет. */
+    .kcs-steps_m-scroll {
+        display: flex;
+        gap: var(--ys-spacing-150);
+        margin-inline: calc(-1 * var(--kcs-bleed, 0px));
+        padding-inline: var(--kcs-bleed, 0px);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: var(--kcs-bleed, 0px);
+        scrollbar-width: none;
+    }
+
+    .kcs-steps_m-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .kcs-steps_m-scroll.kcs-steps_plain {
+        gap: var(--ys-spacing-300);
+    }
+
+    .kcs-steps_m-scroll .kcs-steps__item {
+        flex: 0 0 80%;
+        scroll-snap-align: start;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

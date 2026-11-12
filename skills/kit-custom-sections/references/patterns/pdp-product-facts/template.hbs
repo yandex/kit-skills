@@ -1,0 +1,148 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+{{#with route.context.productCard.mainVariant as |product|}}
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <div class="kcs-facts kcs-facts_{{settings.layout}} kcs-facts_label-{{settings.labelStyle}} kcs-facts_label-touch-{{when settings.labelPositionTouch settings.labelPositionTouch 'above'}} kcs-facts_align-{{settings.titleAlign}} kcs-facts_theme-{{globals.typography.titleAlign}} kcs-facts_tone-{{when settings.descriptionTone settings.descriptionTone 'primary'}}">
+            {{#if (eql settings.layout "accordion")}}
+                <div class="kcs-facts__list">
+                    {{#if (and settings.showDescription (not (isEmpty product.description)))}}
+                        <div class="kcs-facts__item kcs-facts__hit">
+                            <ya-kit-accordion default-expanded="{{settings.expandFirst}}">
+                                <ya-kit-accordion-header>
+                                    <ya-kit-text class="kcs-facts__head" as="h3" size="lg" weight="medium">{{settings.descriptionTitle}}</ya-kit-text>
+                                    <svg class="kcs-facts__chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+                                </ya-kit-accordion-header>
+                                <ya-kit-accordion-body>
+                                    <div class="kcs-facts__body">
+                                        <ya-kit-markdown class="kcs-facts__md" markup={{product.description}} />
+                                    </div>
+                                </ya-kit-accordion-body>
+                            </ya-kit-accordion>
+                        </div>
+                    {{/if}}
+                    {{#each settings.modules as |row rowIndex|}}
+                        {{#if row.characteristicTitle}}
+                            {{#each product.characteristics as |c|}}
+                                {{#if (and (or c.value (not (isEmpty c.values))) (eql (lower (trim c.title)) (lower (trim row.characteristicTitle))))}}
+                                    <ya-kit-module module-id={{row.id}} class="kcs-facts__item kcs-facts__hit">
+                                        <ya-kit-accordion default-expanded="{{and settings.expandFirst (eql rowIndex 0) (or (not settings.showDescription) (isEmpty product.description))}}">
+                                            <ya-kit-accordion-header>
+                                                <ya-kit-text class="kcs-facts__head" as="h3" size="lg" weight="medium">{{when (isEmpty row.label) c.title row.label}}</ya-kit-text>
+                                                <svg class="kcs-facts__chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+                                            </ya-kit-accordion-header>
+                                            <ya-kit-accordion-body>
+                                                <div class="kcs-facts__body">
+                                                    {{#if (eql row.view "chips")}}
+                                                        <ul class="kcs-facts__chips" role="list">
+                                                            {{#each (when (isEmpty c.values) (when (includes c.value ";") (split c.value ";") (split c.value ",")) c.values) as |v|}}
+                                                                {{#if (trim v)}}
+                                                                    <li class="kcs-facts__chip">{{trim v}}</li>
+                                                                {{/if}}
+                                                            {{/each}}
+                                                        </ul>
+                                                    {{else}}
+                                                        <div class="kcs-facts__text">{{#if (gt (length c.values) 1)}}{{join c.values ", "}}{{else}}{{formatLineBreaks (when (isEmpty c.value) (first c.values) c.value)}}{{/if}}</div>
+                                                    {{/if}}
+                                                </div>
+                                            </ya-kit-accordion-body>
+                                        </ya-kit-accordion>
+                                    </ya-kit-module>
+                                {{/if}}
+                            {{/each}}
+                        {{/if}}
+                    {{/each}}
+                    {{#if settings.showOtherSpecs}}
+                        <div class="kcs-facts__item kcs-facts__rest">
+                            <ya-kit-accordion>
+                                <ya-kit-accordion-header>
+                                    <ya-kit-text class="kcs-facts__head" as="h3" size="lg" weight="medium">{{settings.otherSpecsTitle}}</ya-kit-text>
+                                    <svg class="kcs-facts__chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+                                </ya-kit-accordion-header>
+                                <ya-kit-accordion-body>
+                                    <div class="kcs-facts__body">
+                                        <dl class="kcs-facts__table">
+                                            {{#each product.characteristics as |c|}}
+                                                {{#unless c.isGrouping}}
+                                                    {{#if (and (or c.value (not (isEmpty c.values))) (not (findBy settings.modules "characteristicTitle" c.title)))}}
+                                                        <div class="kcs-facts__row kcs-facts__hit">
+                                                            <dt class="kcs-facts__label">{{c.title}}</dt>
+                                                            <dd class="kcs-facts__value">{{#if (gt (length c.values) 1)}}{{join c.values ", "}}{{else}}{{formatLineBreaks (when (isEmpty c.value) (first c.values) c.value)}}{{/if}}</dd>
+                                                        </div>
+                                                    {{/if}}
+                                                {{/unless}}
+                                            {{/each}}
+                                        </dl>
+                                    </div>
+                                </ya-kit-accordion-body>
+                            </ya-kit-accordion>
+                        </div>
+                    {{/if}}
+                </div>
+            {{else}}
+                {{#if (and settings.showDescription (not (isEmpty product.description)))}}
+                    <div class="kcs-facts__about kcs-facts__hit">
+                        <ya-kit-text class="kcs-facts__subhead" as="h3" size="lg" weight="medium">{{settings.descriptionTitle}}</ya-kit-text>
+                        <ya-kit-markdown class="kcs-facts__md" markup={{product.description}} />
+                    </div>
+                {{/if}}
+                <dl class="kcs-facts__list">
+                    {{#each settings.modules as |row|}}
+                        {{#if row.characteristicTitle}}
+                            {{#each product.characteristics as |c|}}
+                                {{#if (and (or c.value (not (isEmpty c.values))) (eql (lower (trim c.title)) (lower (trim row.characteristicTitle))))}}
+                                    <ya-kit-module module-id={{row.id}} class="kcs-facts__row kcs-facts__hit">
+                                        <dt class="kcs-facts__label">{{when (isEmpty row.label) c.title row.label}}</dt>
+                                        <dd class="kcs-facts__value">
+                                            {{#if (eql row.view "chips")}}
+                                                <ul class="kcs-facts__chips" role="list">
+                                                    {{#each (when (isEmpty c.values) (when (includes c.value ";") (split c.value ";") (split c.value ",")) c.values) as |v|}}
+                                                        {{#if (trim v)}}
+                                                            <li class="kcs-facts__chip">{{trim v}}</li>
+                                                        {{/if}}
+                                                    {{/each}}
+                                                </ul>
+                                            {{else}}
+                                                <div class="kcs-facts__text">{{#if (gt (length c.values) 1)}}{{join c.values ", "}}{{else}}{{formatLineBreaks (when (isEmpty c.value) (first c.values) c.value)}}{{/if}}</div>
+                                            {{/if}}
+                                        </dd>
+                                    </ya-kit-module>
+                                {{/if}}
+                            {{/each}}
+                        {{/if}}
+                    {{/each}}
+                </dl>
+                {{#if settings.showOtherSpecs}}
+                    <div class="kcs-facts__rest">
+                        <ya-kit-text class="kcs-facts__subhead" as="h3" size="lg" weight="medium">{{settings.otherSpecsTitle}}</ya-kit-text>
+                        <dl class="kcs-facts__table">
+                            {{#each product.characteristics as |c|}}
+                                {{#unless c.isGrouping}}
+                                    {{#if (and (or c.value (not (isEmpty c.values))) (not (findBy settings.modules "characteristicTitle" c.title)))}}
+                                        <div class="kcs-facts__row kcs-facts__hit">
+                                            <dt class="kcs-facts__label">{{c.title}}</dt>
+                                            <dd class="kcs-facts__value">{{#if (gt (length c.values) 1)}}{{join c.values ", "}}{{else}}{{formatLineBreaks (when (isEmpty c.value) (first c.values) c.value)}}{{/if}}</dd>
+                                        </div>
+                                    {{/if}}
+                                {{/unless}}
+                            {{/each}}
+                        </dl>
+                    </div>
+                {{/if}}
+            {{/if}}
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+{{/with}}
+</div>

@@ -1,0 +1,63 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}}); --kcs-rhythm-bottom: var(--ys-spacing-{{settings.verticalRhythmBottom}}); --kcs-rhythm-bottom-touch: var(--ys-spacing-{{settings.verticalRhythmBottomTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        <div class="kcs-intro kcs-intro_{{when (eql settings.layout 'band') 'band' (when (and (eql settings.layout 'split') (or settings.leadText settings.linkUrl.link)) 'split' 'stacked')}} kcs-intro_size-{{when (eql settings.titleSize 'section') 'section' 'display'}} kcs-intro_align-{{settings.align}} kcs-intro_valign-{{settings.alignItems}} kcs-intro_chips-{{settings.chipStyle}} kcs-intro_surface-{{settings.surface}} kcs-intro_link-{{settings.linkArea}} kcs-intro_bleed-{{settings.section.isFullscreen}} {{when settings.framed 'kcs-intro_framed' ''}} {{skinRounded 200}}">
+            <div class="kcs-intro__head">
+                {{#if (eql settings.logoSource 'company')}}
+                    <ya-kit-company-controller as="company">
+                        {{#if (eql settings.logoTone 'inverted')}}
+                            {{#if company.model.invertedLogo.filePath}}
+                                <ya-kit-image class="kcs-intro__logo" src={{company.model.invertedLogo}} alt="{{when company.model.name company.model.name ''}}" fit="contain" />
+                            {{/if}}
+                        {{else}}
+                            {{#if company.model.logo.filePath}}
+                                <ya-kit-image class="kcs-intro__logo" src={{company.model.logo}} alt="{{when company.model.name company.model.name ''}}" fit="contain" />
+                            {{/if}}
+                        {{/if}}
+                    </ya-kit-company-controller>
+                {{/if}}
+                {{#if (and (eql settings.headingLevel 'h1') (notEql settings.layout 'band'))}}
+                    <ya-kit-text class="kcs-intro__title" as="h1" size="{{when (eql settings.titleSize 'section') (when globals.typography.titleSize globals.typography.titleSize '2xl') '4xl'}}" weight="bold">{{settings.titleText}}</ya-kit-text>
+                {{elseif (eql settings.headingLevel 'h3')}}
+                    <ya-kit-text class="kcs-intro__title" as="h3" size="{{when (eql settings.titleSize 'section') (when globals.typography.titleSize globals.typography.titleSize '2xl') '4xl'}}" weight="bold">{{settings.titleText}}</ya-kit-text>
+                {{else}}
+                    <ya-kit-text class="kcs-intro__title" as="h2" size="{{when (eql settings.titleSize 'section') (when globals.typography.titleSize globals.typography.titleSize '2xl') '4xl'}}" weight="bold">{{settings.titleText}}</ya-kit-text>
+                {{/if}}
+                {{#if settings.metaText}}
+                    <ya-kit-text class="kcs-intro__meta" as="p" size="lg" color="secondary">{{settings.metaText}}</ya-kit-text>
+                {{/if}}
+            </div>
+            {{#if (or settings.leadText settings.linkUrl.link (length settings.modules))}}
+                <div class="kcs-intro__side">
+                    {{#if settings.leadText}}
+                        <ya-kit-text class="kcs-intro__lead" as="p" size="xl">{{settings.leadText}}{{#if settings.leadMutedText}}<span class="kcs-intro__muted"> {{settings.leadMutedText}}</span>{{/if}}</ya-kit-text>
+                    {{/if}}
+                    {{#if (length settings.modules)}}
+                        <ul class="kcs-intro__chips" role="list">
+                            {{#each settings.modules as |m|}}
+                                {{#if m.text}}
+                                    <li class="kcs-intro__chip {{skinRounded 150}}">
+                                        <ya-kit-module module-id={{m.id}}>
+                                            <ya-kit-text as="span" size="sm" weight="medium">{{m.text}}</ya-kit-text>
+                                        </ya-kit-module>
+                                    </li>
+                                {{/if}}
+                            {{/each}}
+                        </ul>
+                    {{/if}}
+                    {{#if settings.linkUrl.link}}
+                        <ya-kit-link class="kcs-intro__more kcs-intro__more_{{settings.linkStyle}} {{skinRounded 250}}" to={{settings.linkUrl.link}} size="lg" weight="medium">{{settings.linkText}}{{#if (eql settings.linkStyle 'arrow')}}<ya-kit-icon class="kcs-intro__arrow" name="arrow-right" size="24" color="inherit" />{{/if}}</ya-kit-link>
+                    {{/if}}
+                </div>
+            {{/if}}
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

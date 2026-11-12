@@ -1,0 +1,15 @@
+id: category-subnav
+version: 2
+title: "Навигация по подкатегориям"
+purpose: "Ряд ссылок или чипсов на подкатегории текущей категории либо на пункты меню; на странице категории — необязательная шапка: крошки, обложка, название"
+origin: "handmade"
+fingerprint: "5e3c263e11bcf3730bdc82f38693c680ef974039599db79689a497b1b6c64042"
+docs_fingerprint: "5e3c263e11bcf3730bdc82f38693c680ef974039599db79689a497b1b6c64042"
+applied_patches: ""
+keywords: "подкатегории, подкатегорий, чипсы подкатегорий, разделы, разделы каталога, навигация разделов, хлебные крошки, subnav, шапка категории"
+pages: "listing, main, landing"
+controllers: "ya-kit-breadcrumbs-controller, ya-kit-categories-controller, ya-kit-menu-controller"
+answers_required: "source"
+conditional_fields: "menu: source=menu"
+rhythm: "0"
+rhythm_touch: "0"

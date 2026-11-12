@@ -1,38 +1,109 @@
+/* Базовый вид без модификаторов: текст слева, кнопка справа, вторичный фон темы.
+   Модификаторы корня: band_centered — всё в столбик по центру; band_surface-none и
+   band_surface-neutral — без подложки и нейтральная подложка; band_title-display —
+   крупный заголовок. Поле сверху и снизу внутри полосы — spacing-токен из настройки
+   через --kcs-cta-pad; без настройки — 40px на десктопе и 32px на телефоне. */
 .band {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--ys-spacing-400);
     background: var(--ys-background-secondary);
-    padding: var(--ys-spacing-500) var(--ys-spacing-600);
+    padding: var(--kcs-cta-pad, var(--ys-spacing-500)) var(--ys-spacing-600);
+}
+
+.band.band_surface-neutral {
+    background: var(--ys-background-neutral);
+}
+
+/* Без подложки боковые поля не нужны: текст встаёт по краю контента соседних секций. */
+.band.band_surface-none {
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .band__text {
     min-width: 0;
 }
 
+/* Строки заголовка выравниваются по длине, у текста нет висячего последнего слова;
+   браузер без text-wrap переносит как обычно. */
+.band__title {
+    text-wrap: balance;
+}
+
+.band__subtitle {
+    max-width: 44rem;
+    text-wrap: pretty;
+}
+
 .band__cta {
     flex-shrink: 0;
 }
 
+.band.band_centered {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ys-spacing-300);
+}
+
+.band_centered .band__text {
+    width: 100%;
+    max-width: 48rem;
+}
+
+.band_centered .band__subtitle {
+    max-width: 40rem;
+}
+
+/* Крупный заголовок — шкала h1 первого экрана (52/40/34px), своей шкалы нет; уровень
+   остаётся h2. Размерных токенов шрифта в теме нет, поэтому px; цвет — из палитры. */
+.band_title-display .band__title {
+    font-size: 52px;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .band {
+        padding-left: var(--ys-spacing-500);
+        padding-right: var(--ys-spacing-500);
+    }
+
+    .band_title-display .band__title {
+        font-size: 40px;
+        line-height: 1.1;
+    }
+}
+
+/* Телефон: полоса в столбик, кнопка под текстом; поле сверху и снизу не больше 32px. */
 @media (max-width: 767px) {
     .band {
         flex-direction: column;
         align-items: flex-start;
-        padding: var(--ys-spacing-400);
         gap: var(--ys-spacing-300);
+        padding: min(var(--kcs-cta-pad, var(--ys-spacing-400)), var(--ys-spacing-400)) var(--ys-spacing-300);
+    }
+
+    .band_title-display .band__title {
+        font-size: 34px;
+        line-height: 1.12;
     }
 }
 
-/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
-.kcs-rhythm {
-    padding-top: var(--kcs-rhythm, 0px);
-    padding-bottom: var(--kcs-rhythm, 0px);
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
 }
 
 @media (max-width: 767px) {
-    .kcs-rhythm {
-        padding-top: var(--kcs-rhythm-touch, 0px);
-        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
     }
 }

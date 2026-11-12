@@ -1,0 +1,29 @@
+{
+  "start": "queue",
+  "looks": [
+    {
+      "name": "queue",
+      "title": "Ролики по очереди",
+      "description": "Вертикальные 9:16.",
+      "settings": {}
+    },
+    {
+      "name": "tap-4x5",
+      "title": "Запуск по нажатию, 4:5",
+      "description": "Меньше высоты на телефоне.",
+      "settings": {
+        "playback": "tap",
+        "frameRatio": "4x5"
+      }
+    },
+    {
+      "name": "square-background",
+      "title": "Квадратные фоновые",
+      "description": "Без звука, как живые фото.",
+      "settings": {
+        "playback": "background",
+        "frameRatio": "1x1"
+      }
+    }
+  ]
+}

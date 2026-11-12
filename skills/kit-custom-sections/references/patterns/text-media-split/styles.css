@@ -1,40 +1,358 @@
+/* Две равные колонки, текст и изображение отцентрованы по вертикали.
+   Модификаторы корня: split_media-left — изображение слева; split_text-only —
+   изображения нет, текст одной колонкой; split_title-above — заголовок над
+   колонками по центру; split_panel + split_surface-* — текст на подложке;
+   split_joined — встык, без зазора и скруглений; split_touch-media-first и
+   split_touch-text-first — порядок на телефоне; split_touch-media — своя
+   картинка или пропорция для телефона; split_list-arrow и split_list-check —
+   маркеры списков. В settings без новых полей (переезд живой секции v1 на этот
+   шаблон) модификаторы не срабатывают: две колонки, 4:3, без подложки. */
 .split {
+    --split-pad: clamp(var(--ys-spacing-400), 4vw, var(--ys-spacing-800));
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--ys-spacing-600);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(var(--ys-spacing-400), 5vw, var(--ys-spacing-1000));
+    row-gap: var(--ys-spacing-500);
     align-items: center;
+}
+
+.split_text-only {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+/* Заголовок над колонками: на всю ширину сетки и всегда первым. */
+.split__head {
+    grid-column: 1 / -1;
+    order: -2;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ys-spacing-150);
+    max-width: 44rem;
+    text-align: center;
+}
+
+.split__text {
+    box-sizing: border-box;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Мера строки: не шире 36rem рядом с изображением и 44rem без него. */
+.split__stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 36rem;
+}
+
+.split_text-only .split__stack {
+    max-width: 44rem;
+}
+
+.split_text-only.split_title-above .split__text {
+    align-items: center;
+}
+
+/* Внешние отступы тегов (h2, p) сняты; расстояния в колонке задаёт стек ниже. */
+.split__eyebrow,
+.split__title,
+.split__note {
+    margin: 0;
+}
+
+.split__stack > * + * {
+    margin-top: var(--ys-spacing-300);
+}
+
+.split__stack > .split__cta {
+    margin-top: var(--ys-spacing-400);
+}
+
+.split__heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+}
+
+.split__eyebrow {
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.split__title {
+    line-height: 1.25;
+    text-wrap: balance;
+}
+
+.split__content {
+    width: 100%;
+}
+
+/* Текст markdown — 16px с межстрочным 1.6: атом по умолчанию даёт 14px, мелко
+   для повествовательного блока. Внешние отступы первого и последнего абзаца
+   сняты, расстояния задаёт стек. */
+.split__content p,
+.split__content li,
+.split__content blockquote {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.split__content p {
+    text-wrap: pretty;
+}
+
+.split__content > :first-child {
+    margin-top: 0;
+}
+
+.split__content > :last-child {
+    margin-bottom: 0;
+}
+
+/* Заголовки внутри markdown не крупнее 18px: заголовок блока — h2 выше. */
+.split__content h1,
+.split__content h2,
+.split__content h3,
+.split__content h4,
+.split__content h5,
+.split__content h6 {
+    font-size: 1.125rem;
+    line-height: 1.4;
+}
+
+.split__content li:not(:last-child) {
+    margin-bottom: 0.5em;
+}
+
+.split_list-arrow .split__content ul,
+.split_list-check .split__content ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.split_list-arrow .split__content ul > li,
+.split_list-check .split__content ul > li {
+    position: relative;
+    padding-left: 1.75em;
+}
+
+.split_list-arrow .split__content ul > li::before {
+    content: "→";
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-weight: 600;
+    color: var(--ys-color-token-brand-primary);
+}
+
+/* Галочка нарисована рамкой, а не символом: не зависит от глифов шрифта темы. */
+.split_list-check .split__content ul > li::before {
+    content: "";
+    position: absolute;
+    top: 0.5em;
+    left: 0.15em;
+    box-sizing: border-box;
+    width: 0.8em;
+    height: 0.4em;
+    border-bottom: 2px solid var(--ys-color-token-brand-primary);
+    border-left: 2px solid var(--ys-color-token-brand-primary);
+    transform: rotate(-45deg);
+}
+
+.split__note {
+    max-width: 32rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.split__media {
+    min-width: 0;
+    margin: 0;
 }
 
 .split_media-left .split__media {
     order: -1;
 }
 
-.split__content {
-    max-width: 44rem;
+.split__caption {
+    margin-top: var(--ys-spacing-150);
 }
 
-.split__media {
-    min-width: 0;
+.split__image_touch {
+    display: none;
 }
 
-/* Порог одной колонки — 1023: на планшетной ширине текст в узкой колонке
-   тесный; 1024+ остаётся двухколоночным. */
-@media (max-width: 1023px) {
+/* Подложка текста — токены палитры секции. На цветной и инверсной подложке
+   токены текста, ссылок, рамок, фонов и кнопок внутри панели переопределены
+   от её цвета: все атомы читаются на её фоне, основная кнопка принимает цвет
+   текста панели. Браузер без color-mix оставит вторичный текст цветом панели. */
+.split_surface-neutral {
+    --split-surface: var(--ys-background-neutral);
+}
+
+.split_surface-secondary {
+    --split-surface: var(--ys-background-secondary);
+}
+
+.split_surface-accent {
+    --split-surface: var(--ys-color-token-brand-primary);
+    --split-on: var(--ys-color-token-brand-primary-contrast);
+}
+
+.split_surface-inverted {
+    --split-surface: var(--ys-color-token-text-primary);
+    --split-on: var(--ys-background-primary);
+}
+
+.split_panel,
+.split_joined {
+    align-items: stretch;
+}
+
+.split_panel .split__text,
+.split_joined .split__text {
+    padding: var(--split-pad);
+}
+
+.split_panel .split__text {
+    border-radius: var(--ys-current-skin-border-radius, 0px);
+    background-color: var(--split-surface);
+}
+
+.split_surface-accent .split__text,
+.split_surface-inverted .split__text {
+    --ys-color-token-text-primary: var(--split-on);
+    --ys-color-token-text-secondary: color-mix(in srgb, var(--split-on) 72%, var(--split-surface));
+    --ys-color-token-link: var(--split-on);
+    --ys-color-token-border-primary: color-mix(in srgb, var(--split-on) 40%, var(--split-surface));
+    --ys-color-token-border-secondary: color-mix(in srgb, var(--split-on) 60%, var(--split-surface));
+    --ys-color-token-brand-primary: var(--split-on);
+    --ys-color-token-brand-primary-contrast: var(--split-surface);
+    --ys-background-primary: var(--split-surface);
+    --ys-background-secondary: color-mix(in srgb, var(--split-on) 14%, var(--split-surface));
+    --ys-background-neutral: color-mix(in srgb, var(--split-on) 10%, var(--split-surface));
+    color: var(--split-on);
+}
+
+/* Встык: панель и изображение смыкаются, углы прямые. Цепочка блоков край в
+   край — отступы секции 0 и вертикальный ритм 0 у каждого блока. */
+.split.split_joined {
+    column-gap: 0;
+    row-gap: 0;
+}
+
+.split_joined .split__head {
+    margin-bottom: var(--ys-spacing-500);
+}
+
+.split_joined .split__text {
+    border-radius: 0;
+}
+
+.split_panel .split__media,
+.split_joined .split__media {
+    display: flex;
+    flex-direction: column;
+}
+
+.split_panel .split__image,
+.split_joined .split__image {
+    flex: 1 1 auto;
+}
+
+/* Внутренний img атома (разметка движка, в доке её нет): заполнить колонку,
+   когда панель текста выше изображения. Если разметка изменится, изображение
+   останется в своей пропорции у верхнего края колонки; текст не пострадает. */
+.split_panel .split__image img,
+.split_joined .split__image img {
+    height: 100%;
+}
+
+/* Телефон: одна колонка. Порядок — как на десктопе (левая колонка сверху) или
+   по touchOrder; заголовок над колонками остаётся первым. */
+@media (max-width: 767px) {
     .split {
-        grid-template-columns: 1fr;
-        gap: var(--ys-spacing-300);
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: var(--ys-spacing-300);
+    }
+
+    .split.split_panel {
+        row-gap: var(--ys-spacing-200);
+    }
+
+    .split.split_joined {
+        row-gap: 0;
+    }
+
+    .split_joined .split__head {
+        margin-bottom: var(--ys-spacing-300);
+    }
+
+    .split__head {
+        justify-self: stretch;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .split_touch-media-first .split__media {
+        order: -1;
+    }
+
+    .split_touch-text-first .split__media {
+        order: 1;
+    }
+
+    .split_panel .split__text,
+    .split_joined .split__text {
+        padding: var(--ys-spacing-400) var(--ys-spacing-300);
+    }
+
+    .split__stack,
+    .split_text-only .split__stack,
+    .split__note {
+        max-width: none;
+    }
+
+    .split__stack > .split__cta {
+        margin-top: var(--ys-spacing-300);
+    }
+
+    /* Кнопка на телефоне — во всю ширину колонки, под большой палец. */
+    .split__cta {
+        align-self: stretch;
+    }
+
+    .split__btn {
+        width: 100%;
+    }
+
+    .split_touch-media .split__image_desktop {
+        display: none;
+    }
+
+    .split_touch-media .split__image_touch {
+        display: block;
     }
 }
 
-/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
-.kcs-rhythm {
-    padding-top: var(--kcs-rhythm, 0px);
-    padding-bottom: var(--kcs-rhythm, 0px);
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
 }
 
 @media (max-width: 767px) {
-    .kcs-rhythm {
-        padding-top: var(--kcs-rhythm-touch, 0px);
-        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
     }
 }

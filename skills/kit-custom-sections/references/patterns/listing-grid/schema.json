@@ -1,0 +1,273 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "view": {
+      "type": "object",
+      "title": "Заголовок и пустой результат",
+      "properties": {
+        "showTitle": {
+          "type": "boolean",
+          "title": "Показывать заголовок страницы",
+          "default": true
+        },
+        "fallbackTitle": {
+          "type": "string",
+          "title": "Заголовок, если у страницы нет категории, подборки и запроса",
+          "default": "Каталог"
+        },
+        "emptyText": {
+          "type": "string",
+          "title": "Текст, когда товаров не нашлось",
+          "default": "Ничего не нашлось"
+        }
+      }
+    },
+    "controls": {
+      "type": "object",
+      "title": "Фильтры, сортировка, страницы",
+      "properties": {
+        "showFilters": {
+          "type": "boolean",
+          "title": "Кнопка «Фильтры» (панель выезжает сбоку)",
+          "default": true
+        },
+        "showSorting": {
+          "type": "boolean",
+          "title": "Сортировка",
+          "default": true
+        },
+        "sortLabel": {
+          "type": "string",
+          "title": "Подпись сортировки",
+          "enum": [
+            "current",
+            "static"
+          ],
+          "enumNames": [
+            "Выбранный вариант",
+            "Слово «Сортировка»"
+          ],
+          "default": "current"
+        },
+        "showPagination": {
+          "type": "boolean",
+          "title": "Переключатель страниц",
+          "default": true
+        }
+      }
+    },
+    "grid": {
+      "type": "object",
+      "title": "Сетка",
+      "properties": {
+        "columns": {
+          "type": "number",
+          "title": "Колонок на десктопе",
+          "default": 4,
+          "minimum": 2,
+          "maximum": 6,
+          "step": 1
+        },
+        "rows": {
+          "type": "number",
+          "title": "Рядов на странице",
+          "default": 6,
+          "minimum": 2,
+          "maximum": 8,
+          "step": 1
+        },
+        "columnsTouch": {
+          "type": "number",
+          "title": "Колонок на телефоне",
+          "default": 2,
+          "minimum": 1,
+          "maximum": 2,
+          "step": 1
+        },
+        "gapless": {
+          "type": "boolean",
+          "title": "Фото встык, без зазоров",
+          "default": false
+        }
+      }
+    },
+    "card": {
+      "type": "object",
+      "title": "Карточка товара",
+      "properties": {
+        "order": {
+          "type": "string",
+          "title": "Порядок строк",
+          "enum": [
+            "theme",
+            "name-first",
+            "price-first"
+          ],
+          "enumNames": [
+            "Как в теме",
+            "Название, затем цена",
+            "Цена, затем название"
+          ],
+          "default": "theme"
+        },
+        "showVendor": {
+          "type": "boolean",
+          "title": "Бренд над названием",
+          "default": false
+        },
+        "showBadges": {
+          "type": "boolean",
+          "title": "Бейджи товара на фото (сколько — по теме)",
+          "default": true
+        },
+        "badgePosition": {
+          "type": "string",
+          "title": "Где бейджи",
+          "enum": [
+            "bottom-left",
+            "top-left"
+          ],
+          "enumNames": [
+            "Снизу слева",
+            "Сверху слева"
+          ],
+          "default": "bottom-left"
+        },
+        "cartButton": {
+          "type": "string",
+          "title": "Кнопка «В корзину»",
+          "enum": [
+            "default",
+            "enabled",
+            "disabled"
+          ],
+          "enumNames": [
+            "Как в теме (каталог)",
+            "Показывать",
+            "Скрыть"
+          ],
+          "default": "default"
+        },
+        "addToCartText": {
+          "type": "string",
+          "title": "Текст кнопки",
+          "default": "В корзину"
+        },
+        "outOfStockText": {
+          "type": "string",
+          "title": "Плашка на фото, если товара нет",
+          "default": "Нет в наличии"
+        }
+      }
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section"
+  ]
+}

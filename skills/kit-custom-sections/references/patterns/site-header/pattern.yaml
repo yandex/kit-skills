@@ -1,0 +1,15 @@
+id: site-header
+version: 2
+title: "Шапка магазина"
+purpose: "Шапка всей витрины из меню кабинета: логотип, меню строкой с выпадающим списком или мега-меню, поиск, избранное, вход, корзина со счётчиком, второе меню с городом и контактом; на телефоне — бургер с уровнями меню"
+origin: "handmade"
+fingerprint: "205ddb09ba9c18662b3f2a7221e0bee2c503d47b2d00535cfc37e333917c37f7"
+docs_fingerprint: "205ddb09ba9c18662b3f2a7221e0bee2c503d47b2d00535cfc37e333917c37f7"
+applied_patches: ""
+keywords: "шапка, шапку, шапки, шапке, хедер, хедера, header, sticky header, верхнее меню, главное меню, выпадающее меню, мега-меню, мега-меню каталога, мегаменю, бургер"
+pages: "все страницы"
+controllers: "ya-kit-company-controller, ya-kit-user-controller, ya-kit-shopping-cart-controller, ya-kit-location-controller, ya-kit-menu-controller, ya-kit-toggle-controller, ya-kit-value-controller"
+answers_required: "mainMenu"
+slot: "header"
+rhythm: "0"
+rhythm_touch: "0"

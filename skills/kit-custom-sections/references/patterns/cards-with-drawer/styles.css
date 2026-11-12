@@ -1,0 +1,336 @@
+/* Карточки с подробностями в шторке. Лицо карточки повторяет плитку
+   advantages: нейтральная подложка темы, скругление из темы, иконка, заголовок
+   lg, текст md вторичным цветом. Число колонок приходит классами-модификаторами
+   (kcs-cwd_cols-N, kcs-cwd_touch-N), зазоры — инлайн-переменными инстанса:
+   CSS скоупится по шаблону, поэтому у каждого инстанса свои настройки. */
+.kcs-cwd {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--kcs-cwd-hgap, var(--ys-spacing-300));
+    row-gap: var(--kcs-cwd-vgap, var(--ys-spacing-300));
+}
+
+.kcs-cwd_cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kcs-cwd_cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Ячейка сетки растягивает карточку на высоту ряда: кнопки «Подробнее»
+   в одном ряду стоят на одной линии. */
+.kcs-cwd__item {
+    display: flex;
+    min-width: 0;
+}
+
+.kcs-cwd__card {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-150);
+    min-width: 0;
+    padding: var(--ys-spacing-400);
+    background: var(--ys-background-neutral);
+    border-radius: var(--ys-current-skin-border-radius);
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-cwd__icon {
+    flex-shrink: 0;
+    width: var(--ys-spacing-600);
+    margin-bottom: var(--ys-spacing-100);
+}
+
+.kcs-cwd__title,
+.kcs-cwd__text {
+    max-width: 100%;
+    margin: 0;
+    overflow-wrap: break-word;
+}
+
+/* Кнопка «Подробнее»: сама кнопка не позиционирована, а её ::after растянут
+   на всю карточку — нажатие в любом месте карточки открывает шторку, при этом
+   заголовок карточки остаётся заголовком, а не текстом внутри кнопки. Текст и
+   стрелка идут строкой, а не flex: в узкой карточке длинная подпись
+   переносится, и стрелка встаёт за последним словом, а не у правого края. */
+.kcs-cwd__more {
+    position: static;
+    display: block;
+    max-width: 100%;
+    margin-top: auto;
+    padding-top: var(--ys-spacing-150);
+    color: var(--ys-color-token-text-primary);
+    text-align: left;
+}
+
+.kcs-cwd__more::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    transform: none;
+    border-radius: var(--ys-current-skin-border-radius);
+    transition: box-shadow 0.2s ease;
+}
+
+/* Иконка 20px на строке 20px: сдвиг вниз на 4px ставит её центр на середину
+   прописных букв подписи. */
+.kcs-cwd__arrow {
+    margin-left: var(--ys-spacing-100);
+    vertical-align: calc(-1 * var(--ys-spacing-50));
+    transition: transform 0.2s ease;
+}
+
+.kcs-cwd__more:focus-visible {
+    outline: none;
+}
+
+.kcs-cwd__more:focus-visible::after {
+    outline: 2px solid var(--ys-color-token-text-primary);
+    outline-offset: 2px;
+}
+
+/* Подсветка только у устройств с настоящим hover: на iOS тап залипает в :hover. */
+@media (hover: hover) {
+    .kcs-cwd__more:hover::after {
+        box-shadow: inset 0 0 0 1px var(--ys-color-token-text-secondary);
+    }
+
+    .kcs-cwd__more:hover .kcs-cwd__arrow {
+        transform: translateX(var(--ys-spacing-50));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-cwd__more::after,
+    .kcs-cwd__arrow {
+        transition: none;
+    }
+}
+
+/* Планшет и узкий ноутбук: четыре колонки сжимаются до трёх, затем до двух —
+   иначе на 1024px плитка уже 210px и текст идёт в шесть строк. */
+@media (max-width: 1199px) {
+    .kcs-cwd_cols-4 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1023px) {
+    .kcs-cwd_cols-3,
+    .kcs-cwd_cols-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Телефон: колонки задаёт columnsTouch, зазоры не шире 12/16px, поля карточки
+   меньше. Правила стоят ниже десктопных и перебивают их порядком. */
+@media (max-width: 767px) {
+    .kcs-cwd {
+        column-gap: min(var(--kcs-cwd-hgap, var(--ys-spacing-150)), var(--ys-spacing-150));
+        row-gap: min(var(--kcs-cwd-vgap, var(--ys-spacing-200)), var(--ys-spacing-200));
+    }
+
+    .kcs-cwd_touch-1 {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .kcs-cwd_touch-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kcs-cwd__card {
+        padding: var(--ys-spacing-300);
+    }
+
+    /* Две в ряд на 390px — карточка около 170px: компактная шкала, чтобы
+       заголовок и подпись ссылки не рвались по слову на строку, а стрелка
+       не уезжала на отдельную строку. */
+    .kcs-cwd_touch-2 .kcs-cwd__card {
+        gap: var(--ys-spacing-100);
+        padding: var(--ys-spacing-200);
+    }
+
+    .kcs-cwd_touch-2 .kcs-cwd__icon {
+        width: var(--ys-spacing-500);
+    }
+
+    .kcs-cwd_touch-2 .kcs-cwd__title {
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .kcs-cwd_touch-2 .kcs-cwd__text,
+    .kcs-cwd_touch-2 .kcs-cwd__more-text {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .kcs-cwd_touch-2 .kcs-cwd__arrow {
+        width: var(--ys-spacing-200);
+        height: var(--ys-spacing-200);
+        margin-left: var(--ys-spacing-50);
+        vertical-align: calc(-1 * var(--ys-spacing-25));
+    }
+}
+
+/* Шторка. ya-kit-drawer рендерит контент порталом в body, вне скоупа секции,
+   поэтому его стили живут только под :global с уникальным префиксом
+   kcs-cwd-drawer (гейт G6 даёт WARNING — ожидаемо). Класс из атрибута class
+   ложится на прокручиваемый контейнер шторки; div в селекторе поднимает
+   специфичность над стилями платформы. Цвета — токены базовой палитры
+   витрины: палитра секции в портал не наследуется. Контейнер платформы
+   запрещает выделение (user-select: none) — в шторке телефоны и адреса,
+   их копируют, поэтому выделение возвращено. Обёртка kcs-cwd-drawer__inner
+   стилей не несёт: она только даёт шторке role="dialog" и имя из заголовка
+   карточки для скринридера. */
+:global(div.kcs-cwd-drawer) {
+    box-sizing: border-box;
+    width: min(640px, 100vw - 48px);
+    max-height: calc(100dvh - 96px);
+    margin-right: auto;
+    margin-left: auto;
+    color: var(--ys-color-token-text-primary);
+    font-family: var(--ys-font-family, inherit);
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+/* Шапка шторки прилипает к верху при прокрутке длинного текста: заголовок
+   и кнопка закрытия всегда на виду. */
+:global(.kcs-cwd-drawer__head) {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--ys-spacing-200);
+    padding: var(--ys-spacing-400) var(--ys-spacing-400) var(--ys-spacing-200);
+    background: var(--ys-background-primary);
+}
+
+:global(h3.kcs-cwd-drawer__title) {
+    min-width: 0;
+    margin: 0;
+    padding-top: var(--ys-spacing-50);
+    overflow-wrap: break-word;
+}
+
+/* Кнопка закрытия 48px: зона нажатия не меньше 44px на любом экране, крестик
+   24px по центру. Отрицательные поля (8px сверху, 12px справа) ставят крестик
+   на край полей шапки, а его центр — на уровень первой строки заголовка.
+   Кольцо фокуса внутри кнопки: на телефоне её верх совпадает с краем
+   прокручиваемого листа, и внешнее кольцо обрезалось бы. */
+:global(.kcs-cwd-drawer__close) {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--ys-spacing-600);
+    height: var(--ys-spacing-600);
+    margin-top: calc(-1 * var(--ys-spacing-100));
+    margin-right: calc(-1 * var(--ys-spacing-150));
+    color: var(--ys-color-token-text-primary);
+    border-radius: 999px;
+}
+
+:global(.kcs-cwd-drawer__close:focus-visible) {
+    outline: 2px solid var(--ys-color-token-text-primary);
+    outline-offset: -2px;
+}
+
+@media (hover: hover) {
+    :global(.kcs-cwd-drawer__close:hover) {
+        background: var(--ys-background-neutral);
+    }
+}
+
+:global(.kcs-cwd-drawer__body) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-300);
+    padding: 0 var(--ys-spacing-400) var(--ys-spacing-500);
+}
+
+/* Markdown платформы: абзацы и пункты по умолчанию 14px с межстрочным 1,
+   заголовки до 32px. В шторке — 16px/1.55 для чтения и один масштаб
+   подзаголовков 18px (как заголовок плитки): третьего масштаба нет. Отступы
+   списков и цвет ссылок остаются платформенными. */
+:global(.kcs-cwd-drawer__md p) {
+    margin: 0 0 var(--ys-spacing-200);
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+:global(.kcs-cwd-drawer__md li) {
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+:global(div.kcs-cwd-drawer__md li:not(:last-child)) {
+    margin-bottom: var(--ys-spacing-100);
+}
+
+:global(.kcs-cwd-drawer__md h1),
+:global(.kcs-cwd-drawer__md h2),
+:global(.kcs-cwd-drawer__md h3),
+:global(.kcs-cwd-drawer__md h4) {
+    margin: var(--ys-spacing-300) 0 var(--ys-spacing-100);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+:global(.kcs-cwd-drawer__md > :first-child) {
+    margin-top: 0;
+}
+
+:global(.kcs-cwd-drawer__md > :last-child) {
+    margin-bottom: 0;
+}
+
+/* Телефон (платформа до 767px показывает лист снизу): лист во всю ширину.
+   Над контентом платформа ставит полоску-ручку 24px, поэтому 88px = 64px
+   затемнения над листом + ручка. Поля 16px, нижнее поле учитывает жестовую
+   панель iOS. */
+@media (max-width: 767px) {
+    :global(div.kcs-cwd-drawer) {
+        width: 100%;
+        max-height: calc(100dvh - 88px);
+    }
+
+    :global(.kcs-cwd-drawer__head) {
+        padding: var(--ys-spacing-100) var(--ys-spacing-200) var(--ys-spacing-150);
+    }
+
+    :global(.kcs-cwd-drawer__body) {
+        gap: var(--ys-spacing-250);
+        padding: 0 var(--ys-spacing-200) calc(var(--ys-spacing-400) + env(safe-area-inset-bottom));
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

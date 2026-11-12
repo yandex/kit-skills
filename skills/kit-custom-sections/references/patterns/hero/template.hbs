@@ -8,21 +8,47 @@
     is-fullscreen={{settings.section.isFullscreen}}
 >
     <ya-kit-section-layout-row>
-        <div class="hero">
+        <div class="hero hero_{{if (eql settings.layout 'panel') 'panel' 'inset'}} hero_surface-{{if settings.panelSurface settings.panelSurface 'secondary'}} hero_align-{{if (eql settings.textAlign 'center') 'center' 'left'}} hero_order-{{if (eql settings.mobileOrder 'media') 'media' 'text'}} {{cn (if settings.mediaLeft 'hero_media-left' '') (if settings.image.filePath '' 'hero_no-media') (if settings.imageMobile.filePath 'hero_has-mobile' '') (if (eql settings.section.hPaddingDesktop '0') 'hero_flush-d' '') (if (eql settings.section.hPaddingMobile '0') 'hero_flush-m' '')}} {{skinRounded 200}}">
             <ya-kit-v-stack class="hero__text" gap="300" justify-content="center" align-items="flex-start">
-                <ya-kit-text class="hero__title" as="h1" size="4xl" weight="bold">{{settings.titleText}}</ya-kit-text>
+                <div class="hero__head">
+                    {{#if settings.eyebrowText}}
+                        <ya-kit-text class="hero__eyebrow" size="sm" weight="medium" color="secondary" align="{{if (eql settings.textAlign 'center') 'center' 'left'}}">{{settings.eyebrowText}}</ya-kit-text>
+                    {{/if}}
+                    {{#if (eql settings.headingLevel 'h2')}}
+                        <ya-kit-text class="hero__title" as="h2" size="4xl" weight="bold" align="{{if (eql settings.textAlign 'center') 'center' 'left'}}">{{formatLineBreaks settings.titleText}}</ya-kit-text>
+                    {{else}}
+                        <ya-kit-text class="hero__title" as="h1" size="4xl" weight="bold" align="{{if (eql settings.textAlign 'center') 'center' 'left'}}">{{formatLineBreaks settings.titleText}}</ya-kit-text>
+                    {{/if}}
+                </div>
                 {{#if settings.subtitleText}}
-                    <ya-kit-text class="hero__subtitle" size="xl" color="secondary">{{settings.subtitleText}}</ya-kit-text>
+                    <ya-kit-text class="hero__subtitle" size="xl" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}" align="{{if (eql settings.textAlign 'center') 'center' 'left'}}">{{settings.subtitleText}}</ya-kit-text>
                 {{/if}}
-                {{#if settings.buttonUrl.link}}
+                {{#if (and settings.buttonText settings.buttonUrl.link)}}
                     <div class="hero__cta">
-                        <ya-kit-button color="primary" size="lg" to={{settings.buttonUrl.link}}>{{settings.buttonText}}</ya-kit-button>
+                        <ya-kit-button class="hero__button" color="{{if settings.buttonColor settings.buttonColor 'primary'}}" size="lg" to={{settings.buttonUrl.link}}>{{settings.buttonText}}</ya-kit-button>
+                    </div>
+                {{/if}}
+                {{#if (join (mapBy settings.modules 'text') '')}}
+                    <div class="hero__badges">
+                        {{#each settings.modules as |module|}}
+                            {{#if module.text}}
+                                <ya-kit-module module-id={{module.id}} class="hero__badge">
+                                    {{#if (and module.icon (notEql module.icon 'none'))}}
+                                        <ya-kit-icon class="hero__badge-icon hero__badge-icon_{{module.icon}}" name="{{module.icon}}" size="20" color="inherit" />
+                                    {{/if}}
+                                    <ya-kit-text class="hero__badge-text" size="sm" weight="medium" color="inherit">{{module.text}}</ya-kit-text>
+                                </ya-kit-module>
+                            {{/if}}
+                        {{/each}}
                     </div>
                 {{/if}}
             </ya-kit-v-stack>
             {{#if settings.image.filePath}}
                 <div class="hero__media">
-                    <ya-kit-image class="hero__image" src={{settings.image}} fit="cover" aspect-ratio="4:3" rounded="200" />
+                    <ya-kit-image class="hero__image hero__image_d" src={{settings.image}} alt="{{if settings.imageAlt settings.imageAlt ''}}" fit="cover" aspect-ratio="{{if settings.mediaRatio settings.mediaRatio '4:3'}}" rounded="{{if (eql settings.layout 'panel') '0' '200'}}" />
+                    {{#if settings.imageMobile.filePath}}
+                        <ya-kit-image class="hero__image hero__image_m" src={{settings.imageMobile}} alt="{{if settings.imageAlt settings.imageAlt ''}}" fit="cover" aspect-ratio="4:3" rounded="{{if (eql settings.layout 'panel') '0' '200'}}" />
+                    {{/if}}
                 </div>
             {{/if}}
         </div>

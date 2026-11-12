@@ -6,11 +6,22 @@
 2. `patterns match "<запрос>"` → выбрать паттерн (или честный отказ при exit 5).
 3. `patterns show <id> --params` → собрать `answers.json` по answers-схеме.
    Модельные поля передаются объектами: изображение — из вывода `kit.py media
-   upload --confirm` (`{fileId, filePath}`), ссылка — `{link, linkId}`, источник
-   товаров — `{id, slug, type}` категории магазина. Без них `new` честно печатает
-   список пустых заглушек «заполнить мерчанту или через answers».
+   upload --confirm` (`{fileId, filePath}`, а при непустом
+   `file_metadata.thumb_hash` ещё `metadata: {thumbHash, backgroundColors}` —
+   маппинг в `pitfalls.md`), ссылка — `{link, linkId}`, источник товаров —
+   `{id, slug, type}` категории магазина. Без них `new` честно печатает список
+   пустых заглушек «обязательно заполнить мерчанту или через answers»; поля,
+   которые при этих answers не нужны (необязательные или условные), — отдельным
+   списком, их пустые картинки и ссылки в settings не пишутся. Стартовые тексты
+   пустые — и в settings, и в `default` схемы: заголовки и тексты секции дают
+   answers. Фразу-заглушку каталога (слоган, лид, текст модуля), переданную в
+   answers, `new` назовёт (`demo-copy`; у первого экрана `hero-overlay.text` —
+   отказ в сборке); типовой заголовок или подпись кнопки («Частые вопросы»,
+   «Контакты», «Смотреть все») — нет: такую подпись магазин вправе выбрать сам.
    Вертикальный ритм секции — `verticalRhythm`/`verticalRhythmTouch`
-   (spacing-токены; дефолт 500/300 даёт 80px/48px между секциями).
+   (spacing-токены, по умолчанию `0`: отступ как у нативных соседей). Ритм
+   300–500 — только намеренный разрыв главы; `new` напоминает об этом, пока
+   не задан `--page-rhythm`.
 4. `new --pattern <id> --answers answers.json --out DIR` — гейты гоняются сразу; при провале ничего не пишется.
 5. Передать соседу файлом, не вызовом — команды печатает `new`:
 
@@ -19,20 +30,37 @@
 # --base-url <контур> или KIT_API_BASE_URL. Проверить перед записью: kit.py env
 kit.py templates create --file DIR/create.json --dry-run
 kit.py templates create --file DIR/create.json --confirm      # вернёт template_id
-kit.py content pull --out DIR/work.json  # ОБЯЗАТЕЛЬНО повторно: свежесозданный шаблон
-                                         # ищется в снимке базы воркспейса
-kit.py section add --work DIR/work.json --page <alias> \
+kit.py content pull --out WORK  # ОБЯЗАТЕЛЬНО повторно: свежесозданный шаблон
+                                # ищется в снимке базы воркспейса
+kit.py section add --work WORK --page <alias> \
        --widget YandexKit.Mystique --template-id <uuid> \
        --settings-file DIR/settings.json          # settings.json из `new` — не забыть
-kit.py content diff --work DIR/work.json
-kit.py content push --work DIR/work.json --commit-message '<текст>' --dry-run
-kit.py content push --work DIR/work.json --commit-message '<текст>' --no-publish --confirm
+kit.py content diff --work WORK
+kit.py content push --work WORK --commit-message '<текст>' --dry-run
+kit.py content push --work WORK --commit-message '<текст>' --no-publish --confirm
 kit.py versions content --id <version_id>
 ```
+
+`WORK` — один `work.json` страницы рядом с папками секций (`new` печатает
+абсолютный путь: шелл агента сбрасывает cwd между вызовами). `content pull`
+перезаписывает его активной версией витрины, поэтому все шаблоны создаются до
+первой правки страницы. Правки, сделанные раньше, после pull повторяются теми же
+`section add`/`section set`: `push --no-publish` их для pull не сохраняет — активной
+после него стоит копия прежней версии, а правки остаются в предложении.
 
 `--work`, `--settings-file` и `--commit-message` у соседа **обязательные** — без них команда не запускается вовсе.
 `--confirm` не подставлять и чужой скрипт не запускать — решение за пользователем.
 В `commit_message` уже проставлен маркер происхождения от скила: это единственный канал маркировки (автор версии на бэке восстанавливается из владельца токена и от человека неотличим).
+
+## Страница товара
+
+1. Сначала натив. Нативная карточка товара (ProductDetails) сама даёт липкую кнопку покупки на телефоне, доставку, строки Сплита и Плюса, выбор вариантов, бандлы и промокоды. Тексты и блоки под ней — нативные секции (RichText, Faq, ImageWithText) или кастомная секция под карточкой, если такой паттерн есть в `patterns list`.
+2. `custom-product-card` — только когда пользователь явно просит заменить карточку. Секция встаёт на страницу `productCard` вместо нативной карточки; бандлов, промокодов, бонусов и строки Плюса в ней нет — назвать это пользователю до сборки.
+3. Одна секция на основной странице товара обслуживает все товары. Поэтому её текстовые поля (`subtitle`, `benefits.text`, свои блоки без характеристики) на основной странице пустые, а контент под товар идёт так:
+   - из каталога: свои блоки с `characteristicTitle` берут значение характеристики у каждого товара и пропадают у товара без неё; характеристики заводятся в кабинете или импортом (`yandex-kit-cabinet`);
+   - для нескольких флагманов: альтернативный вариант страницы `productCard` с копией секции и текстами этого товара. Вариант создаёт конструктор (`page add --alias productCard`), а назначает товару только кабинет — конструктор этого не умеет;
+   - без кода: нативная карточка и нативные секции на таком же альтернативном варианте.
+4. Характеристика, вынесенная в свой блок, исключается из общего списка «Характеристики» только при точном совпадении названия; иначе выключить общий список (`details.showCharacteristics: false`) или принять повтор.
 
 ## Свободная секция (freeform)
 
@@ -48,9 +76,33 @@ kit.py versions content --id <version_id>
 
 `kit.py templates export --id <uuid> --out DIR` (+ `kit.py section show` для живых настроек) → `section.py lint DIR [--json]`. Линт читает обе раскладки имён: свою (`template.html` / `styles.css` / `schema.json` / `meta.json`) и раскладку экспорта соседа (`template.html` / `template.css` / `template.schema.json` / `template.meta.json`).
 
-Осторожно с G12 на чужом экспорте: живой шаблон витрины может иметь непустой `alias` (`YandexKit.Header`/`Footer` и т. п.) осознанно. Для чужой секции это факт «шаблон подменяет системный блок», а не обязательно дефект автора.
+Осторожно с G12 на чужом экспорте: alias `YandexKit.Header` / `YandexKit.Footer` у живого шаблона значит, что это шапка или подвал витрины, поставленные владельцем осознанно. Без флага G12 даёт WARNING; проверить такой шаблон по правилам слота — `lint DIR --slot header|footer`.
+
+## Шапка или подвал витрины (режим слота)
+
+Шаблон с alias `YandexKit.Header` / `YandexKit.Footer` становится шапкой или подвалом **каждой** страницы витрины. Механика и правила — `manual/rules.md`, раздел «Слот шапки и подвала».
+
+1. id меню — до сборки: `kit.py sections list --page main` → `kit.py section show --id <id слота>`. У нативной шапки меню — в `modules.main.menu` (строка у шапки старой версии; в текущей версии, `settings.version` 1766500000000, это объект, и id лежит в `modules.main.menu.menu`, рядом и остальное: `modules.main.logo.logoPosition`, `modules.main.additional.searchVariant` вместо плоских `modules.main.logoPosition`, `modules.main.searchVariant`) и `modules.additional.menu`, у подвала — в `modules[].menu` и `legalInfo.menu`. Нет колонок в нативном подвале — меню каталога для подвала берут из шапки. Эти id идут в поля `$ref MenuId` через answers или settings; `new` называет пустые поля меню. Паттерн `site-header` переносит и остальные настройки нативной шапки — пути для обеих форм в его `answers.schema.json`.
+2. Сборка: паттерн слота (`patterns list` помечает его `[слот header]`) — `new --pattern <id> --answers a.json --out DIR --slot header`; своя вёрстка — `freeform … --confirm --slot header`. Без `--confirm-slot` сборка печатает предупреждение о смене шапки всей витрины и выходит с кодом 3: показать его пользователю и дождаться явного согласия именно на это, затем повторить с `--confirm-slot`. Паттерн секции страницы в слот не собирается (exit 2).
+3. Гейты слота (G12) гоняются сразу: alias, без `h1`, без `script`, секция без вертикальных отступов. Фон слота во всю ширину при любом `isFullscreen`, ширину содержимого задаёт шаблон.
+4. Передача соседу — команды печатает сборка:
+
+```
+kit.py templates create --file DIR/create.json --chrome-slot header --dry-run   # план с store_wide_warning
+kit.py templates create --file DIR/create.json --chrome-slot header --confirm   # только после согласия
+```
+
+`create.json` уже несёт alias слота; сосед принимает такой файл только с тем же `--chrome-slot`, без флага — отказ. Флаг `--chrome-slot` нужен в `kit-storefront-constructor` той же версии набора скилов: если `templates create` его не знает (`unrecognized arguments`), конструктор старый — обновить набор скилов, а шаблон слота без флага не заливать. После create шаблон нигде не стоит: витрину изменённой не называть.
+
+5. Перевод слота на шаблон. Нативный слот переключает пользователь в конструкторе кабинета: шапка → «Заменить» → шаблон (список показывает только шаблоны с alias шапки); командой соседа это не делается. Слот, который уже стоит на своём шаблоне (`section show` печатает `chrome_slot`), переезжает командами: `content pull` заново → `section set --id <id слота> --template-id <новый> --settings-file DIR/settings.json` → `content push --no-publish --confirm` → просмотр → публикация. `section add` для шаблона слота не годится: сосед его отвергает.
+6. Возврат к нативной шапке или подвалу — тоже шаг в конструкторе кабинета.
 
 ## Правка залитой секции (итерация 2: adopt/edit)
 
 Правка = **новый шаблон + rebind**, никогда не правка живого (см. manual/rules.md).
+Если у живого шаблона непустое поле `script` (JS, см. manual/rules.md), тройка
+html + css + json_schema его не содержит: перед переездом сверить, что JS
+переносится в новый шаблон, иначе назвать потерю пользователю и дождаться решения.
+Сам скрипт показать пользователю целиком: песочница не изолирует его от страницы,
+а линт JS не проверяет (только предупреждает G7, что поле непустое).
 Путь после реализации adopt: export → `adopt` → правки → `lint --against-settings живые-settings.json` → `handoff` → create + `section set template-id`. До реализации adopt — честно сказать, что автоматизированной правки ещё нет.

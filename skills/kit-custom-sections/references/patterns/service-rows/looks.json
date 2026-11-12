@@ -1,0 +1,29 @@
+{
+  "start": "zigzag",
+  "looks": [
+    {
+      "name": "zigzag",
+      "title": "Зигзаг",
+      "description": "Фото попеременно слева и справа, половина ширины.",
+      "settings": {
+        "mediaSide": "alternate",
+        "mediaWidth": "half"
+      }
+    },
+    {
+      "name": "square-right",
+      "title": "Квадратные фото справа",
+      "description": "Ровная колонка текста слева.",
+      "settings": {
+        "mediaRatio": "1:1",
+        "mediaSide": "right"
+      }
+    },
+    {
+      "name": "wide-left",
+      "title": "Широкие фото слева (вид v1)",
+      "description": "Пара фото 3:4 слева от текста.",
+      "settings": {}
+    }
+  ]
+}

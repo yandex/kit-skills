@@ -1,0 +1,29 @@
+{
+  "start": "panel",
+  "looks": [
+    {
+      "name": "panel",
+      "title": "Крупная цитата на подложке",
+      "description": "Отзыв размера l на панели палитры.",
+      "settings": {
+        "surface": "panel",
+        "quoteSize": "l"
+      }
+    },
+    {
+      "name": "compact",
+      "title": "Компактная цитата",
+      "description": "Цитата s, стрелки по бокам, счётчик — для 4+ коротких отзывов.",
+      "settings": {
+        "quoteSize": "s",
+        "controlsAlignment": "leftRight"
+      }
+    },
+    {
+      "name": "plain",
+      "title": "Цитата без подложки (вид v1)",
+      "description": "Цитата m прямо на фоне секции.",
+      "settings": {}
+    }
+  ]
+}

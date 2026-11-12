@@ -1,0 +1,403 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра: цвет текста и подложки",
+      "description": "Над тёмным фото — палитра со светлым текстом, над светлым — с тёмным. Подложка по умолчанию берёт фон палитры"
+    },
+    "title": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Заголовок",
+      "description": "До 40 знаков: на телефоне это 2–3 строки. Перенос строки — Enter"
+    },
+    "text": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Текст под заголовком",
+      "description": "Одна-две строки. Подробности лучше дать блоком ниже баннера"
+    },
+    "headingLevel": {
+      "type": "string",
+      "title": "Уровень заголовка",
+      "enum": [
+        "h2",
+        "h1"
+      ],
+      "options": [
+        "H2 — по умолчанию",
+        "H1 — второй h1 на странице, только по решению владельца"
+      ],
+      "default": "h2"
+    },
+    "image": {
+      "$ref": "#/definitions/ImageModel",
+      "title": "Фото (компьютер и телефон, если отдельного нет)",
+      "description": "Без текста на самом фото: текст баннера живой и задаётся полями выше"
+    },
+    "imageMobile": {
+      "$ref": "#/definitions/ImageModel",
+      "title": "Фото для телефона (необязательно)",
+      "description": "Вертикальный кадр под пропорцию телефона; спокойный фон там, где стоит текст"
+    },
+    "imageAlt": {
+      "type": "string",
+      "title": "Описание фото для незрячих и поиска",
+      "default": ""
+    },
+    "frame": {
+      "type": "object",
+      "title": "Кадр",
+      "properties": {
+        "ratio": {
+          "type": "string",
+          "title": "Пропорции на компьютере",
+          "enum": [
+            "2:1",
+            "5:2",
+            "16:9",
+            "4:3"
+          ],
+          "options": [
+            "2:1 — первый экран",
+            "5:2 — пониже, промо внутри страницы",
+            "16:9 — повыше",
+            "4:3 — для узкого контейнера"
+          ],
+          "default": "2:1"
+        },
+        "ratioMobile": {
+          "type": "string",
+          "title": "Пропорции на телефоне",
+          "enum": [
+            "1:1",
+            "3:4",
+            "4:3",
+            "screen"
+          ],
+          "options": [
+            "1:1 — квадрат",
+            "3:4 — вертикальный кадр",
+            "4:3 — пониже",
+            "Во весь экран телефона"
+          ],
+          "default": "1:1"
+        },
+        "focus": {
+          "type": "string",
+          "title": "Что сохранить при обрезке фото",
+          "enum": [
+            "center",
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ],
+          "options": [
+            "Центр",
+            "Верх",
+            "Низ",
+            "Левый край",
+            "Правый край"
+          ],
+          "default": "center"
+        },
+        "rounded": {
+          "type": "boolean",
+          "title": "Скруглить углы (радиус темы)",
+          "default": true
+        },
+        "headerSpace": {
+          "type": "boolean",
+          "title": "Запас сверху под прозрачную шапку",
+          "default": false
+        }
+      },
+      "required": [
+        "ratio",
+        "ratioMobile",
+        "focus"
+      ]
+    },
+    "content": {
+      "type": "object",
+      "title": "Расположение текста",
+      "properties": {
+        "align": {
+          "type": "string",
+          "title": "По горизонтали на компьютере",
+          "enum": [
+            "start",
+            "center",
+            "end"
+          ],
+          "options": [
+            "Слева",
+            "По центру",
+            "Справа"
+          ],
+          "default": "start"
+        },
+        "valign": {
+          "type": "string",
+          "title": "По вертикали на компьютере",
+          "enum": [
+            "start",
+            "center",
+            "end"
+          ],
+          "options": [
+            "Сверху",
+            "По центру",
+            "Снизу"
+          ],
+          "default": "end"
+        },
+        "alignMobile": {
+          "type": "string",
+          "title": "По горизонтали на телефоне",
+          "enum": [
+            "same",
+            "start",
+            "center",
+            "end"
+          ],
+          "options": [
+            "Как на компьютере",
+            "Слева",
+            "По центру",
+            "Справа"
+          ],
+          "default": "same"
+        },
+        "valignMobile": {
+          "type": "string",
+          "title": "По вертикали на телефоне",
+          "enum": [
+            "same",
+            "start",
+            "center",
+            "end"
+          ],
+          "options": [
+            "Как на компьютере",
+            "Сверху",
+            "По центру",
+            "Снизу"
+          ],
+          "default": "same"
+        },
+        "textColor": {
+          "$ref": "#/definitions/ThemeColor",
+          "title": "Цвет текста (пусто — по тону подложки)"
+        }
+      },
+      "required": [
+        "align",
+        "valign",
+        "alignMobile",
+        "valignMobile"
+      ]
+    },
+    "overlay": {
+      "type": "object",
+      "title": "Подложка под текстом",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "Вид подложки",
+          "enum": [
+            "gradient",
+            "tint",
+            "none"
+          ],
+          "options": [
+            "Градиент со стороны текста",
+            "Ровная на весь кадр",
+            "Без подложки"
+          ],
+          "default": "gradient"
+        },
+        "tone": {
+          "type": "string",
+          "title": "Тон подложки",
+          "enum": [
+            "inverse",
+            "palette"
+          ],
+          "options": [
+            "Тёмная дымка и светлый текст (на светлой палитре)",
+            "Как палитра: подложка цвета фона, текст цвета текста"
+          ],
+          "default": "inverse"
+        },
+        "color": {
+          "$ref": "#/definitions/ThemeColor",
+          "title": "Цвет подложки (пусто — по тону)"
+        },
+        "opacity": {
+          "type": "number",
+          "title": "Плотность подложки",
+          "minimum": 0,
+          "maximum": 100,
+          "unit": "%",
+          "default": 50
+        }
+      },
+      "required": [
+        "type",
+        "tone",
+        "opacity"
+      ]
+    },
+    "modules": {
+      "type": "array",
+      "title": "Кнопки (не больше двух)",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Текст кнопки",
+            "default": ""
+          },
+          "link": {
+            "$ref": "#/definitions/LinkSource",
+            "title": "Ссылка (без ссылки кнопка не показывается)"
+          },
+          "color": {
+            "type": "string",
+            "title": "Стиль кнопки",
+            "enum": [
+              "primary",
+              "secondary",
+              "outlined",
+              "neutral"
+            ],
+            "options": [
+              "Основная",
+              "Вторичная",
+              "Контурная",
+              "Нейтральная"
+            ],
+            "default": "primary"
+          }
+        },
+        "required": [
+          "text",
+          "color"
+        ]
+      }
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "title",
+    "headingLevel",
+    "frame",
+    "content",
+    "overlay",
+    "section"
+  ]
+}

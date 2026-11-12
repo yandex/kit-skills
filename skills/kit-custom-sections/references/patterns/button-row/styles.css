@@ -1,0 +1,137 @@
+/* Вид «кнопка»: кнопка платформы в ряду с выравниванием. */
+.kcs-btnrow__btn {
+    max-width: 100%;
+}
+
+/* Вид «полоса»: вся полоса — одна ссылка. Цвета — токены темы, скругление — из темы
+   (skinRounded 200 в разметке; при острых углах в теме полоса острая). Размер текста —
+   шаг шкалы платформы: 28px десктоп, 24px планшет, 18px телефон. Это подпись ссылки,
+   а не заголовок: заголовочного элемента внутри нет. */
+.kcs-btnrow__bar {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ys-spacing-150);
+    width: 100%;
+    min-height: var(--ys-spacing-1100);
+    padding: var(--ys-spacing-300) var(--ys-spacing-500);
+    border: 1px solid currentColor;
+    border-radius: var(--ys-current-skin-border-radius, 0);
+    color: var(--ys-color-token-text-primary);
+    text-align: center;
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.15;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.kcs-btnrow__bar_flex-start {
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.kcs-btnrow__bar_center {
+    justify-content: center;
+    text-align: center;
+}
+
+.kcs-btnrow__bar_flex-end {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.kcs-btnrow__label {
+    min-width: 0;
+    color: inherit;
+    overflow-wrap: anywhere;
+}
+
+/* Стрелка — иконка платформы, красится текущим цветом полосы и растёт вместе с текстом. */
+.kcs-btnrow__arrow {
+    flex-shrink: 0;
+    width: 0.9em;
+    height: 0.9em;
+    color: inherit;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+}
+
+/* Заливка при наведении — только там, где наведение есть; на тач-экранах её даёт :active. */
+@media (hover: hover) {
+    .kcs-btnrow__bar:hover {
+        background-color: var(--ys-color-token-brand-primary);
+        border-color: var(--ys-color-token-brand-primary);
+        color: var(--ys-color-token-brand-primary-contrast);
+    }
+
+    .kcs-btnrow__bar:hover .kcs-btnrow__arrow {
+        transform: translateX(var(--ys-spacing-50));
+    }
+}
+
+.kcs-btnrow__bar:active {
+    background-color: var(--ys-color-token-brand-primary);
+    border-color: var(--ys-color-token-brand-primary);
+    color: var(--ys-color-token-brand-primary-contrast);
+}
+
+/* Фокус с клавиатуры виден на любом устройстве, вне медиазапроса наведения. */
+.kcs-btnrow__bar:focus-visible {
+    outline: 2px solid var(--ys-color-token-brand-primary);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-btnrow__bar,
+    .kcs-btnrow__arrow {
+        transition: none;
+    }
+}
+
+@media (max-width: 1023px) {
+    .kcs-btnrow__bar {
+        min-height: var(--ys-spacing-1000);
+        padding: var(--ys-spacing-250) var(--ys-spacing-400);
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 767px) {
+    .kcs-btnrow__bar {
+        min-height: var(--ys-spacing-700);
+        padding: var(--ys-spacing-150) var(--ys-spacing-200);
+        gap: var(--ys-spacing-100);
+        font-size: 18px;
+    }
+
+    .kcs-btnrow__btn_full-m {
+        width: 100%;
+    }
+
+    /* «Скрыть на телефоне»: прячется и секция, и ритм-обёртка вокруг неё,
+       иначе на месте секции останется пустой отступ. */
+    .kcs-btnrow_hide-m {
+        display: none;
+    }
+
+    .kcs-rhythm:has(.kcs-btnrow_hide-m) {
+        display: none;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

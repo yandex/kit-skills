@@ -1,0 +1,36 @@
+{
+  "descriptionTone": "primary",
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "introText": "",
+  "layout": "grid",
+  "columns": "3",
+  "mobileView": "scroll",
+  "imageRatio": "3:4",
+  "cardStyle": "plain",
+  "labelStyle": "plain",
+  "align": "left",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "image": {
+        "fileId": "",
+        "filePath": ""
+      },
+      "imageAlt": "",
+      "title": "",
+      "subtitle": "",
+      "text": "",
+      "linkText": ""
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

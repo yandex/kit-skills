@@ -1,0 +1,296 @@
+/* Мозаика на сетке из 6 колонок. Высота ячейки задаётся распоркой ::before:
+   padding-top в процентах от ширины ячейки. Ячейка занимает 1 или 2 ряда,
+   поэтому ряды из ячеек разной ширины не рвутся, а растяжение grid съедает
+   разницу в долях промежутка и длинный текст — дыр нет.
+   --kcs-k — пропорция ячейки в треть ширины: 1 (1:1), 0.75 (4:3), 1.3333 (3:4).
+   При k = 1: треть 1:1, половина 3:2, две трети 2:1, вся ширина 3:1.
+   Значения инстанса приходят классами: css скоупится по шаблону. */
+.kcs-mosaic {
+    --kcs-k: 1;
+    --kcs-gap: var(--ys-spacing-200);
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-flow: row dense;
+    gap: var(--kcs-gap);
+}
+
+.kcs-mosaic_unit-landscape {
+    --kcs-k: 0.75;
+}
+
+.kcs-mosaic_unit-portrait {
+    --kcs-k: 1.3333;
+}
+
+.kcs-mosaic_gap-none {
+    --kcs-gap: 0px;
+}
+
+.kcs-mosaic_gap-compact {
+    --kcs-gap: var(--ys-spacing-100);
+}
+
+.kcs-mosaic__tile {
+    --kcs-span: 1;
+    --kcs-rows: 1;
+    position: relative;
+    display: grid;
+    grid-column: span 2;
+    min-width: 0;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--ys-current-skin-border-radius);
+}
+
+.kcs-mosaic__tile::before {
+    content: "";
+    grid-area: 1 / 1;
+    padding-top: calc(var(--kcs-k) * var(--kcs-span) * var(--kcs-rows) * 100%);
+}
+
+.kcs-mosaic__tile_half {
+    grid-column: span 3;
+    --kcs-span: 0.6667;
+}
+
+.kcs-mosaic__tile_two-thirds {
+    grid-column: span 4;
+    --kcs-span: 0.5;
+}
+
+.kcs-mosaic__tile_full {
+    grid-column: span 6;
+    --kcs-span: 0.3333;
+}
+
+.kcs-mosaic__tile_tall {
+    grid-row: span 2;
+    --kcs-rows: 2;
+}
+
+/* Без зазоров — редакционный коллаж: скругление темы снимается и у ячейки,
+   и у картинки (атом берёт радиус из той же переменной). */
+.kcs-mosaic_gap-none .kcs-mosaic__tile {
+    --ys-current-skin-border-radius: 0px;
+}
+
+/* Фото: подложка видна, пока картинка грузится или не загружена. */
+.kcs-mosaic__tile_photo {
+    background: var(--ys-background-neutral);
+}
+
+.kcs-mosaic__image {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+}
+
+.kcs-mosaic__image img {
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+/* Заголовок на фото. scrim — затемнение платформы (--ys-background-overlay,
+   чёрный 50% в любой палитре) двумя слоями и белый текст атома; plate —
+   плашка цвета палитры секции. Обе пары читаются на любом фото. */
+.kcs-mosaic__label {
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.kcs-mosaic__label_scrim {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: var(--ys-spacing-800) var(--ys-spacing-300) var(--ys-spacing-300);
+    background:
+        linear-gradient(0deg, var(--ys-background-overlay), transparent 70%),
+        linear-gradient(0deg, var(--ys-background-overlay), transparent);
+}
+
+.kcs-mosaic__label_plate {
+    bottom: var(--ys-spacing-200);
+    left: var(--ys-spacing-200);
+    max-width: calc(100% - 2 * var(--ys-spacing-200));
+    padding: var(--ys-spacing-100) var(--ys-spacing-200);
+    color: var(--ys-color-token-text-primary);
+    background: var(--ys-background-primary);
+    border-radius: var(--ys-current-skin-border-radius);
+}
+
+.kcs-mosaic__label h3,
+.kcs-mosaic__text h3 {
+    margin: 0;
+}
+
+/* Текстовая ячейка: по умолчанию на палитре секции. */
+.kcs-mosaic__tile_text {
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-mosaic__tile_text.kcs-mosaic__tile_fill-neutral {
+    background: var(--ys-background-neutral);
+}
+
+.kcs-mosaic__tile_text.kcs-mosaic__tile_fill-brand {
+    color: var(--ys-color-token-brand-primary-contrast);
+    background: var(--ys-color-token-brand-primary);
+}
+
+.kcs-mosaic__text {
+    grid-area: 1 / 1;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ys-spacing-200);
+    min-width: 0;
+    padding: var(--ys-spacing-400);
+    overflow-wrap: anywhere;
+}
+
+.kcs-mosaic__caption {
+    opacity: 0.72;
+}
+
+.kcs-mosaic__arrow {
+    transition: transform 0.3s ease;
+}
+
+/* Ссылка-накладка на всю ячейку: одна ветка разметки, пустая ссылка не
+   рисуется. Текст для экранных дикторов — заголовок или описание фото. */
+.kcs-mosaic__hit {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    border-radius: inherit;
+}
+
+.kcs-mosaic__hit:focus-visible {
+    outline: 2px solid var(--ys-color-token-brand-primary);
+    outline-offset: -2px;
+    box-shadow: inset 0 0 0 4px var(--ys-background-primary);
+}
+
+.kcs-mosaic__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (hover: hover) {
+    .kcs-mosaic__tile_link:hover .kcs-mosaic__image img {
+        transform: scale(1.03);
+    }
+
+    .kcs-mosaic__tile_link:hover .kcs-mosaic__arrow {
+        transform: translateX(var(--ys-spacing-50));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-mosaic__image img,
+    .kcs-mosaic__arrow,
+    .kcs-mosaic__tile_link:hover .kcs-mosaic__image img,
+    .kcs-mosaic__tile_link:hover .kcs-mosaic__arrow {
+        transform: none;
+        transition: none;
+    }
+}
+
+/* Планшет 768–1023: та же сетка, обычный зазор сужается до 8px. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-mosaic_gap-regular {
+        --kcs-gap: var(--ys-spacing-100);
+    }
+
+    .kcs-mosaic__text {
+        padding: var(--ys-spacing-300);
+    }
+}
+
+/* Телефон до 767: две колонки. Треть и половина — одна колонка (единица
+   высоты = ширина колонки × k), две трети и вся ширина — обе колонки
+   с той же высотой ряда. Высокая ячейка остаётся в два ряда. */
+@media (max-width: 767px) {
+    .kcs-mosaic {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kcs-mosaic_gap-regular {
+        --kcs-gap: var(--ys-spacing-100);
+    }
+
+    .kcs-mosaic_gap-compact {
+        --kcs-gap: var(--ys-spacing-50);
+    }
+
+    .kcs-mosaic__tile_third,
+    .kcs-mosaic__tile_half {
+        grid-column: span 1;
+        --kcs-span: 1;
+    }
+
+    .kcs-mosaic__tile_two-thirds,
+    .kcs-mosaic__tile_full {
+        grid-column: span 2;
+        --kcs-span: 0.5;
+    }
+
+    /* touch wide: на всю ширину в один ряд; текстовая ячейка без распорки
+       сжимается до полосы с подписью. */
+    .kcs-mosaic__tile_touch-wide {
+        grid-row: auto;
+        grid-column: span 2;
+        --kcs-span: 0.5;
+        --kcs-rows: 1;
+    }
+
+    .kcs-mosaic__tile_touch-wide.kcs-mosaic__tile_text::before {
+        padding-top: 0;
+    }
+
+    .kcs-mosaic__tile_touch-hidden {
+        display: none;
+    }
+
+    .kcs-mosaic__text {
+        gap: var(--ys-spacing-100);
+        padding: var(--ys-spacing-200);
+    }
+
+    .kcs-mosaic__label_scrim {
+        padding: var(--ys-spacing-600) var(--ys-spacing-150) var(--ys-spacing-150);
+    }
+
+    .kcs-mosaic__label_plate {
+        bottom: var(--ys-spacing-100);
+        left: var(--ys-spacing-100);
+        max-width: calc(100% - 2 * var(--ys-spacing-100));
+        padding: var(--ys-spacing-50) var(--ys-spacing-150);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

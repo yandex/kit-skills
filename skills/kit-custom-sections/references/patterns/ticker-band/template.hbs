@@ -1,0 +1,55 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        <div
+            class="kcs-tb kcs-tb_{{settings.bandStyle}} kcs-tb_{{settings.direction}} {{if settings.fadeEdges 'kcs-tb_fade'}} {{if settings.pauseOnHover 'kcs-tb_pausable'}} {{if settings.isUppercase 'kcs-tb_upper'}}"
+            style="--kcs-tb-dur: {{settings.duration}}s; --kcs-tb-dur-touch: {{settings.durationTouch}}s; --kcs-tb-gap: var(--ys-spacing-{{settings.gap}}); --kcs-tb-pad: var(--ys-spacing-{{settings.bandPadding}})"
+        >
+            {{#if settings.leadText}}
+                <ya-kit-text class="kcs-tb__lead" as="p" size={{settings.textSize}} weight="bold" color="inherit">{{settings.leadText}}</ya-kit-text>
+            {{/if}}
+            <div class="kcs-tb__viewport">
+                <div class="kcs-tb__track">
+                    <div class="kcs-tb__set">
+                        {{#each settings.modules as |m|}}
+                            <ya-kit-module class="kcs-tb__item" module-id={{m.id}}>
+                                <ya-kit-text class="kcs-tb__text" as="span" size={{settings.textSize}} weight={{settings.textWeight}} color="inherit">{{m.text}}</ya-kit-text>
+                                {{#if settings.separatorImage.filePath}}
+                                    <ya-kit-text class="kcs-tb__sep" as="span" size={{settings.textSize}} color="inherit"><img class="kcs-tb__sep-img" src="{{settings.separatorImage.filePath}}" alt=""></ya-kit-text>
+                                {{else}}
+                                    {{#if settings.separatorText}}
+                                        <ya-kit-text class="kcs-tb__sep" as="span" size={{settings.textSize}} weight={{settings.textWeight}} color="inherit"><span class="kcs-tb__glyph" aria-hidden="true">{{settings.separatorText}}</span></ya-kit-text>
+                                    {{/if}}
+                                {{/if}}
+                            </ya-kit-module>
+                        {{/each}}
+                    </div>
+                    {{#repeat 15}}
+                        <div class="kcs-tb__set kcs-tb__dup" aria-hidden="true">
+                            {{#each settings.modules as |m|}}
+                                <span class="kcs-tb__item">
+                                    <ya-kit-text class="kcs-tb__text" as="span" size={{settings.textSize}} weight={{settings.textWeight}} color="inherit">{{m.text}}</ya-kit-text>
+                                    {{#if settings.separatorImage.filePath}}
+                                        <ya-kit-text class="kcs-tb__sep" as="span" size={{settings.textSize}} color="inherit"><img class="kcs-tb__sep-img" src="{{settings.separatorImage.filePath}}" alt=""></ya-kit-text>
+                                    {{else}}
+                                        {{#if settings.separatorText}}
+                                            <ya-kit-text class="kcs-tb__sep" as="span" size={{settings.textSize}} weight={{settings.textWeight}} color="inherit"><span class="kcs-tb__glyph">{{settings.separatorText}}</span></ya-kit-text>
+                                        {{/if}}
+                                    {{/if}}
+                                </span>
+                            {{/each}}
+                        </div>
+                    {{/repeat}}
+                </div>
+            </div>
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

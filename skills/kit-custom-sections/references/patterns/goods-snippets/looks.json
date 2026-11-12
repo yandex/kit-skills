@@ -1,0 +1,29 @@
+{
+  "start": "strip",
+  "looks": [
+    {
+      "name": "strip",
+      "title": "Сетка с лентой на телефоне",
+      "description": "Вид по умолчанию v3.",
+      "settings": {}
+    },
+    {
+      "name": "carousel",
+      "title": "Карусель",
+      "description": "Карусель на всех ширинах.",
+      "settings": {
+        "layout": "carousel"
+      }
+    },
+    {
+      "name": "gapless",
+      "title": "Сетка без зазоров",
+      "description": "Карточки встык.",
+      "settings": {
+        "layout": "grid",
+        "hGap": "0",
+        "vGap": "0"
+      }
+    }
+  ]
+}

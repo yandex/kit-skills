@@ -19,6 +19,14 @@ EXIT_GATES = 2
 EXIT_FLAG_REQUIRED = 3
 EXIT_PATTERN_NOT_FOUND = 5
 
+# Слоты шапки и подвала витрины и alias шаблона, по которому сервер считает его
+# шапкой или подвалом всей витрины. Других значений alias скил не ставит никогда.
+SLOT_ALIASES = {"header": "YandexKit.Header", "footer": "YandexKit.Footer"}
+SLOT_BY_ALIAS = {alias: slot for slot, alias in SLOT_ALIASES.items()}
+SLOT_RU = {"header": "шапка", "footer": "подвал"}
+SLOT_GEN = {"header": "шапки", "footer": "подвала"}
+SLOT_INS = {"header": "шапкой", "footer": "подвалом"}
+
 
 class SectionError(SystemExit):
     """Фатальная ошибка с внятным сообщением (exit-код задаёт вызывающий)."""

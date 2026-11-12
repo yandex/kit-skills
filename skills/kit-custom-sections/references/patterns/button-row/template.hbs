@@ -1,0 +1,26 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    class="kcs-btnrow {{if settings.hideOnMobile 'kcs-btnrow_hide-m'}}"
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        {{#if (eql settings.variant "bar")}}
+            <ya-kit-link class="kcs-btnrow__bar kcs-btnrow__bar_{{settings.align}} {{skinRounded 200}}" to={{settings.link.link}}>
+                <span class="kcs-btnrow__label">{{settings.text}}</span>
+                {{#if settings.showArrow}}
+                    <ya-kit-icon class="kcs-btnrow__arrow" name="arrow-big-right" size="24" />
+                {{/if}}
+            </ya-kit-link>
+        {{else}}
+            <ya-kit-h-stack class="kcs-btnrow__row" justify-content={{settings.align}}>
+                <ya-kit-button class="kcs-btnrow__btn {{if settings.fullWidthMobile 'kcs-btnrow__btn_full-m'}}" color={{settings.color}} size={{settings.size}} to={{settings.link.link}}>{{settings.text}}</ya-kit-button>
+            </ya-kit-h-stack>
+        {{/if}}
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

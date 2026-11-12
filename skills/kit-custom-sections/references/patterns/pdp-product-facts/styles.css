@@ -1,0 +1,281 @@
+/* Товар без выбранных характеристик и любая страница, кроме карточки товара:
+   блок не оставляет ни заголовка, ни отступов ритма. Внутри :has() один
+   селектор без запятых — изолятор делит селекторы по запятой. */
+.kcs-rhythm:not(:has(.kcs-facts__hit)) {
+    display: none;
+}
+
+.kcs-facts__list:not(:has(.kcs-facts__hit)) {
+    display: none;
+}
+
+.kcs-facts__rest:not(:has(.kcs-facts__hit)) {
+    display: none;
+}
+
+.kcs-facts {
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-facts dl,
+.kcs-facts dt,
+.kcs-facts dd {
+    margin: 0;
+}
+
+/* Аккордеон */
+.kcs-facts_accordion .kcs-facts__list {
+    max-width: 880px;
+    border-bottom: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-facts__item {
+    border-top: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-facts__item [aria-expanded] {
+    min-height: var(--ys-spacing-700);
+    padding: var(--ys-spacing-250) 0;
+    gap: var(--ys-spacing-200);
+    cursor: pointer;
+}
+
+.kcs-facts__item [aria-expanded]:focus-visible {
+    outline: 2px solid var(--ys-color-token-text-primary);
+    outline-offset: 2px;
+}
+
+.kcs-facts__item [data-icon="true"] {
+    display: none;
+}
+
+.kcs-facts__chevron {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: var(--ys-color-token-text-secondary);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+[aria-expanded="true"] .kcs-facts__chevron {
+    transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .kcs-facts__chevron {
+        transition: transform 0.2s ease;
+    }
+}
+
+@media (hover: hover) {
+    .kcs-facts__item [aria-expanded]:hover .kcs-facts__chevron {
+        stroke: var(--ys-color-token-text-primary);
+    }
+}
+
+.kcs-facts__body {
+    padding-bottom: var(--ys-spacing-300);
+}
+
+.kcs-facts__text,
+.kcs-facts__md {
+    max-width: 72ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ys-color-token-text-primary);
+}
+
+/* Приглушённое описание — только по выбору (descriptionTone secondary). */
+.kcs-facts_tone-secondary .kcs-facts__md {
+    color: var(--ys-color-token-text-secondary);
+}
+
+/* Строки и две колонки: описание, список, остальные характеристики — стопкой */
+.kcs-facts_rows,
+.kcs-facts_columns {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-600);
+}
+
+.kcs-facts_rows .kcs-facts__list,
+.kcs-facts_rows .kcs-facts__rest {
+    max-width: 880px;
+}
+
+.kcs-facts_rows .kcs-facts__list,
+.kcs-facts_columns .kcs-facts__list,
+.kcs-facts_rows .kcs-facts__table,
+.kcs-facts_columns .kcs-facts__table {
+    border-top: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-facts__subhead {
+    margin-bottom: var(--ys-spacing-200);
+}
+
+/* «Как в теме» при центрированной теме — так же, как явный центр: заголовок атом
+   центрирует сам, таблица под ним не остаётся прижатой влево. */
+.kcs-facts_align-center .kcs-facts__list,
+.kcs-facts_align-center .kcs-facts__rest,
+.kcs-facts_align-center .kcs-facts__about,
+.kcs-facts_align-default.kcs-facts_theme-center .kcs-facts__list,
+.kcs-facts_align-default.kcs-facts_theme-center .kcs-facts__rest,
+.kcs-facts_align-default.kcs-facts_theme-center .kcs-facts__about {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.kcs-facts_align-center .kcs-facts__about,
+.kcs-facts_align-default.kcs-facts_theme-center .kcs-facts__about {
+    max-width: 72ch;
+}
+
+.kcs-facts__row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 32%) 1fr;
+    gap: var(--ys-spacing-400);
+    align-items: baseline;
+    padding: var(--ys-spacing-200) 0;
+    border-bottom: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-facts_accordion .kcs-facts__table .kcs-facts__row:last-child {
+    border-bottom: 0;
+}
+
+.kcs-facts__label {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-facts__value {
+    min-width: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ys-color-token-text-primary);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.kcs-facts__value .kcs-facts__text {
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+/* Подпись плашкой или контуром — только для строк и двух колонок */
+.kcs-facts_label-chip:not(.kcs-facts_accordion) .kcs-facts__label,
+.kcs-facts_label-outline:not(.kcs-facts_accordion) .kcs-facts__label {
+    justify-self: start;
+    padding: var(--ys-spacing-50) var(--ys-spacing-150);
+    border-radius: var(--ys-current-skin-border-radius);
+}
+
+.kcs-facts_label-chip:not(.kcs-facts_accordion) .kcs-facts__label {
+    background: var(--ys-color-token-text-primary);
+    color: var(--ys-background-primary);
+}
+
+.kcs-facts_label-outline:not(.kcs-facts_accordion) .kcs-facts__label {
+    border: 1px solid var(--ys-color-token-border-primary);
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-facts_columns .kcs-facts__list,
+.kcs-facts_columns .kcs-facts__table {
+    columns: 2;
+    column-gap: var(--ys-spacing-800);
+}
+
+.kcs-facts_columns .kcs-facts__row {
+    break-inside: avoid;
+}
+
+/* Значение плашками */
+.kcs-facts__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-100);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-facts__chip {
+    padding: var(--ys-spacing-50) var(--ys-spacing-150);
+    border-radius: var(--ys-current-skin-border-radius);
+    background: var(--ys-background-neutral);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ys-color-token-text-primary);
+}
+
+@media (max-width: 1023px) {
+    .kcs-facts_columns .kcs-facts__list,
+    .kcs-facts_columns .kcs-facts__table {
+        columns: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .kcs-facts__item [aria-expanded] {
+        min-height: var(--ys-spacing-600);
+        padding: var(--ys-spacing-200) 0;
+    }
+
+    .kcs-facts__head {
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    .kcs-facts__body {
+        padding-bottom: var(--ys-spacing-250);
+    }
+
+    .kcs-facts_rows,
+    .kcs-facts_columns {
+        gap: var(--ys-spacing-500);
+    }
+
+    /* Подпись над значением (labelPositionTouch above, по умолчанию): длинное
+       значение получает всю ширину, а не сжимается в узкую колонку. */
+    .kcs-facts__row {
+        grid-template-columns: 1fr;
+        gap: var(--ys-spacing-50);
+        padding: var(--ys-spacing-150) 0;
+    }
+
+    /* Рядом (side) — для коротких значений: подпись не шире 30%. */
+    .kcs-facts_label-touch-side .kcs-facts__row {
+        grid-template-columns: minmax(6rem, 30%) 1fr;
+        gap: var(--ys-spacing-200);
+    }
+}
+
+@media (max-width: 360px) {
+    .kcs-facts_label-touch-side .kcs-facts__row {
+        grid-template-columns: 1fr;
+        gap: var(--ys-spacing-50);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

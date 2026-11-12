@@ -1,0 +1,11 @@
+{
+  "texts": {},
+  "typical": {
+    "titleText": [
+      "Контакты"
+    ],
+    "modules[].label": [
+      "Реквизиты"
+    ]
+  }
+}

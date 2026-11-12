@@ -2,6 +2,47 @@
   "title": "",
   "type": "object",
   "properties": {
+    "cta": {
+      "type": "object",
+      "title": "Кнопка или ссылка дальше",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Подпись: куда ведёт («Все условия доставки»)",
+          "default": ""
+        },
+        "link": {
+          "$ref": "#/definitions/LinkSource",
+          "title": "Ссылка"
+        },
+        "style": {
+          "type": "string",
+          "title": "Вид",
+          "enum": [
+            "button",
+            "link"
+          ],
+          "options": [
+            "Кнопка",
+            "Ссылка со стрелкой"
+          ],
+          "default": "button"
+        }
+      }
+    },
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
     "palette": {
       "$ref": "#/definitions/Palette",
       "title": "Палитра цветов"
@@ -14,6 +55,120 @@
     "titleAlign": {
       "$ref": "#/definitions/SectionTitleAlign",
       "title": "Расположение заголовка"
+    },
+    "layout": {
+      "type": "string",
+      "title": "Раскладка",
+      "enum": [
+        "grid",
+        "carousel"
+      ],
+      "options": [
+        "Сетка",
+        "Карусель со стрелками"
+      ],
+      "default": "grid"
+    },
+    "columns": {
+      "type": "string",
+      "title": "Колонок на компьютере",
+      "enum": [
+        "2",
+        "3",
+        "4",
+        "6"
+      ],
+      "options": [
+        "2 в ряд",
+        "3 в ряд",
+        "4 в ряд",
+        "6 в ряд (только для коротких фраз)"
+      ],
+      "default": "4"
+    },
+    "tileRatio": {
+      "type": "string",
+      "title": "Форма плиток",
+      "enum": [
+        "auto",
+        "3:4",
+        "1:1",
+        "4:3"
+      ],
+      "options": [
+        "По содержимому",
+        "Вертикальные 3:4",
+        "Квадратные 1:1",
+        "Горизонтальные 4:3"
+      ],
+      "default": "auto"
+    },
+    "decoration": {
+      "type": "string",
+      "title": "Номера на плитках",
+      "enum": [
+        "none",
+        "index-number"
+      ],
+      "options": [
+        "Без номеров",
+        "Номера 01, 02, 03"
+      ],
+      "default": "none"
+    },
+    "layoutTouch": {
+      "type": "string",
+      "title": "Раскладка сетки на телефоне",
+      "enum": [
+        "auto",
+        "list",
+        "grid",
+        "scroll"
+      ],
+      "options": [
+        "Автоматически",
+        "Друг под другом",
+        "Две колонки",
+        "Лента с прокруткой"
+      ],
+      "default": "list"
+    },
+    "columnsTouch": {
+      "type": "string",
+      "title": "Карточек на экране телефона (карусель и лента)",
+      "enum": [
+        "1",
+        "2"
+      ],
+      "options": [
+        "Одна и край следующей",
+        "Две и край следующей"
+      ],
+      "default": "1"
+    },
+    "controlsAlignment": {
+      "type": "string",
+      "title": "Стрелки карусели на компьютере",
+      "enum": [
+        "edges",
+        "leftRight",
+        "left",
+        "right",
+        "none"
+      ],
+      "options": [
+        "По краям карусели",
+        "Внутри по краям",
+        "Обе слева",
+        "Обе справа",
+        "Без стрелок"
+      ],
+      "default": "edges"
+    },
+    "noteText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Сноска под плитками (условия, оговорки)",
+      "default": ""
     },
     "section": {
       "type": "object",
@@ -52,19 +207,105 @@
       "items": {
         "type": "object",
         "properties": {
+          "surface": {
+            "type": "string",
+            "title": "Вид плитки",
+            "enum": [
+              "neutral",
+              "none",
+              "accent",
+              "photo"
+            ],
+            "options": [
+              "Нейтральный фон",
+              "Без фона",
+              "Акцент (цвет бренда)",
+              "Фото на всю плитку"
+            ],
+            "default": "neutral"
+          },
           "image": {
             "$ref": "#/definitions/ImageModel",
-            "title": "Иконка (необязательно)"
+            "title": "Иконка или фото плитки (необязательно)"
+          },
+          "imageAlt": {
+            "type": "string",
+            "title": "Что на фото (обязательно для фото-плиток)",
+            "default": ""
+          },
+          "icon": {
+            "type": "string",
+            "title": "Встроенная иконка (если своей картинки нет)",
+            "enum": [
+              "none",
+              "delivery",
+              "box",
+              "shopping-bag",
+              "shop",
+              "location",
+              "clock",
+              "credit-card",
+              "coins",
+              "percent",
+              "gift",
+              "check",
+              "star",
+              "heart",
+              "reload",
+              "lock",
+              "hanger",
+              "phone",
+              "user",
+              "info"
+            ],
+            "options": [
+              "Без иконки",
+              "Доставка",
+              "Коробка",
+              "Пакет покупок",
+              "Магазин",
+              "Геолокация",
+              "Часы",
+              "Банковская карта",
+              "Монеты",
+              "Процент",
+              "Подарок",
+              "Галочка",
+              "Звезда (залитая)",
+              "Сердце (контуром)",
+              "Обмен и возврат",
+              "Замок",
+              "Вешалка",
+              "Телефон",
+              "Человек",
+              "Информация"
+            ],
+            "default": "none"
           },
           "title": {
             "type": "string",
             "title": "Заголовок плитки",
             "default": ""
           },
+          "subtitle": {
+            "type": "string",
+            "title": "Акцентная строка под заголовком (необязательно)",
+            "default": ""
+          },
           "description": {
             "type": "string",
             "title": "Текст плитки",
             "default": ""
+          },
+          "list": {
+            "$ref": "#/definitions/MarkdownContent",
+            "title": "Список под текстом (markdown, необязательно)",
+            "default": ""
+          },
+          "pairWithNext": {
+            "type": "boolean",
+            "title": "На телефоне в ленте: фото и следующая плитка — один свайп",
+            "default": false
           }
         },
         "required": [
@@ -105,8 +346,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ блока (токен темы, с каждой стороны)",
-      "default": "500"
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
     },
     "verticalRhythmTouch": {
       "type": "string",
@@ -140,8 +381,8 @@
         "1900",
         "2000"
       ],
-      "title": "Вертикальный отступ на телефоне (токен темы)",
-      "default": "300"
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
     }
   },
   "required": [

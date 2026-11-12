@@ -1,0 +1,92 @@
+.kcs-reels {
+    width: 100%;
+}
+
+.kcs-reel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+    min-width: 0;
+}
+
+/* Рамка держит формат карточки сама: у атома видео нет 9:16 и 4:5 в aspect-ratio,
+   а пока видео грузится, атом рисует скелетон без размеров. Фон рамки — заглушка
+   до первого кадра, токеном темы. */
+.kcs-reel__frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--ys-background-secondary);
+    border-radius: var(--ys-current-skin-border-radius);
+}
+
+.kcs-reels--4x5 .kcs-reel__frame {
+    aspect-ratio: 4 / 5;
+}
+
+.kcs-reels--1x1 .kcs-reel__frame {
+    aspect-ratio: 1 / 1;
+}
+
+/* Плеер, его скелетон и заглушка загрузки — прямые потомки рамки: растянуть на
+   всю рамку, кадр кадрирует fit="cover". */
+.kcs-reel__frame > *,
+.kcs-reel__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.kcs-reel__caption {
+    padding: 0 var(--ys-spacing-50);
+}
+
+.kcs-reel__link {
+    align-self: flex-start;
+    padding: 0 var(--ys-spacing-50);
+}
+
+/* Планшет: колонки десктопа (до 6) дают карточки уже 120px — не больше трёх в ряд.
+   Навигация карусели меряет слайды по DOM, поэтому ширина слайда меняется только стилем. */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-reels [data-carousel-track='true'] {
+        --ys-carousel-slides: 3;
+    }
+}
+
+/* Телефон, один ролик в ряду: соседний выглядывает на треть ширины — видно, что
+   ленту листают, а вертикальная карточка не выше половины экрана (390px: карточка
+   ~236px, кадр 9:16 ~420px). Для 4:5 и квадрата выглядывает меньше. Два в ряду —
+   отступ карусели по умолчанию. */
+@media (max-width: 767px) {
+    .kcs-reels--touch1 [data-carousel-track='true'] {
+        --ys-carousel-offset: 34%;
+    }
+
+    .kcs-reels--touch1.kcs-reels--4x5 [data-carousel-track='true'],
+    .kcs-reels--touch1.kcs-reels--1x1 [data-carousel-track='true'] {
+        --ys-carousel-offset: 22%;
+    }
+
+    .kcs-reel {
+        gap: var(--ys-spacing-100);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

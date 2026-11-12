@@ -1,0 +1,32 @@
+{
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "dataSource": {
+    "id": "",
+    "slug": "",
+    "type": "category"
+  },
+  "buttonText": "В корзину",
+  "subscribeText": "Сообщить о поступлении",
+  "outOfStockText": "Нет в наличии",
+  "imageMain": {
+    "fileId": "",
+    "filePath": ""
+  },
+  "imageMainAlt": "",
+  "imageSide": {
+    "fileId": "",
+    "filePath": ""
+  },
+  "imageSideAlt": "",
+  "mediaLeft": false,
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

@@ -1,0 +1,41 @@
+{
+  "descriptionTone": "primary",
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "introText": "",
+  "mediaWidth": "wide",
+  "mediaRatio": "3:4",
+  "mediaSide": "left",
+  "buttonColor": "primary",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "title": "",
+      "text": "",
+      "image": {
+        "fileId": "",
+        "filePath": ""
+      },
+      "imageAlt": "",
+      "image2": {
+        "fileId": "",
+        "filePath": ""
+      },
+      "image2Alt": "",
+      "buttonText": "Подробнее",
+      "buttonUrl": {
+        "link": "",
+        "linkId": ""
+      }
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

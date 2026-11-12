@@ -1,0 +1,83 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <ya-kit-carousel
+            class="kcs-ts kcs-ts_size-{{settings.quoteSize}} kcs-ts_surface-{{settings.surface}} kcs-ts_arrows-{{settings.controlsAlignment}} kcs-ts_stars-{{settings.ratingColor}}"
+            columns="1"
+            columns-touch="1"
+            h-gap="400"
+            autoplay="{{settings.autoplay}}"
+            autoplay-delay="{{settings.autoplayDelay}}"
+            controls-alignment="{{settings.controlsAlignment}}"
+            controls-size="{{settings.controlsSize}}"
+        >
+            {{#each settings.modules as |m index|}}
+                <ya-kit-module module-id={{m.id}} class="kcs-ts__slide">
+                    <figure class="kcs-ts__card {{skinRounded 250}}">
+                        {{#if settings.showRating}}
+                            {{#if m.rating}}
+                                <div class="kcs-ts__stars" role="img" aria-label="Оценка {{m.rating}} из 5">
+                                    {{#repeat 5 as |i|}}
+                                        {{#if (gt m.rating i)}}
+                                            <svg class="kcs-ts__star" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                                            </svg>
+                                        {{else}}
+                                            <svg class="kcs-ts__star kcs-ts__star_empty" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                                            </svg>
+                                        {{/if}}
+                                    {{/repeat}}
+                                </div>
+                            {{/if}}
+                        {{/if}}
+                        <ya-kit-text as="blockquote" class="kcs-ts__quote" size="2xl" align="center">{{m.text}}</ya-kit-text>
+                        <figcaption class="kcs-ts__author {{if m.photo.filePath 'kcs-ts__author_photo' ''}}">
+                            {{#if m.photo.filePath}}
+                                <ya-kit-image class="kcs-ts__photo" src={{m.photo}} fit="cover" aspect-ratio="1:1" rounded="999" alt="{{m.photoAlt}}" />
+                            {{/if}}
+                            <span class="kcs-ts__byline">
+                                <ya-kit-text as="span" class="kcs-ts__name" size="md" weight="semibold">{{m.author}}</ya-kit-text>
+                                {{#if m.caption}}
+                                    <ya-kit-text as="span" class="kcs-ts__caption" size="sm" color="secondary">{{m.caption}}</ya-kit-text>
+                                {{/if}}
+                            </span>
+                        </figcaption>
+                        {{#if settings.showCounter}}
+                            {{#if (gt (length settings.modules) 1)}}
+                                <ya-kit-text as="p" class="kcs-ts__count" size="sm" color="secondary">
+                                    <span aria-hidden="true">{{add index 1}} / {{length settings.modules}}</span>
+                                    <span class="kcs-ts__sr">Отзыв {{add index 1}} из {{length settings.modules}}</span>
+                                </ya-kit-text>
+                            {{/if}}
+                        {{/if}}
+                    </figure>
+                </ya-kit-module>
+            {{/each}}
+        </ya-kit-carousel>
+    </ya-kit-section-layout-row>
+    {{#if (and settings.cta.link.link settings.cta.text)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-exit" style="display: flex; justify-content: {{if (or (eql settings.titleAlign 'center') (and (eql settings.titleAlign 'default') (eql globals.typography.titleAlign 'center'))) 'center' 'flex-start'}}">
+                {{#if (eql settings.cta.style 'link')}}
+                    <ya-kit-link to={{settings.cta.link.link}} weight="medium" decoration="underline">{{settings.cta.text}} →</ya-kit-link>
+                {{else}}
+                    <ya-kit-button to={{settings.cta.link.link}}>{{settings.cta.text}}</ya-kit-button>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
+</ya-kit-section-layout>
+</div>

@@ -1,0 +1,16 @@
+id: stats-band
+version: 2
+title: "Цифры — ключевые показатели"
+purpose: "Ключевые цифры крупно с короткими подписями: годы работы, клиенты, заказы, города — для «О нас» и лендингов"
+origin: "handmade"
+fingerprint: "37679983c0a8b66f7cd7ad50e0bcf7794eb2596ab9ae357a77095be495162313"
+docs_fingerprint: "37679983c0a8b66f7cd7ad50e0bcf7794eb2596ab9ae357a77095be495162313"
+applied_patches: ""
+keywords: "цифры, цифра, цифрах, цифрами, статистика, статистику, показатели, key figures, stats"
+pages: "main, landing"
+controllers: ""
+answers_required: "modules"
+alternatives: "advantages, type-band"
+exit_field: "cta"
+rhythm: "0"
+rhythm_touch: "0"

@@ -1,0 +1,313 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "bandStyle": {
+      "type": "string",
+      "title": "Вид ленты",
+      "enum": [
+        "filled",
+        "lined",
+        "plain"
+      ],
+      "options": [
+        "Акцентная подложка",
+        "Тонкие линии",
+        "Без подложки (цвета палитры)"
+      ],
+      "default": "filled"
+    },
+    "leadText": {
+      "type": "string",
+      "title": "Подпись перед лентой (необязательно)",
+      "default": ""
+    },
+    "textSize": {
+      "type": "string",
+      "title": "Размер текста",
+      "enum": [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "2xl",
+        "3xl"
+      ],
+      "options": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "default": "lg"
+    },
+    "textWeight": {
+      "type": "string",
+      "title": "Насыщенность текста",
+      "enum": [
+        "normal",
+        "medium",
+        "semibold",
+        "bold"
+      ],
+      "options": [
+        "Обычный",
+        "Средний",
+        "Полужирный",
+        "Жирный"
+      ],
+      "default": "semibold"
+    },
+    "isUppercase": {
+      "type": "boolean",
+      "title": "Прописные буквы",
+      "default": false
+    },
+    "separatorText": {
+      "type": "string",
+      "title": "Разделитель между фразами",
+      "default": "•"
+    },
+    "separatorImage": {
+      "$ref": "#/definitions/ImageModel",
+      "title": "Картинка-разделитель (заменяет текстовый разделитель)"
+    },
+    "gap": {
+      "type": "string",
+      "title": "Зазор между фразой и разделителем",
+      "enum": [
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "400",
+        "500",
+        "600",
+        "800",
+        "1000"
+      ],
+      "component": "slider",
+      "optionsMap": {
+        "100": "8px",
+        "150": "12px",
+        "200": "16px",
+        "250": "20px",
+        "300": "24px",
+        "400": "32px",
+        "500": "40px",
+        "600": "48px",
+        "800": "64px",
+        "1000": "80px"
+      },
+      "default": "400"
+    },
+    "bandPadding": {
+      "type": "string",
+      "title": "Поля ленты сверху и снизу",
+      "enum": [
+        "0",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "400",
+        "500",
+        "600"
+      ],
+      "component": "slider",
+      "optionsMap": {
+        "0": "0px",
+        "100": "8px",
+        "150": "12px",
+        "200": "16px",
+        "250": "20px",
+        "300": "24px",
+        "400": "32px",
+        "500": "40px",
+        "600": "48px"
+      },
+      "default": "200"
+    },
+    "duration": {
+      "type": "number",
+      "title": "Длительность круга (больше — медленнее)",
+      "minimum": 4,
+      "maximum": 120,
+      "step": 1,
+      "unit": "сек",
+      "default": 18
+    },
+    "durationTouch": {
+      "type": "number",
+      "title": "Длительность круга на телефоне",
+      "minimum": 4,
+      "maximum": 120,
+      "step": 1,
+      "unit": "сек",
+      "default": 20
+    },
+    "direction": {
+      "type": "string",
+      "title": "Направление движения",
+      "enum": [
+        "left",
+        "right"
+      ],
+      "options": [
+        "Влево",
+        "Вправо"
+      ],
+      "default": "left"
+    },
+    "pauseOnHover": {
+      "type": "boolean",
+      "title": "Останавливать при наведении курсора",
+      "default": true
+    },
+    "fadeEdges": {
+      "type": "boolean",
+      "title": "Растворять края ленты",
+      "default": false
+    },
+    "modules": {
+      "type": "array",
+      "title": "Фразы",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Фраза",
+            "default": ""
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "bandStyle",
+    "textSize",
+    "textWeight",
+    "gap",
+    "bandPadding",
+    "duration",
+    "durationTouch",
+    "direction",
+    "modules",
+    "section"
+  ]
+}

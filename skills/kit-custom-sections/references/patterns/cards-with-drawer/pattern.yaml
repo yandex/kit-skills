@@ -1,0 +1,17 @@
+id: cards-with-drawer
+version: 3
+title: "Карточки с подробностями в шторке"
+purpose: "Сетка карточек (иконка, заголовок, короткий текст); по нажатию открывается шторка с подробным текстом и картинкой"
+origin: "handmade"
+fingerprint: "00aed706af426e32aa83e19ad69fc9a37bca6d6d7585032b36b78f39ea1d5de7"
+docs_fingerprint: "00aed706af426e32aa83e19ad69fc9a37bca6d6d7585032b36b78f39ea1d5de7"
+applied_patches: ""
+keywords: "шторка, шторку, шторкой, открывается шторка, попап, всплывающее окно, всплывающем окне, модальное окно, выезжающая панель, подробнее, подробности, подробностями, услуги, доставка, оплата, способы доставки, способы оплаты, материалы, drawer, popup"
+pages: "main, landing"
+controllers: "ya-kit-toggle-controller"
+answers_required: "modules"
+alt_fields: "modules[].details.image=modules[].details.imageAlt"
+alternatives: "faq-accordion, divider-rows, advantages"
+exit_field: "cta"
+rhythm: "0"
+rhythm_touch: "0"

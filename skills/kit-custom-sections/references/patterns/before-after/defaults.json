@@ -1,5 +1,13 @@
 {
-  "titleText": "До и после",
+  "cta": {
+    "text": "",
+    "link": {
+      "link": "",
+      "linkId": ""
+    },
+    "style": "button"
+  },
+  "titleText": "",
   "titleAlign": "default",
   "palette": "default",
   "before": {
@@ -16,11 +24,10 @@
   },
   "section": {
     "isFullscreen": "default",
-    "hPaddingDesktop": "800",
     "hPaddingMobile": "200",
     "paddingTop": "single",
     "paddingBottom": "single"
   },
-  "verticalRhythm": "500",
-  "verticalRhythmTouch": "300"
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
 }

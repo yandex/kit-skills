@@ -1,10 +1,24 @@
 {
+  "cta": {
+    "text": "",
+    "link": {
+      "link": "",
+      "linkId": ""
+    },
+    "style": "button"
+  },
+  "descriptionTone": "primary",
   "palette": "default",
-  "titleText": "Частые вопросы",
+  "titleText": "",
   "titleAlign": "default",
+  "subtitleText": "",
+  "layout": "single",
+  "view": "dividers",
+  "answerLayout": "below",
+  "icon": "plus",
+  "expandFirst": true,
   "section": {
     "isFullscreen": "default",
-    "hPaddingDesktop": "800",
     "hPaddingMobile": "200",
     "paddingTop": "single",
     "paddingBottom": "single"
@@ -12,10 +26,10 @@
   "modules": [
     {
       "id": "m1",
-      "question": "Как оформить заказ?",
-      "answer": "Выберите товар, добавьте его в корзину и оформите доставку."
+      "question": "",
+      "answer": ""
     }
   ],
-  "verticalRhythm": "500",
-  "verticalRhythmTouch": "300"
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
 }

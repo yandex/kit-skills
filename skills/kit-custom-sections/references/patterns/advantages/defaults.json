@@ -1,10 +1,26 @@
 {
+  "cta": {
+    "text": "",
+    "link": {
+      "link": "",
+      "linkId": ""
+    },
+    "style": "button"
+  },
+  "descriptionTone": "primary",
   "palette": "default",
   "titleText": "",
   "titleAlign": "default",
+  "layout": "grid",
+  "columns": "4",
+  "tileRatio": "auto",
+  "decoration": "none",
+  "layoutTouch": "auto",
+  "columnsTouch": "1",
+  "controlsAlignment": "edges",
+  "noteText": "",
   "section": {
     "isFullscreen": "default",
-    "hPaddingDesktop": "800",
     "hPaddingMobile": "200",
     "paddingTop": "single",
     "paddingBottom": "single"
@@ -12,10 +28,16 @@
   "modules": [
     {
       "id": "m1",
-      "title": "Быстрая доставка",
-      "description": "Отправляем в день заказа."
+      "surface": "neutral",
+      "icon": "none",
+      "imageAlt": "",
+      "title": "",
+      "subtitle": "",
+      "description": "",
+      "list": "",
+      "pairWithNext": false
     }
   ],
-  "verticalRhythm": "500",
-  "verticalRhythmTouch": "300"
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
 }

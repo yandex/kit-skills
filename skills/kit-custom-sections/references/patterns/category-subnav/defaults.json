@@ -1,0 +1,28 @@
+{
+  "palette": "default",
+  "source": "current",
+  "menu": "",
+  "view": {
+    "style": "links",
+    "align": "start",
+    "allText": "Все",
+    "siblingsOnLeaf": true,
+    "topBorder": false,
+    "bottomBorder": true,
+    "activeFirstTouch": true,
+    "showOn": "all"
+  },
+  "masthead": {
+    "showBreadcrumbs": false,
+    "showTitle": false,
+    "cover": "none"
+  },
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

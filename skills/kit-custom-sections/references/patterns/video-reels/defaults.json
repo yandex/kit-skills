@@ -1,0 +1,37 @@
+{
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "playback": "queue",
+  "frameRatio": "9x16",
+  "columns": 4,
+  "columnsTouch": 1,
+  "hGap": "200",
+  "autoplay": false,
+  "autoplayDelay": 6000,
+  "controlsAlignment": "edges",
+  "controlsSize": "md",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "video": {
+        "fileId": "",
+        "filePath": ""
+      },
+      "caption": "",
+      "linkText": "",
+      "link": {
+        "link": "",
+        "linkId": ""
+      }
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

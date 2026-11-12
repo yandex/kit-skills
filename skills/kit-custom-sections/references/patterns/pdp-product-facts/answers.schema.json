@@ -1,0 +1,116 @@
+{
+  "title": "Ответы для блока фактов о товаре",
+  "type": "object",
+  "properties": {
+    "labelPositionTouch": {
+      "type": "string",
+      "enum": [
+        "above",
+        "side"
+      ],
+      "title": "Подпись строки на телефоне (layout rows и columns): above — над значением (по умолчанию), side — рядом, не шире 30%, только для коротких значений"
+    },
+    "descriptionTone": {
+      "type": "string",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "title": "Цвет описаний и лида: primary — основной (по умолчанию); secondary — приглушённый: смесь 64% текста с фоном, на светло-сером фоне с текстом средней яркости не дотягивает до 4,5:1"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок секции (можно пустой)"
+    },
+    "titleAlign": {
+      "type": "string",
+      "enum": [
+        "default",
+        "left",
+        "center"
+      ],
+      "title": "Расположение заголовка"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "layout": {
+      "type": "string",
+      "enum": [
+        "accordion",
+        "rows",
+        "columns"
+      ],
+      "title": "Раскладка: accordion — аккордеон, rows — строки подпись/значение, columns — строки в две колонки"
+    },
+    "labelStyle": {
+      "type": "string",
+      "enum": [
+        "plain",
+        "chip",
+        "outline"
+      ],
+      "title": "Подпись в строках: plain, chip (инверсная плашка) или outline (контур); в аккордеоне не действует"
+    },
+    "expandFirst": {
+      "type": "boolean",
+      "title": "Раскрыть первый пункт аккордеона"
+    },
+    "showDescription": {
+      "type": "boolean",
+      "title": "Показать описание товара (если оно выключено в нативной карточке)"
+    },
+    "descriptionTitle": {
+      "type": "string",
+      "title": "Заголовок описания"
+    },
+    "showOtherSpecs": {
+      "type": "boolean",
+      "title": "Показать остальные характеристики (если модуль характеристик в нативной карточке выключен)"
+    },
+    "otherSpecsTitle": {
+      "type": "string",
+      "title": "Заголовок остальных характеристик"
+    },
+    "modules": {
+      "type": "array",
+      "title": "Характеристики из каталога по порядку показа (до 8)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "characteristicTitle": {
+            "type": "string",
+            "title": "Название характеристики точно как в каталоге"
+          },
+          "label": {
+            "type": "string",
+            "title": "Подпись вместо названия (необязательно)"
+          },
+          "view": {
+            "type": "string",
+            "enum": [
+              "text",
+              "chips"
+            ],
+            "title": "text — текст с переносами строк, chips — перечисление плашками"
+          }
+        },
+        "required": [
+          "characteristicTitle"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
+    }
+  },
+  "required": [
+    "modules"
+  ]
+}

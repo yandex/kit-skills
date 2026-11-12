@@ -1,0 +1,29 @@
+{
+  "start": "offset",
+  "looks": [
+    {
+      "name": "offset",
+      "title": "Ответ со смещением",
+      "description": "Вопрос слева, ответ сдвинут вправо, шеврон.",
+      "settings": {
+        "answerLayout": "offset",
+        "icon": "chevron"
+      }
+    },
+    {
+      "name": "cards-two-columns",
+      "title": "Карточки в две колонки",
+      "description": "Каждый вопрос — карточка, две колонки на компьютере.",
+      "settings": {
+        "view": "cards",
+        "layout": "two-columns"
+      }
+    },
+    {
+      "name": "dividers",
+      "title": "Разделители (вид v1)",
+      "description": "Одна колонка, линии между вопросами, плюс.",
+      "settings": {}
+    }
+  ]
+}

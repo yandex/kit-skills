@@ -1,0 +1,42 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <dl class="kcs-stats kcs-stats_cols-{{settings.columns}} kcs-stats_n-{{length settings.modules}} kcs-stats_{{settings.align}} kcs-stats_{{settings.style}} kcs-stats_value-{{settings.valueColor}} kcs-stats_weight-{{settings.valueWeight}} kcs-stats_caption-{{settings.captionCase}}">
+            {{#each settings.modules as |m|}}
+                <ya-kit-module module-id={{m.id}} class="kcs-stats__item {{skinRounded 150}}">
+                    <dt class="kcs-stats__value">{{m.value}}</dt>
+                    <dd class="kcs-stats__caption">{{m.caption}}</dd>
+                </ya-kit-module>
+            {{/each}}
+        </dl>
+    </ya-kit-section-layout-row>
+    {{#if settings.noteText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-text class="kcs-stats-note kcs-stats-note_{{settings.align}}" size="sm" color="secondary">{{settings.noteText}}</ya-kit-text>
+        </ya-kit-section-layout-row>
+    {{/if}}
+    {{#if (and settings.cta.link.link settings.cta.text)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-exit" style="display: flex; justify-content: {{if (or (eql settings.titleAlign 'center') (and (eql settings.titleAlign 'default') (eql globals.typography.titleAlign 'center'))) 'center' 'flex-start'}}">
+                {{#if (eql settings.cta.style 'link')}}
+                    <ya-kit-link to={{settings.cta.link.link}} weight="medium" decoration="underline">{{settings.cta.text}} →</ya-kit-link>
+                {{else}}
+                    <ya-kit-button to={{settings.cta.link.link}}>{{settings.cta.text}}</ya-kit-button>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
+</ya-kit-section-layout>
+</div>

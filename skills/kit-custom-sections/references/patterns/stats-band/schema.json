@@ -1,0 +1,267 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "cta": {
+      "type": "object",
+      "title": "Кнопка или ссылка дальше",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Подпись: куда ведёт («Все условия доставки»)",
+          "default": ""
+        },
+        "link": {
+          "$ref": "#/definitions/LinkSource",
+          "title": "Ссылка"
+        },
+        "style": {
+          "type": "string",
+          "title": "Вид",
+          "enum": [
+            "button",
+            "link"
+          ],
+          "options": [
+            "Кнопка",
+            "Ссылка со стрелкой"
+          ],
+          "default": "button"
+        }
+      }
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок",
+      "default": ""
+    },
+    "titleAlign": {
+      "$ref": "#/definitions/SectionTitleAlign",
+      "title": "Расположение заголовка"
+    },
+    "columns": {
+      "type": "string",
+      "title": "Цифр в ряду на компьютере",
+      "enum": [
+        "2",
+        "3",
+        "4"
+      ],
+      "options": [
+        "2",
+        "3",
+        "4"
+      ],
+      "default": "4"
+    },
+    "align": {
+      "type": "string",
+      "title": "Выравнивание цифр",
+      "enum": [
+        "center",
+        "left"
+      ],
+      "options": [
+        "По центру",
+        "Слева"
+      ],
+      "default": "center"
+    },
+    "style": {
+      "type": "string",
+      "title": "Оформление",
+      "enum": [
+        "plain",
+        "lined",
+        "cards"
+      ],
+      "options": [
+        "Без оформления",
+        "Линия над цифрой",
+        "Карточки на подложке"
+      ],
+      "default": "plain"
+    },
+    "valueColor": {
+      "type": "string",
+      "title": "Цвет цифр",
+      "enum": [
+        "text",
+        "brand"
+      ],
+      "options": [
+        "Цвет текста",
+        "Фирменный цвет"
+      ],
+      "default": "text"
+    },
+    "valueWeight": {
+      "type": "string",
+      "title": "Насыщенность цифр",
+      "enum": [
+        "normal",
+        "medium",
+        "semibold",
+        "bold"
+      ],
+      "options": [
+        "Обычная",
+        "Средняя",
+        "Полужирная",
+        "Жирная"
+      ],
+      "default": "semibold"
+    },
+    "captionCase": {
+      "type": "string",
+      "title": "Подписи",
+      "enum": [
+        "upper",
+        "normal"
+      ],
+      "options": [
+        "Прописными буквами",
+        "Как написаны"
+      ],
+      "default": "upper"
+    },
+    "noteText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Сноска под цифрами: источник или дата данных"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Цифры (2–8)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Цифра: коротко, можно с текстом (10+, 24/7, 98%)",
+            "maxLength": 12,
+            "default": ""
+          },
+          "caption": {
+            "type": "string",
+            "title": "Подпись к цифре",
+            "maxLength": 60,
+            "default": ""
+          }
+        },
+        "required": [
+          "value",
+          "caption"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section",
+    "modules"
+  ]
+}

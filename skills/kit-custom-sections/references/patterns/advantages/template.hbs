@@ -13,19 +13,104 @@
         </ya-kit-section-layout-row>
     {{/if}}
     <ya-kit-section-layout-row>
-        <div class="advantages">
-            {{#each settings.modules as |module index|}}
-                <ya-kit-module module-id={{module.id}} class="advantages__item {{skinRounded 150}}">
-                    <ya-kit-v-stack gap="150" align-items="flex-start">
-                        {{#if module.image.filePath}}
-                            <ya-kit-image class="advantages__icon" src={{module.image}} fit="cover" aspect-ratio="1:1" rounded="999" />
+        <div
+            class="advantages advantages_{{when (eql settings.layout 'carousel') 'carousel' 'grid'}} advantages_{{when (or (isEmpty settings.tileRatio) (eql settings.tileRatio 'auto')) 'cards' 'tiles'}} advantages_cols-{{settings.columns}} advantages_per-screen-{{settings.columnsTouch}} advantages_arrows-{{when (isEmpty settings.controlsAlignment) 'edges' settings.controlsAlignment}} advantages_touch-{{when (eql settings.layoutTouch 'auto') (when (or (isEmpty settings.tileRatio) (eql settings.tileRatio 'auto')) (when (gt (length settings.modules) 3) 'scroll' 'list') 'grid') (when (isEmpty settings.layoutTouch) 'list' settings.layoutTouch)}}"
+            style="--adv-ratio: {{when (or (isEmpty settings.tileRatio) (eql settings.tileRatio 'auto')) 'auto' (replace settings.tileRatio ':' ' / ')}}; --adv-bleed: var(--ys-spacing-{{settings.section.hPaddingMobile}}, 0px)"
+        >
+            {{#if (eql settings.layout "carousel")}}
+                <ya-kit-carousel class="advantages__carousel" columns="{{when (isEmpty settings.columns) '4' settings.columns}}" columns-touch="{{when (isEmpty settings.columnsTouch) '1' settings.columnsTouch}}" h-gap="300" controls-alignment="{{when (isEmpty settings.controlsAlignment) 'edges' settings.controlsAlignment}}">
+                    {{#each settings.modules as |module|}}
+                        <ya-kit-module module-id={{module.id}} class="advantages__item advantages__item_{{when (isEmpty module.surface) 'neutral' module.surface}} {{when module.pairWithNext 'advantages__item_pair' ''}} {{skinRounded 150}}">
+                            {{#if (eql module.surface "photo")}}
+                                {{#if module.image.filePath}}
+                                    <ya-kit-image class="advantages__photo" src={{module.image}} fit="cover" alt="{{module.imageAlt}}" />
+                                {{/if}}
+                            {{else}}
+                                {{#if (or module.image.filePath (and module.icon (notEql module.icon "none")) (eql settings.decoration "index-number"))}}
+                                    <div class="advantages__head">
+                                        {{#if module.image.filePath}}
+                                            <ya-kit-image class="advantages__icon" src={{module.image}} fit="cover" aspect-ratio="1:1" rounded="999" alt="" />
+                                        {{else}}
+                                            {{#if (and module.icon (notEql module.icon "none"))}}
+                                                <span class="advantages__glyph advantages__glyph_{{module.icon}}"><ya-kit-icon name="{{module.icon}}" size="28" color="inherit" /></span>
+                                            {{/if}}
+                                        {{/if}}
+                                        {{#if (eql settings.decoration "index-number")}}
+                                            <span class="advantages__num" aria-hidden="true"></span>
+                                        {{/if}}
+                                    </div>
+                                {{/if}}
+                                {{#if module.title}}
+                                    <ya-kit-text class="advantages__title" as="h3" size="lg" weight="semibold">{{module.title}}</ya-kit-text>
+                                {{/if}}
+                                {{#if module.subtitle}}
+                                    <ya-kit-text class="advantages__subtitle" size="md" weight="medium">{{module.subtitle}}</ya-kit-text>
+                                {{/if}}
+                                {{#if module.description}}
+                                    <ya-kit-text class="advantages__desc" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{module.description}}</ya-kit-text>
+                                {{/if}}
+                                {{#if module.list}}
+                                    <ya-kit-markdown class="advantages__list" markup={{module.list}} />
+                                {{/if}}
+                            {{/if}}
+                        </ya-kit-module>
+                    {{/each}}
+                </ya-kit-carousel>
+            {{else}}
+                {{#each settings.modules as |module|}}
+                    <ya-kit-module module-id={{module.id}} class="advantages__item advantages__item_{{when (isEmpty module.surface) 'neutral' module.surface}} {{when module.pairWithNext 'advantages__item_pair' ''}} {{skinRounded 150}}">
+                        {{#if (eql module.surface "photo")}}
+                            {{#if module.image.filePath}}
+                                <ya-kit-image class="advantages__photo" src={{module.image}} fit="cover" alt="{{module.imageAlt}}" />
+                            {{/if}}
+                        {{else}}
+                            {{#if (or module.image.filePath (and module.icon (notEql module.icon "none")) (eql settings.decoration "index-number"))}}
+                                <div class="advantages__head">
+                                    {{#if module.image.filePath}}
+                                        <ya-kit-image class="advantages__icon" src={{module.image}} fit="cover" aspect-ratio="1:1" rounded="999" alt="" />
+                                    {{else}}
+                                        {{#if (and module.icon (notEql module.icon "none"))}}
+                                            <span class="advantages__glyph advantages__glyph_{{module.icon}}"><ya-kit-icon name="{{module.icon}}" size="28" color="inherit" /></span>
+                                        {{/if}}
+                                    {{/if}}
+                                    {{#if (eql settings.decoration "index-number")}}
+                                        <span class="advantages__num" aria-hidden="true"></span>
+                                    {{/if}}
+                                </div>
+                            {{/if}}
+                            {{#if module.title}}
+                                <ya-kit-text class="advantages__title" as="h3" size="lg" weight="semibold">{{module.title}}</ya-kit-text>
+                            {{/if}}
+                            {{#if module.subtitle}}
+                                <ya-kit-text class="advantages__subtitle" size="md" weight="medium">{{module.subtitle}}</ya-kit-text>
+                            {{/if}}
+                            {{#if module.description}}
+                                <ya-kit-text class="advantages__desc" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{module.description}}</ya-kit-text>
+                            {{/if}}
+                            {{#if module.list}}
+                                <ya-kit-markdown class="advantages__list" markup={{module.list}} />
+                            {{/if}}
                         {{/if}}
-                        <ya-kit-text as="h4" size="lg" weight="semibold">{{module.title}}</ya-kit-text>
-                        <ya-kit-text size="md" color="secondary">{{module.description}}</ya-kit-text>
-                    </ya-kit-v-stack>
-                </ya-kit-module>
-            {{/each}}
+                    </ya-kit-module>
+                {{/each}}
+            {{/if}}
         </div>
     </ya-kit-section-layout-row>
+    {{#if settings.noteText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-text class="advantages-note advantages-note_{{settings.titleAlign}}" size="sm" color="secondary">{{settings.noteText}}</ya-kit-text>
+        </ya-kit-section-layout-row>
+    {{/if}}
+    {{#if (and settings.cta.link.link settings.cta.text)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-exit" style="display: flex; justify-content: {{if (or (eql settings.titleAlign 'center') (and (eql settings.titleAlign 'default') (eql globals.typography.titleAlign 'center'))) 'center' 'flex-start'}}">
+                {{#if (eql settings.cta.style 'link')}}
+                    <ya-kit-link to={{settings.cta.link.link}} weight="medium" decoration="underline">{{settings.cta.text}} →</ya-kit-link>
+                {{else}}
+                    <ya-kit-button to={{settings.cta.link.link}}>{{settings.cta.text}}</ya-kit-button>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
 </ya-kit-section-layout>
 </div>

@@ -1,0 +1,14 @@
+id: pdp-product-facts
+version: 3
+title: "Факты о товаре"
+purpose: "Блок под карточкой товара: выбранные характеристики из каталога — аккордеон, строки или две колонки"
+origin: "handmade"
+fingerprint: "207c2f76ac9f459ee0690774da513500e8104ad7d3ec8a8121dfebcdb6867855"
+docs_fingerprint: "207c2f76ac9f459ee0690774da513500e8104ad7d3ec8a8121dfebcdb6867855"
+applied_patches: ""
+keywords: "состав товара, характеристики товара, карточкой товара, способ применения, правила ухода, комплектация, материал изделия"
+pages: "pdp"
+controllers: ""
+answers_required: "modules"
+rhythm: "0"
+rhythm_touch: "0"

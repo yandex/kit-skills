@@ -1,0 +1,118 @@
+{
+  "title": "Ответы для карусели коротких видео",
+  "type": "object",
+  "properties": {
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок секции (можно пустой)"
+    },
+    "titleAlign": {
+      "type": "string",
+      "enum": [
+        "default",
+        "left",
+        "center"
+      ],
+      "title": "Расположение заголовка"
+    },
+    "playback": {
+      "type": "string",
+      "enum": [
+        "queue",
+        "tap",
+        "background"
+      ],
+      "title": "Воспроизведение: queue — видимые ролики сами и по очереди, без звука, звук кнопкой на ролике (по умолчанию); tap — по нажатию, со звуком (отзывы с речью); background — все видимые крутятся без звука и без кнопок (короткие петли без речи)"
+    },
+    "frameRatio": {
+      "type": "string",
+      "enum": [
+        "9x16",
+        "4x5",
+        "1x1"
+      ],
+      "title": "Формат карточки: 9x16 (как в соцсетях), 4x5 или 1x1"
+    },
+    "columns": {
+      "type": "number",
+      "minimum": 3,
+      "maximum": 6,
+      "title": "Роликов в ряду на компьютере, 3–6"
+    },
+    "columnsTouch": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 2,
+      "title": "Роликов в ряду на телефоне, 1–2"
+    },
+    "hGap": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "400",
+        "500",
+        "600",
+        "700"
+      ],
+      "title": "Отступ между роликами (spacing-токен карусели, 200 = 16px)"
+    },
+    "controlsAlignment": {
+      "type": "string",
+      "enum": [
+        "none",
+        "edges",
+        "leftRight",
+        "left",
+        "right"
+      ],
+      "title": "Стрелки карусели"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "modules": {
+      "type": "array",
+      "title": "Ролики (до 12; ролик без видео на витрине пропускается)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "video": {
+            "$ref": "#/definitions/VideoModel",
+            "title": "Видео: {fileId, filePath}. Надёжный путь — не передавать: мерчант выбирает ролик в форме секции (new печатает пустую заглушку). Витрина загружает поток по fileId — это video_id из kit.py media video-upload; соответствие filePath полям media video-status живьём не проверено"
+          },
+          "caption": {
+            "type": "string",
+            "title": "Подпись под роликом, до двух строк"
+          },
+          "linkText": {
+            "type": "string",
+            "title": "Текст ссылки под подписью, например «Товар из видео»"
+          },
+          "link": {
+            "$ref": "#/definitions/LinkSource",
+            "title": "Ссылка: объект {link, linkId} (linkId можно пустым)"
+          }
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
+    }
+  },
+  "required": [
+    "titleText"
+  ]
+}

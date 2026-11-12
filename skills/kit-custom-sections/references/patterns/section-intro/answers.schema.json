@@ -1,0 +1,198 @@
+{
+  "title": "Ответы для заголовка-вступления",
+  "type": "object",
+  "properties": {
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок (живой текст, не картинка)"
+    },
+    "headingLevel": {
+      "type": "string",
+      "enum": [
+        "h2",
+        "h1",
+        "h3"
+      ],
+      "title": "h2 по умолчанию; h1 даёт второй h1 на странице (витрина сама делает h1 заголовок главного блока или первой секции ниже) — только по решению владельца; в layout band h1 не выводится; h3 — подраздел главы"
+    },
+    "titleSize": {
+      "type": "string",
+      "enum": [
+        "display",
+        "section"
+      ],
+      "title": "Размер: display — шкала hero 52/40/34px; section — размер заголовка темы, как у заголовков секций"
+    },
+    "metaText": {
+      "type": "string",
+      "title": "Строка под заголовком: размер, материал, число моделей (можно пустой)"
+    },
+    "leadText": {
+      "type": "string",
+      "title": "Вводный текст, 1–3 предложения (можно пустой)"
+    },
+    "leadMutedText": {
+      "type": "string",
+      "title": "Продолжение вводного текста приглушённым цветом (можно пустой)"
+    },
+    "linkText": {
+      "type": "string",
+      "title": "Текст ссылки, например «Смотреть все»"
+    },
+    "linkUrl": {
+      "$ref": "#/definitions/LinkSource",
+      "title": "Ссылка: объект {link, linkId} (linkId можно пустым)"
+    },
+    "linkStyle": {
+      "type": "string",
+      "enum": [
+        "pill",
+        "arrow"
+      ],
+      "title": "Вид ссылки: pill — контурная кнопка, arrow — текст со стрелкой"
+    },
+    "linkArea": {
+      "type": "string",
+      "enum": [
+        "link",
+        "block"
+      ],
+      "title": "Кликабельна только ссылка или весь блок (одна ссылка на весь блок)"
+    },
+    "layout": {
+      "type": "string",
+      "enum": [
+        "split",
+        "stacked",
+        "band"
+      ],
+      "title": "split — заголовок слева, текст и ссылка справа (без них сам становится стопкой); stacked — колонкой; band — полоса над полкой"
+    },
+    "align": {
+      "type": "string",
+      "enum": [
+        "left",
+        "center"
+      ],
+      "title": "Выравнивание стопки (только stacked)"
+    },
+    "alignItems": {
+      "type": "string",
+      "enum": [
+        "start",
+        "center",
+        "end"
+      ],
+      "title": "Выравнивание колонок по вертикали (только split)"
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "none",
+        "secondary",
+        "neutral"
+      ],
+      "title": "Подложка из фона темы"
+    },
+    "framed": {
+      "type": "boolean",
+      "title": "Тонкие линии сверху и снизу"
+    },
+    "modules": {
+      "type": "array",
+      "title": "Теги-ценности, 2–5 коротких фраз (не ссылки)",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Текст тега, до 32 символов",
+            "maxLength": 32
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    },
+    "chipStyle": {
+      "type": "string",
+      "enum": [
+        "outline",
+        "filled",
+        "text"
+      ],
+      "title": "Вид тегов: контур, заливка или текст через точку"
+    },
+    "logoSource": {
+      "type": "string",
+      "enum": [
+        "none",
+        "company"
+      ],
+      "title": "company — логотип магазина из его настроек над заголовком"
+    },
+    "logoTone": {
+      "type": "string",
+      "enum": [
+        "default",
+        "inverted"
+      ],
+      "title": "inverted — инверсный логотип из настроек (для тёмной палитры)"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "section": {
+      "type": "object",
+      "title": "Отступы секции (сливаются с defaults): отдельный манифест — paddingBottom single; полоса на всю ширину — isFullscreen enabled",
+      "properties": {
+        "paddingTop": {
+          "type": "string",
+          "enum": [
+            "double",
+            "single",
+            "none"
+          ]
+        },
+        "paddingBottom": {
+          "type": "string",
+          "enum": [
+            "double",
+            "single",
+            "none"
+          ]
+        },
+        "isFullscreen": {
+          "type": "string",
+          "enum": [
+            "default",
+            "enabled",
+            "disabled"
+          ]
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Добавочный отступ над блоком (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Добавочный отступ над блоком на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
+    },
+    "verticalRhythmBottom": {
+      "type": "string",
+      "title": "Отступ под блоком (spacing-токен; 0 — вплотную к секции ниже, которую блок озаглавливает; отдельный блок-манифест — как verticalRhythm)"
+    },
+    "verticalRhythmBottomTouch": {
+      "type": "string",
+      "title": "Отступ под блоком на телефоне (spacing-токен)"
+    }
+  },
+  "required": [
+    "titleText"
+  ]
+}

@@ -1,0 +1,82 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <div
+            class="kcs-cwd kcs-cwd_cols-{{settings.columns}} kcs-cwd_touch-{{settings.columnsTouch}}"
+            style="--kcs-cwd-hgap: var(--ys-spacing-{{settings.hGap}}); --kcs-cwd-vgap: var(--ys-spacing-{{settings.vGap}})"
+        >
+            {{#each settings.modules as |card|}}
+                <ya-kit-module module-id={{card.id}} class="kcs-cwd__item">
+                    <ya-kit-toggle-controller as="panel">
+                        <div class="kcs-cwd__card {{skinRounded 150}}">
+                            {{#if card.icon.filePath}}
+                                <ya-kit-image class="kcs-cwd__icon" src={{card.icon}} fit="contain" aspect-ratio="1:1" />
+                            {{/if}}
+                            <ya-kit-text class="kcs-cwd__title" as="h3" size="lg" weight="semibold">{{card.title}}</ya-kit-text>
+                            {{#if card.description}}
+                                <ya-kit-text class="kcs-cwd__text" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{card.description}}</ya-kit-text>
+                            {{/if}}
+                            {{#if (or card.details.content card.details.image.filePath)}}
+                                <ya-kit-clickable-area
+                                    class="kcs-cwd__more"
+                                    aria-haspopup="dialog"
+                                    aria-label="{{when card.ctaText card.ctaText 'Подробнее'}}: {{card.title}}"
+                                    on-press={{panel.onSetTruthy}}
+                                >
+                                    <ya-kit-text class="kcs-cwd__more-text" as="span" size="md" weight="semibold" color="inherit">{{when card.ctaText card.ctaText 'Подробнее'}}</ya-kit-text>
+                                    <ya-kit-icon class="kcs-cwd__arrow" name="arrow-right" size="20" color="inherit" />
+                                </ya-kit-clickable-area>
+                            {{/if}}
+                        </div>
+                        {{#if (or card.details.content card.details.image.filePath)}}
+                            <ya-kit-drawer class="kcs-cwd-drawer" is-open={{panel.isOpen}} is-closable="1" enable-overlay="1" on-close={{panel.onSetFalsy}}>
+                                <div class="kcs-cwd-drawer__inner" role="dialog" aria-label="{{card.title}}">
+                                    <div class="kcs-cwd-drawer__head">
+                                        <ya-kit-text class="kcs-cwd-drawer__title" as="h3" size="2xl" weight="semibold">{{card.title}}</ya-kit-text>
+                                        <ya-kit-clickable-area class="kcs-cwd-drawer__close" aria-label="Закрыть" on-press={{panel.onSetFalsy}}>
+                                            <ya-kit-icon name="cross" size="24" color="inherit" />
+                                        </ya-kit-clickable-area>
+                                    </div>
+                                    <div class="kcs-cwd-drawer__body">
+                                        {{#if card.details.content}}
+                                            <div class="kcs-cwd-drawer__md">
+                                                <ya-kit-markdown markup={{card.details.content}} />
+                                            </div>
+                                        {{/if}}
+                                        {{#if card.details.image.filePath}}
+                                            <ya-kit-image class="kcs-cwd-drawer__image" src={{card.details.image}} alt="{{when card.details.imageAlt card.details.imageAlt card.title}}" rounded="150" />
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </ya-kit-drawer>
+                        {{/if}}
+                    </ya-kit-toggle-controller>
+                </ya-kit-module>
+            {{/each}}
+        </div>
+    </ya-kit-section-layout-row>
+    {{#if (and settings.cta.link.link settings.cta.text)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-exit" style="display: flex; justify-content: {{if (or (eql settings.titleAlign 'center') (and (eql settings.titleAlign 'default') (eql globals.typography.titleAlign 'center'))) 'center' 'flex-start'}}">
+                {{#if (eql settings.cta.style 'link')}}
+                    <ya-kit-link to={{settings.cta.link.link}} weight="medium" decoration="underline">{{settings.cta.text}} →</ya-kit-link>
+                {{else}}
+                    <ya-kit-button to={{settings.cta.link.link}}>{{settings.cta.text}}</ya-kit-button>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
+</ya-kit-section-layout>
+</div>

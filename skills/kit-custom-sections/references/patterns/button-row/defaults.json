@@ -1,0 +1,23 @@
+{
+  "palette": "default",
+  "text": "",
+  "link": {
+    "link": "/catalog",
+    "linkId": ""
+  },
+  "variant": "button",
+  "align": "center",
+  "color": "outlined",
+  "size": "lg",
+  "fullWidthMobile": true,
+  "showArrow": true,
+  "hideOnMobile": false,
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "none",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

@@ -1,0 +1,14 @@
+{
+  "palette": "default",
+  "tone": "primary",
+  "backdropPalette": "default",
+  "backdropTone": "primary",
+  "shape": "wave",
+  "edge": "top",
+  "direction": "normal",
+  "period": "m",
+  "depth": "500",
+  "depthTouch": "300",
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

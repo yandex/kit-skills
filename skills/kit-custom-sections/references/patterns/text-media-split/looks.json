@@ -1,0 +1,39 @@
+{
+  "start": "panel",
+  "looks": [
+    {
+      "name": "panel",
+      "title": "Текст на панели, квадратное фото",
+      "description": "Вторичная подложка текста, список галочками.",
+      "settings": {
+        "surface": "secondary",
+        "mediaRatio": "1:1",
+        "listStyle": "check"
+      }
+    },
+    {
+      "name": "title-above",
+      "title": "Заголовок над колонками, фото слева",
+      "description": "Длинная история: заголовок во всю ширину.",
+      "settings": {
+        "titlePlacement": "above",
+        "mediaLeft": true
+      }
+    },
+    {
+      "name": "joined",
+      "title": "Встык на тёмной панели",
+      "description": "Цепочка блоков без зазоров, инверсная подложка.",
+      "settings": {
+        "joined": true,
+        "surface": "inverted"
+      }
+    },
+    {
+      "name": "plain",
+      "title": "Две колонки без подложки (вид v1)",
+      "description": "Фото 4:3 справа.",
+      "settings": {}
+    }
+  ]
+}

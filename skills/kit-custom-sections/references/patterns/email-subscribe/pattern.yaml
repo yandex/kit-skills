@@ -1,0 +1,14 @@
+id: email-subscribe
+version: 2
+title: "Подписка на рассылку"
+purpose: "Форма подписки на e-mail со своим заголовком, кнопкой и видом поля; необязательный промокод показывает размер скидки"
+origin: "handmade"
+fingerprint: "4a904a15d4936b883f0e5161b4fced6ed5e13df0040bd9ba980689aad31ecb08"
+docs_fingerprint: "4a904a15d4936b883f0e5161b4fced6ed5e13df0040bd9ba980689aad31ecb08"
+applied_patches: ""
+keywords: "подписка, подписку, подписки, подписаться, рассылка, рассылку, рассылки, email, e-mail, newsletter, скидка подписку"
+pages: "main, landing"
+controllers: "ya-kit-promocode-controller, ya-kit-email-subscription-controller"
+answers_required: "headline"
+rhythm: "0"
+rhythm_touch: "0"

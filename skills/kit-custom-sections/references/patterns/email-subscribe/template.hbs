@@ -1,0 +1,85 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        <ya-kit-promocode-controller as="promo" promocode-id="{{settings.promo.promocodeId}}">
+            <ya-kit-email-subscription-controller as="sub" enable-agreement="{{eql settings.consent.mode 'checkbox'}}" promocode="{{promo.model}}">
+                <div class="subscribe subscribe_layout_{{settings.layout}} subscribe_surface_{{settings.surface}} {{skinRounded 200}}">
+                    {{#if (eql sub.model.currentStep 'SUCCESS')}}
+                        <div class="subscribe__success" role="status">
+                            <span class="subscribe__success-icon">
+                                <ya-kit-icon name="check" size="24" color="inherit" />
+                            </span>
+                            <div class="subscribe__success-body">
+                                <ya-kit-text as="h2" size="{{when globals.typography.titleSize globals.typography.titleSize '2xl'}}" weight="bold" align="{{if (eql settings.layout 'center') 'center' 'left'}}">{{settings.success.title}}</ya-kit-text>
+                                {{#if promo.model}}
+                                    {{#if settings.success.textWithPromo}}
+                                        <ya-kit-text class="subscribe__text" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}" align="{{if (eql settings.layout 'center') 'center' 'left'}}">{{settings.success.textWithPromo}}</ya-kit-text>
+                                    {{/if}}
+                                {{else}}
+                                    {{#if settings.success.text}}
+                                        <ya-kit-text class="subscribe__text" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}" align="{{if (eql settings.layout 'center') 'center' 'left'}}">{{settings.success.text}}</ya-kit-text>
+                                    {{/if}}
+                                {{/if}}
+                            </div>
+                        </div>
+                    {{else}}
+                        <div class="subscribe__intro">
+                            {{#if promo.model}}
+                                <ya-kit-text class="subscribe__title" as="h2" size="{{when globals.typography.titleSize globals.typography.titleSize '2xl'}}" weight="bold" align="{{if (eql settings.layout 'center') 'center' 'left'}}">{{settings.headlineWithPromo}} <span class="subscribe__value">{{#if (eql promo.model.discountType 'percent')}}{{promo.model.discountValue}}%{{else}}{{formatPrice promo.model.discountValue}}{{/if}}</span></ya-kit-text>
+                                {{#if (or promo.model.firstOrderOnly (gt (multiply promo.model.minimumOrderAmount 1) 0))}}
+                                    <div class="subscribe__terms">
+                                        {{#if promo.model.firstOrderOnly}}
+                                            <ya-kit-text class="subscribe__term" as="span" size="sm" color="secondary">{{settings.terms.firstOrder}}</ya-kit-text>
+                                        {{/if}}
+                                        {{#if (gt (multiply promo.model.minimumOrderAmount 1) 0)}}
+                                            <ya-kit-text class="subscribe__term" as="span" size="sm" color="secondary">{{settings.terms.minOrder}} {{formatPrice promo.model.minimumOrderAmount}}</ya-kit-text>
+                                        {{/if}}
+                                    </div>
+                                {{/if}}
+                            {{else}}
+                                {{#if (and settings.promo.promocodeId promo.isLoading)}}
+                                    <ya-kit-skeleton class="subscribe__title-skeleton" variant="rect" rounded="100" width="100%" height="30px" />
+                                {{else}}
+                                    <ya-kit-text class="subscribe__title" as="h2" size="{{when globals.typography.titleSize globals.typography.titleSize '2xl'}}" weight="bold" align="{{if (eql settings.layout 'center') 'center' 'left'}}">{{settings.headline}}</ya-kit-text>
+                                {{/if}}
+                            {{/if}}
+                            {{#if settings.text}}
+                                <ya-kit-text class="subscribe__text" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}" align="{{if (eql settings.layout 'center') 'center' 'left'}}">{{settings.text}}</ya-kit-text>
+                            {{/if}}
+                        </div>
+                        <div class="subscribe__form subscribe__form_{{settings.form.variant}}">
+                            <div class="subscribe__controls {{skinRounded 150}} {{if sub.model.errors.email 'subscribe__controls_error' ''}}">
+                                <ya-kit-input class="subscribe__input" width="max" size="{{settings.form.controlSize}}" color="{{if (eql settings.form.variant 'inline-pill') 'flat' 'primary'}}" type="email" autocomplete="email" aria-label="{{settings.form.placeholder}}" placeholder="{{settings.form.placeholder}}" value="{{sub.model.email}}" is-error="{{if sub.model.errors.email true false}}" on-change="{{sub.onEmailChange}}" />
+                                <ya-kit-button class="subscribe__submit" color="{{settings.form.buttonColor}}" size="{{settings.form.controlSize}}" is-loading="{{sub.isLoading}}" is-disabled="{{sub.isLoading}}" on-click="{{sub.onSubmit}}">{{settings.form.buttonText}}</ya-kit-button>
+                            </div>
+                            {{#if sub.model.errors.email}}
+                                <p class="subscribe__error" role="alert"><ya-kit-text as="span" size="xs" color="inherit">{{sub.model.errors.email}}</ya-kit-text></p>
+                            {{/if}}
+                            {{#if (eql settings.consent.mode 'checkbox')}}
+                                <label class="subscribe__consent">
+                                    <ya-kit-checkbox class="subscribe__checkbox" value="agreement" is-selected="{{sub.model.agreement}}" is-error="{{if sub.model.errors.agreement true false}}" on-change="{{sub.onAgreementChange}}" />
+                                    <ya-kit-markdown class="subscribe__consent-text" markup="{{settings.consent.text}}" />
+                                </label>
+                                {{#if sub.model.errors.agreement}}
+                                    <p class="subscribe__error" role="alert"><ya-kit-text as="span" size="xs" color="inherit">{{sub.model.errors.agreement}}</ya-kit-text></p>
+                                {{/if}}
+                            {{else}}
+                                <div class="subscribe__consent subscribe__consent_notice">
+                                    <ya-kit-markdown class="subscribe__consent-text" markup="{{settings.consent.text}}" />
+                                </div>
+                            {{/if}}
+                        </div>
+                    {{/if}}
+                </div>
+            </ya-kit-email-subscription-controller>
+        </ya-kit-promocode-controller>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

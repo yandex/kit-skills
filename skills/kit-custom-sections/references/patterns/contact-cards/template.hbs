@@ -1,0 +1,187 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-company-controller as="company">
+        {{#if (or (notEql (length (filterBy settings.modules 'value' '')) (length settings.modules)) (and settings.storeContacts.phone (length company.model.phone)) (and settings.storeContacts.mail (length company.model.mail)) (and settings.storeContacts.address (length company.model.address)) (and settings.storeContacts.workingMode (length company.model.workingMode)) (and settings.storeContacts.socialNetworks (length company.model.socialNetworks)))}}
+            <ya-kit-section-layout-row>
+                <div
+                    class="kcs-contacts kcs-contacts_{{settings.variant}} kcs-contacts_head-{{settings.titleAlign}} kcs-contacts_tone-{{when settings.descriptionTone settings.descriptionTone 'primary'}} {{if settings.showIcons 'kcs-contacts_icons' ''}} {{if settings.numbered 'kcs-contacts_numbered' ''}}"
+                    style="--kcs-contacts-cols: {{settings.columns}}"
+                >
+                    {{#if (or settings.titleText settings.intro settings.logo.show)}}
+                        <div class="kcs-contacts__head">
+                            {{#if settings.logo.show}}
+                                {{#if settings.logo.image.filePath}}
+                                    <ya-kit-image class="kcs-contacts__logo" src={{settings.logo.image}} fit="contain" aspect-ratio="5:2" alt="{{when (isEmpty company.model.name) 'Логотип' company.model.name}}" />
+                                {{else if (and settings.logo.inverted company.model.invertedLogo.filePath)}}
+                                    <ya-kit-image class="kcs-contacts__logo" src={{company.model.invertedLogo}} fit="contain" aspect-ratio="5:2" alt="{{when (isEmpty company.model.name) 'Логотип' company.model.name}}" />
+                                {{else if company.model.logo.filePath}}
+                                    <ya-kit-image class="kcs-contacts__logo" src={{company.model.logo}} fit="contain" aspect-ratio="5:2" alt="{{when (isEmpty company.model.name) 'Логотип' company.model.name}}" />
+                                {{/if}}
+                            {{/if}}
+                            {{#if settings.titleText}}
+                                <ya-kit-section-title class="kcs-contacts__title" align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+                            {{/if}}
+                            {{#if settings.intro}}
+                                <div class="kcs-contacts__intro">
+                                    <ya-kit-markdown markup="{{settings.intro}}" />
+                                </div>
+                            {{/if}}
+                        </div>
+                    {{/if}}
+                    <ul class="kcs-contacts__list" role="list">
+                        {{#if (and settings.storeContacts.phone (length company.model.phone))}}
+                            {{#each company.model.phone as |phone|}}
+                                {{#if phone.value}}
+                                    <li class="kcs-contacts__cell">
+                                        <div class="kcs-contacts__item kcs-contacts__item_action {{skinRounded 150}}">
+                                            {{#if settings.showIcons}}
+                                                <span class="kcs-contacts__icon" aria-hidden="true"><ya-kit-icon name="phone" size="20" color="inherit" /></span>
+                                            {{/if}}
+                                            <ya-kit-text class="kcs-contacts__label" size="sm" color="secondary">{{when (isEmpty phone.name) 'Телефон' phone.name}}</ya-kit-text>
+                                            <ya-kit-link class="kcs-contacts__value" to="tel:{{when (and (startsWith phone.value '7') (formatPhoneNumber phone.value)) '+' ''}}{{replaceAll phone.value ' ' ''}}" size="lg" weight="medium">{{#if (formatPhoneNumber phone.value)}}{{formatPhoneNumber phone.value}}{{else}}{{phone.value}}{{/if}}</ya-kit-link>
+                                        </div>
+                                    </li>
+                                {{/if}}
+                            {{/each}}
+                        {{/if}}
+                        {{#if (and settings.storeContacts.mail (length company.model.mail))}}
+                            {{#each company.model.mail as |mail|}}
+                                {{#if mail.value}}
+                                    <li class="kcs-contacts__cell">
+                                        <div class="kcs-contacts__item kcs-contacts__item_action {{skinRounded 150}}">
+                                            {{#if settings.showIcons}}
+                                                <span class="kcs-contacts__icon" aria-hidden="true"><ya-kit-icon name="mail" size="20" color="inherit" /></span>
+                                            {{/if}}
+                                            <ya-kit-text class="kcs-contacts__label" size="sm" color="secondary">{{when (isEmpty mail.name) 'Эл. почта' mail.name}}</ya-kit-text>
+                                            <ya-kit-link class="kcs-contacts__value" to="mailto:{{mail.value}}" size="lg" weight="medium">{{mail.value}}</ya-kit-link>
+                                        </div>
+                                    </li>
+                                {{/if}}
+                            {{/each}}
+                        {{/if}}
+                        {{#if (and settings.storeContacts.address (length company.model.address))}}
+                            {{#each company.model.address as |address|}}
+                                {{#if address.value}}
+                                    <li class="kcs-contacts__cell">
+                                        <div class="kcs-contacts__item kcs-contacts__item_{{if settings.storeContacts.addressOnMap 'action' 'static'}} {{skinRounded 150}}">
+                                            {{#if settings.showIcons}}
+                                                <span class="kcs-contacts__icon" aria-hidden="true"><ya-kit-icon name="location" size="20" color="inherit" /></span>
+                                            {{/if}}
+                                            <ya-kit-text class="kcs-contacts__label" size="sm" color="secondary">{{when (isEmpty address.name) 'Адрес' address.name}}</ya-kit-text>
+                                            {{#if settings.storeContacts.addressOnMap}}
+                                                <ya-kit-link class="kcs-contacts__value kcs-contacts__value_pre" to="https://yandex.ru/maps/?text={{replaceAll (replaceAll address.value '#' ' ') '&' ' '}}" size="lg" weight="medium">{{address.value}}</ya-kit-link>
+                                            {{else}}
+                                                <ya-kit-text class="kcs-contacts__value kcs-contacts__value_pre" size="lg" weight="medium">{{address.value}}</ya-kit-text>
+                                            {{/if}}
+                                        </div>
+                                    </li>
+                                {{/if}}
+                            {{/each}}
+                        {{/if}}
+                        {{#if (and settings.storeContacts.workingMode (length company.model.workingMode))}}
+                            {{#each company.model.workingMode as |hours|}}
+                                {{#if hours.value}}
+                                    <li class="kcs-contacts__cell">
+                                        <div class="kcs-contacts__item kcs-contacts__item_static {{skinRounded 150}}">
+                                            {{#if settings.showIcons}}
+                                                <span class="kcs-contacts__icon" aria-hidden="true"><ya-kit-icon name="clock" size="20" color="inherit" /></span>
+                                            {{/if}}
+                                            <ya-kit-text class="kcs-contacts__label" size="sm" color="secondary">{{when (isEmpty hours.name) 'Режим работы' hours.name}}</ya-kit-text>
+                                            <ya-kit-text class="kcs-contacts__value kcs-contacts__value_pre" size="lg" weight="medium">{{hours.value}}</ya-kit-text>
+                                        </div>
+                                    </li>
+                                {{/if}}
+                            {{/each}}
+                        {{/if}}
+                        {{#each settings.modules as |m|}}
+                            {{#if m.value}}
+                                <li class="kcs-contacts__cell">
+                                    <ya-kit-module module-id={{m.id}} class="kcs-contacts__item kcs-contacts__item_{{if (or (eql m.kind 'phone') (eql m.kind 'email') (and (eql m.kind 'link') m.link.link)) 'action' 'static'}} {{skinRounded 150}}">
+                                        {{#if settings.showIcons}}
+                                            {{#if (notEql m.icon 'none')}}
+                                                <span class="kcs-contacts__icon" aria-hidden="true">
+                                                    {{#if (notEql m.icon 'auto')}}
+                                                        <ya-kit-icon name="{{m.icon}}" size="20" color="inherit" />
+                                                    {{else if (eql m.kind 'phone')}}
+                                                        <ya-kit-icon name="phone" size="20" color="inherit" />
+                                                    {{else if (eql m.kind 'email')}}
+                                                        <ya-kit-icon name="mail" size="20" color="inherit" />
+                                                    {{else if (eql m.kind 'link')}}
+                                                        <ya-kit-icon name="arrow-right" size="20" color="inherit" />
+                                                    {{else}}
+                                                        <ya-kit-icon name="info" size="20" color="inherit" />
+                                                    {{/if}}
+                                                </span>
+                                            {{/if}}
+                                        {{/if}}
+                                        {{#if m.label}}
+                                            <ya-kit-text class="kcs-contacts__label" size="sm" color="secondary">{{m.label}}</ya-kit-text>
+                                        {{/if}}
+                                        {{#if (eql m.kind 'phone')}}
+                                            <ya-kit-link class="kcs-contacts__value" to="tel:{{when (and (startsWith (trim m.value) '7') (formatPhoneNumber m.value)) '+' ''}}{{replaceAll (trim m.value) ' ' ''}}" size="lg" weight="medium">{{#if (formatPhoneNumber m.value)}}{{formatPhoneNumber m.value}}{{else}}{{m.value}}{{/if}}</ya-kit-link>
+                                        {{else if (eql m.kind 'email')}}
+                                            <ya-kit-link class="kcs-contacts__value" to="mailto:{{trim m.value}}" size="lg" weight="medium">{{m.value}}</ya-kit-link>
+                                        {{else if (and (eql m.kind 'link') m.link.link)}}
+                                            <ya-kit-link class="kcs-contacts__value" to="{{m.link.link}}" size="lg" weight="medium">{{m.value}}</ya-kit-link>
+                                        {{else}}
+                                            <ya-kit-text class="kcs-contacts__value kcs-contacts__value_text kcs-contacts__value_pre" size="md">{{m.value}}</ya-kit-text>
+                                        {{/if}}
+                                        {{#if m.note}}
+                                            <div class="kcs-contacts__note">
+                                                <ya-kit-markdown markup="{{m.note}}" />
+                                            </div>
+                                        {{/if}}
+                                    </ya-kit-module>
+                                </li>
+                            {{/if}}
+                        {{/each}}
+                        {{#if (and settings.storeContacts.socialNetworks (length company.model.socialNetworks))}}
+                            <li class="kcs-contacts__cell kcs-contacts__cell_social">
+                                <div class="kcs-contacts__item kcs-contacts__item_social {{skinRounded 150}}">
+                                    {{#if settings.socialLabel}}
+                                        <ya-kit-text class="kcs-contacts__label" size="sm" color="secondary">{{settings.socialLabel}}</ya-kit-text>
+                                    {{/if}}
+                                    <div class="kcs-contacts__nets">
+                                        {{#each company.model.socialNetworks as |net|}}
+                                            {{#if (and net.value (or (eql net.name 'telegram') (eql net.name 'vk') (eql net.name 'dzen') (eql net.name 'ok') (eql net.name 'youtube') (eql net.name 'tiktok') (eql net.name 'rhythm') (eql net.name 'whatsapp') (eql net.name 'max')))}}
+                                                <ya-kit-link class="kcs-contacts__net {{skinRounded 150}}" to="{{net.value}}" size="md" weight="semibold">
+                                                    {{#if (eql net.name 'telegram')}}
+                                                        <ya-kit-icon name="telegram" size="20" color="inherit" /><span class="kcs-contacts__net-label">Telegram</span>
+                                                    {{else if (eql net.name 'vk')}}
+                                                        <ya-kit-icon name="vk" size="20" color="inherit" /><span class="kcs-contacts__net-label">ВКонтакте</span>
+                                                    {{else if (eql net.name 'dzen')}}
+                                                        <ya-kit-icon name="dzen" size="20" color="inherit" /><span class="kcs-contacts__net-label">Дзен</span>
+                                                    {{else if (eql net.name 'ok')}}
+                                                        <ya-kit-icon name="odnoklassniki" size="20" color="inherit" /><span class="kcs-contacts__net-label">Одноклассники</span>
+                                                    {{else if (eql net.name 'youtube')}}
+                                                        <ya-kit-icon name="youtube" size="20" color="inherit" /><span class="kcs-contacts__net-label">YouTube</span>
+                                                    {{else if (eql net.name 'tiktok')}}
+                                                        <ya-kit-icon name="tiktok" size="20" color="inherit" /><span class="kcs-contacts__net-label">TikTok</span>
+                                                    {{else if (eql net.name 'rhythm')}}
+                                                        <ya-kit-icon name="rhythm" size="20" color="inherit" /><span class="kcs-contacts__net-label">Ритм</span>
+                                                    {{else if (eql net.name 'whatsapp')}}
+                                                        <ya-kit-icon name="whats-app" size="20" color="inherit" /><span class="kcs-contacts__net-label">WhatsApp</span>
+                                                    {{else}}
+                                                        <ya-kit-icon name="max" size="20" color="inherit" /><span class="kcs-contacts__net-label">Макс</span>
+                                                    {{/if}}
+                                                </ya-kit-link>
+                                            {{/if}}
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </li>
+                        {{/if}}
+                    </ul>
+                </div>
+            </ya-kit-section-layout-row>
+        {{/if}}
+    </ya-kit-company-controller>
+</ya-kit-section-layout>
+</div>

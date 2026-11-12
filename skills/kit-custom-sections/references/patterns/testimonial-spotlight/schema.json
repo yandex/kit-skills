@@ -1,0 +1,294 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "cta": {
+      "type": "object",
+      "title": "Кнопка или ссылка дальше",
+      "properties": {
+        "text": {
+          "type": "string",
+          "title": "Подпись: куда ведёт («Все условия доставки»)",
+          "default": ""
+        },
+        "link": {
+          "$ref": "#/definitions/LinkSource",
+          "title": "Ссылка"
+        },
+        "style": {
+          "type": "string",
+          "title": "Вид",
+          "enum": [
+            "button",
+            "link"
+          ],
+          "options": [
+            "Кнопка",
+            "Ссылка со стрелкой"
+          ],
+          "default": "button"
+        }
+      }
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок секции (можно оставить пустым)",
+      "default": ""
+    },
+    "titleAlign": {
+      "$ref": "#/definitions/SectionTitleAlign",
+      "title": "Расположение заголовка"
+    },
+    "quoteSize": {
+      "type": "string",
+      "title": "Размер цитаты",
+      "enum": [
+        "s",
+        "m",
+        "l"
+      ],
+      "options": [
+        "Спокойный: 28 px, на телефоне 20 px",
+        "Крупный: 32 px, на телефоне 22 px",
+        "Акцентный: 40 px, на телефоне 24 px (для коротких отзывов)"
+      ],
+      "default": "m"
+    },
+    "surface": {
+      "type": "string",
+      "title": "Подложка отзыва",
+      "enum": [
+        "plain",
+        "panel"
+      ],
+      "options": [
+        "Без подложки, на фоне секции",
+        "Панель вторичного цвета палитры"
+      ],
+      "default": "plain"
+    },
+    "showRating": {
+      "type": "boolean",
+      "title": "Показывать оценку звёздами",
+      "default": true
+    },
+    "ratingColor": {
+      "type": "string",
+      "title": "Цвет звёзд",
+      "enum": [
+        "brand",
+        "text"
+      ],
+      "options": [
+        "Цвет бренда",
+        "Цвет текста палитры (если фон секции близок к цвету бренда)"
+      ],
+      "default": "brand"
+    },
+    "showCounter": {
+      "type": "boolean",
+      "title": "Показывать номер отзыва (2 / 5), если отзывов несколько",
+      "default": true
+    },
+    "autoplay": {
+      "type": "boolean",
+      "title": "Листать автоматически (длинный отзыв могут не успеть дочитать)",
+      "default": false
+    },
+    "autoplayDelay": {
+      "type": "number",
+      "title": "Интервал автолистания",
+      "minimum": 4000,
+      "maximum": 15000,
+      "step": 1000,
+      "unit": "мс",
+      "default": 6000
+    },
+    "controlsAlignment": {
+      "type": "string",
+      "title": "Стрелки карусели (на телефоне стрелок нет, листают свайпом)",
+      "enum": [
+        "edges",
+        "leftRight",
+        "none"
+      ],
+      "options": [
+        "По краям",
+        "Слева и справа внутри блока",
+        "Без стрелок"
+      ],
+      "default": "edges"
+    },
+    "controlsSize": {
+      "type": "string",
+      "title": "Размер стрелок",
+      "enum": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "options": [
+        "S",
+        "M",
+        "L"
+      ],
+      "default": "md"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Отзывы (по одному на слайд)",
+      "totalMaximum": 10,
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "$ref": "#/definitions/TextArea",
+            "title": "Текст отзыва без кавычек: кавычки «» добавятся сами",
+            "default": ""
+          },
+          "rating": {
+            "type": "number",
+            "title": "Оценка",
+            "minimum": 1,
+            "maximum": 5,
+            "step": 1,
+            "default": 5
+          },
+          "author": {
+            "type": "string",
+            "title": "Имя автора",
+            "default": ""
+          },
+          "caption": {
+            "type": "string",
+            "title": "Подпись под именем: город, дата или купленный товар",
+            "default": ""
+          },
+          "photo": {
+            "$ref": "#/definitions/ImageModel",
+            "title": "Фото автора (только с его согласия)"
+          },
+          "photoAlt": {
+            "type": "string",
+            "title": "Описание фото для незрячих (можно пусто: имя подписано рядом)",
+            "default": ""
+          }
+        },
+        "required": [
+          "text",
+          "rating",
+          "author"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section",
+    "modules"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "start": "lined",
+  "looks": [
+    {
+      "name": "lined",
+      "title": "Цифры с линией, цвет бренда",
+      "description": "Цифры брендовым цветом над тонкой линией, выравнивание влево.",
+      "settings": {
+        "style": "lined",
+        "valueColor": "brand",
+        "valueWeight": "bold",
+        "align": "left"
+      }
+    },
+    {
+      "name": "cards",
+      "title": "Цифры в карточках",
+      "description": "Каждая цифра на подложке, по центру.",
+      "settings": {
+        "style": "cards"
+      }
+    },
+    {
+      "name": "plain",
+      "title": "Цифры без украшений (вид v1)",
+      "description": "Цифра и подпись по центру.",
+      "settings": {}
+    }
+  ]
+}

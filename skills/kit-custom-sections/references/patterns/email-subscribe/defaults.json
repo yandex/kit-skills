@@ -1,0 +1,37 @@
+{
+  "descriptionTone": "primary",
+  "palette": "default",
+  "headline": "",
+  "headlineWithPromo": "",
+  "text": "",
+  "terms": {
+    "firstOrder": "Только на первый заказ",
+    "minOrder": "При заказе от"
+  },
+  "form": {
+    "placeholder": "Ваш e-mail",
+    "buttonText": "Подписаться",
+    "buttonColor": "primary",
+    "controlSize": "lg",
+    "variant": "row"
+  },
+  "consent": {
+    "mode": "checkbox",
+    "text": "Подписываясь, вы соглашаетесь на обработку персональных данных и получение рассылки. [Политика конфиденциальности](/privacy)"
+  },
+  "success": {
+    "title": "Готово",
+    "text": "Вы подписались на рассылку.",
+    "textWithPromo": "Промокод придёт на указанную почту."
+  },
+  "layout": "center",
+  "surface": "panel",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

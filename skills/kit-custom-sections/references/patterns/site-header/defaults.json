@@ -1,0 +1,45 @@
+{
+  "palette": "default",
+  "mainMenu": "",
+  "secondaryMenu": "",
+  "logo": {
+    "useInverted": false,
+    "text": "",
+    "widthDesktop": 140,
+    "widthTouch": 112
+  },
+  "layout": {
+    "logoPosition": "left",
+    "navMode": "auto",
+    "dropdown": "list",
+    "barHeight": "regular",
+    "width": "theme",
+    "uppercase": false,
+    "isSticky": true,
+    "showBorder": true
+  },
+  "actions": {
+    "search": "icon",
+    "searchPlaceholder": "Поиск по каталогу",
+    "showFavourites": true,
+    "showAccount": true,
+    "showCart": true
+  },
+  "secondaryRow": {
+    "showOnTouch": true
+  },
+  "location": {
+    "show": false,
+    "fallbackText": "Выберите город"
+  },
+  "contacts": {
+    "show": "none"
+  },
+  "section": {
+    "hPaddingMobile": "200",
+    "paddingTop": "none",
+    "paddingBottom": "none"
+  },
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

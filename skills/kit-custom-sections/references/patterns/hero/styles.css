@@ -1,26 +1,50 @@
+/* База — вид «С отступами» (inset), как в версии 1: текст и фото в двух
+   колонках с зазором. Вид «Панель 50/50» (hero_panel) переопределяет базу
+   ниже с той же или большей специфичностью. Воздух над и под блоком — ритм и
+   паддинг секции: своего вертикального поля у inset нет, иначе первый экран
+   отодвигался бы от шапки на 100+ px. */
 .hero {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: var(--ys-spacing-600);
     align-items: center;
-    padding: var(--ys-spacing-600) 0;
 }
 
 .hero__text {
+    box-sizing: border-box;
+    min-width: 0;
     max-width: 48rem;
 }
 
+.hero__head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-150);
+}
+
+.hero__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
 /* Собственная шкала h1: платформенный максимум ya-kit-text (4xl = 32px) не даёт
-   иерархии против заголовков секций (24px). Размерных токенов шрифта в теме нет,
-   поэтому px; цвета остаются токенами. */
+   иерархии против заголовков секций. Размерных токенов шрифта в теме нет,
+   поэтому px; цвета остаются токенами. Длинное слово («Профессиональная» — 372px
+   при 40px) не шире колонки: переносится по слогам, в крайнем случае рвётся. */
 .hero__title {
     font-size: 52px;
     line-height: 1.08;
     letter-spacing: -0.02em;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .hero__subtitle {
     max-width: 36rem;
+    line-height: 1.4;
+    text-wrap: pretty;
 }
 
 .hero__cta {
@@ -31,8 +55,170 @@
     min-width: 0;
 }
 
+.hero_media-left .hero__media {
+    order: -1;
+}
+
+.hero__image_m {
+    display: none;
+}
+
+/* Значки доверия: ряд под кнопкой, отбит тонкой линией цвета границы палитры. */
+.hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-self: stretch;
+    gap: var(--ys-spacing-150) var(--ys-spacing-400);
+    margin-top: var(--ys-spacing-100);
+    padding-top: var(--ys-spacing-300);
+    border-top: 1px solid var(--ys-color-token-border-primary);
+}
+
+.hero__badge {
+    display: flex;
+    align-items: center;
+    gap: var(--ys-spacing-100);
+    min-width: 0;
+    color: var(--ys-color-token-text-primary);
+}
+
+.hero__badge-icon {
+    flex: none;
+}
+
+/* Четыре значка — сеткой 2×2: рядом с переносом они ложатся 3+1. */
+.hero__badges:has(> :nth-child(4)) {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+}
+
+.hero_align-center .hero__badges:has(> :nth-child(4)) {
+    justify-content: center;
+}
+
+/* Без фото — одна колонка: текст не жмётся в левую половину. */
+.hero_no-media {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.hero_no-media .hero__text {
+    max-width: 56rem;
+}
+
+.hero_align-center .hero__text {
+    align-items: center;
+    margin-inline: auto;
+}
+
+.hero_align-center .hero__head {
+    align-items: center;
+}
+
+.hero_align-center .hero__badges {
+    justify-content: center;
+}
+
+/* Вид «Панель 50/50»: половины впритык, одно скругление темы на весь блок
+   (skinRounded 200 на корне), фото без своего скругления. */
+.hero.hero_panel {
+    gap: 0;
+    padding: 0;
+    align-items: stretch;
+    overflow: hidden;
+    border-radius: var(--ys-current-skin-border-radius, 0px);
+}
+
+.hero_panel .hero__text {
+    max-width: none;
+    padding: var(--ys-spacing-1000) var(--ys-spacing-900);
+}
+
+.hero_panel.hero_no-media .hero__text {
+    padding: var(--ys-spacing-1100) var(--ys-spacing-900);
+}
+
+.hero_panel.hero_no-media .hero__head,
+.hero_panel.hero_no-media .hero__badges {
+    max-width: 48rem;
+}
+
+.hero_panel .hero__media {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero_panel.hero_surface-secondary {
+    background-color: var(--ys-background-secondary);
+}
+
+.hero_panel.hero_surface-neutral {
+    background-color: var(--ys-background-neutral);
+}
+
+/* Фирменная и инверсная заливка. Цвета палитры снимаются один раз на корне
+   (--hero-fill / --hero-ink), а внутри текстовой колонки токены темы
+   переназначаются на них: атомы (ya-kit-text, ya-kit-button, ya-kit-icon)
+   читают токены у себя на элементе и перекрашиваются без своих цветов. */
+.hero_panel.hero_surface-brand {
+    --hero-fill: var(--ys-color-token-brand-primary);
+    --hero-ink: var(--ys-color-token-brand-primary-contrast);
+}
+
+.hero_panel.hero_surface-inverse {
+    --hero-fill: var(--ys-color-token-text-primary);
+    --hero-ink: var(--ys-background-primary);
+}
+
+.hero_panel.hero_surface-brand,
+.hero_panel.hero_surface-inverse {
+    background-color: var(--hero-fill);
+    color: var(--hero-ink);
+}
+
+.hero_panel.hero_surface-brand .hero__text,
+.hero_panel.hero_surface-inverse .hero__text {
+    --ys-color-token-text-primary: var(--hero-ink);
+    --ys-color-token-text-secondary: color-mix(in srgb, var(--hero-ink) 72%, transparent);
+    --ys-color-token-brand-primary: var(--hero-ink);
+    --ys-color-token-brand-primary-contrast: var(--hero-fill);
+    --ys-background-secondary: color-mix(in srgb, var(--hero-ink) 14%, transparent);
+    --ys-background-neutral: color-mix(in srgb, var(--hero-ink) 10%, transparent);
+    --ys-color-token-border-primary: color-mix(in srgb, var(--hero-ink) 28%, transparent);
+    --ys-color-token-border-secondary: color-mix(in srgb, var(--hero-ink) 56%, transparent);
+}
+
+/* Компьютер: фото панели растягивается на высоту текстовой половины, пропорция
+   фото работает как минимальная высота. Держится на внутреннем img атома
+   (разметка движка, в доке её нет); если она изменится, фото останется в своей
+   пропорции по центру половины на заливке панели. */
+@media (min-width: 1024px) {
+    .hero_panel .hero__image_d {
+        flex: 1 1 auto;
+        height: 100%;
+    }
+
+    .hero_panel .hero__image_d img {
+        height: 100%;
+    }
+}
+
+/* Узкий компьютер: две колонки по ~420–450px — шкала заголовка и поля
+   панели на ступень меньше в обоих видах. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .hero_panel .hero__text {
+        padding: var(--ys-spacing-600) var(--ys-spacing-500);
+    }
+
+    .hero__title {
+        font-size: 40px;
+        line-height: 1.1;
+    }
+}
+
 /* Планшет 768–1023 — промежуточная ступень шкалы: 52px в узкой колонке
-   разваливается на четыре строки. */
+   разваливается на четыре строки. Вид с отступами от 900px остаётся в две
+   колонки, панель складывается в столбик. */
 @media (min-width: 768px) and (max-width: 1023px) {
     .hero__title {
         font-size: 40px;
@@ -42,30 +228,166 @@
     .hero {
         gap: var(--ys-spacing-400);
     }
+
+    .hero.hero_panel {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .hero_panel .hero__text {
+        padding: var(--ys-spacing-700) var(--ys-spacing-600);
+    }
+
+    .hero_panel .hero__head,
+    .hero_panel .hero__subtitle,
+    .hero_panel .hero__badges {
+        max-width: 40rem;
+    }
+}
+
+/* 768–899: колонка текста рядом с фото уже ~300px, заголовок 40px в ней не
+   живёт — вид с отступами тоже в столбик, фото по mobileOrder. */
+@media (min-width: 768px) and (max-width: 899px) {
+    .hero {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hero__text {
+        max-width: 40rem;
+    }
+
+    .hero_media-left .hero__media {
+        order: 0;
+    }
+
+    .hero_order-media .hero__media {
+        order: -1;
+    }
+}
+
+/* Фото в столбике — кадр 4:3 на нашей обёртке: вертикальный или квадратный
+   кадр обрезается по центру, атом не трогаем. Порядок задаёт mobileOrder,
+   зеркалирование mediaLeft в столбике не действует. */
+@media (max-width: 1023px) {
+    .hero_panel .hero__media {
+        order: 0;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+    }
+
+    .hero_panel.hero_order-media .hero__media {
+        order: -1;
+    }
+}
+
+@media (min-width: 768px) {
+    .hero_panel.hero_flush-d {
+        border-radius: 0;
+    }
 }
 
 @media (max-width: 767px) {
     .hero {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: var(--ys-spacing-300);
-        padding: var(--ys-spacing-300) 0;
     }
 
     .hero__title {
         font-size: 34px;
         line-height: 1.12;
     }
+
+    .hero__subtitle {
+        font-size: 18px;
+    }
+
+    .hero__media {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        border-radius: var(--ys-current-skin-border-radius, 0px);
+    }
+
+    .hero_media-left .hero__media {
+        order: 0;
+    }
+
+    .hero_order-media .hero__media {
+        order: -1;
+    }
+
+    .hero_has-mobile .hero__image_d {
+        display: none;
+    }
+
+    .hero_has-mobile .hero__image_m {
+        display: block;
+    }
+
+    /* Кнопка во всю ширину колонки — под большой палец. */
+    .hero__cta {
+        align-self: stretch;
+    }
+
+    .hero__button {
+        width: 100%;
+    }
+
+    /* Значки на телефоне — столбиком: две равные колонки в узкой панели
+       ломали подписи на две строки, перенос по ширине давал рваные ряды. */
+    .hero__badges,
+    .hero__badges:has(> :nth-child(4)) {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--ys-spacing-150);
+        margin-top: 0;
+        padding-top: var(--ys-spacing-200);
+    }
+
+    .hero_align-center .hero__badges,
+    .hero_align-center .hero__badges:has(> :nth-child(4)) {
+        display: flex;
+        gap: var(--ys-spacing-150) var(--ys-spacing-300);
+    }
+
+    .hero.hero_panel {
+        gap: 0;
+        padding: 0;
+    }
+
+    .hero_panel .hero__text,
+    .hero_panel.hero_no-media .hero__text {
+        padding: var(--ys-spacing-500) var(--ys-spacing-300);
+    }
+
+    .hero_panel .hero__media {
+        border-radius: 0;
+    }
+
+    .hero_panel.hero_flush-m {
+        border-radius: 0;
+    }
 }
 
-/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
-.kcs-rhythm {
-    padding-top: var(--kcs-rhythm, 0px);
-    padding-bottom: var(--kcs-rhythm, 0px);
+/* Сердце среди контурных значков — контуром, как у нативной карточки. */
+.hero__badge-icon_heart {
+    fill: transparent;
+    --ys-color-stroke: currentColor;
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
 }
 
 @media (max-width: 767px) {
-    .kcs-rhythm {
-        padding-top: var(--kcs-rhythm-touch, 0px);
-        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
     }
 }

@@ -1,0 +1,297 @@
+/* Плакатное слово во всю ширину. Кегль считается от ширины полосы (контейнерные
+   единицы cqi), числа знаков и средней ширины буквы шрифта темы. Шрифт темы заранее
+   неизвестен, поэтому ширина буквы — откалиброванная оценка: класс ширины шрифта
+   (fontWidth), регистр, насыщенность, трекинг. Калибровка по замеру 33 шрифтов на
+   русских словах (Chrome, 2026-09): слово занимает около 90% заданной доли, самые
+   широкие слова выходят за неё до 8% и уходят в боковое поле секции, а не в прокрутку. */
+.kcs-type {
+    --kcs-type-rb: 0.75;
+    --kcs-type-rc: 0.9;
+    --kcs-type-rw: 1;
+    --kcs-type-rt: 0;
+    --kcs-type-k: var(--kcs-type-sh, 1);
+    --kcs-type-den: calc((var(--kcs-type-n, 8) - 0.6 * var(--kcs-type-sp, 0)) * (var(--kcs-type-rb, 0.75) * var(--kcs-type-rc, 0.9) * var(--kcs-type-rw, 1) + var(--kcs-type-rt, 0)));
+    --kcs-type-lf: clamp(16px, calc(100cqi * var(--kcs-type-k, 1) / var(--kcs-type-den, 6) * 0.16), 26px);
+    --kcs-type-gap: var(--ys-spacing-400, 32px);
+    --kcs-type-lw: 0px;
+
+    container-type: inline-size;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    align-items: last baseline;
+    column-gap: var(--kcs-type-gap, 32px);
+    row-gap: var(--ys-spacing-200, 16px);
+    color: var(--ys-color-token-text-primary);
+}
+
+/* Средняя ширина прописной буквы в em при насыщенности bold. */
+.kcs-type_font-condensed {
+    --kcs-type-rb: 0.625;
+}
+
+.kcs-type_font-narrow {
+    --kcs-type-rb: 0.705;
+}
+
+.kcs-type_font-wide {
+    --kcs-type-rb: 0.805;
+}
+
+.kcs-type_upper {
+    --kcs-type-rc: 1;
+}
+
+.kcs-type_track-tight {
+    --kcs-type-rt: -0.03;
+}
+
+/* У сжатых и узких гарнитур свои плотные апроши: -0,03em сталкивает буквы. */
+.kcs-type_font-condensed.kcs-type_track-tight {
+    --kcs-type-rt: -0.01;
+}
+
+.kcs-type_font-narrow.kcs-type_track-tight {
+    --kcs-type-rt: -0.02;
+}
+
+.kcs-type_w-normal {
+    --kcs-type-rw: 0.96;
+}
+
+.kcs-type_w-medium {
+    --kcs-type-rw: 0.97;
+}
+
+.kcs-type_w-semibold {
+    --kcs-type-rw: 0.985;
+}
+
+.kcs-type_cap-large {
+    --kcs-type-cap: 22cqi;
+}
+
+.kcs-type_cap-medium {
+    --kcs-type-cap: 14cqi;
+}
+
+.kcs-type_tone-secondary {
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-type_tone-brand {
+    color: var(--ys-color-token-brand-primary);
+}
+
+/* Слово. Знаменатель --kcs-type-den — оценка ширины слова в em: пробел уже буквы
+   и считается за 0,4 знака. Резерв под ссылку в строке (--kcs-type-lw) вычитается
+   из ширины, чтобы слово и ссылка не сталкивались. Последний предел — страховка
+   для полей темы любой ширины: самое широкое слово (оценка +8%) помещается в
+   ширину контента плюс боковое поле секции и не срезается краем секции. */
+.kcs-type__word {
+    grid-column: 1;
+    justify-self: start;
+    min-width: 0;
+    margin: 0;
+    padding: 0 0 0.14em;
+    white-space: nowrap;
+    text-align: start;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: calc(var(--kcs-type-rt, 0) * 1em);
+    font-size: min(
+        calc(100cqi * var(--kcs-type-k, 1) / var(--kcs-type-den, 6)),
+        calc((100cqi - var(--kcs-type-lw, 0px)) / var(--kcs-type-den, 6)),
+        var(--kcs-type-cap, 100cqi),
+        calc((100cqi + var(--ys-section-h-padding, 0px)) / (var(--kcs-type-den, 6) * 1.08))
+    );
+}
+
+/* Строчный бокс высотой 1em не вмещает бреве «Й», точки «Ё» и хвосты «Д», «Ц», «Щ»,
+   «р», «у», а секция платформы обрезает всё, что вылезло за её край. Поля слова
+   дают место этим знакам; верхнее — только если такие буквы в слове есть. */
+.kcs-type_upper .kcs-type__word {
+    padding-bottom: 0.12em;
+    text-transform: uppercase;
+}
+
+.kcs-type_acc .kcs-type__word,
+.kcs-type_upper.kcs-type_acc-low .kcs-type__word {
+    padding-top: 0.13em;
+}
+
+.kcs-type_w-normal .kcs-type__word {
+    font-weight: 400;
+}
+
+.kcs-type_w-medium .kcs-type__word {
+    font-weight: 500;
+}
+
+.kcs-type_w-semibold .kcs-type__word {
+    font-weight: 600;
+}
+
+.kcs-type_center .kcs-type__word {
+    justify-self: center;
+    text-align: center;
+}
+
+.kcs-type_end .kcs-type__word {
+    justify-self: end;
+    text-align: end;
+}
+
+.kcs-type__wordlink {
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-decoration: none;
+}
+
+/* Ссылка «Смотреть все»: справа на базовой линии слова или отдельной строкой.
+   Кегль ссылки — 0,16 кегля слова в пределах 16–26px, на телефоне 16px. */
+.kcs-type__more {
+    grid-column: 2;
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ys-spacing-100, 8px);
+    color: inherit;
+    font-size: var(--kcs-type-lf, 18px);
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.kcs-type__arrow {
+    flex: none;
+    width: 1em;
+    height: 1em;
+    transition: transform 0.2s ease;
+}
+
+.kcs-type_link-end {
+    --kcs-type-lw: calc((var(--kcs-type-nl, 12) * 0.6 + 1.75) * var(--kcs-type-lf, 18px) + var(--kcs-type-gap, 32px));
+}
+
+/* Без ссылки или со ссылкой под словом — одна колонка. При выравнивании по центру
+   ссылка всегда под словом: в строке она сдвинула бы слово с оси. */
+.kcs-type_link-none,
+.kcs-type_link-below,
+.kcs-type_center {
+    --kcs-type-lw: 0px;
+
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.kcs-type_link-below .kcs-type__more,
+.kcs-type_center .kcs-type__more {
+    grid-column: 1;
+}
+
+.kcs-type_center .kcs-type__more {
+    justify-self: center;
+}
+
+/* Срез края: слово уходит за верх или низ полосы, полоса его обрезает. Ритм-отступ
+   паттерна со стороны среза снимается, чтобы срез пришёлся на край секции. */
+.kcs-type_crop-top,
+.kcs-type_crop-bottom {
+    overflow: hidden;
+    overflow: visible clip;
+}
+
+.kcs-type.kcs-type_crop-top .kcs-type__word {
+    padding-top: 0;
+    margin-top: -0.36em;
+}
+
+.kcs-type_crop-bottom {
+    --kcs-type-lw: 0px;
+
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.kcs-type.kcs-type_crop-bottom .kcs-type__word {
+    grid-row: 2;
+    padding-bottom: 0;
+    margin-bottom: -0.34em;
+}
+
+.kcs-type_crop-bottom .kcs-type__more {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+/* Обрезанный край встаёт вплотную к соседней секции: отступ с этой стороны
+   (паддинг секции и ритм) снимается целиком. */
+.kcs-rhythm > section:has(.kcs-type_crop-top) {
+    padding-top: 0;
+}
+
+.kcs-rhythm > section:has(.kcs-type_crop-bottom) {
+    padding-bottom: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .kcs-type__more:hover .kcs-type__more-text {
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.2em;
+    }
+
+    .kcs-type__more:hover .kcs-type__arrow {
+        transform: translateX(0.2em);
+    }
+
+    .kcs-type__wordlink:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 0.04em;
+        text-underline-offset: 0.08em;
+    }
+}
+
+.kcs-type__more:focus-visible,
+.kcs-type__wordlink:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-type__arrow {
+        transition: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .kcs-type {
+        --kcs-type-k: var(--kcs-type-sh-m, 1);
+        --kcs-type-lf: 16px;
+        --kcs-type-gap: var(--ys-spacing-200, 16px);
+
+        row-gap: var(--ys-spacing-150, 12px);
+    }
+}
+
+/* Движки без контейнерных единиц: оценка от ширины окна. */
+@supports not (width: 1cqi) {
+    .kcs-type__word {
+        font-size: calc(min(100vw, 1400px) * 0.85 * var(--kcs-type-k, 1) / var(--kcs-type-den, 6));
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

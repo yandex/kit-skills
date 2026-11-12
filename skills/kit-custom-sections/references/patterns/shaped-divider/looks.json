@@ -1,0 +1,28 @@
+{
+  "start": "wave",
+  "looks": [
+    {
+      "name": "wave",
+      "title": "Волна",
+      "description": "Мягкий переход палитр.",
+      "settings": {}
+    },
+    {
+      "name": "scallop",
+      "title": "Фестоны",
+      "description": "Мелкий частый край.",
+      "settings": {
+        "shape": "scallop",
+        "period": "s"
+      }
+    },
+    {
+      "name": "slant",
+      "title": "Скос",
+      "description": "Строгий диагональный переход.",
+      "settings": {
+        "shape": "slant"
+      }
+    }
+  ]
+}

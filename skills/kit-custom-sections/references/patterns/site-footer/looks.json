@@ -1,0 +1,24 @@
+{
+  "start": "split",
+  "looks": [
+    {
+      "name": "split",
+      "title": "Бренд слева, колонки меню справа",
+      "description": "Вид по умолчанию.",
+      "settings": {}
+    },
+    {
+      "name": "center-wordmark",
+      "title": "По центру с вордмарком",
+      "description": "Название магазина крупно внизу.",
+      "settings": {
+        "view": {
+          "layout": "center"
+        },
+        "wordmark": {
+          "mode": "text"
+        }
+      }
+    }
+  ]
+}

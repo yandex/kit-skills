@@ -1,0 +1,17 @@
+id: tile-mosaic
+version: 3
+title: "Мозаика плиток-ссылок"
+purpose: "Бенто-сетка ячеек разной ширины и высоты: фото и текстовые ячейки, у каждой своя ссылка; раскладка «лукбук» без зазоров"
+origin: "handmade"
+fingerprint: "a04109d22eca767d2cd0a8a57884cdb57f7e7bb87c07a22961096beafaae4868"
+docs_fingerprint: "a04109d22eca767d2cd0a8a57884cdb57f7e7bb87c07a22961096beafaae4868"
+applied_patches: ""
+keywords: "мозаика, мозаику, мозаики, mosaic, бенто, бенто-сетка, bento, лукбук, лукбуки, lookbook, коллаж, коллажи, фотоколлаж, образы, образов, разной ширины, разного размера, ячейки разной ширины, ячейки разного размера, ячейки-ссылки, плитки-ссылки, плиток-ссылок"
+pages: "main, landing, listing"
+controllers: ""
+answers_required: "modules"
+alt_fields: "modules[].image=modules[].imageAlt"
+alternatives: "media-cards, advantages, hero-overlay"
+conditional_fields: "modules[].image: modules[].kind=photo"
+rhythm: "0"
+rhythm_touch: "0"

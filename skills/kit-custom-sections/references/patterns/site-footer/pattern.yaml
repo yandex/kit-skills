@@ -1,0 +1,17 @@
+id: site-footer
+version: 2
+title: "Подвал с колонками меню"
+purpose: "Подвал всей витрины: бренд и соцсети, колонки из меню магазина, контакты из настроек, копирайт и документы"
+origin: "handmade"
+fingerprint: "58ec0043c8dda1bb5a97080f622d808b15148560d095482583204b91ecfb2be7"
+docs_fingerprint: "58ec0043c8dda1bb5a97080f622d808b15148560d095482583204b91ecfb2be7"
+applied_patches: ""
+keywords: "подвал, подвала, футер, футера, footer, копирайт"
+pages: "все страницы"
+controllers: "ya-kit-company-controller, ya-kit-menu-controller, ya-kit-toggle-controller"
+answers_required: "modules"
+slot: "footer"
+alt_fields: "wordmark.image=wordmark.alt"
+conditional_fields: "wordmark.image: wordmark.mode=image"
+rhythm: "0"
+rhythm_touch: "0"

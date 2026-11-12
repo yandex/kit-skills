@@ -1,58 +1,194 @@
 <div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-featured-products-controller data-source="{{settings.dataSource}}" as="shelf" count="{{settings.count}}">
+{{#if (or shelf.isLoading (gt (length shelf.model) 0))}}
 <ya-kit-section-layout
     palette={{settings.palette}}
     padding-top={{settings.section.paddingTop}}
     padding-bottom={{settings.section.paddingBottom}}
     h-padding-desktop={{settings.section.hPaddingDesktop}}
     h-padding-mobile={{settings.section.hPaddingMobile}}
-    is-fullscreen={{settings.section.isFullscreen}} 
+    is-fullscreen={{settings.section.isFullscreen}}
 >
+    {{#if settings.titleText}}
     <ya-kit-section-layout-row>
-        <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" /> 
+        {{#if (and (not (isEmpty settings.dataSource.slug)) (or (eql settings.dataSource.type 'collection') (eql settings.dataSource.type 'category')))}}
+        <ya-kit-link class="kcs-gs__title-link" to="/{{when (eql settings.dataSource.type 'collection') 'collections' 'catalog'}}/{{settings.dataSource.slug}}">
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-link>
+        {{else}}
+        <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        {{/if}}
     </ya-kit-section-layout-row>
+    {{/if}}
     <ya-kit-section-layout-row>
-        <ya-kit-featured-products-controller data-source="{{settings.dataSource}}" as="productsController" count="{{settings.count}}">
-            <ya-kit-grid columns="{{settings.columns}}" columns-touch="2" h-gap="300" v-gap="600" class="grid">
-                {{#each productsController.model as |product|}}
-                    <ya-kit-product-snippet-controller as="controller" product="{{product}}">
-                        <ya-kit-v-stack gap="200" class="{{cn 'preview-product-card-layout' (if (lt product.totalQuantity 1) 'preview-product-card-layout--oos')}}" align-items="stretch">
-                            <ya-kit-link to="{{product.url}}" class="preview-product-card-layout__body">
-                                <ya-kit-v-stack gap="200" align-items="stretch">
-                                    <div class="{{cn 'preview-product-image-wrapper' (skinRounded '200')}}">
-                                        <ya-kit-image src="{{product.mediaItems.0.payload}}" aspect-ratio="1:1" class="preview-product-image" />
-                                        <ya-kit-v-stack class="preview-product-card-layout__badges" gap="100">
-                                            {{#each product.badges as |badge|}}
-                                            <ya-kit-text class="preview-product-card-layout__badge" weight="bold">
-                                                {{badge.label}}
-                                            </ya-kit-text>
-                                            {{/each}} 
-                                        </ya-kit-v-stack>
-                                    </div>
-                                    <ya-kit-v-stack gap="50" class="preview-product-card-layout__title">
-                                        <ya-kit-text weight="semibold" size="md" lines="2" class="preview-product-card-layout__title-text">{{product.name}}</ya-kit-text>
-                                        <ya-kit-prices size="2xl" weight="bold" class="preview-product-card-layout__price" price="{{product.price}}" final-price="{{product.finalPrice}}" />
-                                    </ya-kit-v-stack>
-                                </ya-kit-v-stack>
-                            </ya-kit-link>
-
-                            <div class="preview-product-card-layout__control"> 
-                                {{#if (gt controller.quantity 0)}}
-                                <ya-kit-input-stepper width="max" value="{{controller.quantity}}" on-change="{{controller.onUpdateQuantity}}" />
-                                {{elseif (gte product.totalQuantity 1)}}
-                                <ya-kit-button color="primary" width="max" on-click="{{controller.onAddToCart}}">
-                                    В корзину
-                                </ya-kit-button>
-                                {{elseif (eql product.totalQuantity 0)}}
-                                <ya-kit-button color="secondary" is-disabled="1"> 
-                                    Нет в наличии
-                                </ya-kit-button>
-                                {{/if}}
-                            </div> 
-                        </ya-kit-v-stack>
-                    </ya-kit-product-snippet-controller> 
-                {{/each}}
-            </ya-kit-grid>
-        </ya-kit-featured-products-controller>
+        {{#if (eql settings.layout 'carousel')}}
+        <ya-kit-carousel class="kcs-gs__carousel" columns="{{settings.columns}}" columns-touch="{{settings.columnsTouch}}" h-gap="{{settings.hGap}}">
+            {{#if shelf.isLoading}}
+            {{#repeat settings.count}}
+            <div class="kcs-gs__card kcs-gs__card--skeleton" aria-hidden="true">
+                <ya-kit-skeleton aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}" rounded="200" width="100%" />
+                <ya-kit-skeleton variant="text" width="40%" />
+                <ya-kit-skeleton variant="text" width="85%" />
+            </div>
+            {{/repeat}}
+            {{else}}
+            {{#each shelf.model as |product|}}
+            <ya-kit-product-snippet-controller as="controller" product="{{product}}">
+                <article class="kcs-gs__card {{when (lt product.totalQuantity 1) 'kcs-gs__card--oos' ''}}">
+                    <ya-kit-link class="kcs-gs__link" to="{{product.url}}">
+                        <div class="kcs-gs__media {{skinRounded '200'}}">
+                            <ya-kit-image
+                                class="kcs-gs__image"
+                                src="{{first (filterImages product.mediaItems)}}"
+                                alt="{{product.name}}"
+                                aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}"
+                                fit="{{globals.productSnippet.photo.fit}}"
+                                enable-paranja="{{globals.productSnippet.photo.enableParanja}}"
+                                background-color="{{when (eql globals.productSnippet.photo.backgroundColor 'primary') 'primary' (when (eql globals.productSnippet.photo.backgroundColor 'secondary') 'secondary' (when (eql globals.productSnippet.photo.backgroundColor 'neutral') 'neutral' 'none'))}}"
+                            />
+                            {{#unless (eql settings.card.showBadges false)}}
+                            {{#if (gt (length product.badges) 0)}}
+                            <div class="kcs-gs__badges">
+                                {{#each product.badges as |badge|}}
+                                <ya-kit-text as="span" class="kcs-gs__badge {{skinRounded '100'}}" size="xs" weight="semibold">{{badge.label}}</ya-kit-text>
+                                {{/each}}
+                            </div>
+                            {{/if}}
+                            {{/unless}}
+                        </div>
+                        <div class="kcs-gs__body {{when (eql globals.productSnippet.general.order 'desc-price') 'kcs-gs__body--name-first' ''}}">
+                            {{#if (eql settings.card.discount 'enabled')}}
+                            <ya-kit-prices class="kcs-gs__price" size="md" weight="semibold" price="{{product.price}}" final-price="{{product.finalPrice}}" enable-discount="{{true}}" />
+                            {{elseif (eql settings.card.discount 'disabled')}}
+                            <ya-kit-prices class="kcs-gs__price" size="md" weight="semibold" price="{{product.price}}" final-price="{{product.finalPrice}}" enable-discount="{{false}}" />
+                            {{else}}
+                            <ya-kit-prices class="kcs-gs__price" size="md" weight="semibold" price="{{product.price}}" final-price="{{product.finalPrice}}" />
+                            {{/if}}
+                            <ya-kit-text class="kcs-gs__name" size="sm" lines="{{when settings.card.titleLines settings.card.titleLines 2}}">{{product.name}}</ya-kit-text>
+                        </div>
+                    </ya-kit-link>
+                    {{#if settings.card.showFavourite}}
+                    <ya-kit-button class="kcs-gs__fav {{when product.isFavourite 'kcs-gs__fav--on' ''}}" color="flat" size="sm" on-click="{{controller.onToggleFavourite}}">
+                        {{#if product.isFavourite}}
+                        <svg class="kcs-gs__fav-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"></path></svg>
+                        <span class="kcs-gs__sr">Убрать из избранного</span>
+                        {{else}}
+                        <svg class="kcs-gs__fav-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3m-4.4 15.55-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05"></path></svg>
+                        <span class="kcs-gs__sr">В избранное</span>
+                        {{/if}}
+                    </ya-kit-button>
+                    {{/if}}
+                    {{#if (or (eql settings.card.split 's') (eql settings.card.split 'm'))}}
+                    <yandex-pay-badge-split class="kcs-gs__pay" price="{{product.finalPrice}}" size="{{settings.card.split}}" color="transparent" variant="simple" />
+                    {{/if}}
+                    {{#if (or (eql settings.card.payDiscount 's') (eql settings.card.payDiscount 'm'))}}
+                    <yandex-pay-badge-discount class="kcs-gs__pay" price="{{product.finalPrice}}" size="{{settings.card.payDiscount}}" source="main" />
+                    {{/if}}
+                    {{#if (or (eql settings.card.cartButton 'enabled') (and (notEql settings.card.cartButton 'disabled') (notEql globals.productSnippet.buttons.buttonColorInFeaturedProducts 'none')))}}
+                    <div class="kcs-gs__actions {{when (eql settings.card.hideCartButtonTouch true) 'kcs-gs__actions--no-touch' ''}}">
+                        {{#if (gt controller.quantity 0)}}
+                        <ya-kit-input-stepper size="sm" width="max" value="{{controller.quantity}}" on-change="{{controller.onUpdateQuantity}}" />
+                        {{elseif (gte product.totalQuantity 1)}}
+                        <ya-kit-button size="sm" width="max" color="{{when (eql globals.productSnippet.buttons.buttonColorInFeaturedProducts 'secondary') 'secondary' 'primary'}}" on-click="{{controller.onAddToCart}}">{{when settings.card.addToCartText settings.card.addToCartText 'В корзину'}}</ya-kit-button>
+                        {{elseif (notEql settings.card.outOfStockText '')}}
+                        <ya-kit-button size="sm" width="max" color="secondary" is-disabled="true">{{when settings.card.outOfStockText settings.card.outOfStockText 'Нет в наличии'}}</ya-kit-button>
+                        {{/if}}
+                    </div>
+                    {{/if}}
+                </article>
+            </ya-kit-product-snippet-controller>
+            {{/each}}
+            {{/if}}
+        </ya-kit-carousel>
+        {{else}}
+        <div class="kcs-gs__track kcs-gs__track--cols-{{settings.columns}} kcs-gs__track--rows-{{settings.maxRowsTouch}} {{when (eql settings.layout 'grid-strip') 'kcs-gs__track--strip' ''}} {{when (eql settings.columnsTouch 1) 'kcs-gs__track--touch-1' ''}}" style="--kcs-gs-hgap: var(--ys-spacing-{{settings.hGap}}); --kcs-gs-vgap: var(--ys-spacing-{{settings.vGap}})">
+            {{#if shelf.isLoading}}
+            {{#repeat settings.count}}
+            <div class="kcs-gs__card kcs-gs__card--skeleton" aria-hidden="true">
+                <ya-kit-skeleton aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}" rounded="200" width="100%" />
+                <ya-kit-skeleton variant="text" width="40%" />
+                <ya-kit-skeleton variant="text" width="85%" />
+            </div>
+            {{/repeat}}
+            {{else}}
+            {{#each shelf.model as |product|}}
+            <ya-kit-product-snippet-controller as="controller" product="{{product}}">
+                <article class="kcs-gs__card {{when (lt product.totalQuantity 1) 'kcs-gs__card--oos' ''}}">
+                    <ya-kit-link class="kcs-gs__link" to="{{product.url}}">
+                        <div class="kcs-gs__media {{skinRounded '200'}}">
+                            <ya-kit-image
+                                class="kcs-gs__image"
+                                src="{{first (filterImages product.mediaItems)}}"
+                                alt="{{product.name}}"
+                                aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}"
+                                fit="{{globals.productSnippet.photo.fit}}"
+                                enable-paranja="{{globals.productSnippet.photo.enableParanja}}"
+                                background-color="{{when (eql globals.productSnippet.photo.backgroundColor 'primary') 'primary' (when (eql globals.productSnippet.photo.backgroundColor 'secondary') 'secondary' (when (eql globals.productSnippet.photo.backgroundColor 'neutral') 'neutral' 'none'))}}"
+                            />
+                            {{#unless (eql settings.card.showBadges false)}}
+                            {{#if (gt (length product.badges) 0)}}
+                            <div class="kcs-gs__badges">
+                                {{#each product.badges as |badge|}}
+                                <ya-kit-text as="span" class="kcs-gs__badge {{skinRounded '100'}}" size="xs" weight="semibold">{{badge.label}}</ya-kit-text>
+                                {{/each}}
+                            </div>
+                            {{/if}}
+                            {{/unless}}
+                        </div>
+                        <div class="kcs-gs__body {{when (eql globals.productSnippet.general.order 'desc-price') 'kcs-gs__body--name-first' ''}}">
+                            {{#if (eql settings.card.discount 'enabled')}}
+                            <ya-kit-prices class="kcs-gs__price" size="md" weight="semibold" price="{{product.price}}" final-price="{{product.finalPrice}}" enable-discount="{{true}}" />
+                            {{elseif (eql settings.card.discount 'disabled')}}
+                            <ya-kit-prices class="kcs-gs__price" size="md" weight="semibold" price="{{product.price}}" final-price="{{product.finalPrice}}" enable-discount="{{false}}" />
+                            {{else}}
+                            <ya-kit-prices class="kcs-gs__price" size="md" weight="semibold" price="{{product.price}}" final-price="{{product.finalPrice}}" />
+                            {{/if}}
+                            <ya-kit-text class="kcs-gs__name" size="sm" lines="{{when settings.card.titleLines settings.card.titleLines 2}}">{{product.name}}</ya-kit-text>
+                        </div>
+                    </ya-kit-link>
+                    {{#if settings.card.showFavourite}}
+                    <ya-kit-button class="kcs-gs__fav {{when product.isFavourite 'kcs-gs__fav--on' ''}}" color="flat" size="sm" on-click="{{controller.onToggleFavourite}}">
+                        {{#if product.isFavourite}}
+                        <svg class="kcs-gs__fav-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"></path></svg>
+                        <span class="kcs-gs__sr">Убрать из избранного</span>
+                        {{else}}
+                        <svg class="kcs-gs__fav-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3m-4.4 15.55-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05"></path></svg>
+                        <span class="kcs-gs__sr">В избранное</span>
+                        {{/if}}
+                    </ya-kit-button>
+                    {{/if}}
+                    {{#if (or (eql settings.card.split 's') (eql settings.card.split 'm'))}}
+                    <yandex-pay-badge-split class="kcs-gs__pay" price="{{product.finalPrice}}" size="{{settings.card.split}}" color="transparent" variant="simple" />
+                    {{/if}}
+                    {{#if (or (eql settings.card.payDiscount 's') (eql settings.card.payDiscount 'm'))}}
+                    <yandex-pay-badge-discount class="kcs-gs__pay" price="{{product.finalPrice}}" size="{{settings.card.payDiscount}}" source="main" />
+                    {{/if}}
+                    {{#if (or (eql settings.card.cartButton 'enabled') (and (notEql settings.card.cartButton 'disabled') (notEql globals.productSnippet.buttons.buttonColorInFeaturedProducts 'none')))}}
+                    <div class="kcs-gs__actions {{when (eql settings.card.hideCartButtonTouch true) 'kcs-gs__actions--no-touch' ''}}">
+                        {{#if (gt controller.quantity 0)}}
+                        <ya-kit-input-stepper size="sm" width="max" value="{{controller.quantity}}" on-change="{{controller.onUpdateQuantity}}" />
+                        {{elseif (gte product.totalQuantity 1)}}
+                        <ya-kit-button size="sm" width="max" color="{{when (eql globals.productSnippet.buttons.buttonColorInFeaturedProducts 'secondary') 'secondary' 'primary'}}" on-click="{{controller.onAddToCart}}">{{when settings.card.addToCartText settings.card.addToCartText 'В корзину'}}</ya-kit-button>
+                        {{elseif (notEql settings.card.outOfStockText '')}}
+                        <ya-kit-button size="sm" width="max" color="secondary" is-disabled="true">{{when settings.card.outOfStockText settings.card.outOfStockText 'Нет в наличии'}}</ya-kit-button>
+                        {{/if}}
+                    </div>
+                    {{/if}}
+                </article>
+            </ya-kit-product-snippet-controller>
+            {{/each}}
+            {{/if}}
+        </div>
+        {{/if}}
     </ya-kit-section-layout-row>
+    {{#if (and settings.showAllText (not (isEmpty settings.dataSource.slug)) (or (eql settings.dataSource.type 'collection') (eql settings.dataSource.type 'category')))}}
+    <ya-kit-section-layout-row>
+        <div class="kcs-gs__more">
+            <ya-kit-button color="outlined" to="/{{when (eql settings.dataSource.type 'collection') 'collections' 'catalog'}}/{{settings.dataSource.slug}}">{{settings.showAllText}}</ya-kit-button>
+        </div>
+    </ya-kit-section-layout-row>
+    {{/if}}
 </ya-kit-section-layout>
+{{/if}}
+</ya-kit-featured-products-controller>
 </div>

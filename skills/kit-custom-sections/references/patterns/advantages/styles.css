@@ -1,43 +1,483 @@
+/* Преимущества v2. Одна разметка на все режимы: раскладку выбирают
+   классы-модификаторы корня (layout, форма плиток, колонки, режим телефона),
+   номер рисует CSS-счётчик — живой текст шрифтом темы, а не картинка.
+   Цвета только токенами палитры; перед color-mix стоит запасная декларация
+   для браузеров без него. Настройки по умолчанию дают вид v1. */
+
 .advantages {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--ys-spacing-300);
+    --adv-pad: var(--ys-spacing-400);
+
+    counter-reset: adv;
 }
 
+.advantages_tiles {
+    --adv-pad: var(--ys-spacing-300);
+}
+
+/* ---------- карточка ---------- */
+
 .advantages__item {
-    background: var(--ys-background-neutral);
-    padding: var(--ys-spacing-400);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-150);
     min-width: 0;
+    padding: var(--adv-pad);
+    background: var(--ys-background-neutral);
+    overflow-wrap: break-word;
+}
+
+/* Номер считает только текстовые плитки: фото в счёт не идут. Счётчик
+   растёт на карточке, цифра — в ::before вложенного span (::after у
+   ya-kit-module занят подсветкой редактора). Карусель слайды не клонирует,
+   поэтому счёт верен и в ней. */
+.advantages__item:not(.advantages__item_photo) {
+    counter-increment: adv;
+}
+
+.advantages__head {
+    display: flex;
+    align-self: stretch;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--ys-spacing-200);
 }
 
 .advantages__icon {
+    flex: none;
     width: var(--ys-spacing-800);
 }
 
-/* Порог 4->2 колонки — 1199: на 1024px четыре колонки дают плитки ~206px
-   с текстом в шесть строк. */
-@media (max-width: 1199px) {
-    .advantages {
-        grid-template-columns: repeat(2, 1fr);
+/* Встроенная иконка в круге, тонированном цветом бренда; сам знак — бренд,
+   притянутый к цвету текста, чтобы светлый бренд не терялся. */
+.advantages__glyph {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ys-spacing-700);
+    height: var(--ys-spacing-700);
+    border-radius: 50%;
+    color: var(--ys-color-token-text-primary);
+    color: color-mix(in srgb, var(--ys-color-token-brand-primary) 75%, var(--ys-color-token-text-primary));
+    background: var(--ys-background-primary);
+    background: color-mix(in srgb, var(--ys-color-token-brand-primary) 12%, var(--ys-background-primary));
+}
+
+/* Бледный крупный номер: украшение набора, а не порядок шагов. */
+.advantages__num {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--ys-color-token-text-secondary);
+    color: color-mix(in srgb, color-mix(in srgb, var(--ys-color-token-brand-primary) 60%, var(--ys-color-token-text-primary)) 38%, transparent);
+}
+
+.advantages__num::before {
+    content: counter(adv, decimal-leading-zero);
+}
+
+.advantages__title {
+    text-wrap: balance;
+}
+
+.advantages__title + .advantages__subtitle {
+    margin-top: calc(-1 * var(--ys-spacing-100));
+}
+
+.advantages__subtitle {
+    color: var(--ys-color-token-text-primary);
+    color: color-mix(in srgb, var(--ys-color-token-brand-primary) 70%, var(--ys-color-token-text-primary));
+}
+
+.advantages__desc,
+.advantages-note {
+    white-space: pre-line;
+}
+
+.advantages__list {
+    align-self: stretch;
+}
+
+.advantages__list ul,
+.advantages__list ol {
+    margin: 0;
+    padding-inline-start: 1.25em;
+}
+
+.advantages__list p {
+    margin: 0;
+}
+
+.advantages__list li + li {
+    margin-top: var(--ys-spacing-50);
+}
+
+.advantages-note {
+    display: block;
+    max-width: 48rem;
+}
+
+.advantages-note_center {
+    margin-inline: auto;
+    text-align: center;
+}
+
+/* ---------- подложки ---------- */
+
+.advantages__item_none {
+    background: transparent;
+}
+
+/* Карточка без подложки встаёт на линию заголовка секции. */
+.advantages_cards .advantages__item_none {
+    padding: 0;
+}
+
+/* Акцент — пара цветов кнопки бренда: читается при любой палитре,
+   в тёмной тоже. Одна такая плитка на секцию. */
+.advantages__item_accent {
+    color: var(--ys-color-token-brand-primary-contrast);
+    background: var(--ys-color-token-brand-primary);
+}
+
+.advantages__item_accent .advantages__title,
+.advantages__item_accent .advantages__subtitle,
+.advantages__item_accent .advantages__desc,
+.advantages__item_accent .advantages__list,
+.advantages__item_accent .advantages__list * {
+    color: inherit;
+}
+
+.advantages__item_accent .advantages__num {
+    color: inherit;
+    opacity: 0.55;
+}
+
+.advantages__item_accent .advantages__glyph {
+    color: inherit;
+    background: transparent;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+}
+
+/* Фото на всю плитку: без полей, обрезка по скруглению темы; пока фото
+   грузится или не выбрано — спокойная нейтральная панель. */
+.advantages__item_photo {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+}
+
+.advantages_cards .advantages__item_photo {
+    min-height: var(--ys-spacing-2000);
+}
+
+.advantages__photo {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+}
+
+.advantages__photo img {
+    height: 100%;
+}
+
+/* ---------- плитки (tileRatio 3:4, 1:1, 4:3) ----------
+   aspect-ratio работает как минимум: длинный текст растягивает плитку, а не
+   обрезается. Обе оси — stretch: элемент сетки с пропорцией иначе встаёт
+   по start, плитки ряда расходятся по высоте, а выросшая по тексту плитка
+   переносит высоту в ширину и вылезает из колонки. */
+
+.advantages_tiles .advantages__item {
+    align-self: stretch;
+    justify-self: stretch;
+    aspect-ratio: var(--adv-ratio, auto);
+}
+
+.advantages_tiles .advantages__desc {
+    margin-top: auto;
+}
+
+/* ---------- сетка ---------- */
+
+.advantages_grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--ys-spacing-300);
+}
+
+.advantages_grid.advantages_tiles {
+    gap: var(--ys-spacing-200);
+}
+
+/* columns действует только от 1200px: ниже раскладку ведут пороги планшета
+   и телефона, иначе поздний repeat(columns) перебил бы их. */
+@media (min-width: 1200px) {
+    .advantages_grid.advantages_cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .advantages_grid.advantages_cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .advantages_grid.advantages_cols-6 {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .advantages_tiles.advantages_cols-6 {
+        --adv-pad: var(--ys-spacing-250);
+    }
+
+    .advantages_tiles.advantages_cols-6 .advantages__num {
+        font-size: 40px;
     }
 }
 
-@media (max-width: 599px) {
-    .advantages {
-        grid-template-columns: 1fr;
+/* Карточки: порог 4 -> 2 колонки — 1199 (на 1024px четыре колонки дают
+   плитки ~206px с текстом в шесть строк); 3 и 6 на 1024–1199 дают 3. */
+@media (max-width: 1199px) {
+    .advantages_grid.advantages_cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .advantages__num {
+        font-size: 40px;
+    }
+
+    .advantages_tiles .advantages__title {
+        font-size: 18px;
+    }
+
+    .advantages_tiles .advantages__desc {
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+    .advantages_grid.advantages_cards.advantages_cols-3,
+    .advantages_grid.advantages_cards.advantages_cols-6 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* Плитки на планшете: 6 -> 3, остальные как есть — иначе плитка 3:4 на
+   1024px вырастает до ~480x640. */
+@media (min-width: 900px) and (max-width: 1199px) {
+    .advantages_grid.advantages_tiles.advantages_cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .advantages_grid.advantages_tiles.advantages_cols-3,
+    .advantages_grid.advantages_tiles.advantages_cols-6 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 899px) {
+    .advantages_grid.advantages_tiles {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ---------- карусель ----------
+   edges: стрелки на краях карусели, наполовину на полях секции, на любой
+   ширине. Сама карусель на экранах уже 1450px переводит edges во
+   внутренние стрелки (leftRight), и те ложатся на текст карточек; её
+   переменные положения стрелок здесь возвращаются к edges. Без этой
+   полировки стрелки остаются рабочими. */
+
+.advantages_arrows-edges .advantages__carousel {
+    --ys-carousel-arrow-left-left: 0;
+    --ys-carousel-arrow-right-right: 0;
+    --ys-carousel-arrow-left-transform: translate(-50%, -50%);
+    --ys-carousel-arrow-right-transform: translate(50%, -50%);
+}
+
+/* ---------- телефон (до 767px, порог платформы) ----------
+   Режимы layoutTouch действуют только в сетке (advantages_grid): у карусели
+   на телефоне своя раскладка по columnsTouch. */
+
+@media (max-width: 767px) {
+    .advantages__num {
+        font-size: 32px;
+    }
+
+    .advantages_tiles .advantages__title {
+        font-size: 16px;
+        line-height: 1.25;
+    }
+
+    .advantages_tiles .advantages__desc {
+        font-size: 14px;
+        line-height: 1.35;
+    }
+
+    /* grid: две колонки, компактные поля и шрифт. Плитка 3:4 на 390px —
+       около 175x233px. */
+    .advantages_grid.advantages_touch-grid {
+        --adv-pad: var(--ys-spacing-200);
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--ys-spacing-100);
+    }
+
+    /* Карточкам шаг шире, чем плиткам: колонки текста без подложки
+       (surface none) иначе слипаются. */
+    .advantages_grid.advantages_touch-grid.advantages_cards {
         gap: var(--ys-spacing-200);
     }
+
+    .advantages_grid.advantages_touch-grid .advantages__item {
+        gap: var(--ys-spacing-100);
+    }
+
+    /* Перенос по слогам — только описаниям: заголовок плитки по слогам рвался
+       («ка-бели», «под-ставки»). Заголовок выравнивается по длине строк и
+       ломается внутри слова только когда слово длиннее колонки. */
+    .advantages_tiles .advantages__desc,
+    .advantages_grid.advantages_touch-grid .advantages__desc {
+        hyphens: auto;
+    }
+
+    .advantages_tiles .advantages__title,
+    .advantages_grid.advantages_touch-grid .advantages__title {
+        hyphens: manual;
+        text-wrap: balance;
+        overflow-wrap: anywhere;
+    }
+
+    .advantages_grid.advantages_touch-grid .advantages__title {
+        font-size: 16px;
+        line-height: 1.25;
+    }
+
+    .advantages_grid.advantages_touch-grid .advantages__desc {
+        font-size: 14px;
+        line-height: 1.35;
+    }
+
+    .advantages_grid.advantages_touch-grid .advantages__icon {
+        width: var(--ys-spacing-600);
+    }
+
+    .advantages_grid.advantages_touch-grid .advantages__glyph {
+        width: var(--ys-spacing-600);
+        height: var(--ys-spacing-600);
+    }
+
+    /* scroll: лента со снапом. Карточка 80% ширины (плитка 72%), соседняя
+       выглядывает; лента уходит под поля секции ровно на отступ секции на
+       телефоне (--adv-bleed из hPaddingMobile), первая карточка стоит на
+       линии контента. Страница вбок не прокручивается: корень секции
+       обрезает выход по горизонтали. */
+    .advantages_grid.advantages_touch-scroll {
+        --adv-pad: var(--ys-spacing-300);
+
+        display: flex;
+        gap: var(--ys-spacing-150);
+        margin-inline: calc(-1 * var(--adv-bleed, 0px));
+        padding-inline: var(--adv-bleed, 0px);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline: var(--adv-bleed, 0px);
+        scrollbar-width: none;
+    }
+
+    .advantages_grid.advantages_touch-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .advantages_grid.advantages_touch-scroll .advantages__item {
+        flex: 0 0 80%;
+        scroll-snap-align: start;
+    }
+
+    .advantages_grid.advantages_touch-scroll.advantages_tiles .advantages__item {
+        flex-basis: 72%;
+    }
+
+    .advantages_grid.advantages_touch-scroll.advantages_per-screen-2 {
+        --adv-pad: var(--ys-spacing-200);
+    }
+
+    .advantages_grid.advantages_touch-scroll.advantages_per-screen-2 .advantages__item {
+        flex-basis: calc((100% - var(--ys-spacing-150) - var(--ys-spacing-500)) / 2);
+    }
+
+    /* pairWithNext: фото и следующая плитка — один свайп на 88% ширины. */
+    .advantages_grid.advantages_touch-scroll:not(.advantages_per-screen-2) .advantages__item_pair,
+    .advantages_grid.advantages_touch-scroll:not(.advantages_per-screen-2) .advantages__item_pair + .advantages__item {
+        flex-basis: calc((88% - var(--ys-spacing-150)) / 2);
+    }
+
+    .advantages_grid.advantages_touch-scroll:not(.advantages_per-screen-2) .advantages__item_pair + .advantages__item {
+        --adv-pad: var(--ys-spacing-200);
+
+        scroll-snap-align: none;
+    }
+
+    /* В ленте и карусели текстовая плитка теряет пропорцию и тянется по
+       высоте фото: пустых рамок 3:4 без фото нет. */
+    .advantages_grid.advantages_touch-scroll.advantages_tiles .advantages__item:not(.advantages__item_photo),
+    .advantages_carousel.advantages_tiles .advantages__item:not(.advantages__item_photo) {
+        aspect-ratio: auto;
+    }
+
+    /* Карусель на телефоне: соседний слайд выглядывает (отступ карусели),
+       трек уходит под поля секции до края экрана и листается со снапом.
+       Без этой полировки карусель остаётся рабочей в границах контента. */
+    .advantages_carousel [data-carousel-track] {
+        width: auto;
+        margin-inline: calc(-1 * var(--adv-bleed, 0px));
+        padding-inline: var(--adv-bleed, 0px);
+        scroll-padding-inline: var(--adv-bleed, 0px);
+        scroll-snap-type: x mandatory;
+    }
+
+    .advantages_carousel.advantages_per-screen-2 {
+        --adv-pad: var(--ys-spacing-200);
+    }
 }
 
-/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
-.kcs-rhythm {
-    padding-top: var(--kcs-rhythm, 0px);
-    padding-bottom: var(--kcs-rhythm, 0px);
+/* list: друг под другом, как v1 — одна колонка до 599px. Фото-плитка в
+   столбце — 4:3: полноширинная 3:4 слишком высокая. */
+@media (max-width: 599px) {
+    .advantages_grid.advantages_touch-list {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--ys-spacing-200);
+    }
+
+    .advantages_grid.advantages_touch-list.advantages_tiles .advantages__item:not(.advantages__item_photo) {
+        aspect-ratio: auto;
+    }
+
+    .advantages_grid.advantages_touch-list .advantages__item_photo {
+        aspect-ratio: 4 / 3;
+    }
+}
+
+/* Сердце в наборе контурных иконок — контуром, как у нативной карточки: внутренний
+   путь без своего fill прозрачный, контур — цветом знака. */
+.advantages__glyph_heart svg {
+    fill: transparent;
+    --ys-color-stroke: currentColor;
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
 }
 
 @media (max-width: 767px) {
-    .kcs-rhythm {
-        padding-top: var(--kcs-rhythm-touch, 0px);
-        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
     }
 }

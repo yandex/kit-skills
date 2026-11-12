@@ -1,0 +1,68 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+        <ya-kit-section-layout-row>
+            <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+        </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <div class="kcs-rows-body kcs-rows-body_media-{{settings.imagePosition}} {{if settings.image.filePath 'kcs-rows-body_has-media'}}">
+            <div class="kcs-rows-main">
+                <ul
+                    role="list"
+                    class="kcs-rows kcs-rows_desc-{{settings.descriptionPosition}} kcs-rows_cols-{{settings.columns}} kcs-rows_icons-{{settings.icons}} kcs-rows_name-{{settings.nameStyle}} kcs-rows_line-{{settings.lineStyle}}"
+                >
+                    {{#each settings.modules as |row|}}
+                        <li class="kcs-rows__item">
+                            <ya-kit-module module-id={{row.id}} class="kcs-rows__row">
+                                <div class="kcs-rows__marker">
+                                    {{#if row.icon.filePath}}
+                                        <ya-kit-image class="kcs-rows__icon" src={{row.icon}} alt="" fit="contain" aspect-ratio="1:1" />
+                                    {{/if}}
+                                </div>
+                                <div class="kcs-rows__content">
+                                    <ya-kit-text class="kcs-rows__name" size="lg" weight="semibold"><span class="kcs-rows__name-text">{{row.name}}</span></ya-kit-text>
+                                    {{#if row.value}}
+                                        <ya-kit-text class="kcs-rows__value" size="lg">{{row.value}}</ya-kit-text>
+                                    {{/if}}
+                                    {{#if row.description}}
+                                        <ya-kit-text class="kcs-rows__desc" size="md" color="{{when settings.descriptionTone settings.descriptionTone 'primary'}}">{{row.description}}</ya-kit-text>
+                                    {{/if}}
+                                </div>
+                            </ya-kit-module>
+                        </li>
+                    {{/each}}
+                </ul>
+                {{#if settings.noteText}}
+                    <div class="kcs-rows-note">
+                        <ya-kit-markdown markup={{settings.noteText}} />
+                    </div>
+                {{/if}}
+            </div>
+            {{#if settings.image.filePath}}
+                <div class="kcs-rows-media">
+                    <ya-kit-image class="kcs-rows-media__image" src={{settings.image}} alt="{{when (isEmpty settings.imageAlt) settings.titleText settings.imageAlt}}" fit="cover" aspect-ratio="{{settings.imageRatio}}" rounded="200" />
+                </div>
+            {{/if}}
+        </div>
+    </ya-kit-section-layout-row>
+    {{#if (and settings.cta.link.link settings.cta.text)}}
+        <ya-kit-section-layout-row>
+            <div class="kcs-exit" style="display: flex; justify-content: {{if (or (eql settings.titleAlign 'center') (and (eql settings.titleAlign 'default') (eql globals.typography.titleAlign 'center'))) 'center' 'flex-start'}}">
+                {{#if (eql settings.cta.style 'link')}}
+                    <ya-kit-link to={{settings.cta.link.link}} weight="medium" decoration="underline">{{settings.cta.text}} →</ya-kit-link>
+                {{else}}
+                    <ya-kit-button to={{settings.cta.link.link}}>{{settings.cta.text}}</ya-kit-button>
+                {{/if}}
+            </div>
+        </ya-kit-section-layout-row>
+    {{/if}}
+</ya-kit-section-layout>
+</div>

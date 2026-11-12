@@ -1,0 +1,16 @@
+id: media-cards
+version: 3
+title: "Карточки с фото и текстом"
+purpose: "Карточки: фото, заголовок, подпись и текст — команда, мастера, эксперты, амбассадоры, истории клиентов, ингредиенты, материалы; сетка или карусель"
+origin: "handmade"
+fingerprint: "4796a1f0e5703e3e23749ab55f88f9f0c572055eb545ba95502aa5b9e952f74e"
+docs_fingerprint: "4796a1f0e5703e3e23749ab55f88f9f0c572055eb545ba95502aa5b9e952f74e"
+applied_patches: ""
+keywords: "команда, наша команда, команды, команду, командой, знакомьтесь, сотрудники, сотрудников, мастера, специалисты, эксперты, врачи, тренеры, амбассадоры, люди бренда, истории клиентов, портреты, фотокарточки, ингредиенты, материалы, photo cards, media cards, team"
+pages: "main, landing"
+controllers: ""
+answers_required: "modules"
+alt_fields: "modules[].image=modules[].imageAlt"
+alternatives: "tile-mosaic, service-rows, testimonial-spotlight"
+rhythm: "0"
+rhythm_touch: "0"

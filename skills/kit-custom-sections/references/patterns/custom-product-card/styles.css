@@ -1,62 +1,479 @@
-.wrapper {
+/* ya-kit-section-layout режет содержимое через overflow-x: hidden, а такой
+   контейнер выключает position: sticky у потомков (галерея на компьютере,
+   панель покупки на телефоне). overflow-x: clip режет так же, но контейнером
+   прокрутки не становится; браузер без clip оставит visible. */
+.kcs-pc-root {
     overflow: visible;
+    overflow-x: clip;
 }
 
-.product-card {
+/* Не страница товара или товар не пришёл: секции нет, пустой отступ ритма не держим. */
+.kcs-rhythm:not(:has(.kcs-pc)) {
+    display: none;
+}
+
+.kcs-pc {
     display: flex;
     flex-direction: column;
-    gap: var(--ys-spacing-250);
+    gap: var(--ys-spacing-300);
 }
 
-.product-card__gallery-wrapper {
-    position: relative;
-    top: 0;
+.kcs-pc__media {
+    min-width: 0;
 }
 
-.product-card__gallery {
+.kcs-pc__gallery {
     width: 100%;
 }
 
-.product-card__favourite-icon {
-    width: 24px;
-    fill: #bf1545;
+.kcs-pc__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-300);
+    min-width: 0;
 }
 
-.product-card__cart-button,
-.product-card__cart-stepper {
+.kcs-pc__head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+    min-width: 0;
+}
+
+.kcs-pc__title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--ys-spacing-200);
+}
+
+.kcs-pc__title {
     flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.kcs-pc__fav {
+    position: relative;
+    flex: 0 0 auto;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--ys-color-token-text-primary);
+}
+
+/* Подпись кнопки избранного для чтения с экрана: видна вспомогательным
+   технологиям, на экране не занимает места. */
+.kcs-pc__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.kcs-pc__fav-icon {
+    display: block;
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.kcs-pc__subtitle {
+    max-width: 60ch;
+    white-space: pre-line;
+}
+
+.kcs-pc__price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-100);
+    padding-top: var(--ys-spacing-50);
+}
+
+.kcs-pc__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-50) var(--ys-spacing-300);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-pc__options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-200);
+    min-width: 0;
+}
+
+/* Покупка: на компьютере — строка в колонке, цена выше в шапке карточки. */
+.kcs-pc__buy {
+    display: flex;
+    align-items: stretch;
+    gap: var(--ys-spacing-100);
+}
+
+.kcs-pc__bar-price {
+    display: none;
+}
+
+.kcs-pc__bar-final {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-pc__bar-old {
+    font-size: 13px;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-decoration: line-through;
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-pc__cta {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.kcs-pc__cta-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.kcs-pc__cta-price {
+    margin-left: var(--ys-spacing-150);
+    padding-left: var(--ys-spacing-150);
+    border-left: 1px solid currentColor;
     white-space: nowrap;
 }
 
-@media screen and (min-width: 768px) {
-    .product-card {
+.kcs-pc__cta-icon {
+    flex: 0 0 auto;
+    margin-right: var(--ys-spacing-100);
+}
+
+.kcs-pc__stepper {
+    flex: 0 0 auto;
+}
+
+.kcs-pc__oos {
+    padding: var(--ys-spacing-100) 0;
+}
+
+.kcs-pc__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-400);
+    min-width: 0;
+}
+
+.kcs-pc__benefits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+}
+
+.kcs-pc__benefits-title {
+    margin: 0;
+}
+
+/* Список преимуществ плашками: тот же markdown-список, раскладка — flex-wrap. */
+.kcs-pc__benefits_chips ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-100);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-pc__benefits_chips li {
+    margin: 0;
+    padding: var(--ys-spacing-100) var(--ys-spacing-150);
+    border-radius: var(--ys-current-skin-border-radius);
+    font-size: 14px;
+    line-height: 1.3;
+    color: var(--ys-color-token-text-primary);
+    background: var(--ys-background-neutral);
+}
+
+.kcs-pc__benefits_chips li::before {
+    content: none;
+}
+
+.kcs-pc__benefits_chips li p {
+    margin: 0;
+}
+
+.kcs-pc__md {
+    max-width: 68ch;
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-pc__rows {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-pc__rows:not(:has(.kcs-pc__row)) {
+    border-top: 0;
+}
+
+.kcs-pc__row {
+    display: block;
+    border-bottom: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-pc__row header {
+    min-height: 56px;
+    padding: var(--ys-spacing-200) 0;
+    gap: var(--ys-spacing-200);
+    cursor: pointer;
+}
+
+/* У заголовка аккордеона платформа снимает outline — фокус с клавиатуры возвращаем. */
+.kcs-pc__row header:focus-visible {
+    outline: 2px solid var(--ys-color-token-text-primary);
+    outline-offset: 2px;
+}
+
+.kcs-pc__row-title {
+    margin: 0;
+}
+
+.kcs-pc__panel {
+    padding-bottom: var(--ys-spacing-300);
+}
+
+.kcs-pc__value {
+    max-width: 68ch;
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-pc__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-100);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-pc__chip {
+    padding: var(--ys-spacing-100) var(--ys-spacing-150);
+    border-radius: var(--ys-current-skin-border-radius);
+    font-size: 14px;
+    line-height: 1.3;
+    color: var(--ys-color-token-text-primary);
+    background: var(--ys-background-neutral);
+}
+
+.kcs-pc__specs {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.kcs-pc__spec {
+    display: grid;
+    grid-template-columns: minmax(8rem, 42%) 1fr;
+    gap: var(--ys-spacing-200);
+    padding: var(--ys-spacing-100) 0;
+}
+
+.kcs-pc__spec + .kcs-pc__spec {
+    border-top: 1px solid var(--ys-color-token-border-secondary);
+}
+
+.kcs-pc__spec-name {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-pc__spec-value {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-pc__city {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ys-spacing-100);
+    margin-bottom: var(--ys-spacing-150);
+}
+
+.kcs-pc__city-name {
+    margin-right: var(--ys-spacing-50);
+    font-weight: 600;
+}
+
+.kcs-pc__delivery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-150);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-pc__delivery-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-25);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-pc__delivery-date {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ys-color-token-text-primary);
+}
+
+/* Компьютер и планшет: две колонки, галерея слева. Липкость галереи в режиме
+   «миниатюры» даёт ya-kit-sticky (с отступом под липкую шапку); в режиме сетки
+   фото длиннее экрана, поэтому обе колонки прокручиваются обычным потоком. */
+@media (min-width: 768px) {
+    .kcs-pc {
         flex-direction: row;
         align-items: flex-start;
-        gap: var(--ys-spacing-500);
+        justify-content: center;
+        gap: var(--ys-spacing-600);
     }
-    
-    .product-card__gallery-wrapper {
-        position: sticky;
-        width: 50%;
-        min-width: 350px;
+
+    .kcs-pc__media {
+        flex: 0 1 50%;
         max-width: 640px;
-        top: var(--ys-sticky-offset,0)
     }
-	
-    .product-card__content {
-        width: 50%;
+
+    .kcs-pc_gallery-grid .kcs-pc__media {
+        flex-basis: 58%;
+        max-width: 880px;
+    }
+
+    .kcs-pc__main {
+        flex: 1 1 0;
+        max-width: 40rem;
+    }
+
+    .kcs-pc_gallery-grid .kcs-pc__main {
+        max-width: 36rem;
     }
 }
 
-/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
-.kcs-rhythm {
-    padding-top: var(--kcs-rhythm, 0px);
-    padding-bottom: var(--kcs-rhythm, 0px);
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-pc {
+        gap: var(--ys-spacing-400);
+    }
+
+    .kcs-pc_gallery-grid .kcs-pc__media {
+        flex-basis: 50%;
+    }
+}
+
+/* Телефон: одна колонка. Галерея — лента со свайпом от края до края экрана.
+   Колонка текста раскрывается (display: contents), и панель покупки становится
+   последним блоком карточки: sticky bottom держит её у нижнего края экрана,
+   пока карточка на экране, а в конце карточки она встаёт на своё место и
+   подвал не перекрывает. */
+@media (max-width: 767px) {
+    .kcs-pc__media {
+        position: relative;
+        top: auto;
+        z-index: 0;
+        margin-inline: calc(-1 * var(--ys-section-h-padding, 0px));
+    }
+
+    .kcs-pc__main {
+        display: contents;
+    }
+
+    .kcs-pc__head {
+        gap: var(--ys-spacing-100);
+    }
+
+    .kcs-pc__buy_sticky {
+        order: 1;
+        position: sticky;
+        bottom: 0;
+        z-index: 20;
+        align-items: center;
+        margin-inline: calc(-1 * var(--ys-section-h-padding, 0px));
+        padding: var(--ys-spacing-150) max(var(--ys-section-h-padding, 0px), var(--ys-spacing-200)) calc(var(--ys-spacing-150) + env(safe-area-inset-bottom, 0px));
+        border-top: 1px solid var(--ys-color-token-border-primary);
+        background: var(--ys-background-primary);
+    }
+
+    .kcs-pc__buy_sticky .kcs-pc__bar-price {
+        display: flex;
+        flex: 0 1 auto;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+        max-width: 42%;
+        margin-right: var(--ys-spacing-100);
+    }
+
+    /* Цена у панели не нужна, когда её место занял степпер, кнопка подписки
+       или цена уже написана на кнопке. */
+    .kcs-pc__buy_in-cart .kcs-pc__bar-price,
+    .kcs-pc__buy_oos .kcs-pc__bar-price,
+    .kcs-pc__buy_price-in-button .kcs-pc__bar-price {
+        display: none;
+    }
+
+    .kcs-pc__row header {
+        min-height: 52px;
+    }
+
+    .kcs-pc__spec {
+        grid-template-columns: minmax(7rem, 42%) 1fr;
+    }
+}
+
+@media (max-width: 360px) {
+    .kcs-pc__spec {
+        grid-template-columns: 1fr;
+        gap: var(--ys-spacing-25);
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
 }
 
 @media (max-width: 767px) {
-    .kcs-rhythm {
-        padding-top: var(--kcs-rhythm-touch, 0px);
-        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
     }
 }

@@ -1,0 +1,41 @@
+{
+  "start": "numbered",
+  "looks": [
+    {
+      "name": "numbered",
+      "title": "Крупные номера, три колонки",
+      "description": "Номер 01–04 вместо иконки, карточки по содержимому, на телефоне списком — для 3–6 коротких тезисов.",
+      "settings": {
+        "decoration": "index-number",
+        "columns": "3",
+        "layoutTouch": "list"
+      }
+    },
+    {
+      "name": "tiles-photo",
+      "title": "Плитки с фото",
+      "description": "Равные плитки 3:4, у части — фото (modules[].image с alt), на телефоне лентой.",
+      "settings": {
+        "tileRatio": "3:4",
+        "columns": "4",
+        "layoutTouch": "scroll"
+      }
+    },
+    {
+      "name": "carousel",
+      "title": "Карусель карточек",
+      "description": "Карусель по три, стрелки справа — когда тезисов больше шести.",
+      "settings": {
+        "layout": "carousel",
+        "columns": "3",
+        "controlsAlignment": "right"
+      }
+    },
+    {
+      "name": "cards-icons",
+      "title": "Карточки с иконками (вид v1)",
+      "description": "Сетка в 4 колонки, нейтральные карточки, иконка сверху.",
+      "settings": {}
+    }
+  ]
+}

@@ -1,0 +1,601 @@
+/* Подвал прижимается к низу короткой страницы, как нативный: flex-потомок
+   колонки страницы — ритм-обёртка паттерна (по коду витрины, живьём не проверено). */
+.kcs-rhythm {
+    margin-top: auto;
+}
+
+.kcs-ftr-section_lines {
+    border-top: 1px solid var(--ys-color-token-border-primary);
+}
+
+/* Цвет и шрифт — явно: секция задаёт палитре токены, но не цвет текста, а обычные
+   элементы (надпись, кнопка аккордеона) иначе унаследуют цвет страницы. */
+.kcs-ftr {
+    display: flex;
+    flex-direction: column;
+    color: var(--ys-color-token-text-primary);
+    font-family: var(--ys-font-family);
+    padding-top: var(--ys-spacing-800);
+    padding-bottom: calc(var(--ys-spacing-400) + env(safe-area-inset-bottom, 0px));
+}
+
+.kcs-ftr ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.kcs-ftr__sr {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* --- Бренд и колонки --- */
+
+.kcs-ftr__main {
+    display: grid;
+    grid-template-columns: minmax(14rem, 22rem) minmax(0, 1fr);
+    column-gap: var(--ys-spacing-1000);
+    row-gap: var(--ys-spacing-600);
+    align-items: start;
+}
+
+.kcs-ftr__main_solo {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.kcs-ftr__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-250);
+    min-width: 0;
+}
+
+.kcs-ftr__logo {
+    display: inline-block;
+    max-width: 100%;
+    text-decoration: none;
+}
+
+.kcs-ftr__logo-img {
+    width: auto;
+    max-width: 100%;
+}
+
+.kcs-ftr__logo-img img {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    object-position: left center;
+}
+
+/* Высоты логотипа — шкала нативного подвала (xs 24 … xl 60). */
+.kcs-ftr__logo_xs .kcs-ftr__logo-img {
+    height: 24px;
+}
+
+.kcs-ftr__logo_sm .kcs-ftr__logo-img {
+    height: 32px;
+}
+
+.kcs-ftr__logo_md .kcs-ftr__logo-img {
+    height: 40px;
+}
+
+.kcs-ftr__logo_lg .kcs-ftr__logo-img {
+    height: 50px;
+}
+
+.kcs-ftr__logo_xl .kcs-ftr__logo-img {
+    height: 60px;
+}
+
+.kcs-ftr__name {
+    overflow-wrap: anywhere;
+}
+
+.kcs-ftr__tagline {
+    max-width: 34ch;
+    white-space: pre-line;
+}
+
+.kcs-ftr__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-100);
+    padding-top: var(--ys-spacing-100);
+}
+
+.kcs-ftr__social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--ys-background-neutral);
+    color: var(--ys-color-token-text-primary);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.kcs-ftr__nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 13rem));
+    justify-content: end;
+    column-gap: var(--ys-spacing-500);
+    row-gap: var(--ys-spacing-600);
+    min-width: 0;
+}
+
+.kcs-ftr__main_solo .kcs-ftr__nav {
+    justify-content: start;
+}
+
+.kcs-ftr__nav:empty {
+    display: none;
+}
+
+.kcs-ftr__col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.kcs-ftr__col-title {
+    margin-bottom: var(--ys-spacing-200);
+}
+
+.kcs-ftr__col-toggle,
+.kcs-ftr__contacts-head {
+    display: none;
+}
+
+.kcs-ftr__links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ys-spacing-150);
+}
+
+.kcs-ftr__link {
+    overflow-wrap: anywhere;
+}
+
+.kcs-ftr__nowrap {
+    white-space: nowrap;
+}
+
+.kcs-ftr__break {
+    word-break: break-all;
+}
+
+.kcs-ftr__contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-25);
+}
+
+.kcs-ftr__caption {
+    display: block;
+}
+
+/* --- Нижняя строка: копирайт и документы --- */
+
+.kcs-ftr__legal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--ys-spacing-150) var(--ys-spacing-500);
+    margin-top: var(--ys-spacing-800);
+    padding-top: var(--ys-spacing-300);
+}
+
+.kcs-ftr__legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ys-spacing-100) var(--ys-spacing-400);
+}
+
+.kcs-ftr__legal-link,
+.kcs-ftr__copyright {
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-ftr-section_lines .kcs-ftr__legal {
+    border-top: 1px solid var(--ys-color-token-border-primary);
+}
+
+/* --- Надпись-логотип во всю ширину --- */
+
+.kcs-ftr__wordmark {
+    margin-top: var(--ys-spacing-800);
+}
+
+.kcs-ftr__wordmark-img {
+    width: 100%;
+}
+
+/* Живой текст во всю ширину — формула type-band: кегль из числа знаков
+   (--kcs-ftr-chars), пробелов (--kcs-ftr-sp, пробел — 0,4 знака) и средней ширины
+   буквы bold с трекингом -0,03em, откалиброванной на 33 шрифтах: 0,72em у
+   прописных, 0,645em у строчных. Слово занимает около 85% ширины, самые широкие
+   гарнитуры — до 100%; лишнее уходит в поле секции, а не обрезается. Строчный бокс
+   1em не вмещает хвосты «у», «р», «Д» и бреве «Й»: поле снизу — всегда, сверху —
+   если в слове есть «Й» или «Ё». Без единиц контейнера — от ширины окна. */
+.kcs-ftr__wordmark_text {
+    --kcs-ftr-em: 0.645;
+}
+
+.kcs-ftr__wordmark_upper {
+    --kcs-ftr-em: 0.72;
+}
+
+.kcs-ftr__wordtext {
+    margin: 0;
+    padding: 0 0 0.14em;
+    font-size: min(calc(88vw / ((var(--kcs-ftr-chars, 8) - 0.6 * var(--kcs-ftr-sp, 0)) * var(--kcs-ftr-em, 0.72))), 360px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.kcs-ftr__wordmark_upper .kcs-ftr__wordtext {
+    padding-bottom: 0.12em;
+}
+
+.kcs-ftr__wordmark_acc .kcs-ftr__wordtext {
+    padding-top: 0.13em;
+}
+
+@supports (font-size: 1cqi) {
+    .kcs-ftr__wordmark_text {
+        container-type: inline-size;
+    }
+
+    .kcs-ftr__wordtext {
+        font-size: min(calc(94cqi / ((var(--kcs-ftr-chars, 8) - 0.6 * var(--kcs-ftr-sp, 0)) * var(--kcs-ftr-em, 0.72))), 360px);
+    }
+}
+
+/* --- Бегущая фраза: техника running-line, одна строка живого текста --- */
+
+.kcs-ftr__ticker {
+    --kcs-ftr-duration: 40s;
+
+    position: relative;
+    display: grid;
+    grid-auto-columns: max-content;
+    grid-auto-flow: column;
+    overflow: hidden;
+    padding: var(--ys-spacing-250) 0;
+    color: var(--ys-color-token-text-primary);
+}
+
+.kcs-ftr-section_lines .kcs-ftr__ticker {
+    border-bottom: 1px solid var(--ys-color-token-border-primary);
+}
+
+.kcs-ftr__ticker-track {
+    display: grid;
+    grid-auto-columns: max-content;
+    grid-auto-flow: column;
+}
+
+.kcs-ftr__ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding-right: 0.5em;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    animation: kcs-ftr-marquee var(--kcs-ftr-duration, 40s) linear infinite;
+}
+
+.kcs-ftr__ticker-sep {
+    color: var(--ys-color-token-text-secondary);
+}
+
+.kcs-ftr__ticker_s .kcs-ftr__ticker-item {
+    font-size: 20px;
+}
+
+.kcs-ftr__ticker_m .kcs-ftr__ticker-item {
+    font-size: 32px;
+}
+
+.kcs-ftr__ticker_l .kcs-ftr__ticker-item {
+    font-size: 56px;
+}
+
+.kcs-ftr__ticker_slow {
+    --kcs-ftr-duration: 60s;
+}
+
+.kcs-ftr__ticker_fast {
+    --kcs-ftr-duration: 24s;
+}
+
+@keyframes kcs-ftr-marquee {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+/* --- Раскладка «по центру» --- */
+
+.kcs-ftr_center .kcs-ftr__main,
+.kcs-ftr_center .kcs-ftr__main_brand {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+}
+
+.kcs-ftr_center .kcs-ftr__brand {
+    align-items: center;
+}
+
+.kcs-ftr_center .kcs-ftr__logo-img img {
+    object-position: center;
+}
+
+.kcs-ftr_center .kcs-ftr__socials,
+.kcs-ftr_center .kcs-ftr__nav,
+.kcs-ftr_center .kcs-ftr__main_solo .kcs-ftr__nav,
+.kcs-ftr_center .kcs-ftr__legal,
+.kcs-ftr_center .kcs-ftr__legal-links {
+    justify-content: center;
+}
+
+.kcs-ftr_center .kcs-ftr__nav {
+    width: 100%;
+}
+
+.kcs-ftr_center .kcs-ftr__links {
+    align-items: center;
+}
+
+.kcs-ftr_center .kcs-ftr__legal {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* --- Интерактив --- */
+
+@media (hover: hover) and (pointer: fine) {
+    .kcs-ftr__social:hover {
+        transform: translateY(-2px);
+        background-color: var(--ys-background-secondary);
+    }
+
+    .kcs-ftr__legal-link:hover {
+        color: var(--ys-color-token-text-primary);
+    }
+
+    .kcs-ftr__ticker:hover .kcs-ftr__ticker-item {
+        animation-play-state: paused;
+    }
+}
+
+.kcs-ftr__social:focus-visible,
+.kcs-ftr__col-toggle:focus-visible {
+    outline: 2px solid var(--ys-color-token-text-primary);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kcs-ftr__ticker-item {
+        animation: none;
+    }
+
+    .kcs-ftr__social,
+    .kcs-ftr__chevron {
+        transition: none;
+    }
+}
+
+/* --- Планшет 768–1023: бренд сверху, колонки под ним --- */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .kcs-ftr__main {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: var(--ys-spacing-600);
+    }
+
+    .kcs-ftr__nav {
+        justify-content: start;
+    }
+
+    .kcs-ftr__ticker_l .kcs-ftr__ticker-item {
+        font-size: 44px;
+    }
+}
+
+/* --- Телефон до 767 --- */
+
+@media (max-width: 767px) {
+    .kcs-ftr {
+        padding-top: var(--ys-spacing-500);
+        padding-bottom: calc(var(--ys-spacing-300) + env(safe-area-inset-bottom, 0px));
+    }
+
+    .kcs-ftr__main {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: var(--ys-spacing-500);
+    }
+
+    .kcs-ftr__social {
+        width: 44px;
+        height: 44px;
+    }
+
+    .kcs-ftr__logo_lg .kcs-ftr__logo-img {
+        height: 44px;
+    }
+
+    .kcs-ftr__logo_xl .kcs-ftr__logo-img {
+        height: 52px;
+    }
+
+    .kcs-ftr__links {
+        gap: var(--ys-spacing-200);
+    }
+
+    /* Колонки открыты: две в ряд, контакты — на всю ширину. */
+    .kcs-ftr_open .kcs-ftr__nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-content: stretch;
+        column-gap: var(--ys-spacing-300);
+        row-gap: var(--ys-spacing-500);
+    }
+
+    .kcs-ftr_open .kcs-ftr__contacts {
+        grid-column: 1 / -1;
+    }
+
+    .kcs-ftr_center .kcs-ftr__nav {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* Аккордеон: колонка с заголовком сворачивается, как у нативного подвала. */
+    .kcs-ftr_acc .kcs-ftr__nav {
+        display: block;
+    }
+
+    .kcs-ftr_acc .kcs-ftr__col {
+        border-top: 1px solid var(--ys-color-token-border-primary);
+    }
+
+    .kcs-ftr_acc .kcs-ftr__col:last-child {
+        border-bottom: 1px solid var(--ys-color-token-border-primary);
+    }
+
+    .kcs-ftr_acc .kcs-ftr__col_titled .kcs-ftr__col-title {
+        display: none;
+    }
+
+    .kcs-ftr_acc .kcs-ftr__col_titled .kcs-ftr__col-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--ys-spacing-200);
+        width: 100%;
+        min-height: 52px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .kcs-ftr_acc .kcs-ftr__chevron {
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
+    }
+
+    .kcs-ftr_acc .kcs-ftr__col_open .kcs-ftr__chevron {
+        transform: rotate(180deg);
+    }
+
+    .kcs-ftr_acc .kcs-ftr__col_titled .kcs-ftr__links {
+        display: none;
+    }
+
+    .kcs-ftr_acc .kcs-ftr__col_titled.kcs-ftr__col_open .kcs-ftr__links,
+    .kcs-ftr_acc .kcs-ftr__links {
+        display: flex;
+        padding-bottom: var(--ys-spacing-300);
+    }
+
+    .kcs-ftr_acc .kcs-ftr__col:not(.kcs-ftr__col_titled) .kcs-ftr__links {
+        padding-top: var(--ys-spacing-300);
+    }
+
+    /* Контакты в аккордеоне открыты всегда; заголовок — в масштабе строк аккордеона. */
+    .kcs-ftr_acc .kcs-ftr__contacts-title {
+        display: none;
+    }
+
+    .kcs-ftr_acc .kcs-ftr__contacts-head {
+        display: flex;
+        align-items: center;
+        min-height: 52px;
+        margin: 0;
+    }
+
+    .kcs-ftr_acc .kcs-ftr__contacts .kcs-ftr__contacts-head + .kcs-ftr__links {
+        padding-top: 0;
+    }
+
+    .kcs-ftr__legal {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--ys-spacing-200);
+        margin-top: var(--ys-spacing-500);
+    }
+
+    .kcs-ftr_acc .kcs-ftr__legal {
+        margin-top: var(--ys-spacing-300);
+        border-top: 0;
+    }
+
+    .kcs-ftr__copyright {
+        order: 2;
+    }
+
+    .kcs-ftr__legal-links {
+        gap: var(--ys-spacing-150) var(--ys-spacing-300);
+    }
+
+    .kcs-ftr__wordmark {
+        margin-top: var(--ys-spacing-500);
+    }
+
+    .kcs-ftr__ticker {
+        padding: var(--ys-spacing-200) 0;
+    }
+
+    .kcs-ftr__ticker_s .kcs-ftr__ticker-item {
+        font-size: 16px;
+    }
+
+    .kcs-ftr__ticker_m .kcs-ftr__ticker-item {
+        font-size: 24px;
+    }
+
+    .kcs-ftr__ticker_l .kcs-ftr__ticker-item {
+        font-size: 36px;
+    }
+}
+
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
+}
+
+@media (max-width: 767px) {
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
+    }
+}

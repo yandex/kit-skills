@@ -1,0 +1,11 @@
+{
+  "texts": {},
+  "typical": {
+    "titleText": [
+      "Наши товары"
+    ],
+    "modules[].title": [
+      "Новинки"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    <ya-kit-section-layout-row>
+        {{#with (when (and (eql settings.wordSource 'collection') route.context.collection.title) route.context.collection.title settings.word) as |w|}}
+            <div
+                class="kcs-type kcs-type_{{settings.align}} kcs-type_font-{{settings.fontWidth}} kcs-type_w-{{settings.weight}} kcs-type_tone-{{settings.tone}} kcs-type_track-{{settings.tracking}} kcs-type_cap-{{settings.sizeCap}} kcs-type_crop-{{settings.crop}} kcs-type_link-{{when (and settings.link.link settings.linkText) settings.linkPosition 'none'}}{{if settings.isUppercase ' kcs-type_upper' ''}}{{if (or (includes w 'Й') (includes w 'Ё')) ' kcs-type_acc' ''}}{{if (or (includes w 'й') (includes w 'ё')) ' kcs-type_acc-low' ''}}"
+                style="--kcs-type-n: {{length (split w '')}}; --kcs-type-sp: {{subtract (length (split w ' ')) 1}}; --kcs-type-nl: {{length (split settings.linkText '')}}; --kcs-type-sh: {{divide (when settings.widthShare settings.widthShare 100) 100}}; --kcs-type-sh-m: {{divide (when settings.widthShareMobile settings.widthShareMobile 100) 100}}"
+            >
+                {{#if settings.asHeading}}
+                    <ya-kit-text class="kcs-type__word" as="h2" color="inherit">{{#if (and settings.link.link (not settings.linkText))}}<ya-kit-link class="kcs-type__wordlink" to={{settings.link.link}}>{{w}}</ya-kit-link>{{else}}{{w}}{{/if}}</ya-kit-text>
+                {{else}}
+                    <ya-kit-text class="kcs-type__word" as="p" color="inherit">{{#if (and settings.link.link (not settings.linkText))}}<ya-kit-link class="kcs-type__wordlink" to={{settings.link.link}}>{{w}}</ya-kit-link>{{else}}{{w}}{{/if}}</ya-kit-text>
+                {{/if}}
+                {{#if (and settings.link.link settings.linkText)}}
+                    <ya-kit-link class="kcs-type__more" to={{settings.link.link}} weight="medium"><span class="kcs-type__more-text">{{settings.linkText}}</span>{{#if settings.showArrow}}<ya-kit-icon class="kcs-type__arrow" name="arrow-right" color="inherit" />{{/if}}</ya-kit-link>
+                {{/if}}
+            </div>
+        {{/with}}
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+</div>

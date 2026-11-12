@@ -1,0 +1,59 @@
+<div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
+<ya-kit-featured-products-controller data-source="{{settings.dataSource}}" count="1" as="spot">
+{{#if (or spot.isLoading (gt (length spot.model) 0))}}
+<ya-kit-section-layout
+    palette={{settings.palette}}
+    padding-top={{settings.section.paddingTop}}
+    padding-bottom={{settings.section.paddingBottom}}
+    h-padding-desktop={{settings.section.hPaddingDesktop}}
+    h-padding-mobile={{settings.section.hPaddingMobile}}
+    is-fullscreen={{settings.section.isFullscreen}}
+>
+    {{#if settings.titleText}}
+    <ya-kit-section-layout-row>
+        <ya-kit-section-title align="{{settings.titleAlign}}" text="{{settings.titleText}}" />
+    </ya-kit-section-layout-row>
+    {{/if}}
+    <ya-kit-section-layout-row>
+        <div class="{{cn 'editorial' (if settings.mediaLeft 'editorial_media-left' '') (unless settings.imageMain.filePath 'editorial_no-main' '') (unless settings.imageSide.filePath 'editorial_no-side' '')}}">
+            <div class="editorial__cell editorial__product">
+                {{#if spot.isLoading}}
+                <div class="editorial__card" aria-hidden="true">
+                    <ya-kit-product-snippet is-loading="{{true}}" />
+                    <ya-kit-button color="primary" width="max" is-disabled="true">{{when settings.buttonText settings.buttonText 'В корзину'}}</ya-kit-button>
+                </div>
+                {{else}}
+                {{#with (first spot.model) as |item|}}
+                <ya-kit-product-snippet-controller product="{{item}}" as="card">
+                    <div class="editorial__card">
+                        <ya-kit-product-snippet product="{{item}}" enable-carousel="{{false}}" enable-button="{{false}}" on-toggle-favourite="{{card.onToggleFavourite}}" />
+                        {{#if (gt card.quantity 0)}}
+                        <ya-kit-input-stepper width="max" value="{{card.quantity}}" max="{{item.totalQuantity}}" aria-label="Количество в корзине" on-change="{{card.onUpdateQuantity}}" />
+                        {{elseif (gte item.totalQuantity 1)}}
+                        <ya-kit-button color="{{when (or (eql globals.productSnippet.buttons.buttonColorInFeaturedProducts 'secondary') (eql globals.productSnippet.buttons.buttonColorInFeaturedProducts 'neutral')) globals.productSnippet.buttons.buttonColorInFeaturedProducts 'primary'}}" width="max" on-click="{{card.onAddToCart}}">{{when settings.buttonText settings.buttonText 'В корзину'}}</ya-kit-button>
+                        {{elseif globals.outOfStockProducts.enableOutOfStockProducts}}
+                        <ya-kit-button color="secondary" width="max" on-click="{{card.onSubscribe}}">{{when settings.subscribeText settings.subscribeText 'Сообщить о поступлении'}}</ya-kit-button>
+                        {{else}}
+                        <ya-kit-button color="secondary" width="max" is-disabled="true">{{when settings.outOfStockText settings.outOfStockText 'Нет в наличии'}}</ya-kit-button>
+                        {{/if}}
+                    </div>
+                </ya-kit-product-snippet-controller>
+                {{/with}}
+                {{/if}}
+            </div>
+            {{#if settings.imageSide.filePath}}
+            <div class="{{cn 'editorial__cell' 'editorial__media' 'editorial__media_side' (skinRounded '150')}}">
+                <ya-kit-image class="editorial__image" src="{{settings.imageSide}}" alt="{{settings.imageSideAlt}}" fit="cover" />
+            </div>
+            {{/if}}
+            {{#if settings.imageMain.filePath}}
+            <div class="{{cn 'editorial__cell' 'editorial__media' 'editorial__media_main' (skinRounded '150')}}">
+                <ya-kit-image class="editorial__image" src="{{settings.imageMain}}" alt="{{settings.imageMainAlt}}" fit="cover" />
+            </div>
+            {{/if}}
+        </div>
+    </ya-kit-section-layout-row>
+</ya-kit-section-layout>
+{{/if}}
+</ya-kit-featured-products-controller>
+</div>

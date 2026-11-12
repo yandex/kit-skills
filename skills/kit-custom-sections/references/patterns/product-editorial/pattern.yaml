@@ -1,0 +1,16 @@
+id: product-editorial
+version: 2
+title: "Товар + фото кампании"
+purpose: "Один товар с кнопкой покупки рядом с одним-двумя фото кампании: запуск, новинка, товар недели"
+origin: "handmade"
+fingerprint: "529b34db48b809cc39939d2f8ccbc28b2df216f1097510a572ffceae4ef21a81"
+docs_fingerprint: "529b34db48b809cc39939d2f8ccbc28b2df216f1097510a572ffceae4ef21a81"
+applied_patches: ""
+keywords: "товар недели, одного товара, фокус, фото кампании, лайфстайл, lifestyle, запуск, новинка, product spotlight, editorial, один товар"
+pages: "main, landing"
+controllers: "ya-kit-featured-products-controller, ya-kit-product-snippet-controller"
+answers_required: "dataSource, imageMain"
+alt_fields: "imageMain=imageMainAlt, imageSide=imageSideAlt"
+alternatives: "goods-cover, text-media-split"
+rhythm: "0"
+rhythm_touch: "0"

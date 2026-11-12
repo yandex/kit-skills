@@ -1,0 +1,30 @@
+{
+  "labelPositionTouch": "above",
+  "descriptionTone": "primary",
+  "palette": "default",
+  "titleText": "",
+  "titleAlign": "default",
+  "layout": "accordion",
+  "labelStyle": "plain",
+  "expandFirst": false,
+  "showDescription": false,
+  "descriptionTitle": "О товаре",
+  "showOtherSpecs": false,
+  "otherSpecsTitle": "Характеристики",
+  "section": {
+    "isFullscreen": "default",
+    "hPaddingMobile": "200",
+    "paddingTop": "single",
+    "paddingBottom": "single"
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "characteristicTitle": "",
+      "label": "",
+      "view": "text"
+    }
+  ],
+  "verticalRhythm": "0",
+  "verticalRhythmTouch": "0"
+}

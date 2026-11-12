@@ -1,0 +1,389 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок"
+    },
+    "headingLevel": {
+      "type": "string",
+      "title": "Уровень заголовка",
+      "enum": [
+        "h2",
+        "h1",
+        "h3"
+      ],
+      "options": [
+        "h2 — заголовок раздела",
+        "h1 — второй h1 на странице, только по решению владельца",
+        "h3 — подраздел внутри главы"
+      ],
+      "default": "h2"
+    },
+    "titleSize": {
+      "type": "string",
+      "title": "Размер заголовка",
+      "enum": [
+        "display",
+        "section"
+      ],
+      "options": [
+        "Крупный, как на первом экране",
+        "Как у заголовков секций"
+      ],
+      "default": "display"
+    },
+    "metaText": {
+      "type": "string",
+      "title": "Строка под заголовком (размер, материал, число моделей)",
+      "default": ""
+    },
+    "leadText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Вводный текст"
+    },
+    "leadMutedText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Продолжение вводного текста приглушённым цветом"
+    },
+    "linkText": {
+      "type": "string",
+      "title": "Текст ссылки",
+      "default": "Смотреть все"
+    },
+    "linkUrl": {
+      "$ref": "#/definitions/LinkSource",
+      "title": "Ссылка (пусто — без ссылки)"
+    },
+    "linkStyle": {
+      "type": "string",
+      "title": "Вид ссылки",
+      "enum": [
+        "pill",
+        "arrow"
+      ],
+      "options": [
+        "Контурная кнопка",
+        "Текст со стрелкой"
+      ],
+      "default": "pill"
+    },
+    "linkArea": {
+      "type": "string",
+      "title": "Кликабельная область",
+      "enum": [
+        "link",
+        "block"
+      ],
+      "options": [
+        "Только ссылка",
+        "Весь блок"
+      ],
+      "default": "link"
+    },
+    "layout": {
+      "type": "string",
+      "title": "Раскладка",
+      "enum": [
+        "split",
+        "stacked",
+        "band"
+      ],
+      "options": [
+        "В две колонки: заголовок слева, текст и ссылка справа",
+        "Стопкой",
+        "Полоса над полкой: ссылка внизу справа"
+      ],
+      "default": "split"
+    },
+    "align": {
+      "type": "string",
+      "title": "Выравнивание стопки",
+      "enum": [
+        "left",
+        "center"
+      ],
+      "options": [
+        "По левому краю",
+        "По центру"
+      ],
+      "default": "left"
+    },
+    "alignItems": {
+      "type": "string",
+      "title": "Выравнивание колонок по вертикали",
+      "enum": [
+        "start",
+        "center",
+        "end"
+      ],
+      "options": [
+        "По верху",
+        "По центру",
+        "По низу"
+      ],
+      "default": "start"
+    },
+    "surface": {
+      "type": "string",
+      "title": "Подложка",
+      "enum": [
+        "none",
+        "secondary",
+        "neutral"
+      ],
+      "options": [
+        "Без подложки",
+        "Вторичный фон темы",
+        "Нейтральный фон темы"
+      ],
+      "default": "none"
+    },
+    "framed": {
+      "type": "boolean",
+      "title": "Тонкие линии сверху и снизу",
+      "default": false
+    },
+    "modules": {
+      "type": "array",
+      "title": "Теги-ценности",
+      "maxItems": 5,
+      "totalMaximum": 5,
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Текст тега",
+            "maxLength": 32,
+            "default": ""
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    },
+    "chipStyle": {
+      "type": "string",
+      "title": "Вид тегов",
+      "enum": [
+        "outline",
+        "filled",
+        "text"
+      ],
+      "options": [
+        "Контур",
+        "Заливка",
+        "Текст через точку"
+      ],
+      "default": "outline"
+    },
+    "logoSource": {
+      "type": "string",
+      "title": "Логотип над заголовком",
+      "enum": [
+        "none",
+        "company"
+      ],
+      "options": [
+        "Без логотипа",
+        "Логотип магазина из настроек"
+      ],
+      "default": "none"
+    },
+    "logoTone": {
+      "type": "string",
+      "title": "Вариант логотипа",
+      "enum": [
+        "default",
+        "inverted"
+      ],
+      "options": [
+        "Обычный",
+        "Инверсный (для тёмной палитры)"
+      ],
+      "default": "default"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный отступ над блоком (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный отступ над блоком на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    },
+    "verticalRhythmBottom": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Отступ под блоком (токен темы; 0 — вплотную к следующей секции)",
+      "default": "0"
+    },
+    "verticalRhythmBottomTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Отступ под блоком на телефоне (токен темы)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "titleText",
+    "section"
+  ]
+}

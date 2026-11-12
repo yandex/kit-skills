@@ -1,0 +1,15 @@
+id: type-band
+version: 2
+title: "Крупное слово во всю ширину"
+purpose: "Плакатное слово или короткая фраза живым текстом во всю ширину: шапка полки со ссылкой «Смотреть все», вордмарк магазина, название категории"
+origin: "handmade"
+fingerprint: "4ee4ec34a15a99104773964cd9bf94e97642b4e25dc40c0ee12724abdbfee9d3"
+docs_fingerprint: "4ee4ec34a15a99104773964cd9bf94e97642b4e25dc40c0ee12724abdbfee9d3"
+applied_patches: ""
+keywords: "крупное слово, огромное слово, крупная надпись, огромная надпись, крупное название, огромное название, вордмарк, wordmark, плакатный шрифт, типографика, текстовый баннер, type band, шапка полки, шапка подборки"
+pages: "main, landing, listing, pdp"
+controllers: ""
+answers_required: "word"
+alternatives: "section-intro, ticker-band"
+rhythm: "0"
+rhythm_touch: "0"

@@ -1,28 +1,70 @@
-.container {
+/* Полка с обложкой: текстовая колонка (заголовок, описание, кнопка) рядом с
+   каруселью товаров. Заголовок — h2 размера заголовка темы, цвет палитры, как у
+   заголовков секций. На телефоне обложка над полкой, две карточки в ряду. */
+.kcs-gc {
     display: flex;
     flex-direction: column;
-    gap: var(--ys-spacing-500);
+    gap: var(--ys-spacing-400);
 }
 
-@media screen and (min-width: 768px) {
-    .container { 
+.kcs-gc__cover {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ys-spacing-200);
+    min-width: 0;
+}
+
+.kcs-gc__title {
+    margin: 0;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+}
+
+.kcs-gc__text {
+    max-width: 36rem;
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+.kcs-gc__action {
+    margin-top: var(--ys-spacing-100);
+}
+
+.kcs-gc__shelf {
+    min-width: 0;
+}
+
+@media (min-width: 768px) {
+    .kcs-gc {
         flex-direction: row;
+        align-items: center;
+        gap: var(--ys-spacing-600);
     }
-    
-    .cover {
+
+    .kcs-gc__cover {
         flex: 0 0 300px;
     }
+
+    .kcs-gc__shelf {
+        flex: 1 1 auto;
+    }
+
+    .kcs-gc_cover-right .kcs-gc__cover {
+        order: 2;
+    }
 }
 
-/* kcs: вертикальный ритм уровня паттерна — свойство обёртки, тела doc-паттернов не трогаются */
-.kcs-rhythm {
-    padding-top: var(--kcs-rhythm, 0px);
-    padding-bottom: var(--kcs-rhythm, 0px);
+/* kcs: вертикальный ритм уровня паттерна. Отступ прибавляется к паддингу самой
+   секции и рисуется в цвете её палитры: на обёртке он лёг бы полосой цвета страницы
+   вокруг цветной секции. Обёртка только несёт переменные и скрывает пустой блок. */
+.kcs-rhythm > section {
+    padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm, 0px));
+    padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm, 0px));
 }
 
 @media (max-width: 767px) {
-    .kcs-rhythm {
-        padding-top: var(--kcs-rhythm-touch, 0px);
-        padding-bottom: var(--kcs-rhythm-touch, 0px);
+    .kcs-rhythm > section {
+        padding-top: calc(var(--ys-current-skin-padding-top, 0px) + var(--kcs-rhythm-touch, 0px));
+        padding-bottom: calc(var(--ys-current-skin-padding-bottom, 0px) + var(--kcs-rhythm-touch, 0px));
     }
 }

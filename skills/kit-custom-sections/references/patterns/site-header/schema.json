@@ -1,0 +1,353 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "mainMenu": {
+      "$ref": "#/definitions/MenuId",
+      "title": "Основное меню",
+      "longDescription": "Пункты и вложенность правятся в разделе меню кабинета. Первый уровень — строка шапки, второй и третий — выпадающий список или мега-меню, на телефоне — меню-бургер с переходом по уровням."
+    },
+    "secondaryMenu": {
+      "$ref": "#/definitions/MenuId",
+      "title": "Второе меню — строка под шапкой",
+      "longDescription": "Короткие пункты до 14 символов: разделы, акции, информация. Пусто — строки нет. Вложенные пункты не выводятся."
+    },
+    "logo": {
+      "type": "object",
+      "title": "Логотип",
+      "properties": {
+        "image": {
+          "$ref": "#/definitions/ImageModel",
+          "title": "Логотип",
+          "longDescription": "Пусто — логотип из настроек магазина, без него — название текстом."
+        },
+        "imageTouch": {
+          "$ref": "#/definitions/ImageModel",
+          "title": "Компактный логотип для телефона и планшета",
+          "longDescription": "Горизонтальный знак для экранов до 1024 px. Пусто — основной логотип."
+        },
+        "useInverted": {
+          "type": "boolean",
+          "title": "Светлая версия логотипа магазина",
+          "default": false,
+          "longDescription": "Для тёмной палитры шапки: берётся светлый логотип из настроек магазина, если он загружен."
+        },
+        "text": {
+          "type": "string",
+          "title": "Название текстом",
+          "default": "",
+          "longDescription": "Показывается, если логотипа нет; также подпись логотипа для экранного диктора. Пусто — название магазина."
+        },
+        "widthDesktop": {
+          "type": "number",
+          "title": "Ширина логотипа на компьютере",
+          "default": 140,
+          "minimum": 40,
+          "maximum": 320,
+          "step": 4,
+          "unit": "px",
+          "longDescription": "Высота следует пропорциям файла и по высоте шапки не обрезается: для горизонтального логотипа 120–200 px, для квадратного знака 40–56 px."
+        },
+        "widthTouch": {
+          "type": "number",
+          "title": "Ширина логотипа на телефоне",
+          "default": 112,
+          "minimum": 32,
+          "maximum": 200,
+          "step": 4,
+          "unit": "px",
+          "longDescription": "Не шире половины экрана. Для двухстрочного или вертикального логотипа лучше загрузить компактный логотип для телефона."
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "title": "Раскладка",
+      "properties": {
+        "logoPosition": {
+          "type": "string",
+          "title": "Логотип",
+          "enum": [
+            "left",
+            "center"
+          ],
+          "options": [
+            "Слева",
+            "По центру"
+          ],
+          "default": "left"
+        },
+        "navMode": {
+          "type": "string",
+          "title": "Меню строкой",
+          "enum": [
+            "auto",
+            "wide",
+            "burger"
+          ],
+          "options": [
+            "С 1024 px",
+            "С 1280 px — для длинного меню",
+            "Всегда бургер"
+          ],
+          "default": "auto",
+          "longDescription": "Уже этой ширины меню прячется в бургер. «Всегда бургер» — минималистичная шапка и на компьютере."
+        },
+        "dropdown": {
+          "type": "string",
+          "title": "Вложенные пункты на компьютере",
+          "enum": [
+            "list",
+            "mega"
+          ],
+          "options": [
+            "Выпадающий список",
+            "Мега-меню во всю ширину"
+          ],
+          "default": "list",
+          "longDescription": "Мега-меню раскладывает второй уровень колонками, третий — ссылками под ними."
+        },
+        "barHeight": {
+          "type": "string",
+          "title": "Высота шапки",
+          "enum": [
+            "compact",
+            "regular",
+            "spacious"
+          ],
+          "options": [
+            "Компактная",
+            "Обычная",
+            "Просторная"
+          ],
+          "default": "regular"
+        },
+        "width": {
+          "type": "string",
+          "title": "Ширина содержимого (фон всегда на всю ширину)",
+          "enum": [
+            "theme",
+            "full"
+          ],
+          "options": [
+            "Как у остальных секций магазина",
+            "На всю ширину экрана"
+          ],
+          "default": "theme"
+        },
+        "uppercase": {
+          "type": "boolean",
+          "title": "Пункты меню прописными",
+          "default": false
+        },
+        "isSticky": {
+          "type": "boolean",
+          "title": "Закрепить при прокрутке",
+          "default": true
+        },
+        "showBorder": {
+          "type": "boolean",
+          "title": "Линия под шапкой",
+          "default": true
+        }
+      }
+    },
+    "actions": {
+      "type": "object",
+      "title": "Кнопки справа",
+      "properties": {
+        "search": {
+          "type": "string",
+          "title": "Поиск",
+          "enum": [
+            "none",
+            "icon",
+            "field"
+          ],
+          "options": [
+            "Без поиска",
+            "Иконка, поле открывается строкой",
+            "Поле в шапке на компьютере"
+          ],
+          "default": "icon",
+          "longDescription": "На телефоне поиск всегда открывается по иконке строкой под шапкой."
+        },
+        "searchPlaceholder": {
+          "type": "string",
+          "title": "Подсказка в поле поиска",
+          "default": "Поиск по каталогу"
+        },
+        "showFavourites": {
+          "type": "boolean",
+          "title": "Избранное",
+          "default": true
+        },
+        "showAccount": {
+          "type": "boolean",
+          "title": "Вход и личный кабинет",
+          "default": true
+        },
+        "showCart": {
+          "type": "boolean",
+          "title": "Корзина со счётчиком",
+          "default": true
+        }
+      }
+    },
+    "secondaryRow": {
+      "type": "object",
+      "title": "Второе меню на телефоне",
+      "properties": {
+        "showOnTouch": {
+          "type": "boolean",
+          "title": "Строкой с прокруткой под шапкой",
+          "default": true,
+          "longDescription": "Выключено — второе меню только внутри меню-бургера."
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "title": "Город покупателя",
+      "properties": {
+        "show": {
+          "type": "boolean",
+          "title": "Показывать выбор города",
+          "default": false,
+          "longDescription": "На компьютере — в строке второго меню, на телефоне — в меню-бургере."
+        },
+        "fallbackText": {
+          "type": "string",
+          "title": "Текст, пока город не выбран",
+          "default": "Выберите город"
+        }
+      }
+    },
+    "contacts": {
+      "type": "object",
+      "title": "Контакт магазина",
+      "properties": {
+        "show": {
+          "type": "string",
+          "title": "Показывать",
+          "enum": [
+            "none",
+            "phone",
+            "email"
+          ],
+          "options": [
+            "Ничего",
+            "Телефон",
+            "Почту"
+          ],
+          "default": "none",
+          "longDescription": "Первый телефон или адрес почты из контактов магазина в кабинете. На компьютере — в строке второго меню, на телефоне — в меню-бургере."
+        }
+      }
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "mainMenu",
+    "section"
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "title": "Ответы для формы подписки",
+  "type": "object",
+  "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "title": "Цвет описаний и лида: primary — основной (по умолчанию); secondary — приглушённый: смесь 64% текста с фоном, на светло-сером фоне с текстом средней яркости не дотягивает до 4,5:1"
+    },
+    "headline": {
+      "type": "string",
+      "title": "Заголовок без промокода"
+    },
+    "headlineWithPromo": {
+      "type": "string",
+      "title": "Заголовок при выбранном промокоде; размер скидки встанет после текста («Скидка за подписку» → «Скидка за подписку 10%»). Не обещать «первый заказ»: это условие выводится само, если так настроен промокод"
+    },
+    "text": {
+      "type": "string",
+      "title": "Текст под заголовком (можно пустой)"
+    },
+    "promo": {
+      "$ref": "#/definitions/PromocodeSource",
+      "title": "Промокод: объект {promocodeId} с id промокода магазина. Если промокода нет, поле не передавать: без промокода форма — обычная подписка"
+    },
+    "terms": {
+      "type": "object",
+      "title": "Подписи условий промокода",
+      "properties": {
+        "firstOrder": {
+          "type": "string",
+          "title": "Промокод только на первый заказ"
+        },
+        "minOrder": {
+          "type": "string",
+          "title": "Минимальная сумма заказа; сумма встанет после текста"
+        }
+      }
+    },
+    "form": {
+      "type": "object",
+      "title": "Поле и кнопка",
+      "properties": {
+        "placeholder": {
+          "type": "string",
+          "title": "Подсказка в поле e-mail"
+        },
+        "buttonText": {
+          "type": "string",
+          "title": "Текст кнопки"
+        },
+        "buttonColor": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "secondary",
+            "neutral",
+            "outlined",
+            "flat"
+          ],
+          "title": "Цвет кнопки"
+        },
+        "controlSize": {
+          "type": "string",
+          "enum": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "title": "Размер поля и кнопки (одна высота)"
+        },
+        "variant": {
+          "type": "string",
+          "enum": [
+            "row",
+            "inline-pill",
+            "stacked"
+          ],
+          "title": "Вид формы: рядом, кнопка внутри поля, кнопка под полем"
+        }
+      }
+    },
+    "consent": {
+      "type": "object",
+      "title": "Согласие на рассылку",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "checkbox",
+            "notice"
+          ],
+          "title": "checkbox — галочка, которую ставит покупатель (без неё подписка не уходит); notice — только текст. Отмеченной заранее галочки нет"
+        },
+        "text": {
+          "type": "string",
+          "title": "Текст согласия, markdown со ссылкой на политику. Не называть в нём кнопку: при смене текста кнопки подпись разойдётся с ней"
+        }
+      }
+    },
+    "success": {
+      "type": "object",
+      "title": "Экран после подписки",
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Заголовок"
+        },
+        "text": {
+          "type": "string",
+          "title": "Текст без промокода"
+        },
+        "textWithPromo": {
+          "type": "string",
+          "title": "Текст при выбранном промокоде (платформа отправляет код на почту)"
+        }
+      }
+    },
+    "layout": {
+      "type": "string",
+      "enum": [
+        "center",
+        "left",
+        "two-columns"
+      ],
+      "title": "Расположение"
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "panel",
+        "plain"
+      ],
+      "title": "panel — на подложке, plain — без подложки"
+    },
+    "palette": {
+      "type": "string",
+      "title": "Палитра (id из настроек магазина)"
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ блока с каждой стороны (spacing-токен). По умолчанию \"0\": отступ даёт section.paddingTop/paddingBottom, как у нативных соседей. Ритм как у соседей, разрыв — только намеренно: 300–500 (24–40px сверх отступа секции) — смена палитры, закрывающий блок, лендинг целиком из кастома; рядом с нативной секцией иначе пустая полоса"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "title": "Добавочный вертикальный отступ на телефоне (spacing-токен, по умолчанию \"0\"; разрыв главы — 200–300)"
+    }
+  },
+  "required": [
+    "headline"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "start": "bottom",
+  "looks": [
+    {
+      "name": "bottom",
+      "title": "Текст внизу на градиенте",
+      "description": "Кадр 2:1, текст слева внизу.",
+      "settings": {}
+    },
+    {
+      "name": "side",
+      "title": "Текст сбоку по центру",
+      "description": "Горизонтальный градиент со стороны текста.",
+      "settings": {
+        "content": {
+          "align": "start",
+          "valign": "center"
+        }
+      }
+    },
+    {
+      "name": "wide",
+      "title": "Широкий кадр 5:2",
+      "description": "Невысокий баннер над полкой.",
+      "settings": {
+        "frame": {
+          "ratio": "5:2"
+        }
+      }
+    }
+  ]
+}

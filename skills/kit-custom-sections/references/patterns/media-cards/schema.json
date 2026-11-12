@@ -1,0 +1,284 @@
+{
+  "title": "",
+  "type": "object",
+  "properties": {
+    "descriptionTone": {
+      "type": "string",
+      "title": "Цвет описаний",
+      "enum": [
+        "primary",
+        "secondary"
+      ],
+      "options": [
+        "Основной — контрастный",
+        "Приглушённый — только тёмный текст на светлом фоне"
+      ],
+      "default": "primary"
+    },
+    "palette": {
+      "$ref": "#/definitions/Palette",
+      "title": "Палитра цветов"
+    },
+    "titleText": {
+      "type": "string",
+      "title": "Заголовок",
+      "default": ""
+    },
+    "titleAlign": {
+      "$ref": "#/definitions/SectionTitleAlign",
+      "title": "Расположение заголовка"
+    },
+    "introText": {
+      "$ref": "#/definitions/TextArea",
+      "title": "Вводный текст под заголовком"
+    },
+    "layout": {
+      "type": "string",
+      "title": "Раскладка на компьютере",
+      "enum": [
+        "grid",
+        "carousel"
+      ],
+      "options": [
+        "Сетка",
+        "Карусель со стрелками"
+      ],
+      "default": "grid"
+    },
+    "columns": {
+      "type": "string",
+      "title": "Карточек в ряд на компьютере",
+      "enum": [
+        "2",
+        "3",
+        "4"
+      ],
+      "options": [
+        "2",
+        "3",
+        "4"
+      ],
+      "default": "3"
+    },
+    "mobileView": {
+      "type": "string",
+      "title": "Раскладка на телефоне",
+      "enum": [
+        "scroll",
+        "one",
+        "two"
+      ],
+      "options": [
+        "Лента: карточка и край следующей",
+        "По одной карточке",
+        "По две карточки"
+      ],
+      "default": "scroll"
+    },
+    "imageRatio": {
+      "type": "string",
+      "title": "Форма фото",
+      "enum": [
+        "3:4",
+        "1:1",
+        "4:3",
+        "circle"
+      ],
+      "options": [
+        "Вертикальное 3:4",
+        "Квадрат 1:1",
+        "Горизонтальное 4:3",
+        "Круг"
+      ],
+      "default": "3:4"
+    },
+    "cardStyle": {
+      "type": "string",
+      "title": "Оформление карточки",
+      "enum": [
+        "plain",
+        "panel"
+      ],
+      "options": [
+        "Без подложки: текст под фото",
+        "Карточка на подложке"
+      ],
+      "default": "plain"
+    },
+    "labelStyle": {
+      "type": "string",
+      "title": "Заголовок карточки",
+      "enum": [
+        "plain",
+        "chip"
+      ],
+      "options": [
+        "Обычный текст",
+        "Плашка контрастного цвета"
+      ],
+      "default": "plain"
+    },
+    "align": {
+      "type": "string",
+      "title": "Выравнивание текста в карточке",
+      "enum": [
+        "left",
+        "center"
+      ],
+      "options": [
+        "По левому краю",
+        "По центру"
+      ],
+      "default": "left"
+    },
+    "section": {
+      "type": "object",
+      "title": "Размеры секции",
+      "required": [
+        "isFullscreen",
+        "paddingTop",
+        "paddingBottom"
+      ],
+      "properties": {
+        "isFullscreen": {
+          "$ref": "#/definitions/OptionalFlag",
+          "title": "Растянуть секцию на весь экран"
+        },
+        "hPaddingDesktop": {
+          "$ref": "#/definitions/SectionHPadding",
+          "title": "Отступ по краям на десктопе"
+        },
+        "hPaddingMobile": {
+          "$ref": "#/definitions/SectionHPaddingTouch",
+          "title": "Отступ по краям на телефоне"
+        },
+        "paddingTop": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ над секцией"
+        },
+        "paddingBottom": {
+          "$ref": "#/definitions/SectionVPadding",
+          "title": "Отступ под секцией"
+        }
+      }
+    },
+    "modules": {
+      "type": "array",
+      "title": "Карточки",
+      "items": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "$ref": "#/definitions/ImageModel",
+            "title": "Фото"
+          },
+          "imageAlt": {
+            "type": "string",
+            "title": "Что на фото — для незрячих (пусто — возьмётся заголовок)",
+            "default": ""
+          },
+          "title": {
+            "type": "string",
+            "title": "Заголовок: имя или название",
+            "default": ""
+          },
+          "subtitle": {
+            "type": "string",
+            "title": "Подпись: роль, должность, город",
+            "default": ""
+          },
+          "text": {
+            "$ref": "#/definitions/TextArea",
+            "title": "Текст"
+          },
+          "linkText": {
+            "type": "string",
+            "title": "Текст ссылки (без него ссылка не показывается)",
+            "default": ""
+          },
+          "link": {
+            "$ref": "#/definitions/LinkSource",
+            "title": "Ссылка"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      }
+    },
+    "verticalRhythm": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ блока сверх отступов секции (токен темы, с каждой стороны; 0 — как у нативных соседей, больше — только намеренный разрыв главы)",
+      "default": "0"
+    },
+    "verticalRhythmTouch": {
+      "type": "string",
+      "enum": [
+        "0",
+        "25",
+        "50",
+        "75",
+        "100",
+        "150",
+        "200",
+        "250",
+        "300",
+        "350",
+        "400",
+        "450",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800",
+        "1900",
+        "2000"
+      ],
+      "title": "Добавочный вертикальный отступ на телефоне (токен темы; 0 — как у нативных соседей)",
+      "default": "0"
+    }
+  },
+  "required": [
+    "section",
+    "modules"
+  ]
+}

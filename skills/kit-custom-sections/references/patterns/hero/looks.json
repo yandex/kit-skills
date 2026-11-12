@@ -1,0 +1,39 @@
+{
+  "start": "inset",
+  "looks": [
+    {
+      "name": "inset",
+      "title": "Текст и фото раздельно",
+      "description": "Колонка текста и фото 4:3 с отступами.",
+      "settings": {}
+    },
+    {
+      "name": "panel",
+      "title": "Панель 50/50",
+      "description": "Текст на заливке впритык к квадратному фото.",
+      "settings": {
+        "layout": "panel",
+        "panelSurface": "secondary",
+        "mediaRatio": "1:1"
+      }
+    },
+    {
+      "name": "panel-inverse",
+      "title": "Тёмная панель, фото слева",
+      "description": "Закрывающий блок ниже по странице.",
+      "settings": {
+        "layout": "panel",
+        "panelSurface": "inverse",
+        "mediaLeft": true
+      }
+    },
+    {
+      "name": "statement",
+      "title": "Заявление без фото",
+      "description": "Крупный заголовок по центру, без изображения.",
+      "settings": {
+        "textAlign": "center"
+      }
+    }
+  ]
+}

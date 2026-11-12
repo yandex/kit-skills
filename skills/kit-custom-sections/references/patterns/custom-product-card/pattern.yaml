@@ -1,14 +1,14 @@
 id: custom-product-card
-version: 1
+version: 3
 title: "Кастомная карточка товара"
-purpose: "Полная карточка товара: галерея, цены, характеристики, корзина, доставка"
-origin: "doc-example: example/product-card/custom-card.md"
-fingerprint: "5bf1f0ea33f388fdac46a3bc95acbfe563e257ac337ce2bfbd3c4764ae5d1fef"
+purpose: "Карточка товара вместо нативной: галерея, цена, варианты, липкая панель покупки на телефоне, свои блоки из характеристик"
+origin: "handmade (переработка doc-example: example/product-card/custom-card.md)"
+fingerprint: "ee44b139b9437604f16803fb1c1c9103286eba3103c5ffd0fae214a65b16c510"
 docs_fingerprint: "184697086deed4293e1360d2f1316faf509f06a80206df2cc56710eb9d1ff282"
-applied_patches: "fix-hpadding-touch"
-keywords: "карточка товара, product card, pdp, страница товара, галерея товара"
+applied_patches: ""
+keywords: "карточка товара, карточку товара, product card, pdp, страница товара, галерея товара"
 pages: "pdp"
 controllers: "ya-kit-product-detail-controller, ya-kit-breadcrumbs-controller, ya-kit-location-controller, ya-kit-delivery-options-controller"
 answers_required: ""
-rhythm: "200"
-rhythm_touch: "100"
+rhythm: "0"
+rhythm_touch: "0"

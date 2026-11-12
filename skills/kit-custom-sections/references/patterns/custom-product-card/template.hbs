@@ -1,181 +1,268 @@
 <div class="kcs-rhythm" style="--kcs-rhythm: var(--ys-spacing-{{settings.verticalRhythm}}); --kcs-rhythm-touch: var(--ys-spacing-{{settings.verticalRhythmTouch}})">
 <ya-kit-section-layout
-    class="wrapper"
+    class="kcs-pc-root"
     palette={{settings.palette}}
     padding-top={{settings.section.paddingTop}}
     padding-bottom={{settings.section.paddingBottom}}
     h-padding-desktop={{settings.section.hPaddingDesktop}}
     h-padding-mobile={{settings.section.hPaddingMobile}}
-    is-fullscreen={{settings.section.isFullscreen}} 
+    is-fullscreen={{settings.section.isFullscreen}}
 >
-    <ya-kit-product-detail-controller as="controller">    
-        <ya-kit-section-layout-row> 
-            {{#if controller.isLoading}}
-            	<article class="product-card">
-                	<ya-kit-sticky>
-                        <div class="product-card__gallery-wrapper">
-                        	<ya-kit-media-gallery class="product-card__gallery" layout="thumbnail" is-loading="1" />
+    <ya-kit-product-detail-controller as="controller">
+        <ya-kit-section-layout-row>
+            {{#with controller.model.variant as |variant|}}
+                <article class="kcs-pc {{when (eql settings.gallery.layout 'grid') 'kcs-pc_gallery-grid' 'kcs-pc_gallery-thumbs'}}">
+                    <ya-kit-sticky is-sticky="{{notEql settings.gallery.layout 'grid'}}">
+                        <div class="kcs-pc__media">
+                            <ya-kit-media-gallery
+                                class="kcs-pc__gallery"
+                                layout="{{when (eql settings.gallery.layout 'grid') 'grid' 'thumbnail'}}"
+                                items={{variant.mediaItems}}
+                                aspect-ratio="{{globals.productSnippet.photo.aspectRatio}}"
+                                fit="{{globals.productSnippet.photo.fit}}"
+                                background-color="{{globals.productSnippet.photo.backgroundColor}}"
+                                enable-paranja="{{globals.productSnippet.photo.enableParanja}}"
+                                autoplay="true"
+                                loop="true"
+                                priority="true"
+                            />
                         </div>
                     </ya-kit-sticky>
-                   	<ya-kit-v-stack gap="250" class="product-card__content" align-items="stretch">
-                        <ya-kit-breadcrumbs-controller as="breadcrumbsController">
-                            <ya-kit-breadcrumbs items={{breadcrumbsController.model}} />
-                        </ya-kit-breadcrumbs-controller>
-                        <ya-kit-v-stack gap="150" class="product-card__info" align-items="stretch">
-                            <ya-kit-text as="h1" size="3xl">
-                                <ya-kit-skeleton variant="text" width="100%" />
-                            </ya-kit-text>
-                            <ya-kit-prices size="xl" weight="bold" is-loading="1" />
-                        </ya-kit-v-stack>
-                        
-                     	<ya-kit-grouping-characteristic is-loading="1"  />
-                        <ya-kit-button class="product-card__cart-button" is-loading="1" />
-                        
-                        <ya-kit-v-stack gap="50" align-items="stretch">
-                            <ya-kit-accordion default-expanded="1">
-                                <ya-kit-accordion-header>
-                                    <ya-kit-text as="h3" size="xl" weight="bold">Характеристики</ya-kit-text>
-                                </ya-kit-accordion-header> 
-                                <ya-kit-accordion-body>
-                                    <ya-kit-v-stack as="ul" gap="250">
-                                        {{#repeat 3}}
-                                            <ya-kit-v-stack as="li" gap="50" align-items="stretch">
-                                                <ya-kit-text size="sm" weight="bold" color="secondary">
-                                                    <ya-kit-skeleton variant="text" width="150px" />
-                                                </ya-kit-text>
-                                                <ya-kit-text>
-                                                    <ya-kit-skeleton variant="text" width="250px" />
-                                                </ya-kit-text>
-                                            </ya-kit-v-stack>
-                                        {{/repeat}}
-                                    </ya-kit-v-stack>
-                                </ya-kit-accordion-body>
-                            </ya-kit-accordion>
-
-                            <ya-kit-accordion is-disabled="1">
-                                <ya-kit-accordion-header>
-                                    <ya-kit-text as="h3" size="xl" weight="bold">Описание</ya-kit-text>
-                                </ya-kit-accordion-header>
-                                <ya-kit-accordion-body />
-                            </ya-kit-accordion>
-
-                            <ya-kit-accordion is-disabled="1">
-                                <ya-kit-accordion-header>
-                                    <ya-kit-text as="h3" size="xl" weight="bold">Доставка</ya-kit-text>
-                                </ya-kit-accordion-header>
-                                <ya-kit-accordion-body />
-                            </ya-kit-accordion>
-                        </ya-kit-v-stack>
-                    </ya-kit-v-stack>
-                    
-                </article>
-            {{elseif controller.model.variant}}
-                {{#with controller.model.variant as |variant|}}
-                    <article class="product-card">
-                        <ya-kit-sticky>
-                            <div class="product-card__gallery-wrapper">
-                            	<ya-kit-media-gallery class="product-card__gallery" layout="thumbnail" items={{variant.mediaItems}} />
-                            </div>
-                        </ya-kit-sticky>
-                        <ya-kit-v-stack gap="250" class="product-card__content" align-items="stretch">
-                            <ya-kit-breadcrumbs-controller as="breadcrumbsController">
-                                <ya-kit-breadcrumbs items={{breadcrumbsController.model}} />
+                    <div class="kcs-pc__main">
+                        <div class="kcs-pc__head">
+                            <ya-kit-breadcrumbs-controller as="crumbs">
+                                <ya-kit-breadcrumbs class="kcs-pc__crumbs" items={{crumbs.model}} />
                             </ya-kit-breadcrumbs-controller>
-                            <ya-kit-v-stack gap="150" class="product-card__info" align-items="stretch">
-                                <ya-kit-text as="h1" size="3xl">{{variant.name}}</ya-kit-text>
+                            {{#if (and settings.showRating (notEql globals.productReviews.isEnabled false) (gt controller.model.feedback.meta.feedbackCount 0))}}
+                                <ya-kit-rating-stars
+                                    class="kcs-pc__rating"
+                                    value={{controller.model.feedback.meta.rating}}
+                                    count={{controller.model.feedback.meta.feedbackCount}}
+                                    has-value="true"
+                                    variant="compact"
+                                    reviews-page-url={{controller.model.feedback.meta.relativeLinkUrl}}
+                                />
+                            {{/if}}
+                            <div class="kcs-pc__title-row">
+                                <ya-kit-text class="kcs-pc__title" as="h1" size="2xl" weight="medium">{{variant.name}}</ya-kit-text>
+                                {{#if globals.features.enableFavourites}}
+                                    <ya-kit-button class="kcs-pc__fav" color="outlined" on-click={{controller.onToggleVariantFavourite}}>
+                                        <span class="kcs-pc__sr">{{when variant.isFavourite 'Удалить из избранного' 'Добавить в избранное'}}</span>
+                                        {{#if variant.isFavourite}}
+                                            <svg class="kcs-pc__fav-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"></path></svg>
+                                        {{else}}
+                                            <svg class="kcs-pc__fav-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3m-4.4 15.55-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05"></path></svg>
+                                        {{/if}}
+                                    </ya-kit-button>
+                                {{/if}}
+                            </div>
+                            {{#if settings.subtitle}}
+                                <ya-kit-text class="kcs-pc__subtitle" size="md" color="secondary">{{settings.subtitle}}</ya-kit-text>
+                            {{/if}}
+                            <div class="kcs-pc__price">
                                 <ya-kit-prices size="xl" weight="bold" price={{variant.price}} final-price={{variant.finalPrice}} />
-                            </ya-kit-v-stack>
-                            
-                            {{#each controller.model.groupingCharacteristics as |characteristic|}}
-                            	<ya-kit-grouping-characteristic characteristic={{characteristic}} on-change={{controller.onVariantSelect}} />
-                            {{/each}} 
-                            
-                            <ya-kit-h-stack align-items="center" gap="100">
-                                {{#if (gte controller.model.quantity 1)}} 
-                                    <ya-kit-input-stepper class="product-card__cart-stepper" value={{controller.model.quantity}} on-change={{controller.onUpdateVariantQuantity}} />
-                                	<ya-kit-button to="/cart" class="product-card__cart-button" on-press={{controller.onAddVariantToCart}}>В корзину</ya-kit-button>
-                                {{else}} 
-                                    <ya-kit-button class="product-card__cart-button" is-disabled="{{(eql variant.totalQuantity 0)}}" on-press={{controller.onAddVariantToCart}}>Добавить в корзину</ya-kit-button>
+                                {{#if (and settings.buy.showSplit globals.features.enableYandexSplit (gt variant.totalQuantity 0))}}
+                                    <yandex-pay-badge-split class="kcs-pc__split" price="{{variant.finalPrice}}" size="m" variant="detailed" />
                                 {{/if}}
-                                <ya-kit-button color="outlined" on-press={{controller.onToggleVariantFavourite}}>
-                                    {{#if variant.isFavourite}}
-                                    	<svg class="product-card__favourite-icon" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1"><path d="m12 21.35-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"></path></svg>
-                                	{{else}}
-                                    	<svg class="product-card__favourite-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" tabindex="-1" title="FavoriteBorder"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3m-4.4 15.55-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05"></path></svg>
+                            </div>
+                            {{#if (or (and settings.trust.showSku variant.sku) (and settings.trust.showStock (gt variant.totalQuantity 0) (or (lte settings.trust.stockThreshold 0) (lte variant.totalQuantity settings.trust.stockThreshold))))}}
+                                <div class="kcs-pc__trust">
+                                    {{#if (and settings.trust.showSku variant.sku)}}
+                                        <span class="kcs-pc__trust-item">Артикул {{variant.sku}}</span>
                                     {{/if}}
-                                </ya-kit-button>
-                            </ya-kit-h-stack>
-
-                            <ya-kit-v-stack gap="50" align-items="stretch">
-                                {{#if (gt variant.characteristics.length 0)}}
-                                	<ya-kit-accordion default-expanded="1">
-                                        <ya-kit-accordion-header>
-                                            <ya-kit-text as="h3" size="xl" weight="bold">Характеристики</ya-kit-text>
-                                        </ya-kit-accordion-header> 
-                                      	<ya-kit-accordion-body>
-                                            <ya-kit-v-stack as="ul" gap="250">
-                                                {{#each variant.characteristics as |characteristic|}}
-                                                    <ya-kit-v-stack as="li" gap="50">
-                                                        <ya-kit-text size="sm" weight="bold" color="secondary">
-                                                            {{characteristic.title}}:
-                                                        </ya-kit-text>
-                                                        <ya-kit-text>{{characteristic.value}}</ya-kit-text>
-                                                    </ya-kit-v-stack>
-                                                {{/each}}
-                                            </ya-kit-v-stack>
-                                    	</ya-kit-accordion-body>
-                                	</ya-kit-accordion>
+                                    {{#if (and settings.trust.showStock (gt variant.totalQuantity 0) (or (lte settings.trust.stockThreshold 0) (lte variant.totalQuantity settings.trust.stockThreshold)))}}
+                                        <span class="kcs-pc__trust-item">В наличии: {{variant.totalQuantity}} шт.</span>
+                                    {{/if}}
+                                </div>
+                            {{/if}}
+                        </div>
+                        {{#if (gt controller.model.groupingCharacteristics.length 0)}}
+                            <div class="kcs-pc__options">
+                                {{#each controller.model.groupingCharacteristics as |characteristic|}}
+                                    <ya-kit-grouping-characteristic
+                                        characteristic={{characteristic}}
+                                        size-table={{controller.model.sizeTable}}
+                                        enable-out-of-stock-products="{{globals.outOfStockProducts.enableOutOfStockProducts}}"
+                                        on-change={{controller.onVariantSelect}}
+                                    />
+                                {{/each}}
+                            </div>
+                        {{/if}}
+                        <div class="kcs-pc__buy {{when (and settings.buy.stickyMobile (or (gt variant.totalQuantity 0) globals.outOfStockProducts.enableOutOfStockProducts)) 'kcs-pc__buy_sticky' ''}} {{when (gt variant.totalQuantity 0) 'kcs-pc__buy_in-stock' 'kcs-pc__buy_oos'}} {{when (gte controller.model.quantity 1) 'kcs-pc__buy_in-cart' ''}} {{when settings.buy.priceInButton 'kcs-pc__buy_price-in-button' ''}}">
+                            <div class="kcs-pc__bar-price" aria-hidden="true">
+                                <span class="kcs-pc__bar-final">{{formatPrice variant.finalPrice}}</span>
+                                {{#if (and variant.price (notEql variant.price variant.finalPrice))}}
+                                    <span class="kcs-pc__bar-old">{{formatPrice variant.price}}</span>
                                 {{/if}}
-
-                                <ya-kit-accordion>
-                                    <ya-kit-accordion-header>
-                                        <ya-kit-text as="h3" size="xl" weight="bold">Описание</ya-kit-text>
-                                    </ya-kit-accordion-header>
-                                    <ya-kit-accordion-body>
-                                        <ya-kit-markdown class="product-card__description" markup={{variant.description}} />
-                                    </ya-kit-accordion-body>
-                                </ya-kit-accordion>
-                                
-                                <ya-kit-accordion>
-                                    <ya-kit-accordion-header>
-                                        <ya-kit-text as="h3" size="xl" weight="bold">Доставка</ya-kit-text>
-                                    </ya-kit-accordion-header>
-                                    <ya-kit-accordion-body>
-										<ya-kit-location-controller as="location">
-                                            <ya-kit-v-stack gap="100">
-                                                <ya-kit-h-stack gap="50">
-                                                    <ya-kit-text>Город доставки: </ya-kit-text>
-                                                    <ya-kit-text weight="bold" on-click={{location.onLocationSelect}}>
-                                                        {{#if location.model}}
-                                                            {{location.model.name}}
-                                                        {{else}}
-                                                            <ya-kit-skeleton variant="text" width="100" />
-                                                        {{/if}}
-                                                    </ya-kit-text>
-                                                </ya-kit-h-stack>
-                                                <ya-kit-delivery-options-controller location={{location.model}} product={{variant}} as="options">
-                                                    <ya-kit-v-stack gap="100">
-                                                        {{#each options.model as |option|}}
-                                                            <ya-kit-v-stack gap="25">
-                                                                <ya-kit-text weight="bold">{{option.formattedDate}}</ya-kit-text>
-                                                                <ya-kit-text weight="bold">{{if (eql option.method 'COURIER') 'Курьер' 'ПВЗ'}} {{option.serviceName}}</ya-kit-text>
-                                                            </ya-kit-v-stack>
-                                                        {{else}}
-                                                            <ya-kit-text>Не доставляем в указанный регион</ya-kit-text>
+                            </div>
+                            {{#if (gt variant.totalQuantity 0)}}
+                                {{#if (gte controller.model.quantity 1)}}
+                                    <ya-kit-input-stepper
+                                        class="kcs-pc__stepper"
+                                        size="lg"
+                                        value={{controller.model.quantity}}
+                                        max={{variant.totalQuantity}}
+                                        on-change={{controller.onUpdateVariantQuantity}}
+                                    />
+                                    <ya-kit-button class="kcs-pc__cta" size="lg" to="/cart">{{when settings.buy.goToCartText settings.buy.goToCartText 'Перейти в корзину'}}</ya-kit-button>
+                                {{else}}
+                                    <ya-kit-button class="kcs-pc__cta" size="lg" on-click={{controller.onAddVariantToCart}}>
+                                        <span class="kcs-pc__cta-text">{{when settings.buy.addToCartText settings.buy.addToCartText 'В корзину'}}</span>
+                                        {{#if settings.buy.priceInButton}}
+                                            <span class="kcs-pc__cta-price">{{formatPrice variant.finalPrice}}</span>
+                                        {{/if}}
+                                    </ya-kit-button>
+                                {{/if}}
+                            {{else}}
+                                {{#if globals.outOfStockProducts.enableOutOfStockProducts}}
+                                    <ya-kit-button class="kcs-pc__cta" size="lg" color="outlined" on-click={{controller.onSubscribe}}>
+                                        <ya-kit-icon class="kcs-pc__cta-icon" name="notification" size="20" />
+                                        <span class="kcs-pc__cta-text">{{when settings.buy.subscribeText settings.buy.subscribeText 'Узнать о поступлении'}}</span>
+                                    </ya-kit-button>
+                                {{else}}
+                                    <ya-kit-text class="kcs-pc__oos" size="lg" weight="medium" color="secondary">{{when settings.buy.outOfStockText settings.buy.outOfStockText 'Нет в наличии'}}</ya-kit-text>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                        <div class="kcs-pc__content">
+                            {{#if settings.benefits.text}}
+                                <div class="kcs-pc__benefits {{when (eql settings.benefits.style 'chips') 'kcs-pc__benefits_chips' 'kcs-pc__benefits_list'}}">
+                                    {{#if settings.benefits.title}}
+                                        <ya-kit-text class="kcs-pc__benefits-title" as="h2" size="lg" weight="medium">{{settings.benefits.title}}</ya-kit-text>
+                                    {{/if}}
+                                    <ya-kit-markdown class="kcs-pc__md" markup={{settings.benefits.text}} />
+                                </div>
+                            {{/if}}
+                            <div class="kcs-pc__rows">
+                                {{#each settings.modules as |row rowIndex|}}
+                                    {{#if row.characteristicTitle}}
+                                        {{#each variant.characteristics as |c|}}
+                                            {{#if (and c.value (eql (lower (trim c.title)) (lower (trim row.characteristicTitle))))}}
+                                                <ya-kit-module class="kcs-pc__row" module-id="{{row.id}}">
+                                                    <ya-kit-accordion default-expanded="{{and (eql settings.details.expandedRow 'modules') (eql rowIndex 0)}}">
+                                                        <ya-kit-accordion-header>
+                                                            <ya-kit-text class="kcs-pc__row-title" as="h2" size="lg" weight="medium">{{when (isEmpty row.label) c.title row.label}}</ya-kit-text>
+                                                        </ya-kit-accordion-header>
+                                                        <ya-kit-accordion-body>
+                                                            <div class="kcs-pc__panel">
+                                                                {{#if (eql row.view 'chips')}}
+                                                                    <ul class="kcs-pc__chips">
+                                                                        {{#each (split c.value ',') as |part|}}
+                                                                            <li class="kcs-pc__chip">{{trim part}}</li>
+                                                                        {{/each}}
+                                                                    </ul>
+                                                                {{else}}
+                                                                    <div class="kcs-pc__value">{{c.value}}</div>
+                                                                {{/if}}
+                                                            </div>
+                                                        </ya-kit-accordion-body>
+                                                    </ya-kit-accordion>
+                                                </ya-kit-module>
+                                            {{/if}}
+                                        {{/each}}
+                                    {{else}}
+                                        {{#if (and row.label row.text)}}
+                                            <ya-kit-module class="kcs-pc__row" module-id="{{row.id}}">
+                                                <ya-kit-accordion default-expanded="{{and (eql settings.details.expandedRow 'modules') (eql rowIndex 0)}}">
+                                                    <ya-kit-accordion-header>
+                                                        <ya-kit-text class="kcs-pc__row-title" as="h2" size="lg" weight="medium">{{row.label}}</ya-kit-text>
+                                                    </ya-kit-accordion-header>
+                                                    <ya-kit-accordion-body>
+                                                        <div class="kcs-pc__panel">
+                                                            <ya-kit-markdown class="kcs-pc__md" markup={{row.text}} />
+                                                        </div>
+                                                    </ya-kit-accordion-body>
+                                                </ya-kit-accordion>
+                                            </ya-kit-module>
+                                        {{/if}}
+                                    {{/if}}
+                                {{/each}}
+                                {{#if (and (notEql settings.details.showDescription false) variant.description)}}
+                                    <div class="kcs-pc__row">
+                                        <ya-kit-accordion default-expanded="{{eql settings.details.expandedRow 'description'}}">
+                                            <ya-kit-accordion-header>
+                                                <ya-kit-text class="kcs-pc__row-title" as="h2" size="lg" weight="medium">{{when settings.details.descriptionTitle settings.details.descriptionTitle 'Описание'}}</ya-kit-text>
+                                            </ya-kit-accordion-header>
+                                            <ya-kit-accordion-body>
+                                                <div class="kcs-pc__panel">
+                                                    <ya-kit-markdown class="kcs-pc__md" markup={{variant.description}} />
+                                                </div>
+                                            </ya-kit-accordion-body>
+                                        </ya-kit-accordion>
+                                    </div>
+                                {{/if}}
+                                {{#if (and (notEql settings.details.showCharacteristics false) (gt variant.characteristics.length 0))}}
+                                    <div class="kcs-pc__row">
+                                        <ya-kit-accordion default-expanded="{{or (eql settings.details.expandedRow 'characteristics') (isEmpty settings.details.expandedRow)}}">
+                                            <ya-kit-accordion-header>
+                                                <ya-kit-text class="kcs-pc__row-title" as="h2" size="lg" weight="medium">{{when settings.details.characteristicsTitle settings.details.characteristicsTitle 'Характеристики'}}</ya-kit-text>
+                                            </ya-kit-accordion-header>
+                                            <ya-kit-accordion-body>
+                                                <div class="kcs-pc__panel">
+                                                    <dl class="kcs-pc__specs">
+                                                        {{#each variant.characteristics as |c|}}
+                                                            {{#unless (findBy settings.modules 'characteristicTitle' c.title)}}
+                                                                <div class="kcs-pc__spec">
+                                                                    <dt class="kcs-pc__spec-name">{{c.title}}</dt>
+                                                                    <dd class="kcs-pc__spec-value">{{c.value}}</dd>
+                                                                </div>
+                                                            {{/unless}}
                                                         {{/each}}
-                                                    </ya-kit-v-stack> 
-                                                </ya-kit-delivery-options-controller>
-                                            </ya-kit-v-stack>
-                                        </ya-kit-location-controller>
-                                    </ya-kit-accordion-body>
-                                </ya-kit-accordion>
-                            </ya-kit-v-stack>
-                        </ya-kit-v-stack>
-                    </article>
-                {{/with}}
-            {{/if}}
-            
-            
+                                                    </dl>
+                                                </div>
+                                            </ya-kit-accordion-body>
+                                        </ya-kit-accordion>
+                                    </div>
+                                {{/if}}
+                                {{#if (notEql settings.details.showDelivery false)}}
+                                    <div class="kcs-pc__row">
+                                        <ya-kit-accordion default-expanded="{{eql settings.details.expandedRow 'delivery'}}">
+                                            <ya-kit-accordion-header>
+                                                <ya-kit-text class="kcs-pc__row-title" as="h2" size="lg" weight="medium">{{when settings.details.deliveryTitle settings.details.deliveryTitle 'Доставка'}}</ya-kit-text>
+                                            </ya-kit-accordion-header>
+                                            <ya-kit-accordion-body>
+                                                <div class="kcs-pc__panel">
+                                                    <ya-kit-location-controller as="location">
+                                                        <div class="kcs-pc__city">
+                                                            <ya-kit-text size="md" color="secondary">Город доставки</ya-kit-text>
+                                                            {{#if location.model}}
+                                                                <ya-kit-button class="kcs-pc__city-button" color="flat" size="sm" on-click={{location.onLocationSelect}}>
+                                                                    <span class="kcs-pc__city-name">{{location.model.name}}</span>
+                                                                    <ya-kit-icon name="arrow-down" size="16" />
+                                                                </ya-kit-button>
+                                                            {{else}}
+                                                                <ya-kit-skeleton variant="text" width="120px" />
+                                                            {{/if}}
+                                                        </div>
+                                                        {{#if location.model}}
+                                                            <ya-kit-delivery-options-controller location={{location.model}} product={{variant}} as="options">
+                                                                {{#if options.isLoading}}
+                                                                    <ya-kit-skeleton class="kcs-pc__delivery-skeleton" variant="text" width="240px" />
+                                                                {{else}}
+                                                                    <ul class="kcs-pc__delivery">
+                                                                        {{#each options.model as |option|}}
+                                                                            <li class="kcs-pc__delivery-item">
+                                                                                <span class="kcs-pc__delivery-date">{{option.formattedDate}}</span>
+                                                                                <span class="kcs-pc__delivery-way">{{when (eql option.method 'COURIER') 'Курьером' 'В пункт выдачи'}}{{#if option.serviceName}} · {{option.serviceName}}{{/if}}</span>
+                                                                            </li>
+                                                                        {{else}}
+                                                                            <li class="kcs-pc__delivery-item kcs-pc__delivery-item_empty">В этот город пока не доставляем</li>
+                                                                        {{/each}}
+                                                                    </ul>
+                                                                {{/if}}
+                                                            </ya-kit-delivery-options-controller>
+                                                        {{/if}}
+                                                    </ya-kit-location-controller>
+                                                </div>
+                                            </ya-kit-accordion-body>
+                                        </ya-kit-accordion>
+                                    </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            {{/with}}
         </ya-kit-section-layout-row>
     </ya-kit-product-detail-controller>
 </ya-kit-section-layout>

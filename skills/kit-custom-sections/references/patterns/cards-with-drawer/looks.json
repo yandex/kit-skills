@@ -1,0 +1,20 @@
+{
+  "start": "airy",
+  "looks": [
+    {
+      "name": "airy",
+      "title": "Просторная сетка",
+      "description": "Зазоры 32px между карточками.",
+      "settings": {
+        "hGap": "400",
+        "vGap": "400"
+      }
+    },
+    {
+      "name": "dense",
+      "title": "Плотная сетка (вид v1)",
+      "description": "Зазоры по умолчанию.",
+      "settings": {}
+    }
+  ]
+}
