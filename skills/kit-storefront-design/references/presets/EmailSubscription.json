@@ -1,0 +1,102 @@
+{
+  "widget": "YandexKit.EmailSubscription",
+  "summary": "Newsletter form. Store-wide composite, at most one per page, no configurable title (the storefront renders its own).",
+  "rules": [
+    "The last content section before the Footer on home (23 of 43 stores), never above the fold.",
+    "A discount may be promised only with a real `form.promocode.promocodeId` from the cabinet. Most of the sample's forms promise one, and most of those link no promocode. The discount wording recurs nearly word for word across the sample and travels with a shared template: the schema's own default subtitle promises no discount. Without a promocode, leave `form.promocode` out and write a subtitle that promises none.",
+    "`form.warning` is the consent text and is never empty. A pulled text stays. For an object the preset creates, pass the store's skeleton (`kit.py … schema widget --name YandexKit.EmailSubscription --skeleton > es-schema.json`) to `presets apply --schema es-schema.json`: where the constructor shows the platform default it is kept; where it shows an empty string, ask the merchant for the consent text, with a link to the privacy page.",
+    "The form's heading is the storefront's own, not a setting: with a linked promocode it reads «Получите скидку …» with the promocode's value, without one «Подпишитесь на рассылку». Never write `form.title` (the storefront does not read it); write the subtitle as the line under that heading.",
+    "With `subscribedScreen.isVisible: false` leave `buttonLink` out.",
+    "Edit it once through the parent section id: `section set` updates every page copy."
+  ],
+  "skeleton_fix": {},
+  "module_template": null,
+  "required_defaults": {
+    "form": {
+      "subtitle": "<fill: text — the merchant's own, or the platform default that `presets apply --schema <skeleton file>` restores when the constructor's skeleton shows one>",
+      "enableCheckbox": "disabled",
+      "warning": "<fill: text — the consent text: ask the merchant for it, with a link to the privacy page, or keep the platform default that `presets apply --schema <skeleton file>` restores when the constructor's skeleton shows one>"
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    },
+    "subscribedScreen": {
+      "isVisible": false
+    }
+  },
+  "presets": [
+    {
+      "name": "band-two-columns",
+      "use": "Text left, form right: the most used closing band.",
+      "evidence": "19 stores",
+      "settings": {
+        "layout": "two-columns",
+        "background": "primary",
+        "form": {
+          "enableCheckbox": "enabled_unchecked"
+        },
+        "subscribedScreen": {
+          "isVisible": false
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`form.subtitle`: one sentence on what the letters bring, from the merchant.",
+        "Optional `palette`: a soft light palette id."
+      ]
+    },
+    {
+      "name": "centered-band",
+      "use": "Centred form on a neutral band.",
+      "evidence": "13 stores",
+      "settings": {
+        "layout": "center",
+        "background": "neutral",
+        "form": {
+          "enableCheckbox": "enabled_unchecked"
+        },
+        "subscribedScreen": {
+          "isVisible": false
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`form.subtitle`."
+      ]
+    },
+    {
+      "name": "flow-into-footer",
+      "use": "Subscription on the footer palette so both read as one closing block.",
+      "evidence": "10 stores",
+      "settings": {
+        "layout": "center",
+        "background": "primary",
+        "form": {
+          "enableCheckbox": "enabled_unchecked"
+        },
+        "subscribedScreen": {
+          "isVisible": false
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "none",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`palette`: the footer palette id.",
+        "`form.subtitle`."
+      ]
+    }
+  ]
+}

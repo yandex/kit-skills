@@ -1,0 +1,54 @@
+{
+  "id": "lookbook",
+  "page_type": "lookbook",
+  "title": "Collection lookbook or editorial landing",
+  "when": "A season or collection launch told in images.",
+  "evidence": "about 5 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "section-heading",
+      "role": "heading",
+      "note": "Collection name and season line."
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "hero"
+    },
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "brand-statement",
+      "role": "story",
+      "note": "Narrative, 6 columns centred."
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "lookbook-pair-bleed",
+      "role": "gallery",
+      "note": "Titles off, no links."
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "banner",
+      "note": "Video or second image, linked to the collection."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-grid",
+      "role": "shelf",
+      "note": "The collection."
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "closing-band",
+      "role": "closing"
+    }
+  ],
+  "notes": [
+    "The whole page, footer included, sits on one tinted palette."
+  ],
+  "deviations": {}
+}

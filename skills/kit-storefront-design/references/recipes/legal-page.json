@@ -1,0 +1,22 @@
+{
+  "id": "legal-page",
+  "page_type": "service",
+  "page_alias": "privacy",
+  "title": "Privacy policy and public offer",
+  "when": "privacy, oferta and details pages: legal text the merchant owns.",
+  "evidence": "one RichText alone on about 5 in 6 of these pages; the sample offers no text to copy",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "service-page-text",
+      "role": "service",
+      "note": "The merchant's own legal text, pasted as it is; never write or complete it. Left-aligned at 6 columns, title included."
+    }
+  ],
+  "notes": [
+    "Until the merchant supplies the text, do not link the page from the footer.",
+    "Same shape for the public offer (`oferta`) and requisites (`details`)."
+  ],
+  "deviations": {}
+}

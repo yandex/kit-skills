@@ -1,0 +1,520 @@
+{
+  "widget": "YandexKit.BannersCarousel",
+  "summary": "Image or video banners, one or more slides. The hero, mid-page breaks, thin strips, the 404 page.",
+  "shape_note": "Presets use `aspectRatios: {desktop, mobile}`. Some stores still store the older single `aspectRatio` string; `design.py presets apply` then writes `aspectRatio` with the desktop value and reports it.",
+  "rules": [
+    "One slide by default (607 of 633 carousel sections in the reference sample have one). Rotation only for multi-brand or promo-heavy stores, one text style on all slides.",
+    "Every slide has its own mobile image (670 of 697 slides in the reference sample have one). The paired ratio is the default: 2:1 > 4:3, 5:2 > 4:3, 7:2 > 7:3, 5:1 > 5:2, 10:1 > 7:1, fit-screen > fit-screen. Choose by content: a strip with more than about 4 words goes 4:3 on phones (`strip-to-touch-card`), an immersive hero may go fit-screen.",
+    "Prefer live text (`slideText.titleText`) over text baked into the image. If text must be in the image, keep it in the central 80% and never bake prices or offer terms.",
+    "`fit-screen` crops: use it only with live text or text-free imagery.",
+    "`linkType: button` needs a non-empty `buttonText`. A mid-page banner always links somewhere.",
+    "`appearance.backgroundDark` is a number 0-48, never an empty string.",
+    "Live titles short: under about 20 characters in 60 of 71 live-text slides; white text on photos with `backgroundDark` 0-24.",
+    "The mobile image is re-composed, not cropped: headline at least about 7% of the image width, at most one short line under it, no body copy, a baked button at least 44 px tall, text inside the central 80%.",
+    "`linkType: banner` makes the whole slide a link and never shows `buttonText`; for a visible button use `linkType: button`.",
+    "A button on a darkened slide (`appearance.backgroundDark` 24 or more) or under white text is `buttonColor: primary`: the schema default `secondary` reads as grey on grey there, about 3:1, and looks switched off (`banner-button-contrast`).",
+    "The media object keeps its `type` (`IMAGE` or `VIDEO`): the schema requires it. `design.py media-object --kind banner` writes it for images; video objects come from `design.py media-object --video-status`.",
+    "Where the live text lands: the hero and strip presets write `hAlign: left`, `vAlign: center`, `vOffset: 300`. On desktop the title, subtitle and button take the left ~40% of the frame at mid-height; on a 4:3 phone image they take a band across the middle (`vAlign: bottom`: the lower band); on 7:3 and 5:2 phone images the left half. Compose the art for it: that zone empty, the product in the right third on desktop and in the lower quarter on phones (`references/mobile.md`).",
+    "A 7:3, 5:2 or 7:1 phone image has room for a title of about 5 words, not a title and a subtitle: longer live text goes on a 4:3 phone image or drops the subtitle (`banner-live-text-fit`)."
+  ],
+  "skeleton_fix": {
+    "aspectRatios": {
+      "desktop": "2:1",
+      "mobile": "4:3"
+    },
+    "slideText": {
+      "vAlign": "center",
+      "vOffset": "300"
+    }
+  },
+  "module_template": {
+    "linkType": "banner",
+    "linkSource": {
+      "link": "<fill: page path, /catalog/<slug> or /collections/<slug>>",
+      "linkId": "<fill: real page/category/collection id>"
+    },
+    "buttonColor": "primary",
+    "buttonText": "",
+    "appearance": {
+      "backgroundColor": "",
+      "backgroundDark": 0,
+      "textColor": ""
+    },
+    "slideText": {
+      "size": "md",
+      "titleText": "",
+      "titleWeight": "regular",
+      "subtitleText": "",
+      "subtitleWeight": "regular"
+    },
+    "slideMedia": {
+      "media": "<fill: media object from `design.py media-object` (--kind banner for an image upload, --video-status for a video), desktop ratio; keep its `type`>",
+      "mediaMobile": "<fill: same kind of media object, paired mobile ratio, re-composed for a 390 px wide screen; keep its `type`>"
+    }
+  },
+  "required_defaults": {
+    "aspectRatios": {
+      "desktop": "2:1",
+      "mobile": "4:3"
+    },
+    "modules[]": {
+      "linkType": "banner",
+      "buttonColor": "secondary",
+      "slideText": {},
+      "appearance": {}
+    },
+    "modules[].appearance": {
+      "textColor": "",
+      "backgroundColor": "",
+      "backgroundDark": 0
+    },
+    "modules[].slideText": {
+      "size": "md",
+      "titleText": "",
+      "titleWeight": "regular",
+      "subtitleText": "",
+      "subtitleWeight": "regular"
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    },
+    "slideText": {
+      "hAlign": "left",
+      "vAlign": "center",
+      "vOffset": "300"
+    }
+  },
+  "presets": [
+    {
+      "name": "hero-bleed-image",
+      "use": "Home first screen, edge to edge, one slide: 2:1 on desktop, a re-composed 4:3 on phones (about 0.45 of the first screen, which leaves room for a category row right under it).",
+      "evidence": "33 of 43 home pages open with a banner; 2:1 > 4:3 on about 2 in 5 home pages, and every home page that shows a way to shop on the first phone screen uses a 4:3 or boxed hero followed by categories",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "2:1",
+          "mobile": "4:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "fill": [
+        "`modules`: one slide with desktop 2:1 and mobile 4:3 images from upload; `linkSource` to a collection or category page that shows products (new arrivals, bestsellers), not /catalog, which shows only tiles."
+      ]
+    },
+    {
+      "name": "hero-bleed-live-text",
+      "use": "Immersive first screen: 2:1 on desktop, a full-height portrait on phones, live text in the darkened lower band, one button. Text-free images only (fit-screen crops). Under a transparent header only where the store already runs a home-only header instance (Header `transparent-over-hero`); the constructor cannot create one.",
+      "evidence": "fit-screen phone heroes on about 1 in 4 home pages; baked text cut in 4 of 10 checked fit-screen heroes. The bottom-centred text anchor rests on few stores: check the phone preview",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "2:1",
+          "mobile": "fit-screen"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "center",
+          "vAlign": "bottom",
+          "vOffset": "500"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "module_style": {
+        "linkType": "button",
+        "buttonColor": "primary",
+        "appearance": {
+          "backgroundDark": 16,
+          "textColor": "#FFFFFF"
+        },
+        "slideText": {
+          "size": "sm",
+          "titleWeight": "regular",
+          "subtitleWeight": "regular"
+        }
+      },
+      "fill": [
+        "`modules[0].slideText.titleText`: headline from the merchant, 40 characters or less; subtitle 50 or less, optional. `size: md` only for titles of 20 characters or less.",
+        "`modules[0].buttonText` (a verb and an object, 20 characters or less) and `linkSource` to a collection or category page that shows products (new arrivals, bestsellers), not /catalog, which shows only tiles.",
+        "Images without baked text: desktop in its ratio, mobile a portrait about 9:16 with the subject in the middle, a quiet top band (the header) and a quiet lower third (the text)."
+      ]
+    },
+    {
+      "name": "hero-contained-card",
+      "use": "Catalog-heavy stores: the hero aligns with the grid and picks up theme rounding. Applied over an edge-to-edge hero it removes that hero's `\"0\"` side paddings, so the card takes the theme's.",
+      "evidence": "about 9 sections",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "5:2",
+          "mobile": "4:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "unset": [
+        "section.hPaddingDesktop",
+        "section.hPaddingMobile"
+      ],
+      "fill": [
+        "`modules`: one slide, desktop 5:2 and mobile 4:3; `linkSource` to a collection or category page with products."
+      ]
+    },
+    {
+      "name": "hero-multi-slide",
+      "use": "2-6 campaigns in rotation. Multi-brand or promo-heavy retail only.",
+      "evidence": "rotation in 26 of 633 carousel sections",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "5:2",
+          "mobile": "4:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "single",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "module_style": {
+        "appearance": {
+          "textColor": "#FFFFFF"
+        },
+        "slideText": {
+          "size": "sm",
+          "titleWeight": "bold"
+        }
+      },
+      "fill": [
+        "`modules`: 2-6 slides, every one linked to a page with products (a collection, a category, a campaign), desktop 5:2 and mobile 4:3."
+      ]
+    },
+    {
+      "name": "video-hero-single",
+      "use": "One video slide as the hero, edge to edge: a short silent loop, text-free, with its own phone video.",
+      "evidence": "a single video slide in 5 stores, mostly 2:1 > 4:3 at the top of home; the media shape follows the live video slides",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "2:1",
+          "mobile": "4:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "fill": [
+        "`modules`: exactly one slide. `slideMedia.media` and `slideMedia.mediaMobile`: video objects built with `design.py media-object --video-status` from `kit.py media video-status` output once it is `ready` (upload with `kit.py media video-upload`).",
+        "`linkSource`: a collection or category page with products (not /catalog, which shows only tiles), or empty when the video only sets the mood."
+      ]
+    },
+    {
+      "name": "promo-between-rails",
+      "use": "Mid-page banner between shelves, container width, always linked.",
+      "evidence": "container width in 15 of 25 mid-page banners",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "2:1",
+          "mobile": "4:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: one linked slide."
+      ]
+    },
+    {
+      "name": "promo-strip-thin",
+      "use": "Thin strip: a divider, a wordmark band or a one-phrase offer of 4 words or fewer. Only about 56 px tall on phones: anything longer goes `strip-to-touch-card`.",
+      "evidence": "10:1 / 7:1 in 71 sections",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "10:1",
+          "mobile": "7:1"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "fill": [
+        "`modules`: one slide; the 7:1 mobile image centred, cap height at least 40% of the strip. A baked «see all» arrow needs a real link."
+      ]
+    },
+    {
+      "name": "strip-to-touch-card",
+      "use": "A thin desktop strip with more than about 4 words or 2 or more elements (a statement and a call to action, a story heading, a social link): 5:1 on desktop, a 4:3 card on phones, where a 5:2 strip would shrink the text to 7-9 px.",
+      "evidence": "5:1 strips re-laid as 4:3 phone cards on home in 4 stores, other strip ratios in a few more; body copy shrunk from the desktop layout unreadable in 3",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "5:1",
+          "mobile": "4:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: one linked slide; the 4:3 mobile image carries the same message re-laid, text about twice as large relative to the width, elements stacked."
+      ]
+    },
+    {
+      "name": "strip-7x2-promo",
+      "use": "Promo band or designed section row between shelves, container width: about 167 px tall on phones.",
+      "evidence": "7:2 bands on about 5 home pages; re-stacked phone rows read well",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "7:2",
+          "mobile": "7:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: one linked slide; the 7:3 mobile image re-stacks the desktop label and description into two lines, label at least 10% of the image height."
+      ]
+    },
+    {
+      "name": "collection-hero",
+      "use": "Top of a per-category page variant, above ProductsListing: a bleed photo with a short live caption or none. The listing prints the category name as the page's H1 right below, so the banner never repeats it. One banner per category, kept in sync by hand.",
+      "evidence": "per-category heroes in a few of the 43 stores",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "7:2",
+          "mobile": "7:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "single",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "module_style": {
+        "slideText": {
+          "size": "md",
+          "titleWeight": "semibold"
+        }
+      },
+      "fill": [
+        "`modules`: one slide 7:2 / 7:3. The live title is a short caption or slogan of 20 characters or less, never the category name (the listing's H1 prints it one line below), or no live text over text-free artwork.",
+        "Text colour by the frame: a dark `appearance.textColor` on a light photo; white only with `backgroundDark` 16-24 on a mid or dark photo. Keep the art's left ~40% quiet for the text and the product in the right third."
+      ]
+    },
+    {
+      "name": "collection-hero-plate",
+      "use": "Per-category variant: a short caption on a white plate over the photo, readable on any image. Never the category name: the listing's H1 prints it right below.",
+      "evidence": "synthesized; seen in a few of the 43 stores",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "7:2",
+          "mobile": "7:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "single",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "module_style": {
+        "appearance": {
+          "backgroundColor": "#FFFFFF",
+          "backgroundDark": 0,
+          "textColor": "#000000"
+        },
+        "slideText": {
+          "size": "md",
+          "titleWeight": "bold"
+        }
+      },
+      "fill": [
+        "`modules[0].slideText.titleText`: a short caption or slogan of 20 characters or less, not the category name.",
+        "`modules[0].slideMedia`: 7:2 and 7:3 images."
+      ]
+    },
+    {
+      "name": "not-found-hero",
+      "use": "404 page: live text over a darkened image, button back to the home page.",
+      "evidence": "17 stores put a banner on 404, 11 with a button",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "2:1",
+          "mobile": "4:3"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none"
+        }
+      },
+      "module_style": {
+        "linkType": "button",
+        "buttonColor": "primary",
+        "appearance": {
+          "backgroundDark": 48,
+          "textColor": "#FFFFFF"
+        },
+        "slideText": {
+          "size": "sm",
+          "titleWeight": "regular",
+          "subtitleWeight": "regular"
+        }
+      },
+      "fill": [
+        "`modules[0]`: `buttonText` («В каталог», «На главную») and `linkSource` to a collection, the catalog or `/` with the page id from the pulled content; a title is optional: a banner title never becomes the page's H1, the RichText under it does (`not-found` recipe).",
+        "An image from the store's own photography."
+      ]
+    },
+    {
+      "name": "page-masthead",
+      "use": "Short banner at the top of the catalog or a category page, above the grid.",
+      "evidence": "5:1 / 5:2 mastheads on catalog and category pages; not counted separately",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "5:1",
+          "mobile": "5:2"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "none",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: one slide 5:1 / 5:2, linked when it advertises something."
+      ]
+    },
+    {
+      "name": "closing-band",
+      "use": "Last section before the footer, edge to edge, on the footer palette.",
+      "evidence": "4 stores",
+      "settings": {
+        "aspectRatios": {
+          "desktop": "5:1",
+          "mobile": "5:2"
+        },
+        "autoplay": true,
+        "slideText": {
+          "hAlign": "left",
+          "vAlign": "center",
+          "vOffset": "300"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "fill": [
+        "`palette`: the footer palette id.",
+        "`modules`: one slide 5:1 / 5:2."
+      ]
+    }
+  ]
+}

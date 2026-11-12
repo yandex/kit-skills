@@ -1,0 +1,32 @@
+{
+  "id": "contacts",
+  "page_type": "contacts",
+  "title": "Contacts or showroom page",
+  "when": "Stores with a phone line, a showroom or pick-up points.",
+  "evidence": "about 6 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ImageWithText",
+      "preset": "service-info-split",
+      "role": "service",
+      "note": "tel: and mailto: links, hours, address, from the merchant."
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "lookbook-pair-bleed",
+      "role": "gallery",
+      "optional": true,
+      "note": "Photos of the space."
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "promo-between-rails",
+      "role": "banner",
+      "optional": true,
+      "note": "Route image linked to a map."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

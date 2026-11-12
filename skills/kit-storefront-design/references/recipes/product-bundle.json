@@ -1,0 +1,17 @@
+{
+  "id": "product-bundle",
+  "page_type": "bundle",
+  "page_alias": "productBundle",
+  "title": "Product bundle page",
+  "when": "The bundle builder page.",
+  "evidence": "the bundle builder alone on about 4 in 5 bundle pages, its modules left empty in almost every store",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductsBundleConstructor",
+      "note": "Leave default."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

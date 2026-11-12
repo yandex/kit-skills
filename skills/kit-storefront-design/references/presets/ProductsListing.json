@@ -1,0 +1,215 @@
+{
+  "widget": "YandexKit.ProductsListing",
+  "summary": "Category and collection product grid with filters and pagination. System section of the category page; the search page shows a child copy of it.",
+  "rules": [
+    "Always write the filter position: `filters.position` in the current settings, the root `filtersPosition` in a section stored at settings version 1791195496953 or older (`presets apply` picks the key by the section's version; the other one is ignored or dropped). Left out, it is `inline`: a left sidebar (category tree, price, stock, Apply/Reset) that takes about a quarter of the width, which settings get without anyone choosing it. `drawer` is a filter button over the grid.",
+    "Page size is rows × columns (rows 3-6, columns 2-6); there is no other count. `snippets.layout` picks how more products load: `grid` (the default) numbers the pages, `feed` adds the next page as the shopper scrolls (search robots still get numbered pages). The sample predates `feed`, so the presets leave `layout` as the store has it. Sorting, the H1 and the category description are not settings: keep the H1 short in the cabinet.",
+    "`filters.enableAutoApply` applies a filter as soon as it changes and drops the Apply button (Reset stays); `filters.enableChips` shows the chosen filters as chips above the grid. Both are off by default. The sample predates them, so there is no count behind either: the presets leave them as the store has them, and a section older than the `filters` settings cannot carry them.",
+    "`snippet.enableButton: disabled` hides card buttons whatever the theme says, `enabled` forces them, `default` follows the theme's `buttonColorInListing`. The presets write `default`: buttons are the theme card's decision, shared with the shelves.",
+    "The card look (photo ratio, order, plate) is the theme's `productSnippet`: it also changes every shelf, so change it only with the merchant's agreement.",
+    "The search-page listing is a child copy in most stores: edits change both. Tell the user before editing.",
+    "The Split and Yandex points lines (`snippet.yandexSplit`, `snippet.yandexDiscount`) are the store's configuration: presets never write them."
+  ],
+  "skeleton_fix": {
+    "filters": {
+      "position": "inline"
+    }
+  },
+  "module_template": null,
+  "required_defaults": {
+    "filters": {
+      "position": "inline",
+      "enableAutoApply": false,
+      "enableChips": false
+    },
+    "modules": {
+      "quickFilters": {}
+    },
+    "modules.quickFilters": {
+      "isEnabled": true
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    },
+    "snippet": {
+      "enableTitle": true,
+      "enableButton": "default",
+      "finalPriceColor": "default",
+      "enableDiscount": "default",
+      "discountColor": "default",
+      "enableFavourites": "default",
+      "yandexSplit": "m",
+      "yandexDiscount": "m",
+      "reviews": "default",
+      "enableBorder": "default"
+    },
+    "snippets": {
+      "rows": 4,
+      "columns": 4,
+      "enableTwoColumnsOnTouch": true,
+      "hGap": "default",
+      "vGap": "default",
+      "layout": "grid"
+    }
+  },
+  "presets": [
+    {
+      "name": "listing-drawer-4x6",
+      "use": "Default category page: filters in a drawer, 4 columns, 24 per page, no card buttons. Packshots on a plate or mixed photography.",
+      "evidence": "a 4-column drawer listing in about 1 in 3 stores; 24 per page in about 2 in 5. One shared starter listing inflates the raw counts: about 17 independent listing decisions stand behind 42 listings",
+      "settings": {
+        "filters": {
+          "position": "drawer"
+        },
+        "enableBreadcrumbs": true,
+        "modules": {
+          "quickFilters": {
+            "isEnabled": true
+          }
+        },
+        "snippets": {
+          "rows": 6,
+          "columns": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "enabled",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "listing-large-cards-3col",
+      "use": "Portrait 3:4 model photography, small and medium assortments: 3 columns, 18 per page.",
+      "evidence": "18 per page in about 1 in 3 stores; 3 columns with 3:4 photos in about 3 in 10",
+      "settings": {
+        "filters": {
+          "position": "drawer"
+        },
+        "enableBreadcrumbs": true,
+        "modules": {
+          "quickFilters": {
+            "isEnabled": true
+          }
+        },
+        "snippets": {
+          "rows": 6,
+          "columns": 3,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "enabled",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "listing-inline-filters",
+      "use": "Opt-in marketplace listing for large assortments filtered by price and stock first: the inline sidebar, 3 columns because it takes a quarter of the width, card buttons following the theme.",
+      "evidence": "the sidebar renders in about 1 in 4 stores, half of them by accident (settings without a filter position); most stores with card buttons in the listing use it",
+      "settings": {
+        "filters": {
+          "position": "inline"
+        },
+        "enableBreadcrumbs": true,
+        "modules": {
+          "quickFilters": {
+            "isEnabled": true
+          }
+        },
+        "snippets": {
+          "rows": 6,
+          "columns": 3,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "enabled",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "listing-gallery-5col-gapless",
+      "use": "Gallery wall for small objects when every photo shares one plate: 5 columns, no gaps. Never with mixed backgrounds.",
+      "evidence": "gapless 5-column listings in 3 stores",
+      "settings": {
+        "filters": {
+          "position": "drawer"
+        },
+        "enableBreadcrumbs": true,
+        "modules": {
+          "quickFilters": {
+            "isEnabled": true
+          }
+        },
+        "snippets": {
+          "rows": 6,
+          "columns": 5,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "disabled",
+          "vGap": "disabled"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": []
+    }
+  ]
+}

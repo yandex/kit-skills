@@ -1,0 +1,232 @@
+{
+  "id": "home-single-product",
+  "page_type": "home",
+  "page_alias": "main",
+  "title": "Single hero product or a range of 1-5 products",
+  "when": "The home page sells one thing and explains it.",
+  "evidence": "4 stores",
+  "theme": [
+    "layout-editorial",
+    "card-packshot",
+    "palettes-three-roles",
+    "typography-display-left",
+    "behaviour-defaults"
+  ],
+  "steps": [
+    {
+      "widget": "YandexKit.Header",
+      "preset": "left-logo-inline-links",
+      "role": "header",
+      "slot": "header",
+      "when": "a short flat menu and a left-aligned look (journal, dense catalog)",
+      "note": "3-4 links.",
+      "variants": [
+        {
+          "widget": "YandexKit.Header",
+          "preset": "centered-logo-links",
+          "when": "a flat menu of up to 6-8 short items: the categories show on desktop",
+          "role": "header"
+        },
+        {
+          "widget": "YandexKit.Header",
+          "preset": "centered-logo-burger",
+          "when": "a nested or long menu that would not fit as links",
+          "role": "header"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-live-text",
+      "role": "hero",
+      "slot": "hero",
+      "when": "one strong text-free image, full height on phones (journal, premium, dark drop)",
+      "note": "Immersive, live headline, one button to the product.",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "video-hero-single",
+          "when": "the merchant has a short silent loop with its own phone cut",
+          "role": "hero"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "hero-overlay",
+          "when": "a designed first screen: headline, button and photo composed in the markup (kit-custom-sections)",
+          "role": "hero"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "two-column-formats",
+      "role": "shelf",
+      "slot": "shelf-a",
+      "when": "1-5 products: all formats as large cards",
+      "note": "All formats, large cards.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "shelf-three-large",
+          "when": "bigger cards for the second source, a change of rhythm",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "text-media-split",
+      "role": "story",
+      "slot": "story",
+      "when": "the default story: eyebrow, a heading phrase, 16 px text at 560-640 px, a button to a real page, a 1:1 or 3:4 photo (`mediaRatio`; kit-custom-sections)",
+      "note": "First chapter: what the product is and how it is used; a button or a last-line link to the product page.",
+      "variants": [
+        {
+          "widget": "YandexKit.ImageWithText",
+          "preset": "zigzag-first",
+          "role": "story",
+          "when": "native fallback: an image-and-text stack the merchant edits in the cabinet (then `zigzag-next-right` for the second chapter)"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "text-media-split",
+      "role": "story",
+      "slot": "story-2",
+      "when": "the default story: eyebrow, a heading phrase, 16 px text at 560-640 px, a button to a real page, a 1:1 or 3:4 photo (`mediaRatio`; kit-custom-sections)",
+      "note": "Second chapter, the photo on the other side: why it works, with a link on.",
+      "variants": [
+        {
+          "widget": "YandexKit.ImageWithText",
+          "preset": "zigzag-next-right",
+          "role": "story",
+          "when": "after a native `zigzag-first`: the second chapter with the image on the right"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "stats-band",
+      "role": "signature",
+      "slot": "signature",
+      "when": "considered purchases: 3-4 real numbers (years, customers, materials) (kit-custom-sections)",
+      "note": "The signature block: one block that only this store has, chosen by the look (references/looks.md).",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "video-reels",
+          "when": "the merchant has short vertical videos (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "testimonial-spotlight",
+          "when": "premium and beauty: one real review set large (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "benefit-mosaic",
+          "when": "native fallback: text cards alternating with photos",
+          "role": "signature"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "proof-row",
+      "role": "proof",
+      "slot": "proof",
+      "when": "customer photos, stores or press the merchant has",
+      "note": "Testimonials, people, partners.",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "testimonial-spotlight",
+          "when": "one strong real review with a name and a photo (kit-custom-sections)",
+          "role": "proof"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "static-reviews",
+          "when": "3-6 real reviews (kit-custom-sections)",
+          "role": "proof"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "faq-main-end",
+      "role": "faq",
+      "slot": "faq",
+      "when": "3-6 real buyer questions",
+      "note": "Real answers only.",
+      "variants": [
+        {
+          "widget": "YandexKit.Faq",
+          "preset": "info-accordion",
+          "role": "faq",
+          "when": "service answers as untitled rows under the last grid (left-aligned themes)",
+          "idea": true
+        },
+        {
+          "widget": "YandexKit.Faq",
+          "preset": "faq-island",
+          "when": "a rounded theme (playful, soft): the questions on one card",
+          "role": "faq",
+          "idea": true
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "slot": "subscribe",
+      "when": "a centred form on a neutral band (centred themes)",
+      "variants": [
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "band-two-columns",
+          "when": "text left, form right: the usual closing band",
+          "role": "subscribe"
+        },
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "flow-into-footer",
+          "when": "on the footer palette, so the subscription and the footer read as one closing block",
+          "role": "subscribe"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "closing-band",
+      "role": "closing",
+      "optional": true,
+      "note": "Dark closing chapter."
+    },
+    {
+      "widget": "YandexKit.Footer",
+      "preset": "dark-footer-columns",
+      "role": "footer",
+      "slot": "footer",
+      "when": "a dark closing band",
+      "variants": [
+        {
+          "widget": "YandexKit.Footer",
+          "preset": "tinted-light-footer",
+          "when": "off-white, grey or cream: soft and premium looks",
+          "role": "footer"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "`typography-display-left` (5xl) assumes a condensed or display face: change the font in the cabinet theme editor first. With the default or a humanist sans keep `typography-centred-3xl` or `typography-left-3xl` instead."
+  ],
+  "deviations": {
+    "category-entry": "There are no categories to enter."
+  }
+}

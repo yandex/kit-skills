@@ -1,0 +1,49 @@
+{
+  "id": "product-page",
+  "page_type": "product",
+  "page_alias": "productCard",
+  "title": "Product page, universal skeleton",
+  "when": "Every default product page; start here when no product recipe fits.",
+  "evidence": "the similar-products shelf on about 2 in 5 default product pages, recently viewed on about 2 in 3, the subscription last on about 3 in 4; the median tail under the card is 4 sections",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductDetails",
+      "preset": "pdp-classic-2col",
+      "role": "product",
+      "note": "Its typography is that of `pdp-quiet-title-firm-price`. `pdp-edge-to-edge-gallery` for image-led brands with 6 or more consistent photos."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "product-page-similar",
+      "role": "shelf",
+      "note": "Catalogs of 8 or more products. Smaller catalogs: a curated collection of other formats (`two-column-formats`) instead, since similar products stay empty or repeat the product."
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "pdp-care-faq",
+      "role": "faq",
+      "optional": true,
+      "note": "One store-specific chapter from the merchant: care, warranty, returns or usage. Or ImageWithText `brand-story-split` for a material or brand story."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "recently-viewed",
+      "role": "shelf",
+      "note": "Last shelf: never the only one, never the first under the card."
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "On phones keep at most 3 blocks under the product card: the similar shelf, recently viewed and one chapter. Never copy home story grids under the product.",
+    "Name and price on the first phone screen: `pdp-classic-2col` already sets the quiet title and firm price of `pdp-quiet-title-firm-price`; if you pick another card preset, merge `pdp-quiet-title-firm-price` over it when names run past about 40 characters or photos are 3:4. Keep one header row (`header-touch-one-row` stacked over the header's archetype) and no announcement bar on this page.",
+    "Before publishing, preview the product page: no «we do not deliver to this city» line (else `pdp-modules-prelaunch`), advantages only confirmed policies, no technical names in the chips. See references/product-page.md."
+  ],
+  "deviations": {}
+}

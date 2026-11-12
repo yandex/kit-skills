@@ -1,0 +1,23 @@
+{
+  "id": "category-listing",
+  "page_type": "category",
+  "page_alias": "categoryAndCollection",
+  "title": "Category page, default: the listing alone",
+  "when": "The default category and collection page, used by every category without a variant of its own.",
+  "evidence": "the listing alone between header and footer on about 3 in 5 default category pages",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductsListing",
+      "preset": "listing-drawer-4x6",
+      "role": "listing",
+      "note": "`listing-large-cards-3col` for 3:4 model photos; `listing-gallery-5col-gapless` for objects on one plate. Pair with the theme card (`card-packshot` or `card-lifestyle`)."
+    }
+  ],
+  "notes": [
+    "Always write the filter position (`filters.position`, or the root `filtersPosition` in a section stored at version 1791195496953 or older): settings that leave it out draw the inline sidebar.",
+    "SEO text belongs in the cabinet SEO fields, or in RichText after the listing on a per-category variant, never on the default variant (it would repeat on every category).",
+    "Seeded category names, categories shorter than one row and one photo reused as several covers are merchant tasks in the cabinet."
+  ],
+  "deviations": {}
+}

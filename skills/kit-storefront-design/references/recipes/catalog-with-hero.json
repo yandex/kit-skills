@@ -1,0 +1,38 @@
+{
+  "id": "catalog-with-hero",
+  "page_type": "catalog",
+  "page_alias": "catalog",
+  "title": "Catalog page with a hero",
+  "when": "A catalog that opens with a campaign or a brand image.",
+  "evidence": "a banner before the catalog grid on about 1 in 5 catalog pages",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "page-masthead",
+      "role": "hero",
+      "note": "Or `strip-7x2-promo`."
+    },
+    {
+      "widget": "YandexKit.CollectionsListing",
+      "preset": "catalog-captioned-grid",
+      "role": "catalog",
+      "note": "Captions over the image only with the darkening on or dark photos."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "note": "Bestsellers under the tiles: the catalog then shows products, not only a way to them. The home hero's button leads to a collection page, not to /catalog."
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

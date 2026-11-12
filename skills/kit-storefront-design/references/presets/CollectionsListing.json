@@ -1,0 +1,208 @@
+{
+  "widget": "YandexKit.CollectionsListing",
+  "summary": "The catalog page grid of categories and/or collections. System section.",
+  "rules": [
+    "Tile ratio is set by the theme (`collectionSnippet.aspectRatio`).",
+    "`source: categories` when collections are merchandising shelves (new, sale) rather than browse structure.",
+    "`alignTitle` is `default` (as in the theme), `left` or `center`, and the schema requires it: presets write `default`, so a starter template's stored `left` does not survive under a centred theme. An older storefront build knows only `left` and `center`; there pass `--schema` with the store's skeleton and `presets apply` keeps the stored value.",
+    "A catalog of one category looks empty: a one-category store shows a product shelf of that category instead.",
+    "Covers, names and the category tree are cabinet data: seeded names («Категория 1-го уровня», «Полка 1»), one photo as the cover of several categories and `source: all` mixing merchandising collections into browse are merchant tasks."
+  ],
+  "skeleton_fix": {
+    "snippets": {
+      "hGap": "enabled",
+      "vGap": "enabled"
+    },
+    "text": {
+      "vAlign": "underImage"
+    }
+  },
+  "module_template": null,
+  "required_defaults": {
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    },
+    "snippet": {
+      "imageFit": "cover",
+      "enableParanja": true,
+      "background": "none",
+      "enableBorder": false
+    },
+    "snippets": {
+      "columns": 4,
+      "enableTwoColumnsOnTouch": true,
+      "hGap": "enabled",
+      "vGap": "enabled"
+    },
+    "text": {
+      "enableTitle": true,
+      "hAlign": "left",
+      "vAlign": "underImage",
+      "titleSize": "md",
+      "titleWeight": "medium",
+      "titleColor": "",
+      "backgroundColor": "",
+      "backgroundDark": 0
+    }
+  },
+  "presets": [
+    {
+      "name": "catalog-captioned-grid",
+      "use": "Default /catalog: captions centred under the image, 4 per row.",
+      "evidence": "captions under the image in 22 stores; centred captions in about 3 in 10 catalog pages",
+      "settings": {
+        "alignTitle": "default",
+        "source": "categories",
+        "snippets": {
+          "columns": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "enabled",
+          "vGap": "enabled"
+        },
+        "snippet": {
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "center",
+          "vAlign": "underImage",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`title`: keep the pulled title or use «Каталог»."
+      ]
+    },
+    {
+      "name": "catalog-editorial-left",
+      "use": "Default /catalog for left-aligned themes: captions under the image, left-aligned, 4 per row.",
+      "evidence": "left captions under the image in about 1 in 3 catalog pages",
+      "settings": {
+        "alignTitle": "left",
+        "source": "categories",
+        "snippets": {
+          "columns": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "enabled",
+          "vGap": "enabled"
+        },
+        "snippet": {
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "underImage",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`title`: keep the pulled title or use «Каталог»."
+      ]
+    },
+    {
+      "name": "catalog-overlay-3col",
+      "use": "Strong category photography: white titles on darkened tiles, 3 per row.",
+      "evidence": "every overlay catalog in the sample switched the darkening off, and their white captions disappear on light photos: keep it on",
+      "settings": {
+        "alignTitle": "default",
+        "source": "categories",
+        "snippets": {
+          "columns": 3,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "enabled",
+          "vGap": "enabled"
+        },
+        "snippet": {
+          "imageFit": "cover",
+          "enableParanja": true,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "center",
+          "vAlign": "bottom",
+          "titleSize": "lg",
+          "titleWeight": "medium",
+          "titleColor": "#FFFFFF",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`title`."
+      ]
+    },
+    {
+      "name": "catalog-quiet-luxe",
+      "use": "Premium catalogs: centred larger captions in a regular weight, more air above.",
+      "evidence": "3 stores",
+      "settings": {
+        "alignTitle": "center",
+        "source": "categories",
+        "snippets": {
+          "columns": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "enabled",
+          "vGap": "enabled"
+        },
+        "snippet": {
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "center",
+          "vAlign": "underImage",
+          "titleSize": "lg",
+          "titleWeight": "regular",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "double",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`title`: keep the pulled title or use «Каталог»."
+      ]
+    }
+  ]
+}

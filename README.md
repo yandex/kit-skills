@@ -13,7 +13,7 @@ self-installs everything for you.
 
 ## What's inside
 
-`install.py` installs all four. They are meant to work together and hand tasks
+`install.py` installs all five. They are meant to work together and hand tasks
 over to each other.
 
 | Skill | What it does | Needs |
@@ -22,13 +22,14 @@ over to each other.
 | `kit-store-checkup` | Weekly store revision: published but impossible to buy, running out of stock, orders waiting or stuck, products with no photo, price or dimensions, duplicate SKUs. Read-only — every fix it finds is handed to `yandex-kit-cabinet`. | Store token |
 | `kit-storefront-constructor` | The storefront: read pages, sections and versions, edit them in a local draft, publish the result, create custom-section templates, upload images and video. | Store token |
 | `kit-custom-sections` | Builds a custom storefront section (html + css + json_schema) from a catalog of lint-checked patterns, and checks an existing one. With the user's explicit consent it also builds a store-wide header or footer template. Uploads nothing itself — prints the `kit-storefront-constructor` commands to run. | Nothing: works offline, no token |
+| `kit-storefront-design` | Designs storefront pages from native sections: page recipes by niche and page type, theme and section presets checked against the storefront schema, and a lint for page plans (one hero, a mobile image per banner, no twin shelves, no placeholders at publish). Writes nothing itself — the pages are built with `kit-storefront-constructor`, the brand's own blocks (a signature block per home, the story) with `kit-custom-sections`. | No token of its own; store reads and writes go through `kit-storefront-constructor` (store token) |
 
 ## Install
 
 ### As a plugin (Claude only)
 
 This repository is also a plugin marketplace, so Claude installs and updates the
-skills itself. All four arrive together.
+skills itself. All five arrive together.
 
 In Claude Code:
 
@@ -80,7 +81,9 @@ idempotent). Restart your agent afterwards to pick up the changes.
 
 ## Получение API-токена
 
-Каждому скилу нужен API-токен магазина (один токен = один магазин). Проще всего
+Скилам, которые читают или меняют магазин, нужен API-токен магазина (один токен =
+один магазин); `kit-custom-sections` и `kit-storefront-design` сами работают без
+него, а в магазин их результат отправляет `kit-storefront-constructor`. Проще всего
 попросить агента: «подключи мой магазин Яндекс.Кит» — дальше он сам выберет один
 из двух маршрутов. Выбирает не пользователь, а то, **где запущен агент**.
 
@@ -203,12 +206,18 @@ kit-skills/
     │   ├── agents/openai.yaml
     │   ├── references/
     │   └── scripts/kit.py    # storefront client, every change behind --confirm
-    └── kit-custom-sections/  # build and lint a custom section offline
+    ├── kit-custom-sections/  # build and lint a custom section offline
+    │   ├── SKILL.md
+    │   ├── AGENTS.md
+    │   ├── agents/openai.yaml
+    │   ├── references/       # patterns, gates, generated tag/helper reference
+    │   └── scripts/section.py  # fully offline: no network, no token
+    └── kit-storefront-design/  # page recipes, presets and plan lint for native sections
         ├── SKILL.md
         ├── AGENTS.md
         ├── agents/openai.yaml
-        ├── references/       # patterns, gates, generated tag/helper reference
-        └── scripts/section.py  # fully offline: no network, no token
+        ├── references/       # principles, theme, recipes, presets, checklist
+        └── scripts/design.py   # fully offline: no network, no token
 ```
 
 ## Compatibility

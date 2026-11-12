@@ -1,0 +1,8 @@
+interface:
+  display_name: "Яндекс.Кит storefront design"
+  short_description: "Design storefront pages from native sections: niche recipes, schema-checked presets, plan lint"
+  default_prompt: "Use $kit-storefront-design to design a Яндекс.Кит storefront page from native sections: pick a recipe by niche and page type and a look, set the theme first, merge schema-checked presets into section settings, lint the page plan against design principles (one hero, re-composed phone banners, no twin shelves, zero placeholders), walk the user through a pre-publish phone check (price on the first screen), and hand the writes to kit-storefront-constructor, and the brand's own blocks (the signature block, the story with a button) or a block no native widget can express to kit-custom-sections. The skill itself is offline; store reads and writes go through kit-storefront-constructor with the store token."
+  brand_color: "#FC3F1D"
+
+policy:
+  allow_implicit_invocation: true

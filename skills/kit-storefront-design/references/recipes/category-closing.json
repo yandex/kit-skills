@@ -1,0 +1,26 @@
+{
+  "id": "category-closing",
+  "page_type": "category",
+  "page_alias": "categoryAndCollection",
+  "title": "Category page with one closing section",
+  "when": "The store-wide subscription already sits on category pages.",
+  "evidence": "the listing and the subscription on about 1 in 7 default category pages",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductsListing",
+      "preset": "listing-drawer-4x6",
+      "role": "listing"
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one. At most one section after the grid."
+    }
+  ],
+  "notes": [
+    "A promo duo of tiles after the grid only when both tiles link to pages that exist."
+  ],
+  "deviations": {}
+}

@@ -1,0 +1,19 @@
+{
+  "id": "unsubscribe",
+  "page_type": "system",
+  "page_alias": "unsubscribe",
+  "title": "Unsubscribe page",
+  "when": "The page a newsletter's unsubscribe link opens.",
+  "evidence": "the unsubscribe widget alone, with empty settings, in all 43 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.EmailUnsubscribe",
+      "note": "Leave default."
+    }
+  ],
+  "notes": [
+    "The same holds for the favourites, gift card and discount ladder pages: leave their system widget at its default (`design.py presets show <Widget>`)."
+  ],
+  "deviations": {}
+}

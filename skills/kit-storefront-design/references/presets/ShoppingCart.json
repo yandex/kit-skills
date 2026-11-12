@@ -1,0 +1,123 @@
+{
+  "widget": "YandexKit.ShoppingCart",
+  "summary": "The cart page. System section.",
+  "rules": [
+    "A split-payment advantage only when split payment is enabled for the store (theme `features.enableYandexSplit`).",
+    "Advantage types are policy claims from the merchant; an empty slot is `{\"type\": \"none\"}`, never `{}`.",
+    "Advantage slots keep the starter template's texts until rewritten (a marketplace's pickup points, try-on, payment after try-on): `presets apply` lists every set slot in `open` and the lint warns (`advantages-unconfirmed`). Each confirmed slot gets its own `text`; the platform wording promises cash, pickup points and a courier."
+  ],
+  "skeleton_fix": {},
+  "module_template": null,
+  "required_defaults": {
+    "features": {
+      "badges": "default",
+      "enableYandexSplit": "default",
+      "enableYandexDiscount": "default"
+    },
+    "modules": {
+      "advantages": {}
+    },
+    "modules.advantages": {
+      "enableAdvantages": true,
+      "showElement": "collapsed",
+      "appearance": {},
+      "advantage1": {},
+      "advantage2": {},
+      "advantage3": {},
+      "advantage4": {},
+      "advantage5": {},
+      "advantage6": {}
+    },
+    "modules.advantages.advantage1": {
+      "type": "none"
+    },
+    "modules.advantages.advantage2": {
+      "type": "none"
+    },
+    "modules.advantages.advantage3": {
+      "type": "none"
+    },
+    "modules.advantages.advantage4": {
+      "type": "none"
+    },
+    "modules.advantages.advantage5": {
+      "type": "none"
+    },
+    "modules.advantages.advantage6": {
+      "type": "none"
+    },
+    "modules.advantages.appearance": {
+      "title": "Преимущества"
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    },
+    "snippet": {
+      "variant": "united",
+      "finalPriceColor": "default",
+      "enableDiscount": "default",
+      "discountColor": "default",
+      "enableCharacteristics": true
+    }
+  },
+  "presets": [
+    {
+      "name": "cart-divided-minimal",
+      "use": "Divided cards, advantages collapsed, air above.",
+      "evidence": "17 stores divided; double top padding in 29",
+      "settings": {
+        "snippet": {
+          "variant": "divided",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableCharacteristics": true
+        },
+        "features": {
+          "badges": "default",
+          "enableYandexSplit": "default",
+          "enableYandexDiscount": "default"
+        },
+        "modules": {
+          "advantages": {
+            "showElement": "collapsed"
+          }
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "double",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules.advantages.advantage1..6`: Each advantage slot a type and its own `text` from facts the merchant confirmed (payment methods, delivery options, the return window): the platform wording promises cash, pickup points and a courier (`delivery`: «Доставка в пункты выдачи или до двери», `payment`: «Оплата — картой, СБП или наличными»), so keep it only where it is true. `split-payment` only with Split connected; `fitting` and `refusal` only for wearables with try-on. No confirmed policy: every slot `none` or `enableAdvantages: false`."
+      ]
+    },
+    {
+      "name": "cart-united",
+      "use": "One united list for small baskets.",
+      "evidence": "15 stores",
+      "settings": {
+        "snippet": {
+          "variant": "united",
+          "enableCharacteristics": true
+        },
+        "modules": {
+          "advantages": {
+            "showElement": "collapsed"
+          }
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "double",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules.advantages.advantage1..6`: Each advantage slot a type and its own `text` from facts the merchant confirmed (payment methods, delivery options, the return window): the platform wording promises cash, pickup points and a courier (`delivery`: «Доставка в пункты выдачи или до двери», `payment`: «Оплата — картой, СБП или наличными»), so keep it only where it is true. `split-payment` only with Split connected; `fitting` and `refusal` only for wearables with try-on. No confirmed policy: every slot `none` or `enableAdvantages: false`."
+      ]
+    }
+  ]
+}

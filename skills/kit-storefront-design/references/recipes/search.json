@@ -1,0 +1,27 @@
+{
+  "id": "search",
+  "page_type": "search",
+  "page_alias": "search",
+  "title": "Search results page",
+  "when": "The /search page.",
+  "evidence": "the listing alone or with the subscription on about half the search pages, with a banner too on about a quarter; the listing is a child copy of the category listing on about 4 in 5",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductsListing",
+      "role": "listing",
+      "note": "Usually a child copy of the category listing: edit the category listing, and tell the user that search changes with it."
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "Promo banners over search results are optional: the visitor already knows what they want."
+  ],
+  "deviations": {}
+}

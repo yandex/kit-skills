@@ -1,0 +1,47 @@
+{
+  "id": "product-playful",
+  "page_type": "product",
+  "page_alias": "productCard",
+  "title": "Playful brand with short product names (kids, family)",
+  "when": "A soft rounded theme, a display font, names of about 25 characters or less.",
+  "evidence": "4 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductDetails",
+      "preset": "pdp-bold-brand",
+      "role": "product",
+      "note": "Only with short names; check the button colour against its label (4.5:1) on pastel brands."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "shelf-three-large",
+      "role": "shelf",
+      "note": "Bestsellers collection, 3 columns."
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "benefit-mosaic",
+      "role": "tiles",
+      "optional": true,
+      "note": "Benefits 2 per phone row, an even count."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "recently-viewed",
+      "role": "shelf"
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "On phones keep at most 3 blocks under the product card: the similar shelf, recently viewed and one chapter. Never copy home story grids under the product.",
+    "Before publishing, preview the product page: no «we do not deliver to this city» line (else `pdp-modules-prelaunch`), advantages only confirmed policies, no technical names in the chips. See references/product-page.md."
+  ],
+  "deviations": {}
+}

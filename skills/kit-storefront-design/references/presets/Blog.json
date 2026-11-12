@@ -1,0 +1,36 @@
+{
+  "widget": "YandexKit.Blog",
+  "summary": "One blog article (system section of the article page). Under it the stores put a product shelf with the article's own source (`dataSource.type: from_news`).",
+  "evidence": "sparse settings (`{\"section\": {}}`) in about 3 in 5 stores, one starter configuration in most of the rest",
+  "rules": [
+    "`alignContent: default` follows the theme's `typography.titleAlign`: under a centred theme every paragraph of the article is centred. Write `left`.",
+    "`alignTitle` is `default`, `left` or `center`; `default` follows the theme."
+  ],
+  "skeleton_fix": {},
+  "module_template": null,
+  "required_defaults": {
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    }
+  },
+  "presets": [
+    {
+      "name": "article-left",
+      "use": "Any blog article: paragraphs aligned left, the title as in the theme.",
+      "evidence": "sparse settings (`{\"section\": {}}`) in about 3 in 5 stores, one starter configuration in most of the rest; the centred paragraphs follow from the storefront reading the theme's alignment",
+      "basis": "the storefront centres article paragraphs under a centred theme unless alignContent says otherwise",
+      "settings": {
+        "alignTitle": "default",
+        "alignContent": "left",
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": []
+    }
+  ]
+}

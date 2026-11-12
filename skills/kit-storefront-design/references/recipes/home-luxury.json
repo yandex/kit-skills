@@ -1,0 +1,157 @@
+{
+  "id": "home-luxury",
+  "page_type": "home",
+  "page_alias": "main",
+  "title": "Luxury or designer label",
+  "when": "Few products, strong imagery, the brand matters more than the assortment.",
+  "evidence": "a pattern from 2 stores: structure only",
+  "idea": true,
+  "theme": [
+    "layout-editorial",
+    "card-lifestyle",
+    "typography-centred-3xl",
+    "behaviour-defaults"
+  ],
+  "steps": [
+    {
+      "widget": "YandexKit.Header",
+      "preset": "centered-logo-links",
+      "role": "header",
+      "slot": "header",
+      "when": "a flat menu of up to 6-8 short items: the categories show on desktop",
+      "note": "Logo `xl`; with the burger (`centered-logo-burger`, a nested menu) `menuDisplayType` mega or drawer.",
+      "variants": [
+        {
+          "widget": "YandexKit.Header",
+          "preset": "centered-logo-burger",
+          "when": "a nested or long menu that would not fit as links",
+          "role": "header"
+        },
+        {
+          "widget": "YandexKit.Header",
+          "preset": "left-logo-inline-links",
+          "when": "a short flat menu and a left-aligned look (journal, dense catalog)",
+          "role": "header"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "hero",
+      "slot": "hero",
+      "when": "photography with a quiet zone for the live text",
+      "note": "Chapter 1: one slide, short light live title.",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "hero-bleed-live-text",
+          "when": "one strong text-free image, full height on phones (journal, premium, dark drop)",
+          "role": "hero"
+        },
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "video-hero-single",
+          "when": "the merchant has a short silent loop with its own phone cut",
+          "role": "hero"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "banner",
+      "note": "Chapter 2, stacked seamlessly under the first (paddings none), linked."
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "type-band",
+      "role": "signature",
+      "slot": "signature",
+      "when": "journal and premium: one brand phrase set large across the page (kit-custom-sections)",
+      "note": "The signature block: one block that only this store has, chosen by the look (references/looks.md).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "lookbook-pair-bleed",
+          "when": "journal: a full-bleed photo pair with a corner caption, native",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "testimonial-spotlight",
+          "when": "premium and beauty: one real review set large (kit-custom-sections)",
+          "role": "signature"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "banner",
+      "note": "Chapter 3, linked."
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "banner",
+      "optional": true,
+      "note": "Chapter 4."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "slot": "shelf-a",
+      "when": "new arrivals or bestsellers, 12 cards",
+      "note": "New arrivals, 4-5 columns; card buttons off (`snippet.enableButton: disabled`).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "shelf-three-large",
+          "when": "bigger cards for the second source, a change of rhythm",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "slot": "subscribe",
+      "when": "a centred form on a neutral band (centred themes)",
+      "note": "On a tinted palette.",
+      "variants": [
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "flow-into-footer",
+          "when": "on the footer palette, so the subscription and the footer read as one closing block",
+          "role": "subscribe"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Footer",
+      "preset": "tinted-light-footer",
+      "role": "footer",
+      "slot": "footer",
+      "when": "off-white, grey or cream: soft and premium looks",
+      "variants": [
+        {
+          "widget": "YandexKit.Footer",
+          "preset": "dark-footer-columns",
+          "when": "a dark closing band",
+          "role": "footer"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Vertical rhythm 800-1000 and favourites on (theme)."
+  ],
+  "deviations": {
+    "home-length": "Short by design: 3-4 image chapters carry the page.",
+    "category-entry": "Chapters link to collections instead of a tile row.",
+    "hero-stack": "Image chapters on purpose: the first chapter after the hero is a full-bleed banner linked to a collection; on phones each is a 4:3 card, so the second screen still shows a way to shop."
+  }
+}

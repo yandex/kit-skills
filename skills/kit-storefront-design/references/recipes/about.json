@@ -1,0 +1,71 @@
+{
+  "id": "about",
+  "page_type": "about",
+  "title": "About / brand story page",
+  "when": "A custom page telling who makes the products and why.",
+  "evidence": "about 10 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "hero",
+      "note": "Key visual."
+    },
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "section-heading",
+      "role": "heading",
+      "note": "Page heading glued to the lead below."
+    },
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "brand-statement",
+      "role": "story",
+      "note": "Lead paragraph; `paddingTop: none` to glue it to the heading; accent-text palette."
+    },
+    {
+      "widget": "YandexKit.ImageWithText",
+      "preset": "zigzag-first",
+      "role": "story"
+    },
+    {
+      "widget": "YandexKit.ImageWithText",
+      "preset": "zigzag-next-right",
+      "role": "story"
+    },
+    {
+      "widget": "YandexKit.ImageWithText",
+      "preset": "zigzag-next-left",
+      "role": "story",
+      "optional": true
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "principles-tiles",
+      "role": "tiles"
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "promo-strip-thin",
+      "role": "banner",
+      "optional": true,
+      "note": "Thin divider."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "note": "Hero products."
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

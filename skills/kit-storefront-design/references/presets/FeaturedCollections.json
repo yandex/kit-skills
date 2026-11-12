@@ -1,0 +1,807 @@
+{
+  "widget": "YandexKit.FeaturedCollections",
+  "summary": "Hand-entered image tiles (title, image, link). Not bound to the catalog: every card is typed in. The most versatile layout block: category tiles, split hero, diptych, bento, proof row, benefit mosaic, social grid.",
+  "rules": [
+    "Navigation tiles lead somewhere: category and collection tiles carry `linkSource` with a real path and id (only 187 of 1055 tiles in the reference sample are linked; do better).",
+    "Tile titles are real category or collection names from the store, never template text.",
+    "`snippet.aspectRatio: default` follows the theme `collectionSnippet.aspectRatio`, which keeps tiles and product photos in one ratio.",
+    "`text.enableTitle: false` only when the artwork carries its own text. White overlay titles need `enableParanja: true` or a dark photo.",
+    "`text.backgroundDark` is a number. No module with an empty `media.filePath`.",
+    "`alignTitle` is `default` (as in the theme), `left` or `center`, and the schema requires it: presets write `default`, so a starter template's stored `left` does not survive under a centred theme. An older storefront build knows only `left` and `center`; there pass `--schema` with the store's skeleton and `presets apply` keeps the stored value.",
+    "Phones by role: navigation tiles 2 per view (`enableTwoColumnsOnTouch: true`); editorial or story tiles (3 or more) as a carousel with `false`, one tile and a peek; a text-and-photo pair as a gapless 2-column grid with `false`, which stacks in tile order. Never a grid with `false` and 3 or more tiles (they stack one per row), never a 2-column carousel with `false` (the second tile shows as a sliver).",
+    "Text baked into a tile image renders at about half size on phones: headlines survive, paragraphs do not. Prefer live titles."
+  ],
+  "skeleton_fix": {
+    "text": {
+      "vAlign": "underImage"
+    }
+  },
+  "module_template": {
+    "title": "<fill: tile title from the store or the merchant: a category or collection name, or the caption of a benefit or photo tile>",
+    "media": "<fill: image object built from `kit.py media upload` output with `design.py media-object`; keep its `type`>",
+    "linkSource": {
+      "link": "<fill: /catalog/<slug>, /collections/<slug> or a page path; empty for a decorative tile>",
+      "linkId": "<fill: the id of that category, collection or page; empty with an empty link>"
+    }
+  },
+  "required_defaults": {
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    },
+    "snippet": {
+      "aspectRatio": "default",
+      "imageFit": "cover",
+      "enableParanja": true,
+      "background": "none",
+      "enableBorder": false
+    },
+    "snippets": {
+      "layout": "grid",
+      "columns": 4,
+      "enableTwoColumnsOnTouch": true,
+      "hGap": "default",
+      "vGap": "default"
+    },
+    "text": {
+      "enableTitle": true,
+      "hAlign": "left",
+      "vAlign": "underImage",
+      "titleSize": "md",
+      "titleWeight": "medium",
+      "titleColor": "",
+      "backgroundColor": "",
+      "backgroundDark": 0
+    }
+  },
+  "presets": [
+    {
+      "name": "category-tiles-captioned",
+      "use": "Shop by category right after the hero: captioned tiles, 4 per row.",
+      "evidence": "captioned category tiles in 26 stores; right after the hero in 25 of 43",
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "default",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "underImage",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: one tile per real category, each linked. A last «all catalogue» tile linking to `/catalog` solves «see all»."
+      ]
+    },
+    {
+      "name": "category-carousel",
+      "use": "More than 4 categories: a centred-caption carousel of 5.",
+      "evidence": "carousel of 5 with centred captions in 7 stores",
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 5,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "default",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "center",
+          "vAlign": "underImage",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: 5+ real categories, each linked."
+      ]
+    },
+    {
+      "name": "entry-tiles-pair",
+      "use": "Two large entry tiles (two departments, two audiences) right under the hero, captioned under the image, 2 per phone row. With `entry-tiles-trio` below it, the native answer for an «entry tiles» stack.",
+      "evidence": "synthesized: the native form of the entry-tiles stack that custom requests are routed to; not counted in the sample",
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 2,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "default",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "underImage",
+          "titleSize": "lg",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "none"
+        }
+      },
+      "pairs_with": [
+        "entry-tiles-trio"
+      ],
+      "fill": [
+        "`modules`: exactly two tiles, real names, each linked."
+      ]
+    },
+    {
+      "name": "entry-tiles-trio",
+      "use": "Three entry tiles under `entry-tiles-pair`: three across on desktop, 2 and a peek on phones (a grid of 3 at 2 per row would leave the last tile alone).",
+      "evidence": "synthesized: see entry-tiles-pair",
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 3,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "default",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "underImage",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "pairs_with": [
+        "entry-tiles-pair"
+      ],
+      "fill": [
+        "`modules`: three tiles, real names, each linked."
+      ]
+    },
+    {
+      "name": "category-label-chips",
+      "use": "Category names as chips on the photo (kids, pastel, playful): live labels stay 14-16 px on phones where baked labels halve. 2 per phone view.",
+      "evidence": "chip labels in 4 stores; overlay titles in 19",
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 5,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "default",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "center",
+          "vAlign": "bottom",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`text.titleColor` and `text.backgroundColor`: dark text and a light accent from the store theme.",
+        "`modules`: real categories, linked."
+      ]
+    },
+    {
+      "name": "subcategory-chips",
+      "use": "Sub-category entry on a category page above the listing.",
+      "evidence": "6-column category rails appear on home and category pages; not counted separately",
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 6,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "1:1",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "center",
+          "vAlign": "underImage",
+          "titleSize": "sm",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "none",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: real sub-categories, linked."
+      ]
+    },
+    {
+      "name": "split-hero-panel",
+      "use": "Two gapless square tiles as the hero or a diptych: photo + designed panel. Stacks cleanly on phones in tile order, so the tile that should lead goes first. Baked copy in the panel at headline size only; a 3:4 pair costs about 1.6 phone screens, so one per page.",
+      "evidence": "5 stores",
+      "settings": {
+        "alignTitle": "default",
+        "title": "",
+        "snippets": {
+          "layout": "grid",
+          "columns": 2,
+          "enableTwoColumnsOnTouch": false,
+          "hGap": "disabled",
+          "vGap": "disabled"
+        },
+        "snippet": {
+          "aspectRatio": "1:1",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": false,
+          "hAlign": "left",
+          "vAlign": "underImage",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "fill": [
+        "`modules`: two tiles, the panel artwork carries its text; link both."
+      ]
+    },
+    {
+      "name": "editorial-diptych-gapless",
+      "use": "Two large images side by side between shelves with an overlay title.",
+      "evidence": "2-up pairs on home in 22 stores, gapless in 15",
+      "settings": {
+        "alignTitle": "default",
+        "title": "",
+        "snippets": {
+          "layout": "grid",
+          "columns": 2,
+          "enableTwoColumnsOnTouch": false,
+          "hGap": "disabled",
+          "vGap": "disabled"
+        },
+        "snippet": {
+          "aspectRatio": "3:4",
+          "imageFit": "cover",
+          "enableParanja": true,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "bottom",
+          "titleSize": "lg",
+          "titleWeight": "medium",
+          "titleColor": "#FFFFFF",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: two tiles with real collection names, linked."
+      ]
+    },
+    {
+      "name": "captioned-diptych",
+      "use": "Inspiration photo + product collage with a 1-2 line caption under; repeat with sides swapped.",
+      "evidence": "seen in the sample; not counted separately",
+      "settings": {
+        "alignTitle": "default",
+        "title": "",
+        "snippets": {
+          "layout": "grid",
+          "columns": 2,
+          "enableTwoColumnsOnTouch": false,
+          "hGap": "disabled",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "1:1",
+          "imageFit": "contain",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "underImage",
+          "titleSize": "sm",
+          "titleWeight": "regular",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: two tiles; captions from the merchant."
+      ]
+    },
+    {
+      "name": "lookbook-pair-bleed",
+      "use": "Full-bleed diptych with a small corner caption. One per page.",
+      "evidence": "full-width tiles in 15 stores",
+      "settings": {
+        "alignTitle": "default",
+        "title": "",
+        "snippets": {
+          "layout": "grid",
+          "columns": 2,
+          "enableTwoColumnsOnTouch": false,
+          "hGap": "disabled",
+          "vGap": "disabled"
+        },
+        "snippet": {
+          "aspectRatio": "3:4",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "top",
+          "titleSize": "sm",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "fill": [
+        "`modules`: two tiles."
+      ]
+    },
+    {
+      "name": "collection-carousel-overlay",
+      "use": "4 or more collection, story, people or lookbook covers with the title on the image: one large tile and a peek on phones (about 0.8 of a screen at any count). Not for navigation.",
+      "evidence": "11 stores",
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 4,
+          "enableTwoColumnsOnTouch": false,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "3:4",
+          "imageFit": "cover",
+          "enableParanja": true,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "bottom",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "#FFFFFF",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`title`: section title.",
+        "`modules`: real collections, linked."
+      ]
+    },
+    {
+      "name": "gallery-2x2-bordered",
+      "use": "Four tiles with hairline borders and zero gaps: a premium catalogue look, 2 per phone row.",
+      "evidence": "seen in the sample; not counted separately",
+      "settings": {
+        "alignTitle": "default",
+        "title": "",
+        "snippets": {
+          "layout": "grid",
+          "columns": 2,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "disabled",
+          "vGap": "disabled"
+        },
+        "snippet": {
+          "aspectRatio": "1:1",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": true
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "center",
+          "vAlign": "top",
+          "titleSize": "sm",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: four tiles, linked."
+      ]
+    },
+    {
+      "name": "benefit-mosaic",
+      "use": "Text cards alternating with photos, one dark tile as an anchor. Text in `title`, not baked.",
+      "evidence": "3+ stores",
+      "settings": {
+        "alignTitle": "default",
+        "title": "",
+        "snippets": {
+          "layout": "grid",
+          "columns": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "3:4",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "neutral",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "top",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "double",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules`: 4-8 tiles; benefit wording from the merchant."
+      ]
+    },
+    {
+      "name": "principles-tiles",
+      "use": "About page: 3 principles or values with an image each, text under. Three across on desktop; on phones one tile and a peek, never a lone third tile.",
+      "evidence": "part of the about-page recipe (about pages in about 10 stores)",
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 3,
+          "enableTwoColumnsOnTouch": false,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "3:4",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "underImage",
+          "titleSize": "md",
+          "titleWeight": "medium",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`title`: section title.",
+        "`modules`: three tiles, texts from the merchant."
+      ]
+    },
+    {
+      "name": "product-picks",
+      "use": "6-column carousel of product cut-outs without prices, each linked to its product page (multi-brand retail).",
+      "evidence": "2 stores",
+      "idea": true,
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 6,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "3:4",
+          "imageFit": "contain",
+          "enableParanja": false,
+          "background": "secondary",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "center",
+          "vAlign": "underImage",
+          "titleSize": "sm",
+          "titleWeight": "bold",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`title`: edit name.",
+        "`modules`: product names and `/products/<slug>` links with the product ids from the store."
+      ]
+    },
+    {
+      "name": "proof-row",
+      "use": "Customer photos, stores, press near the end, before the closing band.",
+      "evidence": "imagery proof (customer photos, stores, press) in 3 of 7 stores of one analysed group; not counted across the whole sample",
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 4,
+          "enableTwoColumnsOnTouch": false,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "3:4",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": true,
+          "hAlign": "left",
+          "vAlign": "underImage",
+          "titleSize": "sm",
+          "titleWeight": "regular",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`title`: section title.",
+        "`modules`: real photos with the merchant's permission; captions from the merchant."
+      ]
+    },
+    {
+      "name": "logo-wall",
+      "use": "Brands carried, press or partner logos: logos contained in wide 2:1 cells, no captions, 2 per phone row. Use an even number of logos.",
+      "evidence": "synthesized: the native answer for a logo or press wall; wide contained logo rows are rare in the sample (2 stores)",
+      "idea": true,
+      "settings": {
+        "alignTitle": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 6,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "aspectRatio": "2:1",
+          "imageFit": "contain",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": false,
+          "hAlign": "center",
+          "vAlign": "underImage",
+          "titleSize": "sm",
+          "titleWeight": "regular",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`title`: section title, or empty.",
+        "`modules`: the logos the merchant is allowed to show, each linked to the brand page or the article when there is one; `title` of each module = the brand or outlet name (it is not shown, but it names the tile)."
+      ]
+    },
+    {
+      "name": "social-feed-grid",
+      "use": "3x2 square grid, each tile linked to a post; put a thin strip with the account name above it.",
+      "evidence": "social feed tiles in at least 3 stores",
+      "settings": {
+        "alignTitle": "default",
+        "title": "",
+        "snippets": {
+          "layout": "grid",
+          "columns": 3,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "disabled",
+          "vGap": "disabled"
+        },
+        "snippet": {
+          "aspectRatio": "1:1",
+          "imageFit": "cover",
+          "enableParanja": false,
+          "background": "none",
+          "enableBorder": false
+        },
+        "text": {
+          "enableTitle": false,
+          "hAlign": "left",
+          "vAlign": "underImage",
+          "titleSize": "sm",
+          "titleWeight": "regular",
+          "titleColor": "",
+          "backgroundColor": "",
+          "backgroundDark": 0
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "single",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "fill": [
+        "`modules`: six images, each linked to the post URL (external link: the URL in both `link` and `linkId`)."
+      ]
+    }
+  ]
+}

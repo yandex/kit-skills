@@ -1,0 +1,31 @@
+{
+  "id": "promo-landing",
+  "page_type": "promo",
+  "title": "Promo landing (gift with purchase, season offer)",
+  "when": "Only while the offer runs; terms from the merchant.",
+  "evidence": "2 stores",
+  "idea": true,
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-contained-card",
+      "role": "hero",
+      "note": "Live offer title."
+    },
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "service-page-text",
+      "role": "text",
+      "note": "Terms: dates and conditions from the merchant."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "promo-eligible-grid",
+      "role": "shelf",
+      "note": "Eligible products."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

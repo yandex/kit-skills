@@ -1,0 +1,261 @@
+{
+  "id": "home-other-niche",
+  "page_type": "home",
+  "page_alias": "main",
+  "title": "Home for a niche the sample does not cover (food, pets, electronics, auto parts, services)",
+  "when": "The store sells something no niche recipe describes. The sample leans to fashion and beauty, so start from this structure rather than bending a fashion recipe.",
+  "evidence": "not counted: these niches are absent from the sample or too rare to count (a store or two at most); built from the universal skeleton and the catalog-led recipe",
+  "theme": [
+    "palettes-three-roles",
+    "typography-left-3xl",
+    "card-packshot",
+    "behaviour-defaults",
+    "touch-gutters"
+  ],
+  "steps": [
+    {
+      "widget": "YandexKit.AnnouncementBar",
+      "preset": "dark-single-offer",
+      "role": "announcement",
+      "slot": "announcement",
+      "when": "one commercial promise on a dark bar: the usual choice",
+      "optional": true,
+      "note": "Delivery terms are the usual promise here; only the merchant's.",
+      "variants": [
+        {
+          "widget": "YandexKit.AnnouncementBar",
+          "preset": "brand-tint-bar",
+          "when": "a soft brand tint (kids, beauty, playful and premium looks)",
+          "role": "announcement"
+        },
+        {
+          "widget": "YandexKit.AnnouncementBar",
+          "preset": "rotating-trust-messages",
+          "when": "2-3 short service promises the merchant confirmed",
+          "role": "announcement"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Header",
+      "preset": "left-logo-inline-links",
+      "role": "header",
+      "slot": "header",
+      "when": "a short flat menu and a left-aligned look (journal, dense catalog)",
+      "note": "Then stack `header-touch-one-row` for a single phone row. `catalog-two-row` instead for large assortments (electronics, auto parts).",
+      "variants": [
+        {
+          "widget": "YandexKit.Header",
+          "preset": "centered-logo-links",
+          "when": "a flat menu of up to 6-8 short items: the categories show on desktop",
+          "role": "header"
+        },
+        {
+          "widget": "YandexKit.Header",
+          "preset": "catalog-two-row",
+          "when": "a large assortment: catalog button, mega menu, wide search",
+          "role": "header"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "hero",
+      "slot": "hero",
+      "when": "photography with a quiet zone for the live text",
+      "note": "`hero-contained-card` for catalog-heavy stores.",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "hero-contained-card",
+          "when": "a catalogue look: the hero inside the grid with the theme's rounding",
+          "role": "hero"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "split-hero-panel",
+          "when": "a photo and a colour panel side by side (playful, premium)",
+          "role": "hero"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "category-tiles-captioned",
+      "role": "categories",
+      "slot": "categories",
+      "when": "4-8 categories with their own photos",
+      "note": "Real categories, linked, 2 per phone row. Its title is a phrase about what the store sells: the storefront makes it the page's H1 (a banner title never is).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "category-carousel",
+          "when": "more than 4 categories",
+          "role": "categories"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "entry-tiles-pair",
+          "when": "two departments or audiences (women and men, adults and kids)",
+          "role": "categories"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "slot": "shelf-a",
+      "when": "new arrivals or bestsellers, 12 cards",
+      "note": "Bestsellers or new arrivals.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-grid",
+          "when": "one curated row of 4",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "stats-band",
+      "role": "signature",
+      "slot": "signature",
+      "when": "considered purchases: 3-4 real numbers (years, customers, materials) (kit-custom-sections)",
+      "note": "The signature block: one block that only this store has, chosen by the look (references/looks.md).",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "ticker-band",
+          "when": "dark drop and playful: a running line of short brand words (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "testimonial-spotlight",
+          "when": "premium and beauty: one real review set large (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "benefit-mosaic",
+          "when": "native fallback: the store's real facts as text cards alternating with photos",
+          "role": "signature"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "shelf-three-large",
+      "role": "shelf",
+      "slot": "shelf-b",
+      "when": "bigger cards for the second source, a change of rhythm",
+      "note": "Another source.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-grid",
+          "when": "one curated row of 4",
+          "role": "shelf"
+        },
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-carousel",
+          "when": "new arrivals or bestsellers, 12 cards",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "text-media-split",
+      "role": "story",
+      "slot": "story",
+      "when": "the default story: eyebrow, a heading phrase, 16 px text at 560-640 px, a button to a real page, a 1:1 or 3:4 photo (`mediaRatio`; kit-custom-sections)",
+      "note": "One story block in the middle third that leads somewhere: a button or a last-line link to the catalog, a collection or the About page.",
+      "variants": [
+        {
+          "widget": "YandexKit.ImageWithText",
+          "preset": "brand-story-split",
+          "when": "native fallback the merchant edits in the cabinet: a narrowed section, `###` heading, one paragraph of 300 characters or less ending with a link",
+          "role": "story"
+        },
+        {
+          "widget": "YandexKit.RichText",
+          "preset": "brand-statement",
+          "when": "no photo for the story: one centred statement of 100-200 characters ending with a link",
+          "role": "story"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "faq-main-end",
+      "role": "faq",
+      "slot": "faq",
+      "when": "3-6 real buyer questions",
+      "note": "Delivery, storage, compatibility or booking questions that the merchant answers.",
+      "variants": [
+        {
+          "widget": "YandexKit.Faq",
+          "preset": "info-accordion",
+          "role": "faq",
+          "when": "service answers as untitled rows under the last grid (left-aligned themes)",
+          "idea": true
+        },
+        {
+          "widget": "YandexKit.Faq",
+          "preset": "faq-island",
+          "when": "a rounded theme (playful, soft): the questions on one card",
+          "role": "faq",
+          "idea": true
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "band-two-columns",
+      "role": "subscribe",
+      "slot": "subscribe",
+      "when": "text left, form right: the usual closing band",
+      "variants": [
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "centered-band",
+          "when": "a centred form on a neutral band (centred themes)",
+          "role": "subscribe"
+        },
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "flow-into-footer",
+          "when": "on the footer palette, so the subscription and the footer read as one closing block",
+          "role": "subscribe"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Footer",
+      "preset": "dark-footer-columns",
+      "role": "footer",
+      "slot": "footer",
+      "when": "a dark closing band",
+      "note": "Or `tinted-light-footer`.",
+      "variants": [
+        {
+          "widget": "YandexKit.Footer",
+          "preset": "tinted-light-footer",
+          "when": "off-white, grey or cream: soft and premium looks",
+          "role": "footer"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Food and pet goods: `layout-soft-friendly`, packshots on one backdrop, delivery and storage in the FAQ.",
+    "Electronics and auto parts: `layout-boxed-catalog`, `product-catalog-led` for the product page; the platform filters are the category tree, price and stock, so specs go in the characteristics and the category tree.",
+    "Services, or a shop that also takes custom work: the directions as two entry tiles under the hero (`entry-tiles-pair`), past work as a tile carousel (`collection-carousel-overlay`), and a banner with a button (`linkType: button`) to the contacts page or `tel:`. There is no native form; a request form is a custom section that kit-custom-sections does not offer yet."
+  ],
+  "deviations": {}
+}

@@ -1,0 +1,10 @@
+{
+  "widget": "YandexKit.ProductsBundleConstructor",
+  "summary": "The bundle builder (system section of the bundle page).",
+  "leave_default": "Leave it: there is no designed example to learn from.",
+  "evidence": "the same settings with empty modules in about 9 in 10 stores",
+  "rules": [],
+  "skeleton_fix": {},
+  "module_template": null,
+  "presets": []
+}

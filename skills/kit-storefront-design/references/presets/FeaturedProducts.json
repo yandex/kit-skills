@@ -1,0 +1,516 @@
+{
+  "widget": "YandexKit.FeaturedProducts",
+  "summary": "A product shelf fed by a category, a collection, the product context (relevant) or the visitor's history (last_seen).",
+  "rules": [
+    "`dataSource` has no default: a shelf built from a skeleton is empty until you add it. It has exactly three fields, all required: `type`, `slug` and `id`; the storefront fetches by `type` + `slug`, and `section add` refuses a new shelf without `id`. For a category or collection, `id` and `slug` are the cabinet's (yandex-kit-cabinet `list /v1/categories`, `list /v1/collections`; checked on a live store); for `relevant` and `last_seen` both are the type itself (checked on a live store). Pulled shelves often carry no `id`, or one platform-wide value shared by different collections, and some a leftover `slugId`: keep what a pulled shelf stores when you restyle it, and write the three fields for a new one (`presets apply --as-new` does it for relevant and last_seen and asks for the cabinet id otherwise).",
+    "One source per shelf per page; the storefront fetches a shelf by `type` + `slug` (7 of 40 home pages in the reference sample repeat a source and show identical rows).",
+    "No two same-shaped shelves back to back. The only allowed pair is the bento: a 2-column lead shelf, then an untitled shelf with another column count and `paddingTop: none`.",
+    "For grids `count` is a multiple of `columns`.",
+    "`layout: feed` does not work with the `relevant` source.",
+    "Hide or replace a shelf whose items are all out of stock.",
+    "On phones `enableTwoColumnsOnTouch: true` shows 2 cards per row (a carousel shows 2 and a peek); `false` shows one card filling the screen. Keep it true, except for a 2-card statement pair.",
+    "A shelf with its own `titleText` hides together with its title when it is empty; a separate heading section above it stays alone on the page.",
+    "Card buttons follow the theme card (`productSnippet.buttons.buttonColorInFeaturedProducts`): every preset writes `snippet.enableButton: default`, so all shelves of a page show buttons or none, as on every home page of the reference sample. Force `enabled` or `disabled` only on every shelf of the page at once.",
+    "The Split and Yandex points lines (`snippet.yandexSplit`, `snippet.yandexDiscount`) are the store's configuration: presets never write them, a pulled shelf keeps its values and a new one gets the schema default.",
+    "`titleAlign` is `default` (as in the theme), `left` or `center`: write `default` unless the preset needs a side; a stored `left` under a centred theme is the most common mixed page (`title-align-mixed`)."
+  ],
+  "skeleton_fix": {},
+  "module_template": null,
+  "required_defaults": {
+    "features": {
+      "badges": "default"
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    },
+    "snippet": {
+      "enableTitle": true,
+      "enableButton": "default",
+      "finalPriceColor": "default",
+      "enableDiscount": "default",
+      "discountColor": "default",
+      "enableFavourites": "default",
+      "yandexSplit": "m",
+      "yandexDiscount": "m",
+      "reviews": "default",
+      "enableBorder": "default"
+    },
+    "snippets": {
+      "layout": "grid",
+      "count": 8,
+      "columns": 4,
+      "enableTwoColumnsOnTouch": true,
+      "hGap": "default",
+      "vGap": "default"
+    }
+  },
+  "presets": [
+    {
+      "name": "home-shelf-carousel",
+      "use": "The primary home shelf (new arrivals or bestsellers): carousel of 4, 12 cards, 2 cards and a peek on phones (about 0.7 of a screen), no card buttons (each adds about 45 px per phone row).",
+      "evidence": "21 stores",
+      "settings": {
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 4,
+          "count": 12,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`titleText`: short shelf title, 1-3 words.",
+        "`dataSource`: a real collection or category of the store."
+      ]
+    },
+    {
+      "name": "home-shelf-grid",
+      "use": "A static curated grid: one desktop row, 2 by 2 on phones (about 1.2 screens), no buttons. Go to 8 cards only on a short home: that is 4 phone rows.",
+      "evidence": "11 stores",
+      "settings": {
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 4,
+          "count": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "enabled",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`titleText`.",
+        "`dataSource`: another source than the other shelves on the page."
+      ]
+    },
+    {
+      "name": "shelf-three-large",
+      "use": "Bigger cards: 3 columns, used as the second shelf to change the rhythm.",
+      "evidence": "3-column shelves: 32 sections in 13 stores",
+      "settings": {
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 3,
+          "count": 9,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`titleText`.",
+        "`dataSource`."
+      ]
+    },
+    {
+      "name": "bento-lead",
+      "use": "First half of the bento pair: two large statement cards without badges, so the pair reads as one statement. On phones they stack full width, then `bento-follow` shows 2 by 2.",
+      "evidence": "2-column shelves in 8 stores, the exact 2 + 4 pair in 5; the 2-card pair stacks on phones in 4 stores and sits 2-up in 1. Hiding the badges is this preset's own choice, not the sample's",
+      "settings": {
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 2,
+          "count": 2,
+          "enableTwoColumnsOnTouch": false,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "disabled"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "double",
+          "paddingBottom": "none"
+        }
+      },
+      "pairs_with": [
+        "bento-follow"
+      ],
+      "fill": [
+        "`titleText`.",
+        "`dataSource`: the statement collection."
+      ]
+    },
+    {
+      "name": "bento-follow",
+      "use": "Second half of the bento pair: untitled 4-card row glued under `bento-lead`.",
+      "evidence": "see bento-lead",
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 4,
+          "count": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "none",
+          "paddingBottom": "single"
+        }
+      },
+      "pairs_with": [
+        "bento-lead"
+      ],
+      "fill": [
+        "`dataSource`: a different source from the lead shelf."
+      ]
+    },
+    {
+      "name": "untitled-shelf-under-banner",
+      "use": "Shelf directly under a banner that names the category.",
+      "evidence": "17 stores run untitled home shelves",
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 4,
+          "count": 12,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "none",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`dataSource`: the category named on the banner above."
+      ]
+    },
+    {
+      "name": "gallery-shelf-gapless",
+      "use": "Edge-to-edge product wall. Only when every packshot shares one backdrop.",
+      "evidence": "seen in the sample; not counted separately",
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 4,
+          "count": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "disabled",
+          "vGap": "disabled"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0",
+          "hPaddingMobile": "0"
+        }
+      },
+      "fill": [
+        "`dataSource`."
+      ]
+    },
+    {
+      "name": "two-column-formats",
+      "use": "Stores with 1-5 products: all formats as large cards in 2 columns.",
+      "evidence": "4 single-product stores",
+      "settings": {
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 2,
+          "count": 4,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "double",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`titleText`.",
+        "`dataSource`: the collection with all formats."
+      ]
+    },
+    {
+      "name": "promo-eligible-grid",
+      "use": "Promo landing: the products the offer applies to.",
+      "evidence": "2 stores",
+      "idea": true,
+      "settings": {
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "grid",
+          "columns": 4,
+          "count": 8,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "enabled",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`titleText`.",
+        "`dataSource`: the promo collection."
+      ]
+    },
+    {
+      "name": "product-page-similar",
+      "use": "First shelf under ProductDetails in catalogs of 8 or more products: similar products, titled in the shelf so it hides cleanly when empty. In smaller catalogs keep `relevant` and set the similar products of every card by hand in yandex-kit-cabinet (`similar/add`); a curated collection repeats the product on its own page.",
+      "evidence": "the relevant source on about 2 in 5 default product pages; empty in small catalogs in the product-page captures",
+      "settings": {
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 4,
+          "count": 8,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "none",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`titleText`, e.g. «Похожие товары»: in the shelf, never in a heading section above it.",
+        "`dataSource` of type `relevant`: copy it from an existing similar-products shelf of the store, or write `{\"type\": \"relevant\", \"slug\": \"relevant\", \"id\": \"relevant\"}` (checked on a live store)."
+      ]
+    },
+    {
+      "name": "similar-large-3",
+      "use": "Image-led brands: similar products as large 3-column cards glued to the product block.",
+      "evidence": "a 3-column relevant shelf in 3 stores",
+      "settings": {
+        "titleAlign": "left",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 3,
+          "count": 12,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "enabled",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "none",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`titleText`: a short title.",
+        "`dataSource` of type `relevant`, as in `product-page-similar`."
+      ]
+    },
+    {
+      "name": "recently-viewed",
+      "use": "Product-page tail and the cart page: the visitor's history. The last shelf before the subscription; never the only shelf and never the first under the product card (a first visitor sees nothing, the next one the product itself). Needs no catalog ids.",
+      "evidence": "on about 2 in 3 default product pages and 3 in 5 cart pages; the only shelf on about 2 in 5 product pages and the first under the card on about 3 in 10, which is what the tail rule corrects",
+      "settings": {
+        "titleAlign": "default",
+        "snippets": {
+          "layout": "carousel",
+          "columns": 5,
+          "count": 10,
+          "enableTwoColumnsOnTouch": true,
+          "hGap": "default",
+          "vGap": "default"
+        },
+        "snippet": {
+          "enableTitle": true,
+          "enableButton": "default",
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default",
+          "enableFavourites": "default",
+          "reviews": "default",
+          "enableBorder": "default"
+        },
+        "features": {
+          "badges": "default"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`titleText`, e.g. «Недавно смотрели».",
+        "`dataSource` of type `last_seen`: copy from an existing shelf, or write `{\"type\": \"last_seen\", \"slug\": \"last_seen\", \"id\": \"last_seen\"}`."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "widget": "YandexKit.Faq",
+  "summary": "Questions and answers in accordions.",
+  "rules": [
+    "Real questions with the merchant's answers only; never an empty answer.",
+    "No two titled Faq sections on one page.",
+    "`align: two-columns` and `expand: all` are not used by the reference stores; check the preview before relying on them.",
+    "Keep `id` and `display_sequence` on pulled modules when they carry them.",
+    "Always write `appearance.expand`: the schema default opens the first answer. `none` is the default choice; `first` only when the first answer is 400 characters or less and the FAQ is the page's main content. On a product page all answers start closed.",
+    "A Faq title follows only `appearance.align` (centred at `center`, left otherwise), never the theme. Presets marked `title_follows_theme` are fitted by `presets apply --work`: under a centred theme a titled Faq gets `align: center`; the lint reports any mismatch as `title-align-mixed`.",
+    "Questions run at `columns` 8 or narrower in the theme's box: at 12 a line is about 1300 px. Every preset writes `section.isFullscreen: \"disabled\"`: under a theme that spans sections across the screen, 8 columns run about 1240 px on a 1920 px window (`text-measure`)."
+  ],
+  "skeleton_fix": {
+    "appearance": {
+      "columns": 8,
+      "expand": "first",
+      "align": "left",
+      "view": "no-dividers",
+      "icons": "arrows"
+    }
+  },
+  "module_template": {
+    "question": "<fill: buyer question>",
+    "answer": "<fill: merchant answer, markdown>"
+  },
+  "required_defaults": {
+    "appearance": {
+      "columns": 8,
+      "expand": "first",
+      "align": "left",
+      "view": "no-dividers",
+      "icons": "arrows"
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    }
+  },
+  "presets": [
+    {
+      "name": "faq-main-end",
+      "use": "3-6 buyer questions near the end of home or on the product page.",
+      "evidence": "of 9 stores running a Faq: with-dividers in 6, plus-and-minus in 7; answers start closed in about as many stores as open the first one, and closed is kept for phones",
+      "settings": {
+        "subtitle": "",
+        "appearance": {
+          "view": "with-dividers",
+          "icons": "plus-and-minus",
+          "expand": "none",
+          "align": "left",
+          "columns": 8
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "double",
+          "paddingBottom": "double"
+        }
+      },
+      "title_follows_theme": true,
+      "fill": [
+        "`title`, e.g. «Вопросы и ответы».",
+        "`modules`: 3-6 questions answered by the merchant."
+      ]
+    },
+    {
+      "name": "pdp-care-faq",
+      "use": "Care, warranty, returns or usage questions right under ProductDetails or after the first shelf: all closed, so phones show only the questions.",
+      "evidence": "a Faq on 3 default product pages; an open first answer of about 2,000 characters took two phone screens",
+      "settings": {
+        "subtitle": "",
+        "appearance": {
+          "view": "with-dividers",
+          "icons": "plus-and-minus",
+          "expand": "none",
+          "align": "left",
+          "columns": 8
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "title_follows_theme": true,
+      "fill": [
+        "`title`, e.g. «Вопросы и ответы».",
+        "`modules`: 3-6 questions from the merchant, answers of 400 characters or less."
+      ]
+    },
+    {
+      "name": "faq-service-left",
+      "use": "Service and legal pages: a titled Faq at the width and the left edge of the page's text (`service-page-text`), whatever the theme's alignment.",
+      "evidence": "not counted: built from the measure and alignment of service pages (principles 1 and 25), not from a store's look",
+      "basis": "principles 1 and 25: a service page reads left-aligned at one text width",
+      "settings": {
+        "subtitle": "",
+        "appearance": {
+          "view": "with-dividers",
+          "icons": "plus-and-minus",
+          "expand": "none",
+          "align": "left",
+          "columns": 6
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`title`, e.g. «Частые вопросы».",
+        "`modules`: 3-6 questions answered by the merchant."
+      ]
+    },
+    {
+      "name": "faq-centered-narrow",
+      "use": "Centred narrow column for brand-led pages: what `faq-main-end` becomes under a centred theme, with more air.",
+      "evidence": "1 store (a strong visual example)",
+      "settings": {
+        "subtitle": "",
+        "appearance": {
+          "view": "with-dividers",
+          "icons": "plus-and-minus",
+          "expand": "none",
+          "align": "center",
+          "columns": 8
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "double",
+          "paddingBottom": "double"
+        }
+      },
+      "title_follows_theme": true,
+      "fill": [
+        "`title`.",
+        "`modules`."
+      ],
+      "idea": true
+    },
+    {
+      "name": "faq-topic-chain",
+      "use": "Help page: untitled Faq under a RichText `topic-label`, one per topic, left at the width of the topic label. Give the last one `paddingBottom: double`.",
+      "evidence": "2-3 stores (help pages)",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "appearance": {
+          "view": "with-dividers",
+          "icons": "plus-and-minus",
+          "expand": "none",
+          "align": "left",
+          "columns": 8
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "none",
+          "paddingBottom": "none"
+        }
+      },
+      "fill": [
+        "`modules`: the questions of one topic."
+      ],
+      "idea": true
+    },
+    {
+      "name": "faq-island",
+      "use": "One rounded card; suits rounded themes (normal, soft).",
+      "evidence": "1 store",
+      "settings": {
+        "subtitle": "",
+        "appearance": {
+          "view": "island",
+          "icons": "plus-and-minus",
+          "expand": "none",
+          "align": "left",
+          "columns": 8
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "title_follows_theme": true,
+      "fill": [
+        "`title`.",
+        "`modules`."
+      ],
+      "idea": true
+    },
+    {
+      "name": "faq-island-background",
+      "use": "Card on a filled background: B2B and wholesale landings.",
+      "evidence": "1 store, plus the B2B landing recipe",
+      "settings": {
+        "subtitle": "",
+        "appearance": {
+          "view": "island-with-background",
+          "icons": "plus-and-minus",
+          "expand": "none",
+          "align": "left",
+          "columns": 8
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "title_follows_theme": true,
+      "fill": [
+        "`title`.",
+        "`modules`."
+      ],
+      "idea": true
+    },
+    {
+      "name": "info-accordion",
+      "use": "Untitled service rows under the last grid: payment, returns, care, custom orders; in the theme's box, so an answer keeps a reading width.",
+      "evidence": "1 store",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "appearance": {
+          "view": "with-dividers",
+          "icons": "plus-and-minus",
+          "expand": "none",
+          "align": "left",
+          "columns": 8
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "none",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`modules`: service answers from the merchant."
+      ],
+      "idea": true
+    }
+  ]
+}

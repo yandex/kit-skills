@@ -1,0 +1,26 @@
+{
+  "id": "category-subnav",
+  "page_type": "category",
+  "page_alias": "categoryAndCollection",
+  "title": "Per-category variant with a sub-category row",
+  "when": "A category with a few sub-categories worth a visual row above the grid.",
+  "evidence": "a pattern from 2 stores: structure only",
+  "idea": true,
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "subcategory-chips",
+      "role": "categories",
+      "note": "Real sub-categories, each linked; an even count."
+    },
+    {
+      "widget": "YandexKit.ProductsListing",
+      "preset": "listing-drawer-4x6",
+      "role": "listing",
+      "note": "Drawer only (the sidebar already lists the children); breadcrumbs off only when the row shows the path."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

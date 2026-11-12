@@ -1,0 +1,35 @@
+{
+  "id": "category-hero-variant",
+  "page_type": "category",
+  "page_alias": "categoryAndCollection",
+  "title": "Per-category variant with a hero",
+  "when": "Top categories that deserve their own banner: an alternative page variant per category, assigned in the cabinet.",
+  "evidence": "per-category heroes in a few of the 43 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "collection-hero",
+      "role": "hero",
+      "note": "Or `collection-hero-plate`. The live text is a short caption (20 characters or less) or nothing, never the category name: the listing prints that as the H1 one line below. Text colour by the frame (dark on light photos)."
+    },
+    {
+      "widget": "YandexKit.ProductsListing",
+      "preset": "listing-drawer-4x6",
+      "role": "listing"
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "One banner per category, kept in sync by hand. Assigning categories to the variant happens in the cabinet; a variant with nothing assigned is seen by nobody.",
+    "RichText with SEO copy after the listing belongs here, per category, never on the default variant.",
+    "The category's own description belongs in the cabinet; the banner carries the mood, the listing the name."
+  ],
+  "deviations": {}
+}

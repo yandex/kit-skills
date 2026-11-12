@@ -1,0 +1,27 @@
+{
+  "id": "service-page",
+  "page_type": "service",
+  "title": "Delivery, payment, returns, details, policies",
+  "when": "Before any header or footer link points at these pages.",
+  "evidence": "not counted: the sample offers no page to copy; the recipe follows the principles",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "service-page-text",
+      "role": "service",
+      "note": "The merchant's text; ask structured questions (methods, timing, cost, regions, return window). Left-aligned at 6 columns whatever the theme: a service page reads as one column."
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "faq-service-left",
+      "role": "faq",
+      "optional": true,
+      "note": "3-6 questions, left at the text's width."
+    }
+  ],
+  "notes": [
+    "Never write delivery terms, prices, return windows or legal requisites yourself."
+  ],
+  "deviations": {}
+}

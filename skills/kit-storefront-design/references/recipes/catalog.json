@@ -1,0 +1,28 @@
+{
+  "id": "catalog",
+  "page_type": "catalog",
+  "page_alias": "catalog",
+  "title": "Catalog page",
+  "when": "The /catalog page listing categories.",
+  "evidence": "the listing alone on about 3 in 5 catalog pages",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.CollectionsListing",
+      "preset": "catalog-captioned-grid",
+      "role": "catalog",
+      "note": "`catalog-editorial-left` for left-aligned themes, `catalog-overlay-3col` for strong category photography with the darkening on."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "note": "Bestsellers under the tiles: the catalog then shows products, not only a way to them. The home hero's button leads to a collection page, not to /catalog."
+    }
+  ],
+  "notes": [
+    "`source: categories`, a dedicated cover per category (cabinet data), captions under the image; the tile ratio follows the theme (`collectionSnippet.aspectRatio`).",
+    "A one-category store may show a product shelf of that category instead, since a catalog of one tile looks empty (an optional idea from one store of the sample)."
+  ],
+  "deviations": {}
+}

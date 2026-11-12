@@ -1,0 +1,47 @@
+{
+  "id": "product-few-skus",
+  "page_type": "product",
+  "page_alias": "productCard",
+  "title": "1-8 products: the product page carries the story",
+  "when": "A small range where each product needs explaining.",
+  "evidence": "4 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductDetails",
+      "preset": "pdp-edge-to-edge-gallery",
+      "role": "product",
+      "note": "Up to 12 photos including infographics; a short silent product video first (`images.order: first`). Hide advantages until the merchant confirms policies."
+    },
+    {
+      "widget": "YandexKit.ImageWithText",
+      "preset": "brand-story-split",
+      "role": "story",
+      "note": "What it is made of or how it works, from the merchant."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "two-column-formats",
+      "role": "shelf",
+      "optional": true,
+      "note": "All formats of the range; no similar-products shelf under 8 products."
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "pdp-care-faq",
+      "role": "faq"
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "Ask the merchant for infographic photos and a product video rather than adding explanatory sections.",
+    "Before publishing, preview the product page: no «we do not deliver to this city» line (else `pdp-modules-prelaunch`), advantages only confirmed policies, no technical names in the chips. See references/product-page.md."
+  ],
+  "deviations": {}
+}

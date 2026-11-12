@@ -1,0 +1,53 @@
+{
+  "id": "b2b-wholesale",
+  "page_type": "b2b",
+  "title": "B2B or wholesale landing",
+  "when": "Brands selling to retailers or corporate clients.",
+  "evidence": "2-3 stores",
+  "idea": true,
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-live-text",
+      "role": "hero",
+      "note": "Live title and a button to the contact route."
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "benefit-mosaic",
+      "role": "tiles",
+      "note": "What we offer."
+    },
+    {
+      "widget": "YandexKit.ImageWithText",
+      "preset": "zigzag-first",
+      "role": "story",
+      "note": "Terms."
+    },
+    {
+      "widget": "YandexKit.ImageWithText",
+      "preset": "zigzag-next-right",
+      "role": "story",
+      "note": "Benefits."
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "role": "form",
+      "optional": true,
+      "note": "A request form needs a custom section and kit-custom-sections has no form pattern: say so, and offer a mailto: or tel: button in a banner instead."
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "faq-island-background",
+      "role": "faq"
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "closing-band",
+      "role": "closing"
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

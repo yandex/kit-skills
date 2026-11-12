@@ -1,0 +1,252 @@
+{
+  "id": "home-kids",
+  "page_type": "home",
+  "page_alias": "main",
+  "title": "Kids, family, playful pastel lifestyle",
+  "when": "Soft colours, rounded shapes, parents as buyers.",
+  "evidence": "4 stores",
+  "theme": [
+    "layout-soft-friendly",
+    "card-lifestyle",
+    "palettes-three-roles",
+    "typography-centred-3xl",
+    "behaviour-defaults"
+  ],
+  "steps": [
+    {
+      "widget": "YandexKit.AnnouncementBar",
+      "preset": "brand-tint-bar",
+      "role": "announcement",
+      "slot": "announcement",
+      "when": "a soft brand tint (kids, beauty, playful and premium looks)",
+      "note": "Brand pastel.",
+      "variants": [
+        {
+          "widget": "YandexKit.AnnouncementBar",
+          "preset": "dark-single-offer",
+          "when": "one commercial promise on a dark bar: the usual choice",
+          "role": "announcement"
+        },
+        {
+          "widget": "YandexKit.AnnouncementBar",
+          "preset": "rotating-trust-messages",
+          "when": "2-3 short service promises the merchant confirmed",
+          "role": "announcement"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Header",
+      "preset": "centered-logo-links",
+      "role": "header",
+      "slot": "header",
+      "when": "a flat menu of up to 6-8 short items: the categories show on desktop",
+      "variants": [
+        {
+          "widget": "YandexKit.Header",
+          "preset": "centered-logo-burger",
+          "when": "a nested or long menu that would not fit as links",
+          "role": "header"
+        },
+        {
+          "widget": "YandexKit.Header",
+          "preset": "left-logo-inline-links",
+          "when": "a short flat menu and a left-aligned look (journal, dense catalog)",
+          "role": "header"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "hero",
+      "slot": "hero",
+      "when": "photography with a quiet zone for the live text",
+      "note": "2:1 bleed, or 5:2 inset rounded (`hero-contained-card`).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "split-hero-panel",
+          "when": "a photo and a colour panel side by side (playful, premium)",
+          "role": "hero"
+        },
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "video-hero-single",
+          "when": "the merchant has a short silent loop with its own phone cut",
+          "role": "hero"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "category-label-chips",
+      "role": "categories",
+      "slot": "categories",
+      "when": "playful: the names as chips on the photos",
+      "note": "4-6 columns, plus one «all catalogue» tile. Its title is a phrase about what the store sells: the storefront makes it the page's H1 (a banner title never is).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "category-tiles-captioned",
+          "when": "4-8 categories with their own photos",
+          "role": "categories"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "category-carousel",
+          "when": "more than 4 categories",
+          "role": "categories"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "slot": "shelf-a",
+      "when": "new arrivals or bestsellers, 12 cards",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-grid",
+          "when": "one curated row of 4",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "ticker-band",
+      "role": "signature",
+      "slot": "signature",
+      "when": "dark drop and playful: a running line of short brand words (kit-custom-sections)",
+      "note": "The signature block: one block that only this store has, chosen by the look (references/looks.md).",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "tile-mosaic",
+          "when": "gallery and dense catalog: a mosaic of products or collections in tiles of different sizes (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "video-reels",
+          "when": "the merchant has short vertical videos (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "captioned-diptych",
+          "when": "native fallback: an inspiration photo and a product collage with a caption",
+          "role": "signature"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "shelf-three-large",
+      "role": "shelf",
+      "slot": "shelf-b",
+      "when": "bigger cards for the second source, a change of rhythm",
+      "note": "Another source.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-grid",
+          "when": "one curated row of 4",
+          "role": "shelf"
+        },
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-carousel",
+          "when": "new arrivals or bestsellers, 12 cards",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "benefit-mosaic",
+      "role": "tiles",
+      "slot": "tiles",
+      "when": "native fallback: text cards alternating with photos",
+      "note": "Text tiles alternating with photos, one dark accent tile.",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "advantages",
+          "when": "benefits with icons and live text, no photos (kit-custom-sections)",
+          "role": "tiles"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "captioned-diptych",
+          "when": "an inspiration photo and a product collage with a caption",
+          "role": "tiles"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "proof-row",
+      "role": "proof",
+      "slot": "proof",
+      "when": "customer photos, stores or press the merchant has",
+      "note": "Gallery on one tint, shared with the subscription below.",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "static-reviews",
+          "when": "3-6 real reviews (kit-custom-sections)",
+          "role": "proof"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "testimonial-spotlight",
+          "when": "one strong real review with a name and a photo (kit-custom-sections)",
+          "role": "proof"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "slot": "subscribe",
+      "when": "a centred form on a neutral band (centred themes)",
+      "note": "Same tint as the gallery above.",
+      "variants": [
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "band-two-columns",
+          "when": "text left, form right: the usual closing band",
+          "role": "subscribe"
+        },
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "flow-into-footer",
+          "when": "on the footer palette, so the subscription and the footer read as one closing block",
+          "role": "subscribe"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Footer",
+      "preset": "tinted-light-footer",
+      "role": "footer",
+      "slot": "footer",
+      "when": "off-white, grey or cream: soft and premium looks",
+      "variants": [
+        {
+          "widget": "YandexKit.Footer",
+          "preset": "dark-footer-columns",
+          "when": "a dark closing band",
+          "role": "footer"
+        }
+      ]
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

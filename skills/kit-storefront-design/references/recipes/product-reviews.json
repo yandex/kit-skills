@@ -1,0 +1,17 @@
+{
+  "id": "product-reviews",
+  "page_type": "reviews",
+  "page_alias": "productReviews",
+  "title": "Product reviews page",
+  "when": "The page with all reviews of one product.",
+  "evidence": "the reviews listing at its default (empty) settings in all 43 stores, alone on the page in about 5 in 6",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductReviewsListing",
+      "note": "Leave default: the page follows the theme; reviews are customers' content."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

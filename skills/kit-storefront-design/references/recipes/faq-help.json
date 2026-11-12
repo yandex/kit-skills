@@ -1,0 +1,49 @@
+{
+  "id": "faq-help",
+  "page_type": "faq",
+  "title": "FAQ or help page",
+  "when": "Considered purchases with many recurring questions.",
+  "evidence": "2-3 stores",
+  "idea": true,
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "page-heading-left",
+      "role": "heading",
+      "note": "Page title: the only heading at the theme's title size, on the left edge like the topics and questions under it, whatever the theme's alignment."
+    },
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "topic-label",
+      "role": "heading",
+      "note": "Topic 1. Written in `content` as `####`, left, one level below the page title."
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "faq-topic-chain",
+      "role": "faq"
+    },
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "topic-label",
+      "role": "heading",
+      "note": "Topic 2. Written in `content` as `####`, left, one level below the page title."
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "faq-topic-chain",
+      "role": "faq",
+      "note": "Last one: `paddingBottom: double`."
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

@@ -1,0 +1,244 @@
+{
+  "widget": "YandexKit.Header",
+  "summary": "Store header: logo, main menu, search, optional contacts row. Composite: stored once, copied to every page.",
+  "shape_note": "`modules.main` comes in two shapes. The current one is nested (`main.menu.{menu,menuVariant,menuDisplayType}`, `main.logo.{logo,logoPosition}`, `main.additional.{searchVariant,enableActionTitle}`), and a new header is always nested. The flat one (`menu`, `menuVariant`, `menuDisplayType`, `logo`, `logoPosition`, `searchVariant`, `enableActionTitle` as leaves) is the older shape: the storefront regroups it into the nested one when it renders a header stored at settings version 1766500000000 or older, and most stored headers in the reference sample were flat. Presets are written flat; `design.py presets apply` writes them in the shape the section already has, and a section that shows none takes the shape of the store's live schema (`--schema` with the output of `kit.py … schema widget --name YandexKit.Header --skeleton`). A flat header stored at a newer version is never regrouped and renders without its main menu (`plan lint` reports it as `header-menu-empty`): `presets apply` regroups its stored values into the nested shape and says so. `presets show Header <preset>` prints both shapes. Otherwise never convert a pulled header from one shape to the other.",
+  "rules": [
+    "Never write the main menu id: `modules.main.menu.menu` (nested; `modules.main.menu` in the flat shape) comes from the pulled header, and an empty main menu leaves phones without a burger. The constructor cannot read or change menus.",
+    "`modules.additional.menu` is the secondary menu. Keep the pulled value, or write an empty string on purpose: on phones a secondary menu becomes a sticky second row (+48 px, about 16% of the screen), which cost the product page its price on the first screen in every checked store. An empty value is valid and is the only way to avoid that row.",
+    "Location (`enableCustomerLocation`) is on by default; write `false` unless delivery really differs by city. The city pop-up covered the first phone screens only in stores that had it on.",
+    "Contacts in the header are dropped on phones; they belong in the footer.",
+    "Always sticky (every header in the reference sample of 43 stores that answered this was sticky: 41 of 41).",
+    "`transparencyColor` is the colour of the text and icons over the hero, not a background; it does not choose the logo. A transparent header only on a home-only header instance over a full-bleed hero; every other page's header `transparencyMode: none` (`header-opaque-off-home`).",
+    "`palette` must be an id from `global_settings.appearance.colors.palettes`.",
+    "Header and Footer `section.isFullscreen` are set as a pair (they match in 25 of 33 stores that set both).",
+    "The logo is fitted into a box of about 3:1 whatever its file, on desktop and on phones alike: `xs` 80×24 px, `sm` 90×32, `md` 120×40, `lg` 150×50, `xl` 180×60. Ask for a logo file of about 3:1 (a mark and a word, or two lines); a wide wordmark takes `lg` or `xl`, and a file wider than 4:1 comes out under 30 px tall (an 8:1 wordmark at `md` is about 15 px).",
+    "Archetype presets (`centered-logo-burger`, `left-logo-inline-links`, `catalog-two-row`, `dark-chrome`) set `modules.main`; the phone-row presets (`header-touch-one-row`, `header-touch-category-row`) write only `modules.additional` and `enableSticky`. Apply the archetype first, then a phone-row preset over its result; never an archetype over a header whose look the user keeps.",
+    "With `menuVariant: sitelinks` the desktop header shows only the top level of the main menu and at most its first 8 items: no sub-menu opens, whatever `menuDisplayType` says, and items past the eighth are dropped. Use it for a flat menu of 6-8 short items; a nested catalogue takes `catalog-two-row` (catalog button and mega menu) or the burger (`centered-logo-burger`).",
+    "On desktop the shopper should see the categories in the header without a click: a burger alone (`menuVariant: icon`) hides them. Brands with a flat menu of up to 6-8 items take `centered-logo-links`; the burger suits a nested or long menu.",
+    "The logo is picked by the header's background: over a light background the regular logo, otherwise the inverted one from the cabinet. A header on a dark palette, and a transparent header (its background is transparent, so the inverted logo shows whatever `transparencyColor` says), need an inverted logo uploaded in the cabinet, or the logo disappears."
+  ],
+  "skeleton_fix": {
+    "modules": {
+      "main": {
+        "menuDisplayType": "auto",
+        "logo": "md",
+        "searchVariant": "icon"
+      }
+    }
+  },
+  "module_template": null,
+  "required_defaults": {
+    "modules": {
+      "main": {},
+      "additional": {}
+    },
+    "modules.additional": {
+      "menu": "<fill: menu id — keep the value the store's pulled header or footer carries; menus are managed in the cabinet>",
+      "contactsPrimary": "none",
+      "contactsSecondary": "none",
+      "enableCustomerLocation": true
+    },
+    "modules.main": {
+      "menu": "<fill: menu id — keep the value the store's pulled header or footer carries; menus are managed in the cabinet>",
+      "menuDisplayType": "auto",
+      "menuVariant": "sitelinks",
+      "logoPosition": "left",
+      "logo": "md",
+      "searchVariant": "icon",
+      "enableActionTitle": false
+    },
+    "section": {
+      "isFullscreen": "default"
+    }
+  },
+  "presets": [
+    {
+      "name": "centered-logo-burger",
+      "use": "Brand-led stores with a nested or long menu: centred logo, burger menu, search icon. On desktop the categories hide behind the burger: with a flat menu of up to 6-8 items prefer `centered-logo-links`.",
+      "evidence": "centre logo + icon menu on 19 of 40 home pages, most of them at the theme width like their footer",
+      "settings": {
+        "enableSticky": true,
+        "enableBorder": false,
+        "transparencyMode": "none",
+        "section": {
+          "isFullscreen": "default",
+          "hPaddingMobile": "250"
+        },
+        "modules": {
+          "main": {
+            "logo": "lg",
+            "logoPosition": "center",
+            "menuVariant": "icon",
+            "menuDisplayType": "multilevel_drawer",
+            "searchVariant": "icon",
+            "enableActionTitle": false
+          }
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "centered-logo-links",
+      "use": "Brands with a flat menu of up to 6-8 short items: centred logo and the menu as links, so the categories show on desktop without a click; on phones it folds into the burger like any header.",
+      "evidence": "a centred logo with sitelinks on 5 of 43 stores' headers; burger-only desktop headers were the critics' first complaint in the live check of demo stores",
+      "settings": {
+        "enableSticky": true,
+        "enableBorder": false,
+        "transparencyMode": "none",
+        "section": {
+          "isFullscreen": "default",
+          "hPaddingMobile": "250"
+        },
+        "modules": {
+          "main": {
+            "logo": "lg",
+            "logoPosition": "center",
+            "menuVariant": "sitelinks",
+            "menuDisplayType": "auto",
+            "searchVariant": "icon",
+            "enableActionTitle": false
+          }
+        }
+      },
+      "fill": [
+        "The main menu in the cabinet: flat, 6-8 items or fewer, each a word or two (the desktop shows the top level and the first 8 items only)."
+      ]
+    },
+    {
+      "name": "header-touch-one-row",
+      "use": "Module preset for a single sticky phone row (menu, logo, search, cart, about 56 px): no secondary-menu row, no header contacts, no city pop-up, so the product page keeps name and price on the first screen. Stack it over the archetype preset or the pulled header: it writes only `modules.additional` and `enableSticky`, so the logo, menu type and search stay as they are. Needs a logo file of about 3:1: the row fits it into the same box as desktop.",
+      "evidence": "sticky on all 40 home headers; favourites, profile and contacts dropped on phones in every checked store; a secondary menu row in about a quarter of the sample; location on in about 3 in 4 home headers (the schema default)",
+      "settings": {
+        "enableSticky": true,
+        "modules": {
+          "additional": {
+            "menu": "",
+            "contactsPrimary": "none",
+            "contactsSecondary": "none",
+            "enableCustomerLocation": false
+          }
+        }
+      },
+      "fill": [
+        "Clearing `modules.additional.menu` removes the secondary menu from desktop as well: tell the user, and keep those links in the main menu or the footer.",
+        "A logo file of about 3:1: the phone row fits it into the same box as desktop (`lg` 150×50 px); a wide one-line wordmark comes out about 15 px tall."
+      ]
+    },
+    {
+      "name": "header-touch-category-row",
+      "use": "Module preset for catalogue-heavy stores that want a sticky, sideways-scrolling category row on phones (+48 px): the secondary menu keeps 3-5 short category links, header contacts and the city pop-up go. Stack it over the archetype preset or the pulled header: it writes only `modules.additional` and `enableSticky`.",
+      "evidence": "the phone category row in about a quarter of the sample; with it, name and price left the first product screen in every checked store, so use it only when category browsing matters more",
+      "settings": {
+        "enableSticky": true,
+        "modules": {
+          "additional": {
+            "contactsPrimary": "none",
+            "contactsSecondary": "none",
+            "enableCustomerLocation": false
+          }
+        }
+      },
+      "fill": [
+        "`modules.additional.menu`: the existing secondary menu of 3-5 category links, 14 characters or less each (menus are edited in the cabinet)."
+      ]
+    },
+    {
+      "name": "left-logo-inline-links",
+      "use": "Short flat menus of 3-8 top-level items, service links, small catalogues. Shows only the top level and the first 8 items on desktop: keep the menu flat and the items short; a nested catalogue takes `catalog-two-row` or the burger.",
+      "evidence": "a left or centred logo with sitelinks in about 1 in 4 stores",
+      "settings": {
+        "enableSticky": true,
+        "enableBorder": false,
+        "transparencyMode": "none",
+        "section": {
+          "isFullscreen": "default"
+        },
+        "modules": {
+          "main": {
+            "logo": "lg",
+            "logoPosition": "left",
+            "menuVariant": "sitelinks",
+            "menuDisplayType": "auto",
+            "searchVariant": "icon",
+            "enableActionTitle": false
+          }
+        }
+      },
+      "fill": [
+        "The main menu in the cabinet: flat, 8 items or fewer, short names (sub-menus do not open on desktop)."
+      ]
+    },
+    {
+      "name": "catalog-two-row",
+      "use": "Large assortments: catalog button, wide search, icon captions. Contacts go to the footer and location stays off unless delivery differs by city.",
+      "evidence": "3 catalog-led stores",
+      "settings": {
+        "enableSticky": true,
+        "enableBorder": true,
+        "transparencyMode": "none",
+        "section": {
+          "isFullscreen": "default"
+        },
+        "modules": {
+          "main": {
+            "logo": "lg",
+            "logoPosition": "left",
+            "menuVariant": "button",
+            "menuDisplayType": "mega",
+            "searchVariant": "expanded",
+            "enableActionTitle": true
+          },
+          "additional": {
+            "contactsPrimary": "none",
+            "contactsSecondary": "none",
+            "enableCustomerLocation": false
+          }
+        }
+      },
+      "fill": [
+        "`modules.additional.menu`: keep the pulled secondary menu (3-5 category links of 14 characters or less become a sticky row on phones), or write an empty string for a single phone row."
+      ]
+    },
+    {
+      "name": "transparent-over-hero",
+      "use": "Header over an edge-to-edge BannersCarousel hero on the home page only, when that hero is dark or mid-tone and the cabinet has a light inverted logo.",
+      "evidence": "10 of 40 home pages",
+      "requires": "A home-only Header instance: the main page's header has its own section id, not shared with other pages. Applied to the shared header it makes every page transparent. The constructor cannot create a home-only instance; if the store has none, do not use this preset.",
+      "settings": {
+        "transparencyMode": "onscroll",
+        "transparencyColor": "#FFFFFF",
+        "enableBorder": false,
+        "enableSticky": true
+      },
+      "fill": [
+        "Only over a dark or mid-tone full-width BannersCarousel, and only with a light inverted logo uploaded in the cabinet: a transparent header shows the inverted logo whatever `transparencyColor` says. Never over a light hero, and never over a custom section (the header lies over the image of a BannersCarousel that comes first only; over another section it sits on the section's background and the image starts below it).",
+        "`transparencyColor`: the colour of the menu and icons over the hero, white over a dark image.",
+        "The first content section must be an edge-to-edge BannersCarousel: `isFullscreen: enabled`, `hPadding*: \"0\"`, `paddingTop: none` (see BannersCarousel `hero-bleed-image`)."
+      ]
+    },
+    {
+      "name": "dark-chrome",
+      "use": "High-contrast stores (streetwear, night palettes): header on the dark palette, the footer on the same palette.",
+      "evidence": "3 stores of the streetwear group",
+      "settings": {
+        "enableBorder": false,
+        "transparencyMode": "none",
+        "enableSticky": true
+      },
+      "fill": [
+        "`palette`: id of an existing dark palette of this store (add one first with the theme preset `palettes-three-roles`).",
+        "An inverted (light) logo uploaded in the cabinet: on a dark header the storefront shows the inverted logo, and without one the logo is invisible."
+      ]
+    },
+    {
+      "name": "header-opaque-off-home",
+      "use": "Makes a header opaque: for the shared header when home has no header instance of its own, and for product, category and service pages, where a transparent header vanishes on a white page.",
+      "evidence": "a transparent home header in 10 stores, also transparent on the product page in 5; its settings match most of the sample's headers",
+      "settings": {
+        "transparencyMode": "none",
+        "enableSticky": true
+      },
+      "fill": []
+    }
+  ]
+}

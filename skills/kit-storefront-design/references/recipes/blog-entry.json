@@ -1,0 +1,23 @@
+{
+  "id": "blog-entry",
+  "page_type": "blog",
+  "page_alias": "blogEntry",
+  "title": "Blog article page",
+  "when": "Every article page.",
+  "evidence": "the article followed by a shelf of its own products on about 5 in 6 article pages",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.Blog",
+      "note": "The article is the merchant's content; only its alignment changes: paragraphs left, never centred by a centred theme.",
+      "preset": "article-left"
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "role": "shelf",
+      "note": "Keep the pulled shelf: its source (`from_news`) lists the products the article links."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

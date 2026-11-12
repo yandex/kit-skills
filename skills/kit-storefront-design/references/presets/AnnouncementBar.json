@@ -1,0 +1,152 @@
+{
+  "widget": "YandexKit.AnnouncementBar",
+  "summary": "Thin bar above the header with one short promise. At most one per page.",
+  "rules": [
+    "Always write `view: desktopTouch` (`desktop` or `touch` only on purpose). The current schema defaults to it; older ones gave the label «Десктоп и телефон» as the default, which is not one of the values.",
+    "`appearance.background`/`appearance.color` are raw colours, not palette ids. Check 4.5:1 contrast.",
+    "Offer and condition come from the merchant and must agree with the delivery page and the subscription offer. A phone shows one line per module and cuts it at about 33 bold or 47 regular characters, title and body together: keep a module to 35 characters or less, the key number in the first 25.",
+    "A bar with `modules: []` renders nothing. Only the first 6 modules render.",
+    "One bar per store (stores keep one, copied from home): change the existing bar with `section set`, never `section add` a second. Stores that show the bar on every page carry it as one section copied to the pages, which `section add` cannot make; `page add` does not copy it either. A store without a bar gets it from the cabinet constructor.",
+    "A linked module needs both `link` and a real `linkId`.",
+    "Bar contacts are hidden on phones: contacts belong in the footer."
+  ],
+  "skeleton_fix": {},
+  "module_template": {
+    "titleText": "<fill: offer from the merchant, 20 characters or less>",
+    "titleWeight": "bold",
+    "bodyText": "<fill: condition, 15 characters or less, or empty>",
+    "bodyWeight": "regular",
+    "linkSource": {
+      "link": "",
+      "linkId": ""
+    }
+  },
+  "required_defaults": {
+    "appearance": {
+      "background": "#1A1919",
+      "color": "#FFFFFF"
+    },
+    "contacts": {
+      "primary": "none",
+      "secondary": "none"
+    },
+    "modules[]": {
+      "titleWeight": "regular",
+      "bodyWeight": "regular"
+    },
+    "section": {
+      "isFullscreen": "default"
+    }
+  },
+  "presets": [
+    {
+      "name": "dark-single-offer",
+      "use": "One commercial promise on a dark bar that fits one phone line. The default choice.",
+      "evidence": "one module in 15 of 21 stores with a live bar",
+      "settings": {
+        "view": "desktopTouch",
+        "animationSpeed": 3,
+        "contacts": {
+          "primary": "none",
+          "secondary": "none"
+        },
+        "section": {
+          "isFullscreen": "default"
+        },
+        "appearance": {
+          "background": "#1F1F1F",
+          "color": "#FFFFFF"
+        }
+      },
+      "module_style": {
+        "titleWeight": "bold",
+        "bodyWeight": "regular"
+      },
+      "fill": [
+        "`modules`: exactly one module; `titleText` = the offer, `bodyText` = its condition, both from the merchant, 35 characters or less together."
+      ]
+    },
+    {
+      "name": "brand-tint-bar",
+      "use": "Brand accent or pastel bar (kids, beauty).",
+      "evidence": "brand or pastel bar background in 10 stores",
+      "settings": {
+        "view": "desktopTouch",
+        "animationSpeed": 3,
+        "contacts": {
+          "primary": "none",
+          "secondary": "none"
+        },
+        "section": {
+          "isFullscreen": "default"
+        },
+        "appearance": {
+          "color": "#1F1F1F"
+        }
+      },
+      "module_style": {
+        "titleWeight": "semibold",
+        "bodyWeight": "regular"
+      },
+      "fill": [
+        "`appearance.background`: the brand accent or pastel hex from the store theme (`brandPrimary` or a palette background). Dark text needs a light background; check 4.5:1.",
+        "`modules`: one module with the merchant's offer."
+      ]
+    },
+    {
+      "name": "rotating-trust-messages",
+      "use": "2-3 short service promises that rotate (delivery, returns, support).",
+      "evidence": "6 stores",
+      "settings": {
+        "view": "desktopTouch",
+        "animationSpeed": 4,
+        "contacts": {
+          "primary": "none",
+          "secondary": "none"
+        },
+        "section": {
+          "isFullscreen": "default"
+        },
+        "appearance": {
+          "background": "#1F1F1F",
+          "color": "#FFFFFF"
+        }
+      },
+      "module_style": {
+        "titleWeight": "medium",
+        "bodyWeight": "regular"
+      },
+      "fill": [
+        "`modules`: 2-3 modules, `titleText` only (`bodyText` empty), each a promise the merchant confirmed, 30 characters or less, instead of one long line that a phone cuts."
+      ]
+    },
+    {
+      "name": "offer-plus-contact",
+      "use": "Service-heavy stores: one offer plus the phone from the cabinet. The phone shows on desktop only (phones hide bar contacts), so the footer must carry it too.",
+      "evidence": "5 stores",
+      "settings": {
+        "view": "desktopTouch",
+        "animationSpeed": 3,
+        "contacts": {
+          "primary": "phone",
+          "secondary": "none"
+        },
+        "section": {
+          "isFullscreen": "default"
+        },
+        "appearance": {
+          "background": "#1F1F1F",
+          "color": "#FFFFFF"
+        }
+      },
+      "module_style": {
+        "titleWeight": "regular",
+        "bodyWeight": "regular"
+      },
+      "fill": [
+        "The phone comes from the cabinet; if it is empty or all zeros, set `contacts.primary` to `none`.",
+        "`modules`: one module with the merchant's offer."
+      ]
+    }
+  ]
+}

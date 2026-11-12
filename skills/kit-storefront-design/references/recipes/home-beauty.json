@@ -1,0 +1,291 @@
+{
+  "id": "home-beauty",
+  "page_type": "home",
+  "page_alias": "main",
+  "title": "Cosmetics, skincare, health (considered purchase)",
+  "when": "Buyers compare, read ingredients and reviews before buying.",
+  "evidence": "5 stores",
+  "theme": [
+    "layout-boxed-catalog",
+    "card-packshot",
+    "palettes-three-roles",
+    "typography-centred-2xl",
+    "behaviour-defaults"
+  ],
+  "steps": [
+    {
+      "widget": "YandexKit.AnnouncementBar",
+      "preset": "dark-single-offer",
+      "role": "announcement",
+      "slot": "announcement",
+      "when": "one commercial promise on a dark bar: the usual choice",
+      "note": "One short promise from the merchant, 35 characters or less (a first-order offer or the delivery terms).",
+      "variants": [
+        {
+          "widget": "YandexKit.AnnouncementBar",
+          "preset": "brand-tint-bar",
+          "when": "a soft brand tint (kids, beauty, playful and premium looks)",
+          "role": "announcement"
+        },
+        {
+          "widget": "YandexKit.AnnouncementBar",
+          "preset": "rotating-trust-messages",
+          "when": "2-3 short service promises the merchant confirmed",
+          "role": "announcement"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Header",
+      "preset": "centered-logo-links",
+      "role": "header",
+      "slot": "header",
+      "when": "a flat menu of up to 6-8 short items: the categories show on desktop",
+      "variants": [
+        {
+          "widget": "YandexKit.Header",
+          "preset": "centered-logo-burger",
+          "when": "a nested or long menu that would not fit as links",
+          "role": "header"
+        },
+        {
+          "widget": "YandexKit.Header",
+          "preset": "left-logo-inline-links",
+          "when": "a short flat menu and a left-aligned look (journal, dense catalog)",
+          "role": "header"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-contained-card",
+      "role": "hero",
+      "slot": "hero",
+      "when": "a catalogue look: the hero inside the grid with the theme's rounding",
+      "note": "5:2 on desktop, 4:3 on phones, one slide linked as a whole. For a live title and button over it, style the slide as in `hero-bleed-live-text` (size sm, bottom-centred, darkening 16-24).",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "hero-bleed-image",
+          "when": "photography with a quiet zone for the live text",
+          "role": "hero"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "split-hero-panel",
+          "when": "a photo and a colour panel side by side (playful, premium)",
+          "role": "hero"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "lead-under-hero",
+      "role": "text",
+      "note": "What the store sells, for search engines. An optional idea: it pushes the category tiles further down.",
+      "optional": true
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-grid",
+      "role": "shelf",
+      "slot": "shelf-a",
+      "when": "one curated row of 4",
+      "note": "Bestsellers: one row of 4 (`count` 4).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-carousel",
+          "when": "new arrivals or bestsellers, 12 cards",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "category-tiles-captioned",
+      "role": "categories",
+      "slot": "categories",
+      "when": "4-8 categories with their own photos",
+      "note": "Shop by need: 1:1, one tint per need, linked. Its title is a phrase about what the store sells: the storefront makes it the page's H1 (a banner title never is).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "category-carousel",
+          "when": "more than 4 categories",
+          "role": "categories"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "category-label-chips",
+          "when": "playful: the names as chips on the photos",
+          "role": "categories"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "text-media-split",
+      "role": "story",
+      "slot": "story",
+      "when": "the default story: eyebrow, a heading phrase, 16 px text at 560-640 px, a button to a real page, a 1:1 or 3:4 photo (`mediaRatio`; kit-custom-sections)",
+      "note": "One story block in the middle third that leads somewhere: a button or a last-line link to the catalog, a collection or the About page.",
+      "variants": [
+        {
+          "widget": "YandexKit.ImageWithText",
+          "preset": "color-block-spotlight",
+          "when": "one product or novelty on a colour block",
+          "role": "story"
+        },
+        {
+          "widget": "YandexKit.ImageWithText",
+          "preset": "brand-story-split",
+          "when": "native fallback the merchant edits in the cabinet: a narrowed section, `###` heading, one paragraph of 300 characters or less ending with a link",
+          "role": "story"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "stats-band",
+      "role": "signature",
+      "slot": "signature",
+      "when": "considered purchases: 3-4 real numbers (years, customers, materials) (kit-custom-sections)",
+      "note": "The signature block: one block that only this store has, chosen by the look (references/looks.md).",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "testimonial-spotlight",
+          "when": "premium and beauty: one real review set large (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "ticker-band",
+          "when": "dark drop and playful: a running line of short brand words (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "benefit-mosaic",
+          "when": "native fallback: text cards alternating with photos",
+          "role": "signature"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "static-reviews",
+      "role": "proof",
+      "slot": "proof",
+      "when": "3-6 real reviews (kit-custom-sections)",
+      "optional": true,
+      "note": "Reviews: no native reviews block for home; build it with kit-custom-sections.",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "testimonial-spotlight",
+          "when": "one strong real review with a name and a photo (kit-custom-sections)",
+          "role": "proof"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "proof-row",
+          "when": "customer photos, stores or press the merchant has",
+          "role": "proof"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "promo-strip-thin",
+      "role": "banner",
+      "slot": "banner",
+      "when": "native fallback: a thin linked strip of 4 words or fewer",
+      "optional": true,
+      "note": "Gift-card strip, linked.",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "strip-to-touch-card",
+          "when": "a strip with more than 4 words: a 4:3 card on phones",
+          "role": "banner"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "cta-band",
+          "when": "a text band with a button and no image (kit-custom-sections)",
+          "role": "banner"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "faq-main-end",
+      "role": "faq",
+      "slot": "faq",
+      "when": "3-6 real buyer questions",
+      "note": "3-6 real questions.",
+      "variants": [
+        {
+          "widget": "YandexKit.Faq",
+          "preset": "faq-centered-narrow",
+          "when": "a centred theme and a brand-led page: a narrow column with air",
+          "role": "faq",
+          "idea": true
+        },
+        {
+          "widget": "YandexKit.Faq",
+          "preset": "faq-island",
+          "when": "a rounded theme (playful, soft): the questions on one card",
+          "role": "faq",
+          "idea": true
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "band-two-columns",
+      "role": "subscribe",
+      "slot": "subscribe",
+      "when": "text left, form right: the usual closing band",
+      "note": "Mention a discount only with a real promocode.",
+      "variants": [
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "centered-band",
+          "when": "a centred form on a neutral band (centred themes)",
+          "role": "subscribe"
+        },
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "flow-into-footer",
+          "when": "on the footer palette, so the subscription and the footer read as one closing block",
+          "role": "subscribe"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Footer",
+      "preset": "dark-footer-columns",
+      "role": "footer",
+      "slot": "footer",
+      "when": "a dark closing band",
+      "variants": [
+        {
+          "widget": "YandexKit.Footer",
+          "preset": "tinted-light-footer",
+          "when": "off-white, grey or cream: soft and premium looks",
+          "role": "footer"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Headings at 2xl (`typography-centred-2xl`): buyers read ingredients and reviews, and at 3xl every section title shouts at the page heading's size (theme.md, Heading levels). Sub-topics go into `content` as `####`."
+  ],
+  "deviations": {
+    "category-entry": "Bestsellers first; shop-by-need tiles right after them.",
+    "home-length": "Seven sections without the optional lead, reviews and gift strip; ten with them."
+  }
+}

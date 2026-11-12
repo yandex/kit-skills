@@ -1,0 +1,10 @@
+{
+  "widget": "YandexKit.ProductReviewsListing",
+  "summary": "All reviews of one product (system section of the reviews page).",
+  "leave_default": "Leave it: the page follows the theme; reviews are customers' content.",
+  "evidence": "empty settings in all 43 stores",
+  "rules": [],
+  "skeleton_fix": {},
+  "module_template": null,
+  "presets": []
+}

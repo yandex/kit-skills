@@ -1,0 +1,46 @@
+{
+  "id": "product-image-led",
+  "page_type": "product",
+  "page_alias": "productCard",
+  "title": "Image-led product page (apparel on models, accessories, objects)",
+  "when": "6 or more consistent photos per product; the photo sells.",
+  "evidence": "the quiet title with a firm price on about 1 in 4 default product pages; a 3-column similar shelf in 3 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductDetails",
+      "preset": "pdp-edge-to-edge-gallery",
+      "role": "product",
+      "note": "8-12 consistent 3:4 photos; video autoplay and loop only for short silent loops; chips off if collection names are technical."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "similar-large-3",
+      "role": "shelf"
+    },
+    {
+      "widget": "YandexKit.ImageWithText",
+      "preset": "brand-story-split",
+      "role": "story",
+      "optional": true,
+      "note": "One chapter: a material or making story from the merchant."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "recently-viewed",
+      "role": "shelf"
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "On phones keep at most 3 blocks under the product card: the similar shelf, recently viewed and one chapter. Never copy home story grids under the product.",
+    "Before publishing, preview the product page: no «we do not deliver to this city» line (else `pdp-modules-prelaunch`), advantages only confirmed policies, no technical names in the chips. See references/product-page.md."
+  ],
+  "deviations": {}
+}

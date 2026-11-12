@@ -1,0 +1,46 @@
+{
+  "id": "product-objects-gallery",
+  "page_type": "product",
+  "page_alias": "productCard",
+  "title": "Objects shot on one backdrop: gapless gallery and care questions",
+  "when": "Every product photo shares one backdrop; care, packaging or custom orders are the buyer's questions.",
+  "evidence": "4 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductDetails",
+      "preset": "pdp-seamless-gallery",
+      "role": "product",
+      "note": "Apply over `pdp-classic-2col` for the modules. No try-on advantages."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "product-page-similar",
+      "role": "shelf",
+      "note": "A grid works too: count a multiple of the columns."
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "pdp-care-faq",
+      "role": "faq",
+      "note": "Care, packaging, custom orders: the merchant's answers."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "recently-viewed",
+      "role": "shelf"
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "On phones keep at most 3 blocks under the product card: the similar shelf, recently viewed and one chapter. Never copy home story grids under the product.",
+    "Before publishing, preview the product page: no «we do not deliver to this city» line (else `pdp-modules-prelaunch`), advantages only confirmed policies, no technical names in the chips. See references/product-page.md."
+  ],
+  "deviations": {}
+}

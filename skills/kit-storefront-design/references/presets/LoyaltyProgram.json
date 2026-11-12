@@ -1,0 +1,77 @@
+{
+  "widget": "YandexKit.LoyaltyProgram",
+  "summary": "Loyalty programme landing. Publish only while the programme is active.",
+  "rules": [
+    "`modules.terms.text`: the platform default or the merchant's terms; never invented conditions."
+  ],
+  "skeleton_fix": {},
+  "module_template": null,
+  "required_defaults": {
+    "modules": {
+      "information": {},
+      "levels": {},
+      "bonusTypes": {},
+      "registration": {},
+      "terms": {}
+    },
+    "modules.bonusTypes": {
+      "isVisible": true
+    },
+    "modules.information": {
+      "isVisible": true
+    },
+    "modules.levels": {
+      "isVisible": true
+    },
+    "modules.registration": {
+      "isVisible": true,
+      "moduleColor": "neutral",
+      "align": "center"
+    },
+    "modules.terms": {
+      "isVisible": true,
+      "text": "<fill: text — the merchant's own, or the platform default that `presets apply --schema <skeleton file>` restores when the constructor's skeleton shows one>"
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    }
+  },
+  "presets": [
+    {
+      "name": "loyalty-landing",
+      "use": "All modules visible, registration centred.",
+      "evidence": "4 stores",
+      "settings": {
+        "modules": {
+          "information": {
+            "isVisible": true
+          },
+          "levels": {
+            "isVisible": true
+          },
+          "bonusTypes": {
+            "isVisible": true
+          },
+          "registration": {
+            "isVisible": true,
+            "moduleColor": "neutral",
+            "align": "center"
+          },
+          "terms": {
+            "isVisible": true
+          }
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`modules.terms.text`: keep the pulled text or the merchant's terms."
+      ]
+    }
+  ]
+}

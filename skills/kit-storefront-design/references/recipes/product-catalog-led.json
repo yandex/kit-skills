@@ -1,0 +1,47 @@
+{
+  "id": "product-catalog-led",
+  "page_type": "product",
+  "page_alias": "productCard",
+  "title": "Catalog-led product page: many variants and specs",
+  "when": "Large assortments where specs, variants and the buy box decide; very short product descriptions.",
+  "evidence": "columns-3 on about 1 in 5 default product pages; this settings cluster in 3 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductDetails",
+      "preset": "pdp-catalog-3col",
+      "role": "product",
+      "note": "Split and Plus lines as the store has them; the real delivery widget. Merge `pdp-quiet-title-firm-price` when names run past about 40 characters."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "product-page-similar",
+      "role": "shelf",
+      "note": "Card buttons may follow the theme here (`snippet.enableButton: default`)."
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "category-tiles-captioned",
+      "role": "categories",
+      "optional": true,
+      "note": "Brand or category tiles, linked."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "recently-viewed",
+      "role": "shelf"
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "On phones keep at most 3 blocks under the product card: the similar shelf, recently viewed and one chapter. Never copy home story grids under the product.",
+    "Before publishing, preview the product page: no «we do not deliver to this city» line (else `pdp-modules-prelaunch`), advantages only confirmed policies, no technical names in the chips. See references/product-page.md."
+  ],
+  "deviations": {}
+}

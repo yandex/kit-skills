@@ -1,0 +1,10 @@
+{
+  "widget": "YandexKit.DiscountLadder",
+  "summary": "The discount ladder (a system page section).",
+  "leave_default": "Leave it: there is no configured example to learn from.",
+  "evidence": "no configured example among the 43 stores",
+  "rules": [],
+  "skeleton_fix": {},
+  "module_template": null,
+  "presets": []
+}

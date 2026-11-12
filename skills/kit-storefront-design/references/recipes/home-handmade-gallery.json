@@ -1,0 +1,301 @@
+{
+  "id": "home-handmade-gallery",
+  "page_type": "home",
+  "page_alias": "main",
+  "title": "Handmade and design objects (gallery)",
+  "when": "Objects shot on one backdrop (ceramics, jewellery, decor and the like); the page reads like a gallery.",
+  "evidence": "5 stores",
+  "theme": [
+    "layout-editorial",
+    "card-packshot",
+    "palette-warm-base",
+    "typography-centred-3xl",
+    "behaviour-defaults"
+  ],
+  "steps": [
+    {
+      "widget": "YandexKit.AnnouncementBar",
+      "preset": "dark-single-offer",
+      "role": "announcement",
+      "slot": "announcement",
+      "when": "one commercial promise on a dark bar: the usual choice",
+      "optional": true,
+      "variants": [
+        {
+          "widget": "YandexKit.AnnouncementBar",
+          "preset": "brand-tint-bar",
+          "when": "a soft brand tint (kids, beauty, playful and premium looks)",
+          "role": "announcement"
+        },
+        {
+          "widget": "YandexKit.AnnouncementBar",
+          "preset": "rotating-trust-messages",
+          "when": "2-3 short service promises the merchant confirmed",
+          "role": "announcement"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Header",
+      "preset": "centered-logo-links",
+      "role": "header",
+      "slot": "header",
+      "when": "a flat menu of up to 6-8 short items: the categories show on desktop",
+      "variants": [
+        {
+          "widget": "YandexKit.Header",
+          "preset": "centered-logo-burger",
+          "when": "a nested or long menu that would not fit as links",
+          "role": "header"
+        },
+        {
+          "widget": "YandexKit.Header",
+          "preset": "left-logo-inline-links",
+          "when": "a short flat menu and a left-aligned look (journal, dense catalog)",
+          "role": "header"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "hero",
+      "slot": "hero",
+      "when": "photography with a quiet zone for the live text",
+      "note": "Fit-screen or 2:1 with a native caption.",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "hero-bleed-live-text",
+          "when": "one strong text-free image, full height on phones (journal, premium, dark drop)",
+          "role": "hero"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "split-hero-panel",
+          "when": "a photo and a colour panel side by side (playful, premium)",
+          "role": "hero"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "category-tiles-captioned",
+      "role": "categories",
+      "slot": "categories",
+      "when": "4-8 categories with their own photos",
+      "note": "4-5 columns of packshots, linked. Its title is a phrase about what the store sells: the storefront makes it the page's H1 (a banner title never is).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "category-carousel",
+          "when": "more than 4 categories",
+          "role": "categories"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "entry-tiles-pair",
+          "when": "two departments or audiences (women and men, adults and kids)",
+          "role": "categories"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "text-media-split",
+      "role": "story",
+      "slot": "story",
+      "when": "the default story: eyebrow, a heading phrase, 16 px text at 560-640 px, a button to a real page, a 1:1 or 3:4 photo (`mediaRatio`; kit-custom-sections)",
+      "note": "One story block in the middle third that leads somewhere: a button or a last-line link to the catalog, a collection or the About page.",
+      "variants": [
+        {
+          "widget": "YandexKit.RichText",
+          "preset": "brand-statement",
+          "when": "no photo for the story: one centred statement of 100-200 characters ending with a link",
+          "role": "story"
+        },
+        {
+          "widget": "YandexKit.ImageWithText",
+          "preset": "brand-story-split",
+          "when": "native fallback the merchant edits in the cabinet: a narrowed section, `###` heading, one paragraph of 300 characters or less ending with a link",
+          "role": "story"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-grid",
+      "role": "shelf",
+      "slot": "shelf-a",
+      "when": "one curated row of 4",
+      "note": "Chapter 1: one row (`count` equal to `columns`).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "gallery-shelf-gapless",
+          "when": "every packshot on one backdrop: an edge-to-edge product wall (gallery look)",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "tile-mosaic",
+      "role": "signature",
+      "slot": "signature",
+      "when": "gallery and dense catalog: a mosaic of products or collections in tiles of different sizes (kit-custom-sections)",
+      "note": "The signature block: one block that only this store has, chosen by the look (references/looks.md).",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "type-band",
+          "when": "journal and premium: one brand phrase set large across the page (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "lookbook-pair-bleed",
+          "when": "journal: a full-bleed photo pair with a corner caption, native",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "editorial-diptych-gapless",
+          "when": "native fallback: two large images with an overlay title",
+          "role": "signature"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "shelf-three-large",
+      "role": "shelf",
+      "slot": "shelf-b",
+      "when": "bigger cards for the second source, a change of rhythm",
+      "note": "Chapter 2 from another collection.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "gallery-shelf-gapless",
+          "when": "every packshot on one backdrop: an edge-to-edge product wall (gallery look)",
+          "role": "shelf"
+        },
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-grid",
+          "when": "one curated row of 4",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "editorial-diptych-gapless",
+      "role": "break",
+      "slot": "break",
+      "when": "two big collections instead of a category row",
+      "note": "Second collection diptych.",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "promo-between-rails",
+          "when": "a linked promo between shelves",
+          "role": "break"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "lookbook-pair-bleed",
+          "when": "a full-bleed photo pair (one per page)",
+          "role": "break"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "captioned-diptych",
+      "role": "tiles",
+      "slot": "tiles",
+      "when": "native fallback: an inspiration photo and a product collage with a caption",
+      "note": "Gift and corporate orders.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "collection-carousel-overlay",
+          "when": "4 or more collection or story covers",
+          "role": "tiles"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "faq-main-end",
+      "role": "faq",
+      "slot": "faq",
+      "when": "3-6 real buyer questions",
+      "note": "Payment and delivery, returns, care, custom orders.",
+      "variants": [
+        {
+          "widget": "YandexKit.Faq",
+          "preset": "faq-centered-narrow",
+          "when": "a centred theme and a brand-led page: a narrow column with air",
+          "role": "faq",
+          "idea": true
+        },
+        {
+          "widget": "YandexKit.Faq",
+          "preset": "faq-island",
+          "when": "a rounded theme (playful, soft): the questions on one card",
+          "role": "faq",
+          "idea": true
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "slot": "subscribe",
+      "when": "a centred form on a neutral band (centred themes)",
+      "variants": [
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "band-two-columns",
+          "when": "text left, form right: the usual closing band",
+          "role": "subscribe"
+        },
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "flow-into-footer",
+          "when": "on the footer palette, so the subscription and the footer read as one closing block",
+          "role": "subscribe"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "closing-band",
+      "role": "closing",
+      "optional": true,
+      "note": "5:2 mood photo."
+    },
+    {
+      "widget": "YandexKit.Footer",
+      "preset": "tinted-light-footer",
+      "role": "footer",
+      "slot": "footer",
+      "when": "off-white, grey or cream: soft and premium looks",
+      "variants": [
+        {
+          "widget": "YandexKit.Footer",
+          "preset": "dark-footer-columns",
+          "when": "a dark closing band",
+          "role": "footer"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Cohesion lever: photos on one flat backdrop + `photo.fit: auto`, `backgroundColor: primary` + a base palette equal to the backdrop."
+  ],
+  "deviations": {}
+}

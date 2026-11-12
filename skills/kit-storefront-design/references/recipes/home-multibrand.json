@@ -1,0 +1,224 @@
+{
+  "id": "home-multibrand",
+  "page_type": "home",
+  "page_alias": "main",
+  "title": "Many departments or brands",
+  "when": "Many brands or departments; campaigns rotate.",
+  "evidence": "2 stores",
+  "idea": true,
+  "theme": [
+    "layout-boxed-catalog",
+    "card-packshot",
+    "palettes-three-roles",
+    "typography-centred-3xl",
+    "behaviour-defaults"
+  ],
+  "steps": [
+    {
+      "widget": "YandexKit.AnnouncementBar",
+      "preset": "rotating-trust-messages",
+      "role": "announcement",
+      "note": "1-3 service promises."
+    },
+    {
+      "widget": "YandexKit.Header",
+      "preset": "catalog-two-row",
+      "role": "header",
+      "slot": "header",
+      "when": "a large assortment: catalog button, mega menu, wide search",
+      "note": "Two rows, expanded search, mega menu.",
+      "variants": [
+        {
+          "widget": "YandexKit.Header",
+          "preset": "left-logo-inline-links",
+          "when": "a short flat menu and a left-aligned look (journal, dense catalog)",
+          "role": "header"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-multi-slide",
+      "role": "hero",
+      "slot": "hero",
+      "when": "several brands or campaigns that must rotate",
+      "note": "3-6 campaigns, each linked (rotation belongs only here).",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "hero-contained-card",
+          "when": "a catalogue look: the hero inside the grid with the theme's rounding",
+          "role": "hero"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "editorial-diptych-gapless",
+      "role": "categories",
+      "slot": "categories",
+      "when": "two big collections instead of a category row",
+      "note": "Two department tiles, 1:1, linked. Its title is a phrase about what the store sells: the storefront makes it the page's H1 (a banner title never is).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "category-tiles-captioned",
+          "when": "4-8 categories with their own photos",
+          "role": "categories"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "category-carousel",
+          "when": "more than 4 categories",
+          "role": "categories"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "promo-between-rails",
+      "role": "banner",
+      "slot": "banner",
+      "when": "a linked promo between shelves",
+      "note": "5:2 story banner.",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "strip-7x2-promo",
+          "when": "a designed band between shelves, container width",
+          "role": "banner"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "cta-band",
+          "when": "a text band with a button and no image (kit-custom-sections)",
+          "role": "banner"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "editorial-diptych-gapless",
+      "role": "tiles",
+      "note": "Two more department tiles."
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "tile-mosaic",
+      "role": "signature",
+      "slot": "signature",
+      "when": "gallery and dense catalog: a mosaic of products or collections in tiles of different sizes (kit-custom-sections)",
+      "note": "The signature block: one block that only this store has, chosen by the look (references/looks.md).",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "ticker-band",
+          "when": "dark drop and playful: a running line of short brand words (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "stats-band",
+          "when": "considered purchases: 3-4 real numbers (years, customers, materials) (kit-custom-sections)",
+          "role": "signature"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "slot": "shelf-a",
+      "when": "new arrivals or bestsellers, 12 cards",
+      "note": "3-6 columns.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-grid",
+          "when": "one curated row of 4",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "product-picks",
+      "role": "tiles",
+      "slot": "tiles",
+      "when": "product cut-outs without prices, linked (multi-brand)",
+      "note": "Product picks linked to product pages.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "collection-carousel-overlay",
+          "when": "4 or more collection or story covers",
+          "role": "tiles"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "logo-wall",
+          "when": "brands carried, press or partner logos (multi-brand, B2B)",
+          "role": "tiles",
+          "idea": true
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "collection-carousel-overlay",
+      "role": "tiles",
+      "optional": true,
+      "note": "Brand tiles."
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "band-two-columns",
+      "role": "subscribe",
+      "slot": "subscribe",
+      "when": "text left, form right: the usual closing band",
+      "variants": [
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "centered-band",
+          "when": "a centred form on a neutral band (centred themes)",
+          "role": "subscribe"
+        },
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "flow-into-footer",
+          "when": "on the footer palette, so the subscription and the footer read as one closing block",
+          "role": "subscribe"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "requisites-strip",
+      "role": "closing",
+      "note": "The merchant's legal line, only if they want it on the home page.",
+      "optional": true
+    },
+    {
+      "widget": "YandexKit.Footer",
+      "preset": "tinted-light-footer",
+      "role": "footer",
+      "slot": "footer",
+      "when": "off-white, grey or cream: soft and premium looks",
+      "variants": [
+        {
+          "widget": "YandexKit.Footer",
+          "preset": "dark-footer-columns",
+          "when": "a dark closing band",
+          "role": "footer"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "A banner every 3-4 sections keeps a long page breathing."
+  ],
+  "deviations": {
+    "hero-slides": "Multi-brand rotation is the one place for more than 3 slides.",
+    "home-length": "Seven sections without the optional legal line and brand tiles: the campaign carousel and the department tiles carry the page."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "widget": "YandexKit.BlogListing",
+  "summary": "The list of blog articles (system section of the blog page). Close the page with the store-wide subscription as about half the stores do.",
+  "evidence": "empty settings in about 4 in 5 stores",
+  "rules": [
+    "Write `title`: with empty settings the storefront prints no heading at all, and the page's H1 goes to the next titled section (often the subscription).",
+    "A blog of 2-3 articles reads as empty in a grid of 4: `grid.columns` 3 with a big first row.",
+    "`grid.enableTwoColumnsOnTouch: true` (the default) cuts article titles on phones: write `false`."
+  ],
+  "skeleton_fix": {},
+  "module_template": null,
+  "required_defaults": {
+    "grid": {
+      "columns": 4,
+      "enableBigFirstRow": true,
+      "enableTwoColumnsOnTouch": true
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    }
+  },
+  "presets": [
+    {
+      "name": "blog-small",
+      "use": "The blog page of a young blog (2-9 articles): a heading, 3 columns with a big first row, one article per phone row.",
+      "evidence": "empty settings in about 4 in 5 stores of the sample; the missing heading and the cut titles were seen on the storefront with those empty settings",
+      "basis": "the storefront prints no heading for empty settings and cuts titles at two per phone row",
+      "settings": {
+        "alignTitle": "default",
+        "grid": {
+          "columns": 3,
+          "enableBigFirstRow": true,
+          "enableTwoColumnsOnTouch": false
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`title`: the page heading, e.g. «Блог» (it becomes the page's H1)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "product-considered",
+  "page_type": "product",
+  "page_alias": "productCard",
+  "title": "Considered purchase: a composition, usage or care story",
+  "when": "The buyer reads before buying: composition, how to use, results.",
+  "evidence": "5 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductDetails",
+      "preset": "pdp-classic-2col",
+      "role": "product",
+      "note": "Its typography is that of `pdp-quiet-title-firm-price`, which keeps name and price on the first phone screen. Then `pdp-advantages-policies`: delivery, returns, payment, split payment only with Split connected, no try-on. Composition goes to the characteristics."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "product-page-similar",
+      "role": "shelf"
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "text-media-split",
+      "role": "story",
+      "slot": "story",
+      "when": "the default story: eyebrow, a heading phrase, 16 px text at 560-640 px, a button to a real page, a 1:1 or 3:4 photo (`mediaRatio`; kit-custom-sections)",
+      "note": "Composition, usage or care as one chapter that leads on (a button or a link); 16 px text at a reading width.",
+      "variants": [
+        {
+          "widget": "YandexKit.ImageWithText",
+          "preset": "brand-story-split",
+          "when": "native fallback the merchant edits in the cabinet: a narrowed section, `###` heading, one paragraph of 300 characters or less ending with a link",
+          "role": "story"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Faq",
+      "preset": "pdp-care-faq",
+      "role": "faq",
+      "optional": true,
+      "note": "Usage questions."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "recently-viewed",
+      "role": "shelf"
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "On phones keep at most 3 blocks under the product card: the similar shelf, recently viewed and one chapter. Never copy home story grids under the product.",
+    "Before publishing, preview the product page: no «we do not deliver to this city» line (else `pdp-modules-prelaunch`), advantages only confirmed policies, no technical names in the chips. See references/product-page.md.",
+    "Per-product text (composition, usage, care) belongs in the product description and characteristics, not in section copies per product.",
+    "The chapter and the FAQ on the default product page show under every product of the store. In a catalog of a main product and its accessories (covers, gift wrap, refills) keep them neutral, true of everything the store sells, or put the main product's chapter and FAQ on a product variant that only the main products are assigned to: «what is inside the blanket» under a gift box misleads."
+  ],
+  "deviations": {}
+}

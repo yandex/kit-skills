@@ -1,0 +1,190 @@
+{
+  "widget": "YandexKit.RichText",
+  "summary": "A heading and markdown text on the 12-column grid: headings, statements, service pages, legal strips.",
+  "rules": [
+    "`titleText` is required: send an empty string when unused.",
+    "`columns` is the block width on the 12-column grid.",
+    "RichText has no button. A call to action with a button is a banner (BannersCarousel `linkType: button`) or a custom section.",
+    "Legal, delivery, payment and return texts come from the merchant.",
+    "Heading levels render in the theme's bold slot: check how `######` looks with display fonts.",
+    "`titleAlign` is `default` (as in the theme), `left` or `center`: write `default` unless the preset needs a side; a stored `left` under a centred theme is the most common mixed page (`title-align-mixed`).",
+    "Long text (over about 400 characters) runs at `columns` 6 in the theme's box: about 650 px and 75 characters a line in a 1400 px box; 8 columns run about 115. Write `section.isFullscreen: \"disabled\"` (the text presets do): under a theme that spans sections across the screen (`isFullscreen: true`, as `layout-editorial` and `layout-soft-friendly` set it) `default` follows it, and 6 columns run about 930 px on a 1920 px window (`text-measure`).",
+    "With `align: left` the text keeps to the left edge of the grid, while a `default` title follows the theme: left text under a centred theme takes `titleAlign: left` (service pages), or the title floats centred over a column on the left.",
+    "One heading per level: `titleText` is the page or block heading (a 3xl theme makes it 3xl); a sub-topic goes into `content` as `####`, a lead phrase as `###`."
+  ],
+  "skeleton_fix": {
+    "columns": 8
+  },
+  "module_template": null,
+  "required_defaults": {
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    }
+  },
+  "presets": [
+    {
+      "name": "section-heading",
+      "use": "The page's own heading, or a block heading glued to the next section, whose own title is emptied. Not for sub-topics: those go into `content` as `####`. On a page whose blocks sit on the left edge (help, service and legal pages) use `page-heading-left`.",
+      "evidence": "64 sections in 11 stores",
+      "settings": {
+        "titleAlign": "default",
+        "content": "",
+        "align": "center",
+        "columns": 8,
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "double",
+          "paddingBottom": "none"
+        }
+      },
+      "fill": [
+        "`titleText`: the block heading.",
+        "The next section: own title empty, `paddingTop: none`."
+      ]
+    },
+    {
+      "name": "page-heading-left",
+      "use": "The page's own heading on a page set on the left edge (a help page of topic labels and untitled Faq, a service or legal page): title and an optional intro on the left, whatever the theme's alignment, so the heading lines up with the topics and questions under it (in the theme's box, as they are).",
+      "evidence": "the heading of `section-heading` in the alignment of the 28 left-aligned service-page texts",
+      "settings": {
+        "titleAlign": "left",
+        "content": "",
+        "align": "left",
+        "columns": 8,
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "double",
+          "paddingBottom": "none"
+        }
+      },
+      "fill": [
+        "`titleText`: the page title.",
+        "Optional `content`: one line of intro (where to ask what the page does not answer)."
+      ]
+    },
+    {
+      "name": "brand-statement",
+      "use": "Narrow centred manifesto of 100-200 characters in the middle third of home, in the theme's box; longer copy goes `align: left`.",
+      "evidence": "11 stores; the box (`isFullscreen: disabled`) follows from the measure, principle 25, not from the sample",
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "align": "center",
+        "columns": 6,
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "double",
+          "paddingBottom": "double"
+        }
+      },
+      "fill": [
+        "`content`: one statement of 100-200 characters from the merchant, opening with its key phrase as `###` (a lead line, larger than the body), and a last line with a markdown link on (the catalog, a collection, the About page). Longer: `align: left`: at 6 columns of the theme's box it stays readable, also under a theme that spans sections across the screen."
+      ]
+    },
+    {
+      "name": "lead-under-hero",
+      "use": "Real-text heading and one paragraph under the hero: its `titleText` becomes the page's H1 (a banner title never does).",
+      "evidence": "a lead paragraph under the hero in 2 stores; a default because of how the storefront picks the H1",
+      "settings": {
+        "titleAlign": "default",
+        "align": "center",
+        "columns": 8,
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "none"
+        }
+      },
+      "fill": [
+        "`titleText`: what the store sells, one line (it becomes the H1).",
+        "`content`: 1-2 sentences, 200 characters or less, the first phrase as `###` when it carries the offer."
+      ],
+      "basis": "the storefront makes the first titled section the page's H1; a hero banner never is one"
+    },
+    {
+      "name": "service-page-text",
+      "use": "Delivery, payment, returns, details, policies: the whole page left-aligned at a reading width (6 columns in the theme's box, never across the screen), whatever the theme's alignment.",
+      "evidence": "28 of 38 filled service-page texts use this shape (left, 6 columns); the box (`isFullscreen: disabled`) follows from the measure, principle 25, not from the sample",
+      "settings": {
+        "titleAlign": "left",
+        "align": "left",
+        "columns": 6,
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`titleText`: the page title.",
+        "`content`: the merchant's text as markdown: `####` subheadings per method, lists, the main promise in bold."
+      ]
+    },
+    {
+      "name": "topic-label",
+      "use": "Help page: a topic label above an untitled Faq, written in `content` as `#### Topic`, so topics sit below the page heading (`section-heading`) instead of matching it.",
+      "evidence": "2-3 stores (help pages)",
+      "idea": true,
+      "settings": {
+        "titleAlign": "left",
+        "align": "left",
+        "columns": 8,
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "double",
+          "paddingBottom": "none"
+        },
+        "titleText": ""
+      },
+      "fill": [
+        "`content`: `#### ` and the topic.",
+        "Optional `palette`: an accent-text palette id."
+      ]
+    },
+    {
+      "name": "stacked-text-chunks",
+      "use": "Long article interleaved with images; collapsed paddings make blocks read as one text. The article keeps a reading width (6 columns in the theme's box) and its own phone inset of 200, whatever the theme's gutters.",
+      "evidence": "1-2 stores (blog articles)",
+      "idea": true,
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "align": "left",
+        "columns": 6,
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingMobile": "200"
+        }
+      },
+      "fill": [
+        "`content`: `##` subheading + paragraphs."
+      ]
+    },
+    {
+      "name": "requisites-strip",
+      "use": "Thin dark full-bleed legal line above the footer.",
+      "evidence": "1 store",
+      "idea": true,
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "align": "center",
+        "columns": 12,
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0"
+        }
+      },
+      "fill": [
+        "`palette`: a dark palette id.",
+        "`content`: requisites from the merchant."
+      ]
+    }
+  ]
+}

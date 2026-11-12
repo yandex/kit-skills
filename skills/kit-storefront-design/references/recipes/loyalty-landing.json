@@ -1,0 +1,24 @@
+{
+  "id": "loyalty-landing",
+  "page_type": "loyalty",
+  "page_alias": "loyaltyLanding",
+  "title": "Loyalty programme landing",
+  "when": "Only when the programme is active.",
+  "evidence": "4 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-bleed-image",
+      "role": "hero",
+      "note": "Replace the platform default image."
+    },
+    {
+      "widget": "YandexKit.LoyaltyProgram",
+      "preset": "loyalty-landing",
+      "role": "loyalty"
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

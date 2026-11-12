@@ -1,0 +1,441 @@
+{
+  "widget": "YandexKit.ProductDetails",
+  "summary": "The product card: gallery, price, buy box, advantages, delivery, characteristics, quick-filter chips. System section, one per product page. On phones it always renders the same stack with a sticky add-to-cart bar in `brandPrimary`; see references/product-page.md.",
+  "rules": [
+    "Advantage types and texts are policy claims (try-on, returns, payment after try-on, split payment): only what the merchant confirms, each with its own `text`: the platform wording promises cash payment, pickup points and a courier whatever the store's settings. `split-payment` only with Split connected, `fitting` and `refusal` only for wearables with try-on. `presets apply` lists every set advantage in `open`; the lint warns on platform wording and on template slots (`advantages-unconfirmed`).",
+    "`images.autoplay`, `images.loop` and `images.order` control the product video, not the photo grid. Their schema defaults differ between storefront builds (false/false in older ones, true/true in newer), so always write them.",
+    "Always write `format`, `appearance`, `images.gap`, `images.initialGridCount`, `section.isFullscreen`, `section.paddingTop`, `modules.advantages.showElement` and `modules.delivery.showElement`: designed stores differ from the defaults exactly there, and the delivery default itself differs between builds (`collapsed` in older ones, `expanded` in newer).",
+    "`columns-3` prints the short description twice and gives the photo about a third of the width: only for catalog-led stores with a very short description.",
+    "Without configured logistics the delivery module prints a «we do not deliver to this city» line under the buy button. Preview the product page; if it shows, use `pdp-modules-prelaunch` and tell the merchant.",
+    "Quick-filter chips show every category and collection of the product, merchandising and seeded ones included. If a name is technical, switch the chips off or ask the merchant to rename it; breadcrumbs cannot be switched off, the category name is fixed in the cabinet.",
+    "Do not add root `isFullScreen` or `images.layout`: they are not settings of this widget.",
+    "Some stores keep an older layout with discount and split fields inside `appearance`; keep what the pulled section has.",
+    "The Split and Yandex points lines (`extras.yandexSplit`, `extras.yandexDiscount`) are the store's configuration: presets never write them, the pulled card keeps its values.",
+    "The line «До бесплатной доставки: N ₽» under the buy button is a theme switch, `delivery.enableProgress` (on by default), not a ProductDetails setting: it shows whenever the backend reports a threshold. Without a threshold the merchant confirmed, write `false` in the theme."
+  ],
+  "skeleton_fix": {
+    "appearance": {
+      "weight": "medium",
+      "priceWeight": "medium"
+    },
+    "images": {
+      "gap": "50"
+    },
+    "extras": {
+      "yandexSplit": "widget-outlined"
+    },
+    "modules": {
+      "bundle": {
+        "title": {
+          "weight": "medium"
+        }
+      }
+    }
+  },
+  "module_template": null,
+  "required_defaults": {
+    "appearance": {
+      "size": "2xl",
+      "weight": "medium",
+      "priceSize": "xl",
+      "priceWeight": "medium"
+    },
+    "discount": {
+      "finalPriceColor": "default",
+      "enableDiscount": "default",
+      "discountColor": "default"
+    },
+    "images": {
+      "gap": "50",
+      "initialGridCount": 4,
+      "enableFullScreen": true,
+      "autoplay": true,
+      "loop": true,
+      "order": "free"
+    },
+    "modules": {
+      "advantages": {},
+      "delivery": {},
+      "characteristics": {},
+      "addon": {},
+      "bundle": {},
+      "quickFilters": {},
+      "storeAvailability": {}
+    },
+    "modules.addon": {
+      "isEnabled": true
+    },
+    "modules.advantages": {
+      "enableAdvantages": true,
+      "showElement": "collapsed",
+      "appearance": {},
+      "advantage1": {},
+      "advantage2": {},
+      "advantage3": {},
+      "advantage4": {},
+      "advantage5": {},
+      "advantage6": {}
+    },
+    "modules.advantages.advantage1": {
+      "type": "none"
+    },
+    "modules.advantages.advantage2": {
+      "type": "none"
+    },
+    "modules.advantages.advantage3": {
+      "type": "none"
+    },
+    "modules.advantages.advantage4": {
+      "type": "none"
+    },
+    "modules.advantages.advantage5": {
+      "type": "none"
+    },
+    "modules.advantages.advantage6": {
+      "type": "none"
+    },
+    "modules.advantages.appearance": {
+      "title": "Преимущества"
+    },
+    "modules.bundle": {
+      "isEnabled": true,
+      "title": {},
+      "cards": {}
+    },
+    "modules.bundle.cards": {
+      "enableTwoColumnsOnTouch": true,
+      "columns": 6
+    },
+    "modules.bundle.title": {
+      "size": "2xl",
+      "weight": "medium"
+    },
+    "modules.characteristics": {
+      "enableCharacteristics": true,
+      "title": "Характеристики",
+      "displayType": "list"
+    },
+    "modules.delivery": {
+      "enableDelivery": true,
+      "showElement": "expanded"
+    },
+    "modules.quickFilters": {
+      "isEnabled": true,
+      "alignDesktop": "left",
+      "buttonsColor": "neutral",
+      "displayVariant": "list"
+    },
+    "modules.storeAvailability": {
+      "enableStoreAvailability": false,
+      "showElement": "collapsed"
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    }
+  },
+  "presets": [
+    {
+      "name": "pdp-classic-2col",
+      "use": "Safe default: two columns, contained gallery, a quiet xl title with a firm lg price (the pair of `pdp-quiet-title-firm-price`, which keeps the price on the first phone screen most often), delivery and advantages expanded. Keep product names to 40 characters or less.",
+      "evidence": "columns-2 with gap 100 on about 2 in 3 default product pages; a contained gallery on about 2 in 5; the xl regular title with an lg semibold price on about 3 in 10",
+      "settings": {
+        "format": "columns-2",
+        "appearance": {
+          "size": "xl",
+          "weight": "regular",
+          "priceSize": "lg",
+          "priceWeight": "semibold"
+        },
+        "discount": {
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default"
+        },
+        "images": {
+          "gap": "100",
+          "initialGridCount": 8,
+          "enableFullScreen": true,
+          "autoplay": false,
+          "loop": false,
+          "order": "free"
+        },
+        "modules": {
+          "advantages": {
+            "enableAdvantages": true,
+            "showElement": "expanded"
+          },
+          "delivery": {
+            "enableDelivery": true,
+            "showElement": "expanded"
+          },
+          "characteristics": {
+            "enableCharacteristics": true,
+            "displayType": "list"
+          },
+          "bundle": {
+            "isEnabled": true,
+            "title": {
+              "size": "2xl",
+              "weight": "medium"
+            },
+            "cards": {
+              "enableTwoColumnsOnTouch": true,
+              "columns": 6
+            }
+          },
+          "quickFilters": {
+            "isEnabled": true,
+            "alignDesktop": "left",
+            "buttonsColor": "neutral",
+            "displayVariant": "carousel"
+          }
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules.advantages.advantage1..6`: only the policies the merchant confirms (`pdp-advantages-policies`); `none` for the rest. Leave `text` out so the platform wording renders.",
+        "`modules.characteristics.title`: keep the pulled title or «Характеристики»."
+      ]
+    },
+    {
+      "name": "pdp-edge-to-edge-gallery",
+      "use": "Image-led brands (apparel on models, accessories, objects) with 6 or more consistent photos: a long full-width photo grid glued to the header, sticky info column, quiet title and firm price.",
+      "evidence": "the quiet title + firm price pair on about 3 in 10 default product pages; gap 100 with 12 photos on about 1 in 3; full width with no top padding on about 1 in 5",
+      "settings": {
+        "format": "columns-2",
+        "appearance": {
+          "size": "xl",
+          "weight": "regular",
+          "priceSize": "lg",
+          "priceWeight": "semibold"
+        },
+        "discount": {
+          "finalPriceColor": "default",
+          "enableDiscount": "default",
+          "discountColor": "default"
+        },
+        "images": {
+          "gap": "100",
+          "initialGridCount": 12,
+          "enableFullScreen": true,
+          "autoplay": true,
+          "loop": true,
+          "order": "free"
+        },
+        "modules": {
+          "advantages": {
+            "enableAdvantages": true,
+            "showElement": "expanded"
+          },
+          "delivery": {
+            "enableDelivery": true,
+            "showElement": "expanded"
+          },
+          "characteristics": {
+            "enableCharacteristics": true,
+            "displayType": "list"
+          },
+          "bundle": {
+            "isEnabled": true,
+            "title": {
+              "size": "2xl",
+              "weight": "medium"
+            },
+            "cards": {
+              "enableTwoColumnsOnTouch": true,
+              "columns": 6
+            }
+          },
+          "quickFilters": {
+            "isEnabled": true,
+            "alignDesktop": "left",
+            "buttonsColor": "neutral",
+            "displayVariant": "carousel"
+          }
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules.advantages.advantage1..6`: only the policies the merchant confirms (`pdp-advantages-policies`); `none` for the rest. Leave `text` out so the platform wording renders.",
+        "Only with 6 or more consistent photos per product; with fewer, `pdp-classic-2col`. Video autoplay and loop suit short silent loops only."
+      ]
+    },
+    {
+      "name": "pdp-quiet-title-firm-price",
+      "use": "Smaller regular title, firmer price. Merge into any product card when names run past about 40 characters or photos are 3:4: it is the title size that most often keeps the price on the first phone screen.",
+      "evidence": "the pair on about 3 in 10 default product pages; price on the first phone screen with an xl title in about 2 in 5 stores, with 2xl in about 1 in 10",
+      "settings": {
+        "appearance": {
+          "size": "xl",
+          "weight": "regular",
+          "priceSize": "lg",
+          "priceWeight": "semibold"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "pdp-catalog-3col",
+      "use": "Catalog-led stores with many variants and specs, where the buy box matters more than the photo. Keep the short description very short: columns-3 prints it twice. Image-led brands stay on two columns.",
+      "evidence": "columns-3 on about 1 in 5 default product pages; this settings cluster in 3 stores, and in most of the other columns-3 stores the photo shrinks to about a third of the width",
+      "settings": {
+        "format": "columns-3",
+        "appearance": {
+          "size": "2xl",
+          "weight": "medium",
+          "priceSize": "2xl",
+          "priceWeight": "bold"
+        },
+        "images": {
+          "gap": "50",
+          "initialGridCount": 6,
+          "enableFullScreen": true,
+          "autoplay": false,
+          "loop": false,
+          "order": "free"
+        },
+        "modules": {
+          "advantages": {
+            "showElement": "expanded"
+          },
+          "delivery": {
+            "showElement": "expanded"
+          }
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`modules.advantages.advantage1..6`: only the policies the merchant confirms (`pdp-advantages-policies`); `none` for the rest. Leave `text` out so the platform wording renders."
+      ]
+    },
+    {
+      "name": "pdp-seamless-gallery",
+      "use": "Packshots that all share one backdrop: one gapless photo surface. Apply over `pdp-classic-2col` for the modules.",
+      "evidence": "gap 0 in 3 stores; the regular title with a bold price of the same size in 3 premium stores",
+      "settings": {
+        "format": "columns-2",
+        "appearance": {
+          "size": "2xl",
+          "weight": "regular",
+          "priceSize": "2xl",
+          "priceWeight": "bold"
+        },
+        "images": {
+          "gap": "0",
+          "initialGridCount": 4,
+          "enableFullScreen": true,
+          "autoplay": false,
+          "loop": false,
+          "order": "free"
+        },
+        "modules": {
+          "advantages": {
+            "showElement": "expanded"
+          },
+          "delivery": {
+            "showElement": "expanded"
+          }
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "Only when every product photo sits on the same backdrop: mixed backgrounds turn the gapless surface into a patchwork."
+      ]
+    },
+    {
+      "name": "pdp-bold-brand",
+      "use": "Loud brands with a display font and short product names (about 25 characters or less): 3xl wraps longer names to 2-4 lines on phones and pushes the price below the sticky bar.",
+      "evidence": "3xl bold with an xl bold price in 4 stores; 3xl titles on about 1 in 5 product pages, and the price reaches the first phone screen in about 1 in 8 of them",
+      "settings": {
+        "format": "columns-2",
+        "appearance": {
+          "size": "3xl",
+          "weight": "bold",
+          "priceSize": "xl",
+          "priceWeight": "bold"
+        },
+        "images": {
+          "gap": "100",
+          "initialGridCount": 4,
+          "enableFullScreen": true,
+          "autoplay": false,
+          "loop": false,
+          "order": "free"
+        },
+        "modules": {
+          "advantages": {
+            "showElement": "expanded"
+          },
+          "delivery": {
+            "showElement": "expanded"
+          }
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "pdp-advantages-policies",
+      "use": "Module preset: the advantages block as the merchant's confirmed policies, each in the merchant's own words. Merge over any product card.",
+      "evidence": "advantage types across the default product pages: delivery and payment on almost all, split payment on about 2 in 3, returns and try-on on about 3 in 5; copied free texts in about 3 in 5 stores, try-on on stores that sell no wearables in 4",
+      "settings": {
+        "modules": {
+          "advantages": {
+            "enableAdvantages": true,
+            "showElement": "expanded"
+          }
+        }
+      },
+      "fill": [
+        "`modules.advantages.advantage1..3`: Each advantage slot a type and its own `text` from facts the merchant confirmed (payment methods, delivery options, the return window): the platform wording promises cash, pickup points and a courier (`delivery`: «Доставка в пункты выдачи или до двери», `payment`: «Оплата — картой, СБП или наличными»), so keep it only where it is true. `split-payment` only with Split connected; `fitting` and `refusal` only for wearables with try-on. No confirmed policy: every slot `none` or `enableAdvantages: false`.",
+        "`modules.advantages.appearance.title`: keep the pulled title or «Преимущества»."
+      ]
+    },
+    {
+      "name": "pdp-modules-prelaunch",
+      "use": "Store without configured logistics, or whose category and collection names are still technical (seeded or merchandising shelves): hides the «we do not deliver to this city» line and the chips that would expose those names.",
+      "evidence": "the refusal line under the buy button on about 4 in 5 desktop product captures where the module shows; seeded and merchandising names in the chips on most captures. No store in the sample switches delivery off, so its rendering is unverified: preview before publishing",
+      "settings": {
+        "modules": {
+          "delivery": {
+            "enableDelivery": false,
+            "showElement": "collapsed"
+          },
+          "quickFilters": {
+            "isEnabled": false,
+            "alignDesktop": "left",
+            "buttonsColor": "neutral",
+            "displayVariant": "carousel"
+          }
+        }
+      },
+      "fill": [
+        "Tell the merchant what to fix in the cabinet (delivery zones and terms, category names); switch the modules back on once it is done.",
+        "`modules.advantages`: a `delivery` advantage still prints the platform's «Доставка в пункты выдачи или до двери»: set that slot to `none` or give it the merchant's own `text`.",
+        "The theme's `delivery.enableProgress`: without a free-delivery threshold the merchant confirmed, `false` (otherwise «До бесплатной доставки: N ₽» shows under the buy button)."
+      ]
+    }
+  ]
+}

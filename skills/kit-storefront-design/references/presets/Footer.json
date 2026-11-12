@@ -1,0 +1,88 @@
+{
+  "widget": "YandexKit.Footer",
+  "summary": "Store footer: logo or title, tagline, contacts, menu columns, legal line. Composite.",
+  "rules": [
+    "Never invent menu ids: `modules[].menu` and `legalInfo.menu` are menus that exist in the cabinet. Keep the pulled ones; a new column (a footer with `modules: []` included) takes the id of a menu the merchant has made in the cabinet, written into `modules[].menu` together with its `menuTitle`. Without such a menu, ask the merchant to make one rather than ship a footer without columns.",
+    "Always send `about.description`, even as an empty string.",
+    "Turn a `contacts.show*` toggle off when the cabinet value is empty or a placeholder (an all-zero phone).",
+    "`about.enableSocialNetworks` shows the social links of the cabinet's «О компании»: the presets switch it on, so write `false` when the store has none there (ask the merchant, or look at the live footer), or the footer keeps an empty row.",
+    "Never invent `image` media. The empty value is `{\"imageInfo\": {\"fileId\": \"\", \"filePath\": \"\", \"sizes\": []}, \"url\": \"\"}`.",
+    "A footer with no columns, no legal links and no social links looks unfinished: 35 of 41 stores run 1-2 titled menu columns.",
+    "Keep the fields that pulled `modules[]` items carry (`id`, `display_sequence`, `title`) when editing.",
+    "Give every menu column a `menuTitle`: on phones a titled column collapses into an accordion (about 300 px), an untitled one prints its whole list (600-900 px with two menus). About half the sample's footers leave columns untitled."
+  ],
+  "skeleton_fix": {
+    "about": {
+      "logoSize": "md"
+    }
+  },
+  "module_template": {
+    "menu": "<fill: existing menu id from the pulled footer>",
+    "menuTitle": "<fill: column title, e.g. Каталог or Покупателям>"
+  },
+  "required_defaults": {
+    "about": {
+      "headline": "logo",
+      "logoSize": "md",
+      "monochromeLogo": false,
+      "title": "",
+      "description": "",
+      "enableSocialNetworks": false
+    },
+    "section": {
+      "isFullscreen": "default"
+    }
+  },
+  "presets": [
+    {
+      "name": "dark-footer-columns",
+      "use": "The closing band on a dark palette: logo, tagline, contacts, 1-2 menu columns.",
+      "evidence": "about 14 stores on a dark footer",
+      "settings": {
+        "about": {
+          "headline": "logo",
+          "logoSize": "lg",
+          "monochromeLogo": false,
+          "enableSocialNetworks": true
+        },
+        "section": {
+          "isFullscreen": "default"
+        }
+      },
+      "fill": [
+        "`palette`: id of an existing dark palette (theme preset `palettes-three-roles` adds one).",
+        "`about.description`: one-line tagline from the merchant (20-45 characters) or empty.",
+        "`legalInfo.copyrightText`: from the merchant (`© <store name>`).",
+        "`modules`: keep the pulled columns; a new column (the first one too, when the footer has none) takes the id of a menu made in the cabinet, with its `menuTitle`.",
+        "`modules[].menuTitle`: a title on every column (e.g. «Каталог», «Покупателям»), keeping each module's `menu`, `id` and `display_sequence`.",
+        "`contacts.show*`: keep the store's switches; turn one off where the cabinet value is empty or a placeholder.",
+        "`about.enableSocialNetworks`: `false` when the store has no social links in the cabinet.",
+        "`about.monochromeLogo`: `true` when the logo is dark and would vanish on the dark palette.",
+        "The logo on the dark palette: an inverted logo uploaded in the cabinet, or `monochromeLogo: true` in the footer's about module; otherwise a dark logo disappears on the dark band."
+      ]
+    },
+    {
+      "name": "tinted-light-footer",
+      "use": "Off-white, grey or cream footer for soft and premium looks.",
+      "evidence": "about 12 stores",
+      "settings": {
+        "about": {
+          "headline": "logo",
+          "logoSize": "xl",
+          "monochromeLogo": false,
+          "enableSocialNetworks": true
+        },
+        "section": {
+          "isFullscreen": "default"
+        }
+      },
+      "fill": [
+        "`palette`: id of an existing light-tinted palette.",
+        "`about.description`: one-line tagline from the merchant or empty.",
+        "`modules[].menuTitle`: a title on every column (e.g. «Каталог», «Покупателям»), keeping each module's `menu`, `id` and `display_sequence`.",
+        "`contacts.show*`: keep the store's switches; turn one off where the cabinet value is empty or a placeholder.",
+        "`about.enableSocialNetworks`: `false` when the store has no social links in the cabinet."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "widget": "YandexKit.FavouriteProducts",
+  "summary": "The visitor's favourites grid (system section of the favourites page).",
+  "leave_default": "Leave it: the grid follows the theme card (`productSnippet`), which is designed once for every shelf and listing.",
+  "evidence": "about 1 in 2 stores share one starter configuration and about 1 in 4 keep it sparse (`{\"section\": {}}`)",
+  "rules": [],
+  "skeleton_fix": {},
+  "module_template": null,
+  "presets": []
+}

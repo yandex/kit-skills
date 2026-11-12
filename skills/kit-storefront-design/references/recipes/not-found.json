@@ -1,0 +1,31 @@
+{
+  "id": "not-found",
+  "page_type": "404",
+  "page_alias": "404",
+  "title": "404 page",
+  "when": "Always; replace the platform default image and text.",
+  "evidence": "17 stores",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "not-found-hero",
+      "role": "hero",
+      "note": "Image and a button to a collection or the catalog; a live title is optional (a banner title never becomes the H1)."
+    },
+    {
+      "widget": "YandexKit.RichText",
+      "preset": "lead-under-hero",
+      "role": "text",
+      "note": "The page's H1: «Страница не найдена» or the merchant's wording as `titleText`, one line of help in `content`."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "note": "Bestsellers."
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

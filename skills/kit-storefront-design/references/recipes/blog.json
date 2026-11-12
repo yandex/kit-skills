@@ -1,0 +1,33 @@
+{
+  "id": "blog",
+  "page_type": "blog",
+  "page_alias": "blog",
+  "title": "Blog page (list of articles)",
+  "when": "A store that publishes articles.",
+  "evidence": "the article list closed by the subscription on about 1 in 2 blog pages",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.BlogListing",
+      "note": "A page heading (it becomes the H1), 3 columns with a big first row, one article per phone row.",
+      "preset": "blog-small"
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "note": "Bestsellers, or the collection the articles talk about: a reader from search gets to the products."
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "optional": true,
+      "note": "The store-wide subscription keeps the preset chosen on home: `section set` restyles it on every page. Only where it already sits on this page: `section add` makes an independent copy, not the shared one."
+    }
+  ],
+  "notes": [
+    "Link the blog from the home page (`FeaturedBlogs`) only when there are 3 or more published articles."
+  ],
+  "deviations": {}
+}

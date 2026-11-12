@@ -1,0 +1,281 @@
+{
+  "id": "home-catalog-led",
+  "page_type": "home",
+  "page_alias": "main",
+  "title": "Catalog-led: a large assortment shopped by category and spec",
+  "when": "Hundreds of products; buyers search and browse rather than read.",
+  "evidence": "4 stores",
+  "theme": [
+    "layout-boxed-catalog",
+    "card-packshot",
+    "typography-left-3xl",
+    "palettes-three-roles",
+    "behaviour-defaults"
+  ],
+  "steps": [
+    {
+      "widget": "YandexKit.Header",
+      "preset": "catalog-two-row",
+      "role": "header",
+      "slot": "header",
+      "when": "a large assortment: catalog button, mega menu, wide search",
+      "variants": [
+        {
+          "widget": "YandexKit.Header",
+          "preset": "left-logo-inline-links",
+          "when": "a short flat menu and a left-aligned look (journal, dense catalog)",
+          "role": "header"
+        },
+        {
+          "widget": "YandexKit.Header",
+          "preset": "centered-logo-links",
+          "when": "a flat menu of up to 6-8 short items: the categories show on desktop",
+          "role": "header"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "hero-contained-card",
+      "role": "hero",
+      "slot": "hero",
+      "when": "a catalogue look: the hero inside the grid with the theme's rounding",
+      "note": "5:2 contained; picks up theme rounding.",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "hero-bleed-image",
+          "when": "photography with a quiet zone for the live text",
+          "role": "hero"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "split-hero-panel",
+          "when": "a photo and a colour panel side by side (playful, premium)",
+          "role": "hero"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "category-tiles-captioned",
+      "role": "categories",
+      "slot": "categories",
+      "when": "4-8 categories with their own photos",
+      "note": "3-5 columns, 4:3 or 1:1, linked. Its title is a phrase about what the store sells: the storefront makes it the page's H1 (a banner title never is).",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "category-carousel",
+          "when": "more than 4 categories",
+          "role": "categories"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "entry-tiles-pair",
+          "when": "two departments or audiences (women and men, adults and kids)",
+          "role": "categories"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "slot": "shelf-a",
+      "when": "new arrivals or bestsellers, 12 cards",
+      "note": "New.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-grid",
+          "when": "one curated row of 4",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.BannersCarousel",
+      "preset": "promo-between-rails",
+      "role": "banner",
+      "slot": "banner",
+      "when": "a linked promo between shelves",
+      "note": "Linked promo between shelves.",
+      "variants": [
+        {
+          "widget": "YandexKit.BannersCarousel",
+          "preset": "strip-7x2-promo",
+          "when": "a designed band between shelves, container width",
+          "role": "banner"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "cta-band",
+          "when": "a text band with a button and no image (kit-custom-sections)",
+          "role": "banner"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-grid",
+      "role": "shelf",
+      "slot": "shelf-b",
+      "when": "one curated row of 4",
+      "note": "Bestsellers.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-carousel",
+          "when": "new arrivals or bestsellers, 12 cards",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "stats-band",
+      "role": "signature",
+      "slot": "signature",
+      "when": "considered purchases: 3-4 real numbers (years, customers, materials) (kit-custom-sections)",
+      "note": "The signature block: one block that only this store has, chosen by the look (references/looks.md).",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "ticker-band",
+          "when": "dark drop and playful: a running line of short brand words (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "tile-mosaic",
+          "when": "gallery and dense catalog: a mosaic of products or collections in tiles of different sizes (kit-custom-sections)",
+          "role": "signature"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "editorial-diptych-gapless",
+          "when": "native fallback: two large images between the shelves with an overlay title",
+          "role": "signature"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "shelf-three-large",
+      "role": "shelf",
+      "slot": "shelf-c",
+      "when": "bigger cards for the second source, a change of rhythm",
+      "note": "Sale.",
+      "variants": [
+        {
+          "widget": "YandexKit.FeaturedProducts",
+          "preset": "home-shelf-carousel",
+          "when": "new arrivals or bestsellers, 12 cards",
+          "role": "shelf"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Mystique",
+      "pattern": "text-media-split",
+      "role": "story",
+      "slot": "story",
+      "when": "the default story: eyebrow, a heading phrase, 16 px text at 560-640 px, a button to a real page, a 1:1 or 3:4 photo (`mediaRatio`; kit-custom-sections)",
+      "note": "One story block in the middle third that leads somewhere: a button or a last-line link to the catalog, a collection or the About page.",
+      "variants": [
+        {
+          "widget": "YandexKit.ImageWithText",
+          "preset": "brand-story-split",
+          "when": "native fallback the merchant edits in the cabinet: a narrowed section, `###` heading, one paragraph of 300 characters or less ending with a link",
+          "role": "story"
+        },
+        {
+          "widget": "YandexKit.RichText",
+          "preset": "brand-statement",
+          "when": "no photo for the story: one centred statement of 100-200 characters ending with a link",
+          "role": "story"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "benefit-mosaic",
+      "role": "tiles",
+      "slot": "tiles",
+      "when": "native fallback: text cards alternating with photos",
+      "note": "Benefits in live text.",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "advantages",
+          "when": "benefits with icons and live text, no photos (kit-custom-sections)",
+          "role": "tiles"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.FeaturedCollections",
+      "preset": "proof-row",
+      "role": "proof",
+      "slot": "proof",
+      "when": "customer photos, stores or press the merchant has",
+      "optional": true,
+      "note": "Certificates only if every tile is real.",
+      "variants": [
+        {
+          "widget": "YandexKit.Mystique",
+          "pattern": "testimonial-spotlight",
+          "when": "one strong real review with a name and a photo (kit-custom-sections)",
+          "role": "proof"
+        },
+        {
+          "widget": "YandexKit.FeaturedCollections",
+          "preset": "logo-wall",
+          "when": "brands carried, press or partner logos (multi-brand, B2B)",
+          "role": "proof",
+          "idea": true
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.EmailSubscription",
+      "preset": "centered-band",
+      "role": "subscribe",
+      "slot": "subscribe",
+      "when": "a centred form on a neutral band (centred themes)",
+      "variants": [
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "band-two-columns",
+          "when": "text left, form right: the usual closing band",
+          "role": "subscribe"
+        },
+        {
+          "widget": "YandexKit.EmailSubscription",
+          "preset": "flow-into-footer",
+          "when": "on the footer palette, so the subscription and the footer read as one closing block",
+          "role": "subscribe"
+        }
+      ]
+    },
+    {
+      "widget": "YandexKit.Footer",
+      "preset": "dark-footer-columns",
+      "role": "footer",
+      "slot": "footer",
+      "when": "a dark closing band",
+      "note": "On the brand palette.",
+      "variants": [
+        {
+          "widget": "YandexKit.Footer",
+          "preset": "tinted-light-footer",
+          "when": "off-white, grey or cream: soft and premium looks",
+          "role": "footer"
+        }
+      ]
+    }
+  ],
+  "notes": [],
+  "deviations": {}
+}

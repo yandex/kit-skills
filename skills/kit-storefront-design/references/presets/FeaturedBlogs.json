@@ -1,0 +1,65 @@
+{
+  "widget": "YandexKit.FeaturedBlogs",
+  "summary": "Latest blog posts. Only with 3 or more published posts.",
+  "rules": [
+    "Hide the block when the blog has fewer than 3 posts.",
+    "`titleAlign` is `default` (as in the theme), `left` or `center`: write `default` unless the preset needs a side; a stored `left` under a centred theme is the most common mixed page (`title-align-mixed`)."
+  ],
+  "skeleton_fix": {
+    "grid": {
+      "layout": "grid"
+    }
+  },
+  "module_template": null,
+  "required_defaults": {
+    "grid": {
+      "layout": "grid",
+      "count": 8,
+      "columns": 4,
+      "enableTwoColumnsOnTouch": true
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    },
+    "snippet": {
+      "align": "default",
+      "titleSize": "md",
+      "descriptionSize": "sm",
+      "enablePubDate": true
+    }
+  },
+  "presets": [
+    {
+      "name": "latest-posts-3",
+      "use": "Three latest posts with dates and an «all posts» button: a carousel of 3, so phones show 2 and a peek instead of a lone third card.",
+      "evidence": "synthesized: blog shelves are almost absent from the sample (one store runs one, as a carousel)",
+      "settings": {
+        "titleAlign": "default",
+        "enableAllButton": true,
+        "grid": {
+          "layout": "carousel",
+          "count": 3,
+          "columns": 3,
+          "enableTwoColumnsOnTouch": true
+        },
+        "snippet": {
+          "align": "default",
+          "titleSize": "md",
+          "descriptionSize": "sm",
+          "enablePubDate": true
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`titleText`."
+      ],
+      "idea": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "widget": "YandexKit.GiftCard",
+  "summary": "The gift card purchase form (system section of the gift card page).",
+  "leave_default": "Leave it as the store has it. If the gift card page is published, match `logoSize` to the header logo; the page's look comes from a banner above the form and the questions page (RichText with the merchant's terms).",
+  "evidence": "rarely configured across the 43 stores, and then only the logo size and paddings",
+  "rules": [],
+  "skeleton_fix": {},
+  "module_template": null,
+  "presets": []
+}

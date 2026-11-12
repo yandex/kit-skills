@@ -1,0 +1,32 @@
+{
+  "id": "cart",
+  "page_type": "cart",
+  "page_alias": "cart",
+  "title": "Cart page",
+  "when": "Always.",
+  "evidence": "30 stores add a recently viewed shelf",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ShoppingCart",
+      "preset": "cart-divided-minimal",
+      "role": "cart"
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "home-shelf-carousel",
+      "role": "shelf",
+      "note": "Bestsellers or new arrivals: what a first visitor's empty cart shows. A curated collection copied whole from a pulled shelf."
+    },
+    {
+      "widget": "YandexKit.FeaturedProducts",
+      "preset": "recently-viewed",
+      "role": "shelf",
+      "note": "Last: the visitor's history, empty on a first visit. Needs no catalog ids."
+    }
+  ],
+  "notes": [
+    "The empty cart of a new visitor shows only the cart heading and a button: the bestsellers shelf is what keeps the page from being a dead end (`page-dead-end`)."
+  ],
+  "deviations": {}
+}

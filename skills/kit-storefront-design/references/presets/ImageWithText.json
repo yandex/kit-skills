@@ -1,0 +1,179 @@
+{
+  "widget": "YandexKit.ImageWithText",
+  "summary": "One image and a markdown text block side by side: brand story, spotlight, service information.",
+  "rules": [
+    "`image.layout` names the side of the image. In stacks alternate the sides and keep one ratio.",
+    "Put the heading inside `content` as `###`, not in `titleText` (a `titleText` floats above both columns, away from its text), unless the preset says otherwise.",
+    "Never publish the platform's 1x1 placeholder image; the image comes from upload.",
+    "Avoid 10:1 and 7:1 images in a split: they become a sliver.",
+    "No raw HTML beyond `<br>`; links in markdown only to pages that exist.",
+    "`titleAlign` is `default` (as in the theme), `left` or `center`: write `default` unless the preset needs a side; a stored `left` under a centred theme is the most common mixed page (`title-align-mixed`).",
+    "The columns are a fixed 50/50 split of the section: at a 1400 px theme a section at the theme width gives a text column of 600-900 px, 110-120 characters a line at 14-15 px. Keep a line at 75 characters or less: narrow the section in the theme's box (`section.hPaddingDesktop: \"1500\"` with `section.isFullscreen: \"disabled\"`, about 520 px of text; under a theme that spans sections across the screen, `default` follows it and the column runs about 775 px on a 1920 px window) or take the kit-custom-sections pattern `text-media-split`, which sets its own text width and a 16 px body (`story-measure`).",
+    "A story block leads further: ImageWithText has no button, so end the text with a markdown link to a real page (the catalog, a collection, the About page) (`story-dead-end`)."
+  ],
+  "skeleton_fix": {},
+  "module_template": null,
+  "required_defaults": {
+    "image": {
+      "aspectRatio": "1:1",
+      "layout": "right",
+      "file": {
+        "fileId": "",
+        "filePath": ""
+      }
+    },
+    "section": {
+      "isFullscreen": "default",
+      "paddingTop": "single",
+      "paddingBottom": "single"
+    }
+  },
+  "presets": [
+    {
+      "name": "brand-story-split",
+      "use": "Home lower half, the native story block: a narrowed section in the theme's box, never across the screen (about 1100 px of content, a text column of about 520 px and 70 characters a line), a `###` heading, one short paragraph and a link on. Reusable on the product page. The custom `text-media-split` is the default story; this one is for a merchant who edits the story in the cabinet.",
+      "evidence": "9 stores use exactly one in the lower half of home",
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "vAlign": "center",
+        "image": {
+          "layout": "right",
+          "aspectRatio": "4:3"
+        },
+        "section": {
+          "isFullscreen": "disabled",
+          "paddingTop": "single",
+          "paddingBottom": "double",
+          "hPaddingDesktop": "1500"
+        }
+      },
+      "fill": [
+        "`image.file`: image object built from `kit.py media upload` output with `design.py media-object`.",
+        "`content`: `### heading` + one paragraph of 300 characters or less from the merchant + a last line with a markdown link to the catalog, a collection or the About page (required: the story leads on).",
+        "`image.aspectRatio`: `4:3` (the preset's) beside a short text; `1:1` only for a text of 250 characters or more, otherwise the square leaves the text column half empty."
+      ]
+    },
+    {
+      "name": "zigzag-first",
+      "use": "First block of an alternating story stack (about page, landing).",
+      "evidence": "5 stores",
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "vAlign": "center",
+        "image": {
+          "layout": "left",
+          "aspectRatio": "1:1"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "double",
+          "paddingBottom": "single"
+        }
+      },
+      "pairs_with": [
+        "zigzag-next-right",
+        "zigzag-next-left"
+      ],
+      "fill": [
+        "`image.file`.",
+        "`content`: `### chapter heading` + a paragraph from the merchant."
+      ]
+    },
+    {
+      "name": "zigzag-next-right",
+      "use": "Next block of the stack with the image on the right.",
+      "evidence": "see zigzag-first",
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "vAlign": "center",
+        "image": {
+          "layout": "right",
+          "aspectRatio": "1:1"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "none",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`image.file`.",
+        "`content`."
+      ]
+    },
+    {
+      "name": "zigzag-next-left",
+      "use": "Next block of the stack with the image on the left.",
+      "evidence": "see zigzag-first",
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "vAlign": "center",
+        "image": {
+          "layout": "left",
+          "aspectRatio": "1:1"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "none",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`image.file`.",
+        "`content`."
+      ]
+    },
+    {
+      "name": "color-block-spotlight",
+      "use": "One product or novelty as a full-width colour block. On phones the text keeps the theme inset; the colour band still spans the width.",
+      "evidence": "3 stores",
+      "settings": {
+        "titleText": "",
+        "titleAlign": "default",
+        "vAlign": "center",
+        "image": {
+          "layout": "left",
+          "aspectRatio": "1:1"
+        },
+        "section": {
+          "isFullscreen": "enabled",
+          "paddingTop": "none",
+          "paddingBottom": "none",
+          "hPaddingDesktop": "0"
+        }
+      },
+      "fill": [
+        "`palette`: a light-tinted or accent palette id of the store.",
+        "`image.file`.",
+        "`content`: eyebrow, product name, one-line claim, 3 benefits, all from the merchant."
+      ]
+    },
+    {
+      "name": "service-info-split",
+      "use": "Contacts, payment and delivery, warranty, opening hours.",
+      "evidence": "3 stores",
+      "settings": {
+        "titleAlign": "left",
+        "vAlign": "top",
+        "image": {
+          "layout": "right",
+          "aspectRatio": "1:1"
+        },
+        "section": {
+          "isFullscreen": "default",
+          "paddingTop": "single",
+          "paddingBottom": "single"
+        }
+      },
+      "fill": [
+        "`titleText`, e.g. «Контакты».",
+        "`image.file`.",
+        "`content`: phone as a `tel:` link, e-mail as `mailto:`, hours and address, all from the merchant."
+      ]
+    }
+  ]
+}

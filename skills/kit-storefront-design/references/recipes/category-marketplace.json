@@ -1,0 +1,21 @@
+{
+  "id": "category-marketplace",
+  "page_type": "category",
+  "page_alias": "categoryAndCollection",
+  "title": "Marketplace-style listing (opt-in)",
+  "when": "Large assortments that shop by price and stock first, and a merchant who wants that look.",
+  "evidence": "the inline sidebar renders in about 1 in 4 stores, half of them by accident",
+  "theme": [],
+  "steps": [
+    {
+      "widget": "YandexKit.ProductsListing",
+      "preset": "listing-inline-filters",
+      "role": "listing",
+      "note": "3 columns, since the sidebar takes a quarter of the width."
+    }
+  ],
+  "notes": [
+    "Pairs with Header `catalog-two-row`. Card buttons follow the theme."
+  ],
+  "deviations": {}
+}

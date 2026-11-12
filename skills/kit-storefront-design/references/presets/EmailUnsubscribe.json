@@ -1,0 +1,10 @@
+{
+  "widget": "YandexKit.EmailUnsubscribe",
+  "summary": "The unsubscribe confirmation (system section of the unsubscribe page).",
+  "leave_default": "Leave it: a service page nobody navigates to.",
+  "evidence": "empty settings in all 43 stores",
+  "rules": [],
+  "skeleton_fix": {},
+  "module_template": null,
+  "presets": []
+}

@@ -1,0 +1,472 @@
+{
+  "widget": "theme",
+  "summary": "Store-wide `global_settings`: layout, rhythm, palettes, typography scale, product card, UX behaviour. Set it first.",
+  "rules": [
+    "`kit.py theme set` replaces all of `global_settings`: always apply a preset over the pulled object (`design.py presets apply theme <preset> --work work.json`), never write a partial object.",
+    "Palettes merge by `id`. A section may reference only a palette id that exists in `appearance.colors.palettes`.",
+    "Never write `typography.fontFamily`: a font carries uploaded file references per weight that cannot be looked up here. Change the font in the cabinet theme editor.",
+    "Do not touch payment, age-gate or out-of-stock legal toggles (`features.enableYandexSplit`, `features.enableYandexDiscount`, `features.enableAgeGate`, `outOfStockProducts`).",
+    "`brandPrimary` comes from the brand or the merchant."
+  ],
+  "skeleton_fix": {},
+  "module_template": null,
+  "required_defaults": {
+    "appearance": {
+      "colors": {},
+      "section": {},
+      "grid": {},
+      "rounding": {}
+    },
+    "appearance.colors": {
+      "brandPrimary": "<fill: brand colour — keep the store's value>",
+      "palettes": []
+    },
+    "appearance.grid": {
+      "vGap": "0",
+      "hGap": "100"
+    },
+    "appearance.rounding": {
+      "roundedType": "normal"
+    },
+    "appearance.section": {
+      "isFullscreen": false,
+      "maxWidthDesktop": "1400",
+      "hPaddingDesktop": "200",
+      "hPaddingMobile": "200",
+      "vPadding": "400"
+    },
+    "cart": {
+      "enableCharacteristicsPicker": false,
+      "addToCartAction": "notification"
+    },
+    "collectionSnippet": {
+      "aspectRatio": "3:4"
+    },
+    "features": {
+      "enableFavourites": false,
+      "enableAgeGate": false,
+      "badges": "2",
+      "enableYandexSplit": false,
+      "enableYandexDiscount": false
+    },
+    "navigation": {
+      "carousel": {},
+      "pageTransition": "none"
+    },
+    "navigation.carousel": {
+      "controlsType": "arrow-big",
+      "controlsColorOnHover": "primary",
+      "enableTransparentControlsBackground": true
+    },
+    "productReviews": {
+      "isEnabled": true,
+      "positionInProductSnippet": "top",
+      "emptyStateType": "hidden"
+    },
+    "productSnippet": {
+      "photo": {},
+      "general": {},
+      "price": {},
+      "title": {},
+      "discount": {},
+      "buttons": {},
+      "effects": {}
+    },
+    "productSnippet.buttons": {
+      "buttonColorInListing": "primary",
+      "buttonColorInFeaturedProducts": "none"
+    },
+    "productSnippet.discount": {
+      "enableDiscount": true,
+      "discountTextWeight": "semibold",
+      "finalPriceColor": "#FF4D4D",
+      "discountColor": "#FF4D4D"
+    },
+    "productSnippet.effects": {
+      "enableCarousel": "none",
+      "imageLoading": "blur"
+    },
+    "productSnippet.general": {
+      "order": "price-desc",
+      "background": "none",
+      "enableBorder": "none"
+    },
+    "productSnippet.photo": {
+      "aspectRatio": "4:3",
+      "fit": "auto",
+      "enableParanja": true,
+      "backgroundColor": "none"
+    },
+    "productSnippet.price": {
+      "pricesSize": "md",
+      "priceTextWeight": "medium"
+    },
+    "productSnippet.title": {
+      "titleSize": "sm"
+    },
+    "typography": {
+      "fontFamily": {},
+      "titleAlign": "left",
+      "titleSize": "2xl"
+    },
+    "typography.fontFamily": {
+      "predefined": {}
+    },
+    "typography.fontFamily.predefined": {
+      "name": "",
+      "isSelected": false
+    }
+  },
+  "presets": [
+    {
+      "name": "layout-editorial",
+      "use": "Fashion, lifestyle, objects: edge-to-edge sections, sharp corners, generous rhythm.",
+      "evidence": "18 stores in the sharp + full-width + 3:4 cluster",
+      "settings": {
+        "appearance": {
+          "section": {
+            "isFullscreen": true,
+            "maxWidthDesktop": "1400",
+            "hPaddingDesktop": "400",
+            "hPaddingMobile": "200",
+            "vPadding": "800"
+          },
+          "grid": {
+            "hGap": "150",
+            "vGap": "250"
+          },
+          "rounding": {
+            "roundedType": "sharp"
+          }
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "layout-boxed-catalog",
+      "use": "Wide assortments and packshots: boxed at 1400, normal rounding.",
+      "evidence": "16 stores boxed at 1400",
+      "settings": {
+        "appearance": {
+          "section": {
+            "isFullscreen": false,
+            "maxWidthDesktop": "1400",
+            "hPaddingDesktop": "200",
+            "hPaddingMobile": "150",
+            "vPadding": "700"
+          },
+          "grid": {
+            "hGap": "200",
+            "vGap": "300"
+          },
+          "rounding": {
+            "roundedType": "normal"
+          }
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "layout-soft-friendly",
+      "use": "Kids, family, health, food: soft rounding and even gutters.",
+      "evidence": "3 stores",
+      "settings": {
+        "appearance": {
+          "section": {
+            "isFullscreen": true,
+            "maxWidthDesktop": "1400",
+            "hPaddingDesktop": "400",
+            "hPaddingMobile": "150",
+            "vPadding": "800"
+          },
+          "grid": {
+            "hGap": "250",
+            "vGap": "250"
+          },
+          "rounding": {
+            "roundedType": "soft"
+          }
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "layout-narrow-editorial",
+      "use": "A narrow content column for brand storytelling with a small assortment and big type (about 1100 px of content). Pair it with `typography-display-left`.",
+      "evidence": "3-5 stores",
+      "settings": {
+        "appearance": {
+          "section": {
+            "isFullscreen": false,
+            "hPaddingDesktop": "1600"
+          }
+        }
+      },
+      "fill": [],
+      "idea": true
+    },
+    {
+      "name": "palettes-three-roles",
+      "use": "A light alternate and a dark closing palette next to the base one, reusing the store's own light and dark palettes where it has them. The default for a new store.",
+      "evidence": "3 palettes is the most common count (20 of 43 stores)",
+      "settings": {
+        "appearance": {
+          "colors": {
+            "palettes": [
+              {
+                "id": "palette-light",
+                "name": "Светлый фон",
+                "backgroundPrimary": "#F4F4F4",
+                "text": "#1F1F1F"
+              },
+              {
+                "id": "palette-dark",
+                "name": "Тёмный фон",
+                "backgroundPrimary": "#1F1F1F",
+                "text": "#FFFFFF"
+              }
+            ]
+          }
+        }
+      },
+      "fill": [
+        "`presets apply` reuses a light and a dark palette the store already has (text at 4.5:1 or more on a clearly light or dark background): it keeps their ids and colours, gives them the role names and adds only the role that is missing. Point sections at the ids the report names.",
+        "Palettes no section uses are noise (41 of 95 extra palettes in the reference sample are never used): `design.py theme palettes --work work.json` counts the references (a custom section's palette fields too, such as a divider's `backdropPalette`), `--prune --out gs.json` drops the unused ones."
+      ],
+      "palette_roles": {
+        "palette-light": "light",
+        "palette-dark": "dark"
+      }
+    },
+    {
+      "name": "palette-warm-base",
+      "use": "Premium, craft, food, home: tint the base palette off-white with a warm dark text.",
+      "evidence": "8 stores tint the base background, about 10 tint the text",
+      "settings": {
+        "appearance": {
+          "colors": {
+            "palettes": [
+              {
+                "id": "default",
+                "backgroundPrimary": "#FAF8F5",
+                "text": "#2A2522"
+              }
+            ]
+          }
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "typography-centred-3xl",
+      "use": "The most common heading scale: centred 3xl.",
+      "evidence": "3xl in 23 stores, centred in 26",
+      "settings": {
+        "typography": {
+          "titleAlign": "center",
+          "titleSize": "3xl"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "typography-centred-2xl",
+      "use": "Text-led stores (cosmetics and health, services, a blog or help centre): centred 2xl, so section titles stop competing with the page heading and the content.",
+      "evidence": "centred 2xl in 6 of 43 stores",
+      "settings": {
+        "typography": {
+          "titleAlign": "center",
+          "titleSize": "2xl"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "typography-left-3xl",
+      "use": "Catalogs and magazine layouts: left-aligned 3xl headings.",
+      "evidence": "left alignment in 17 stores",
+      "settings": {
+        "typography": {
+          "titleAlign": "left",
+          "titleSize": "3xl"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "typography-display-left",
+      "use": "Editorial and streetwear with a condensed or display face: left 5xl.",
+      "evidence": "4xl-5xl in 9 stores",
+      "settings": {
+        "typography": {
+          "titleAlign": "left",
+          "titleSize": "5xl"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "card-lifestyle",
+      "use": "Apparel and lifestyle on models or in scenes: 3:4 photos, no buttons, title before price.",
+      "evidence": "3:4 photos in 34 stores; title first in 30",
+      "settings": {
+        "productSnippet": {
+          "photo": {
+            "aspectRatio": "3:4",
+            "fit": "cover",
+            "enableParanja": false,
+            "backgroundColor": "none"
+          },
+          "general": {
+            "order": "desc-price",
+            "background": "none",
+            "enableBorder": "none"
+          },
+          "price": {
+            "pricesSize": "md",
+            "priceTextWeight": "semibold"
+          },
+          "title": {
+            "titleSize": "sm"
+          },
+          "buttons": {
+            "buttonColorInListing": "none",
+            "buttonColorInFeaturedProducts": "none"
+          },
+          "effects": {
+            "enableCarousel": "bullets"
+          }
+        },
+        "collectionSnippet": {
+          "aspectRatio": "3:4"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "card-packshot",
+      "use": "Cut-outs, cosmetics, electronics, gifts: 1:1 photos on the base colour, title before price, card buttons on every shelf and listing.",
+      "evidence": "1:1 photos in 9 stores, most of them with card buttons; title before price in 30 of 43 stores",
+      "settings": {
+        "productSnippet": {
+          "photo": {
+            "aspectRatio": "1:1",
+            "fit": "auto",
+            "enableParanja": false,
+            "backgroundColor": "primary"
+          },
+          "general": {
+            "order": "desc-price",
+            "background": "none",
+            "enableBorder": "none"
+          },
+          "price": {
+            "pricesSize": "lg",
+            "priceTextWeight": "semibold"
+          },
+          "title": {
+            "titleSize": "sm"
+          },
+          "buttons": {
+            "buttonColorInListing": "primary",
+            "buttonColorInFeaturedProducts": "primary"
+          },
+          "effects": {
+            "enableCarousel": "bullets"
+          }
+        },
+        "collectionSnippet": {
+          "aspectRatio": "1:1"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "card-minimal-mono",
+      "use": "Editorial or mono-font stores: small price, dash carousel, discount colours inherit the text colour.",
+      "evidence": "8 stores use the dash carousel",
+      "settings": {
+        "productSnippet": {
+          "photo": {
+            "aspectRatio": "3:4",
+            "fit": "auto",
+            "enableParanja": false,
+            "backgroundColor": "none"
+          },
+          "general": {
+            "order": "desc-price",
+            "background": "none",
+            "enableBorder": "none"
+          },
+          "price": {
+            "pricesSize": "sm",
+            "priceTextWeight": "semibold"
+          },
+          "title": {
+            "titleSize": "sm"
+          },
+          "buttons": {
+            "buttonColorInListing": "none",
+            "buttonColorInFeaturedProducts": "none"
+          },
+          "effects": {
+            "enableCarousel": "dash"
+          },
+          "discount": {
+            "enableDiscount": true,
+            "discountTextWeight": "semibold",
+            "finalPriceColor": "",
+            "discountColor": ""
+          }
+        },
+        "collectionSnippet": {
+          "aspectRatio": "3:4"
+        }
+      },
+      "fill": []
+    },
+    {
+      "name": "behaviour-defaults",
+      "use": "UX defaults of the reference stores: cart in a side view, favourites on, compact carousel controls, review stars on cards.",
+      "evidence": "split view in 33 stores, favourites in 41",
+      "settings": {
+        "cart": {
+          "addToCartAction": "splitView",
+          "enableCharacteristicsPicker": true
+        },
+        "features": {
+          "enableFavourites": true,
+          "badges": "2"
+        },
+        "navigation": {
+          "carousel": {
+            "controlsType": "arrow-small",
+            "controlsColorOnHover": "brand",
+            "enableTransparentControlsBackground": true
+          }
+        },
+        "productReviews": {
+          "isEnabled": true,
+          "positionInProductSnippet": "top",
+          "emptyStateType": "hidden"
+        }
+      },
+      "fill": [
+        "`delivery.enableProgress`: on by default, it prints «До бесплатной доставки: N ₽» under the buy button and in the cart whenever the backend reports a threshold. Keep it only with a free-delivery threshold the merchant confirmed; otherwise write `false` (`presets apply` lists it in `open`)."
+      ]
+    },
+    {
+      "name": "touch-gutters",
+      "use": "Phone side insets of 16 px for every section: the usual value. Sections that must bleed set their own `hPaddingMobile: \"0\"`.",
+      "evidence": "150 or 200 in about 3 in 4 themes",
+      "settings": {
+        "appearance": {
+          "section": {
+            "hPaddingMobile": "200"
+          }
+        }
+      },
+      "fill": []
+    }
+  ]
+}
