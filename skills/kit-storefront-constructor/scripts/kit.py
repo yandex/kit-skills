@@ -71,12 +71,23 @@ VIDEO_MIME_TYPES = {
     "video/x-flv",
     "video/x-msvideo",
 }
+# Font files a store theme can take as its custom typeface. The server stores anything
+# that is not an Avatars-compatible image as a generic file (type OTHER), which is what the
+# theme's font sources reference. The content type is set here, not guessed: Python's
+# table has no entry for .woff2 before 3.11.
+FONT_MIME_TYPES = {
+    ".otf": "font/otf",
+    ".ttf": "font/ttf",
+    ".woff": "font/woff",
+    ".woff2": "font/woff2",
+}
 TEMPLATE_CREATE_FIELDS = {
     "alias",
     "commit_message",
     "css",
     "html",
     "json_schema",
+    "script",
     "title",
 }
 TEMPLATE_REQUIRED_FIELDS = {
@@ -85,16 +96,10 @@ TEMPLATE_REQUIRED_FIELDS = {
     "json_schema",
     "title",
 }
-TEMPLATE_RESPONSE_FIELDS = {
-    "alias",
-    "created_at",
-    "css",
-    "html",
-    "id",
-    "json_schema",
-    "title",
-    "updated_at",
-}
+# The only template aliases with an effect on the storefront: a template carrying one
+# of them belongs in the store-wide header or footer slot (see `kitlib.pages`).
+CHROME_SLOT_BY_ALIAS = pages_engine.CHROME_SLOT_BY_ALIAS
+CHROME_ALIAS_BY_SLOT = {slot: alias for alias, slot in CHROME_SLOT_BY_ALIAS.items()}
 TEMPLATE_VERSION_FIELDS = {
     "commit_message",
     "created_at",
@@ -339,10 +344,10 @@ def request_json(
         raise ApiError(getattr(response, "status", None), "API returned invalid JSON.") from None
 
 
-def encode_multipart_file(file_path: Path) -> tuple[bytes, str]:
+def encode_multipart_file(file_path: Path, media_type: str | None = None) -> tuple[bytes, str]:
     """Encode one local file as the API's required multipart `file` field."""
     boundary = uuid.uuid4().hex
-    media_type = mimetypes.guess_type(file_path.name)[0] or "application/octet-stream"
+    media_type = media_type or mimetypes.guess_type(file_path.name)[0] or "application/octet-stream"
     try:
         payload = file_path.read_bytes()
     except OSError as error:
@@ -373,6 +378,12 @@ def validate_local_media_file(raw_path: str, media_kind: str) -> tuple[Path, str
         raise UsageError(f"Media file exceeds the {MAX_MEDIA_SIZE_BYTES}-byte upload limit.")
 
     media_type = mimetypes.guess_type(file_path.name)[0] or "application/octet-stream"
+    if media_kind == "font":
+        suffix = file_path.suffix.lower()
+        if suffix not in FONT_MIME_TYPES:
+            supported = ", ".join(sorted(FONT_MIME_TYPES))
+            raise UsageError(f"Font must be one of: {supported}.")
+        return file_path, FONT_MIME_TYPES[suffix]
     if media_kind == "image":
         if not media_type.startswith("image/") or media_type in IMAGE_EXCLUDED_MIME_TYPES:
             raise UsageError("Image must use a supported image type; SVG and ICO are not supported.")
@@ -395,6 +406,21 @@ def require_image_upload_response(value: object) -> dict[str, object]:
             raise UsageError(f"Image upload response.{field} must be a non-empty string.")
     if response["type"] != "IMAGE":
         raise UsageError("Image upload response.type must be IMAGE.")
+    return response
+
+
+def require_font_upload_response(value: object) -> dict[str, object]:
+    """Validate the File record a font upload must come back as: a generic file (OTHER)."""
+    response = require_mapping(value, "Font upload response")
+    for field in ("id", "hash", "type", "public_path"):
+        field_value = response.get(field)
+        if not isinstance(field_value, str) or not field_value:
+            raise UsageError(f"Font upload response.{field} must be a non-empty string.")
+    if response["type"] != "OTHER":
+        raise UsageError(
+            f"The server stored this file as {response['type']}, not as a generic file (OTHER); "
+            "it cannot serve as a font source. Nothing in the theme references it."
+        )
     return response
 
 
@@ -534,9 +560,52 @@ def validate_template_create(value: object) -> dict[str, object]:
         ) from None
     if not isinstance(decoded_schema, dict):
         raise UsageError("Section template request.json_schema must decode to a JSON object.")
-    if "alias" in request and not isinstance(request["alias"], str):
-        raise UsageError("Section template request.alias must be a string when provided.")
-    return {field: request[field] for field in TEMPLATE_CREATE_FIELDS if field in request}
+    if "script" in request and not isinstance(request["script"], str):
+        raise UsageError("Section template request.script must be a string when provided.")
+    if "alias" in request:
+        if not isinstance(request["alias"], str):
+            raise UsageError("Section template request.alias must be a string when provided.")
+        _check_template_alias(request["alias"])
+    normalized = {field: request[field] for field in TEMPLATE_CREATE_FIELDS if field in request}
+    if normalized.get("alias") == "":
+        # "" is not «no alias» to the server: it is stored as a set, empty alias that
+        # names nothing. Dropped, the alias is stored as null, the way the cabinet stores
+        # it for its own custom sections.
+        del normalized["alias"]
+    # The API lists `script` among the required template fields; a template without JS sends "".
+    normalized.setdefault("script", "")
+    return normalized
+
+
+def _check_template_alias(alias: str) -> None:
+    """Refuse an alias this skill does not support; the server stores any string unchecked.
+
+    Accepted: `""` (dropped from the body, see `validate_template_create`) and the two
+    chrome values, which make the template a store-wide header or footer. Everything
+    else is refused as a policy of this skill, not because the server would reject it:
+    an alias naming a native widget is how the cabinet offers a template under
+    «Заменить» for that widget, which this skill does not support (and the storefront
+    renders sections on a `YandexKit.AnnouncementBar` template in the header area, out of
+    the page content); any other string means nothing to the server or the storefront.
+    A near-miss of a chrome value is a typo that would silently be neither header nor
+    footer.
+    """
+    if alias == "" or alias in CHROME_SLOT_BY_ALIAS:
+        return
+    for known in CHROME_SLOT_BY_ALIAS:
+        if alias.strip().casefold() == known.casefold():
+            raise UsageError(
+                f"Section template request.alias {alias!r} is not {known!r}: the server stores the "
+                "value verbatim, and a template with a misspelt alias is neither header nor footer. "
+                f"Leave alias out and pass --chrome-slot {CHROME_SLOT_BY_ALIAS[known]}, which sets it."
+            )
+    raise UsageError(
+        f"Section template request.alias {alias!r} is not supported by this skill. Leave alias out "
+        "for a regular custom section. A store-wide header or footer is made with --chrome-slot "
+        "header|footer, which sets the alias itself. An alias naming a native widget (the cabinet "
+        "offers such a template under «Заменить» for that widget) is not supported here; any other "
+        "value means nothing to the server or the storefront."
+    )
 
 
 def load_template_create(path: Path) -> dict[str, object]:
@@ -554,16 +623,15 @@ def load_template_create(path: Path) -> dict[str, object]:
     return validate_template_create(value)
 
 
-def _validate_section_template(
-    value: object,
-    label: str,
-    extra_fields: set[str] | None = None,
-) -> dict[str, object]:
+def _validate_section_template(value: object, label: str) -> dict[str, object]:
+    """Validate one template record of a response.
+
+    Unknown fields are tolerated on purpose. The template contract grows, and a
+    validator demanding «no extra fields» turns a server rollout into a failure after
+    a successful create: the template exists, the client reports an error, and a retry
+    duplicates it, because there is no DELETE.
+    """
     template = require_mapping(value, label)
-    allowed_fields = TEMPLATE_RESPONSE_FIELDS | (extra_fields or set())
-    unknown_fields = set(template) - allowed_fields
-    if unknown_fields:
-        raise UsageError(f"{label} contains unsupported fields: {', '.join(sorted(unknown_fields))}.")
     required_fields = TEMPLATE_REQUIRED_FIELDS | {"id", "created_at", "updated_at"}
     missing = sorted(required_fields - template.keys())
     if missing:
@@ -579,8 +647,9 @@ def _validate_section_template(
         json.loads(schema)
     except json.JSONDecodeError as error:
         raise UsageError(f"{label}.json_schema must contain valid JSON: {error.msg}.") from None
-    if "alias" in template and not isinstance(template["alias"], str):
-        raise UsageError(f"{label}.alias must be a string when provided.")
+    for field in ("alias", "script"):
+        if field in template and not isinstance(template[field], str):
+            raise UsageError(f"{label}.{field} must be a string when provided.")
     return template
 
 
@@ -596,14 +665,8 @@ def validate_section_template_list(value: object) -> list[dict[str, object]]:
 
 def validate_created_section_template(value: object) -> dict[str, object]:
     """Validate the flat 201 response returned after template creation."""
-    template = _validate_section_template(value, "Created section template", {"version"})
+    template = _validate_section_template(value, "Created section template")
     version = require_mapping(template.get("version"), "Created section template.version")
-    unknown_version_fields = set(version) - TEMPLATE_VERSION_FIELDS
-    if unknown_version_fields:
-        raise UsageError(
-            "Created section template.version contains unsupported fields: "
-            f"{', '.join(sorted(unknown_version_fields))}."
-        )
     missing_version_fields = TEMPLATE_VERSION_FIELDS - version.keys()
     if missing_version_fields:
         raise UsageError(
@@ -739,7 +802,20 @@ def select_page(
     return matches[0]
 
 
-def project_page(page: dict[str, object]) -> dict[str, object]:
+def section_status(section: dict[str, object], label: str) -> str | None:
+    """The section's `published`/`hidden` status as read, or None when the server sent none.
+
+    A hidden section is stored with its settings but not rendered on the storefront, so a
+    projection without this field makes it look live. None is reported as is rather than
+    guessed: it means the response carried no status, not that the section is visible.
+    """
+    status = section.get("status")
+    if status is not None and not isinstance(status, str):
+        raise UsageError(f"{label}.status must be str when present.")
+    return status
+
+
+def project_page(page: dict[str, object], content: dict[str, object] | None = None) -> dict[str, object]:
     """Project one page layout while hiding section settings values."""
     layout = _required(page, "layout", list, "Page")
     projected_layout = []
@@ -751,6 +827,7 @@ def project_page(page: dict[str, object]) -> dict[str, object]:
             "id": _required(section, "id", str, label),
             "widget": _required(section, "widget", str, label),
             "section_type": _required(section, "section_type", str, label),
+            "status": section_status(section, label),
             "has_settings": "settings" in section,
         }
         instance_id = section.get("instance_id")
@@ -763,11 +840,23 @@ def project_page(page: dict[str, object]) -> dict[str, object]:
                 raise UsageError(f"{label}.template_id must be str when present.")
             projected["template_id"] = template_id
         projected_layout.append(projected)
+    meta = page.get("meta")
     return {
         "id": _required(page, "id", str, "Page"),
         "alias": page.get("alias"),
         "title": _required(page, "title", str, "Page"),
+        "pattern": page.get("pattern"),
         "status": _required(page, "status", str, "Page"),
+        # The three SEO fields a write carries; robots/social meta stay server-side.
+        "meta": (
+            {field: meta.get(field) for field in pages_engine.META_FIELDS}
+            if isinstance(meta, dict)
+            else None
+        ),
+        # The storefront prints as H1 the first section title that is not a link (a page
+        # block such as the product or the listing outranks them), never meta.seo_h1; this
+        # names that section by the same rule (best effort, from settings and templates).
+        "h1_hint": pages_engine.h1_hint(page, content),
         "layout": projected_layout,
     }
 
@@ -783,9 +872,10 @@ def validate_section_templates_response(value: object) -> list[dict[str, object]
         _required(template, "id", str, label)
         _required(template, "title", str, label)
         _required(template, "json_schema", str, label)
-        alias = template.get("alias")
-        if alias is not None and not isinstance(alias, str):
-            raise UsageError(f"{label}.alias must be str when present.")
+        for field in ("alias", "script"):
+            value = template.get(field)
+            if value is not None and not isinstance(value, str):
+                raise UsageError(f"{label}.{field} must be str when present.")
         templates.append(template)
     return templates
 
@@ -798,6 +888,11 @@ def _project_template(template: dict[str, object], include_schema: bool) -> dict
         "id": template["id"],
         "json_schema_bytes": len(schema.encode("utf-8")),
     }
+    script = template.get("script")
+    if isinstance(script, str):
+        # The size only: whether a template carries JS is worth knowing at a glance,
+        # the code itself belongs in `templates export`, not in the context.
+        projected["script_bytes"] = len(script.encode("utf-8"))
     if include_schema:
         projected["json_schema"] = schema
     return projected
@@ -918,8 +1013,9 @@ def run_pages_list(args: argparse.Namespace) -> int:
 
 
 def run_page_show(args: argparse.Namespace) -> int:
-    page = select_page(_read_content(args), args.alias, args.id)
-    emit_json(page if args.raw else project_page(page))
+    content = _read_content(args)
+    page = select_page(content, args.alias, args.id)
+    emit_json(page if args.raw else project_page(page, content))
     return EXIT_OK
 
 
@@ -947,17 +1043,159 @@ def run_template_preview(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
+def chrome_slot_warning(slot: str) -> str:
+    """What a header/footer template means for the store, said before it is created."""
+    alias = CHROME_ALIAS_BY_SLOT[slot]
+    return (
+        f"STORE-WIDE {slot.upper()}: this template carries alias {alias}. Placed into the {slot} "
+        f"slot, it becomes the {slot} of EVERY page of the storefront, including pages the server "
+        "adds on its own later. Creating it changes "
+        "nothing on the storefront yet: a template renders nowhere until it is placed. It cannot "
+        "be edited or deleted through this API afterwards — every correction is one more template. "
+        f"Placing it into the {slot} slot is a separate step; see «Custom header or footer» in "
+        "SKILL.md before promising the user anything about the storefront."
+    )
+
+
+def _apply_chrome_slot(
+    request: dict[str, object], requested_slot: str | None
+) -> tuple[dict[str, object], str | None]:
+    """Turn --chrome-slot into the template alias; the flag is the stated intent.
+
+    The flag sets the slot's alias in the body, so a regular section file without an
+    alias becomes a header or footer template without editing it by hand; a file built
+    by `kit-custom-sections --slot` already carries the matching alias. A chrome alias already in the file must
+    agree with the flag, and without the flag it is refused: the alias is what makes the
+    server treat the template as store chrome, the flag is what shows that this was
+    meant rather than copied along from an export.
+    """
+    alias = request.get("alias")
+    file_slot = CHROME_SLOT_BY_ALIAS.get(alias) if isinstance(alias, str) else None
+    if requested_slot is None:
+        if file_slot is not None:
+            raise UsageError(
+                f"alias {alias} makes this template a store-wide {file_slot}, not a page section. If "
+                f"that is the intent, rerun with --chrome-slot {file_slot} and show the user the warning "
+                "in the plan before confirming; otherwise leave alias out."
+            )
+        return request, None
+    if file_slot is not None and file_slot != requested_slot:
+        raise UsageError(
+            f"alias {alias} is a {file_slot} template, but --chrome-slot says {requested_slot}. "
+            "Leave alias out of the file: --chrome-slot sets it."
+        )
+    return {**request, "alias": CHROME_ALIAS_BY_SLOT[requested_slot]}, requested_slot
+
+
+def project_created_template(template: dict[str, object]) -> dict[str, object]:
+    """The created template without its source: what to record, not what was just sent."""
+    projected = _project_template(template, False)
+    projected["version"] = template["version"]
+    return projected
+
+
+MAX_PLAN_SCHEMA_FIELDS = 120
+
+
+def _utf8_bytes(value: object) -> int:
+    return len(value.encode("utf-8")) if isinstance(value, str) else 0
+
+
+def schema_fields(schema: object, limit: int = MAX_PLAN_SCHEMA_FIELDS) -> list[dict[str, object]]:
+    """The editable fields of a template schema: path, type (or $ref name), title.
+
+    What a person checks before confirming is which fields the section gets, not the
+    schema text. Refs into the template's own definitions are followed; editor models
+    and partials are named, not expanded.
+    """
+    definitions = schema.get("definitions") if isinstance(schema, dict) else None
+    definitions = definitions if isinstance(definitions, dict) else {}
+    fields: list[dict[str, object]] = []
+
+    def walk(node: object, path: str, seen: frozenset) -> None:
+        if len(fields) >= limit or not isinstance(node, dict):
+            return
+        reference = node.get("$ref")
+        if isinstance(reference, str) and reference.startswith("#/definitions/"):
+            name = reference[len("#/definitions/") :]
+            target = definitions.get(name)
+            if isinstance(target, dict) and name not in seen and isinstance(target.get("properties"), dict):
+                walk(target, path, seen | {name})
+                return
+        properties = node.get("properties")
+        if isinstance(properties, dict):
+            for key, child in properties.items():
+                child_path = f"{path}.{key}" if path else str(key)
+                if not isinstance(child, dict):
+                    continue
+                child_ref = child.get("$ref")
+                kind = child.get("type")
+                if kind is None and isinstance(child_ref, str):
+                    kind = child_ref.rsplit("/", 1)[-1]
+                fields.append({"path": child_path, "type": kind, "title": child.get("title")})
+                if len(fields) >= limit:
+                    return
+                walk(child, child_path, seen)
+        items = node.get("items")
+        if isinstance(items, dict):
+            walk(items, f"{path}[]", seen)
+
+    walk(schema, "", frozenset())
+    return fields
+
+
+def template_create_plan(
+    request: dict[str, object], slot: str | None, *, show_body: bool = False
+) -> dict[str, object]:
+    """The compact create plan a person confirms: sizes, digest, fields — not the source.
+
+    The full body runs to tens of kilobytes for a rich section, and a preview that long
+    is cut off before anyone reads the warning at its end. `--show-body` adds it back.
+    """
+    decoded = json.loads(str(request["json_schema"]))
+    plan: dict[str, object] = {
+        "operation": "POST /section-templates",
+        "title": request.get("title"),
+        "alias": request.get("alias"),
+        "html_bytes": _utf8_bytes(request.get("html")),
+        "css_bytes": _utf8_bytes(request.get("css")),
+        "json_schema_bytes": _utf8_bytes(request.get("json_schema")),
+        "script_bytes": _utf8_bytes(request.get("script")),
+        # Over the body with sorted keys, so the dry run and the confirmed run agree on it.
+        "body_sha256": hashlib.sha256(
+            json.dumps(request, ensure_ascii=False, sort_keys=True).encode("utf-8")
+        ).hexdigest(),
+        "schema_fields": schema_fields(decoded),
+    }
+    if len(plan["schema_fields"]) >= MAX_PLAN_SCHEMA_FIELDS:  # type: ignore[arg-type]
+        plan["schema_fields_truncated"] = True
+    if slot is not None:
+        plan["chrome_slot"] = slot
+        plan["store_wide_warning"] = chrome_slot_warning(slot)
+    if request.get("script"):
+        plan["script_warning"] = (
+            "The template carries JavaScript. The storefront runs it only for a store on its own "
+            "domain, not on the default Кит address; this skill passes it through unchanged."
+        )
+    if show_body:
+        plan["body"] = request
+    return plan
+
+
 def run_templates_create(args: argparse.Namespace) -> int:
     request = load_template_create(Path(args.file).expanduser())
-    emit_json(
-        {
-            "body": request,
-            "operation": "POST /section-templates",
-        }
-    )
-    if args.dry_run:
-        return EXIT_OK
-    if not args.confirm:
+    request, slot = _apply_chrome_slot(request, getattr(args, "chrome_slot", None))
+    plan = template_create_plan(request, slot, show_body=bool(getattr(args, "show_body", False)))
+    # Loaded before anything is sent: a broken workspace must not turn into a template
+    # that exists on the server but never reached the snapshot.
+    work = getattr(args, "work", None)
+    workspace = workspace_engine.load_workspace(Path(work).expanduser()) if work else None
+    if workspace is not None:
+        plan["workspace"] = str(workspace.work_path)
+    if args.dry_run or not args.confirm:
+        emit_json(plan)
+        if args.dry_run:
+            return EXIT_OK
         print(
             "Template creation refused: get explicit confirmation, then rerun this operation with --confirm.",
             file=sys.stderr,
@@ -972,7 +1210,28 @@ def run_templates_create(args: argparse.Namespace) -> int:
             body=request,
         )
     )
-    emit_json(result)
+    projected = project_created_template(result)
+    if workspace is not None:
+        # The create already happened; a workspace problem now is reported, not raised,
+        # so the new id is never lost from the output.
+        try:
+            projected["workspace_sync"] = workspace_engine.sync_section_templates(workspace, [result])
+        except (UsageError, OSError) as error:
+            projected["workspace_sync_error"] = (
+                f"{error} The template exists on the server; add it later with "
+                "'content templates-sync --work WORK'."
+            )
+    # One JSON document on stdout: what was confirmed and what the server made of it.
+    # The echo of html/css/script adds nothing to the plan.
+    emit_json({"plan": plan, "result": projected})
+    return EXIT_OK
+
+
+def run_content_templates_sync(args: argparse.Namespace) -> int:
+    """Bring templates created after the pull into the workspace without losing its edits."""
+    workspace = workspace_engine.load_workspace(_work_path(args))
+    templates = validate_section_template_list(_request_for_args(args, "GET", "/section-templates"))
+    emit_json(workspace_engine.sync_section_templates(workspace, templates))
     return EXIT_OK
 
 
@@ -983,13 +1242,29 @@ def _resolved_bff_url(args: argparse.Namespace) -> str:
     return schema_engine.resolve_bff_url(getattr(args, "bff_url", None))
 
 
+def _bff_url_passed(args: argparse.Namespace) -> bool:
+    """Whether a storefront address was named: the flag or KIT_BFF_BASE_URL."""
+    return bool((getattr(args, "bff_url", None) or os.environ.get("KIT_BFF_BASE_URL", "")).strip())
+
+
+def _optional_bff_url(args: argparse.Namespace) -> str | None:
+    """The storefront address, or None when none is named and none can be worked out.
+
+    A named address that is malformed (no http:// or https://) is an error, not an absent
+    address: dropping it quietly would put another one in its place — the address the
+    workspace recorded, or the single schema in the cache.
+    """
+    try:
+        return _resolved_bff_url(args)
+    except UsageError:
+        if _bff_url_passed(args):
+            raise
+        return None
+
+
 def _cached_schema(args: argparse.Namespace) -> dict[str, object]:
     """Load the cached BFF schema offline, tolerating an unset BFF URL when unambiguous."""
-    try:
-        bff_url: str | None = _resolved_bff_url(args)
-    except UsageError:
-        bff_url = None
-    return schema_engine.load_cached_schema(bff_url)
+    return schema_engine.load_cached_schema(_optional_bff_url(args))
 
 
 def run_schema_fetch(args: argparse.Namespace) -> int:
@@ -1049,6 +1324,7 @@ def run_sections_list(args: argparse.Namespace) -> int:
             "widget": _required(section, "widget", str, label),
             "display_sequence": _required(section, "display_sequence", int, label),
             "section_type": _required(section, "section_type", str, label),
+            "status": section_status(section, label),
             "has_settings": "settings" in section,
             "page_copies": copy_counts.get(str(section["id"]), 1),
         }
@@ -1088,6 +1364,7 @@ def run_section_show(args: argparse.Namespace) -> int:
         "id": args.id,
         "widget": widget,
         "template_id": section.get("template_id"),
+        "status": section_status(section, "Section"),
         "settings": section.get("settings"),
         "schema_source": schema_source,
         "copies": [
@@ -1096,10 +1373,29 @@ def run_section_show(args: argparse.Namespace) -> int:
                 "page_alias": page.get("alias"),
                 "page_title": page["title"],
                 "section_type": copy_section.get("section_type"),
+                "status": section_status(copy_section, f"Section copy on page {page['id']}"),
             }
             for page, _idx, copy_section in copies
         ],
     }
+    if widget == schema_engine.MYSTIQUE_WIDGET:
+        result["template_alias"] = pages_engine.template_alias(content, section.get("template_id"))
+    slot = pages_engine.chrome_slot_of(section, content)
+    if slot is not None:
+        result["chrome_slot"] = slot
+    menu_ids = (
+        pages_engine.chrome_menu_ids(widget, section.get("settings"), content, section.get("template_id"))
+        if slot is not None or widget != schema_engine.MYSTIQUE_WIDGET
+        else None
+    )
+    if menu_ids is not None:
+        # Read through every stored form of the setting, so the id is never an object.
+        result["menu_ids"] = menu_ids
+        if widget == schema_engine.MYSTIQUE_WIDGET and not menu_ids:
+            result["menu_ids_note"] = (
+                "This slot's template has no field referencing #/definitions/MenuId, so it points "
+                "at no store menu; its links are in its own settings."
+            )
     if len(copies) > 1:
         result["composite_note"] = (
             "This section is stored once and copied to every page; the backend keeps the "
@@ -1153,6 +1449,14 @@ def run_templates_export(args: argparse.Namespace) -> int:
         path = out_dir / name
         path.write_text(value, encoding="utf-8")
         written[field] = str(path)
+    # The template's JS travels with the markup: a copy made from an export that left it
+    # behind would lose it silently on `templates create`. Written whenever the server sends
+    # the field, even empty, so the directory says whether the template had any.
+    script = template.get("script")
+    if isinstance(script, str):
+        script_path = out_dir / "template.js"
+        script_path.write_text(script, encoding="utf-8")
+        written["script"] = str(script_path)
     meta_path = out_dir / "template.meta.json"
     meta_path.write_text(
         canonical_json(
@@ -1165,7 +1469,11 @@ def run_templates_export(args: argparse.Namespace) -> int:
         encoding="utf-8",
     )
     written["meta"] = str(meta_path)
-    emit_json({"template_id": args.id, "written": written})
+    output: dict[str, object] = {"template_id": args.id, "written": written}
+    if isinstance(script, str):
+        # 0 means the template has no JS: the size answers that without opening the file.
+        output["script_bytes"] = len(script.encode("utf-8"))
+    emit_json(output)
     return EXIT_OK
 
 
@@ -1176,16 +1484,83 @@ def _work_path(args: argparse.Namespace) -> Path:
     return Path(args.work).expanduser()
 
 
-def _schema_for_gates(args: argparse.Namespace) -> dict[str, object] | None:
+def _workspace_bff_url(
+    args: argparse.Namespace, workspace: workspace_engine.Workspace | None = None
+) -> str | None:
+    """The storefront address for a workspace command: the one its manifest records.
+
+    The manifest records the address the workspace was pulled for, so its edits are
+    checked against that storefront's schema even when the flag is not repeated. A flag or
+    `KIT_BFF_BASE_URL` naming another host is refused rather than obeyed: a variable left
+    set for another store would otherwise check these edits against that store's schema
+    without a word. A workspace without a recorded address takes the flag or the variable.
+    The same host named again (in another letter case, with a path) gives the recorded
+    address itself, the one the schema cache is found by. A malformed named address is
+    refused, not replaced by the recorded one.
+    """
+    explicit = _bff_url_passed(args)
+    resolved = _optional_bff_url(args)
+    recorded = workspace.manifest.get("bff_url") if workspace is not None else None
+    if not isinstance(recorded, str) or not recorded:
+        return resolved
+    if resolved is None or _storefront_host(resolved) == _storefront_host(recorded):
+        return recorded
+    if not explicit:
+        return recorded  # an address worked out from the API host never outranks the recorded one
+    source = "--bff-url" if getattr(args, "bff_url", None) else "KIT_BFF_BASE_URL"
+    raise UsageError(
+        f"This workspace was pulled for the storefront {recorded}, and {source} names {resolved}: "
+        "another host, whose widget schema may be another store's. Drop "
+        f"{source} — the workspace remembers its address. If the recorded one is wrong, pull "
+        "again with the right one (a new pull starts over from the server state)."
+    )
+
+
+def _storefront_host(url: str) -> str:
+    """Host (and port) of a storefront address — what its schema cache is keyed by."""
+    return re.sub(r"^https?://", "", url.strip()).split("/", 1)[0].lower()
+
+
+def _schema_for_gates(
+    args: argparse.Namespace, workspace: workspace_engine.Workspace | None = None
+) -> dict[str, object] | None:
     """The cached BFF schema for validation, or None when no cache is reachable.
 
-    Native-widget edits fail closed later without it; custom-template edits validate
-    against the pulled catalog and never need the BFF.
+    Native-widget edits fail closed later without it. A custom-template edit needs it as
+    well when its settings use an editor model (ImageModel, LinkSource, Palette, …) the
+    template takes from the storefront schema, as the templates kit-custom-sections builds
+    do; settings that use none are checked against the pulled catalog alone.
+    A workspace pulled without a storefront address (`bff_url: null` in its manifest)
+    never borrows the single schema in the cache: that one may belong to another store.
+    Only a workspace from an older client, whose manifest has no `bff_url` key at all,
+    keeps the old fallback.
     """
+    bff_url = _workspace_bff_url(args, workspace)
     try:
-        return _cached_schema(args)
+        if bff_url is not None:
+            return schema_engine.load_cached_schema(bff_url)
+        if workspace is not None and "bff_url" in workspace.manifest:
+            return None
+        return schema_engine.load_cached_schema(None)
     except UsageError:
         return None
+
+
+def _no_workspace_schema(lead: str = "") -> UsageError:
+    return UsageError(
+        f"{lead}No widget schema is known for this workspace's storefront. Pass the store's own "
+        "address with --bff-url (or set KIT_BFF_BASE_URL) and run 'schema fetch' first; "
+        "a schema cached for another store is never used."
+    )
+
+
+def _require_workspace_schema(
+    args: argparse.Namespace, workspace: workspace_engine.Workspace
+) -> dict[str, object]:
+    document = _schema_for_gates(args, workspace)
+    if document is None:
+        raise _no_workspace_schema()
+    return document
 
 
 def _require_rebindable(
@@ -1200,14 +1575,40 @@ def _require_rebindable(
             f"Only {schema_engine.MYSTIQUE_WIDGET} sections carry a template; this one is "
             f"{widget!r}. A built-in widget has no template to rebind."
         )
-    try:
-        workspace_engine.section_template(workspace.base, template_id)
-    except UsageError:
+    workspace_engine.section_template(workspace.base, template_id)  # names templates-sync when missing
+    current_slot = pages_engine.chrome_slot_of(section, workspace.base)
+    target_slot = pages_engine.template_chrome_slot(workspace.base, template_id)
+    if current_slot == target_slot:
+        return
+    if current_slot is not None:
         raise UsageError(
-            f"Section template {template_id!r} is not in this workspace. A template created "
-            "after 'content pull' is not in the snapshot yet — run 'content pull' again, then "
-            "rebind."
-        ) from None
+            f"This section is the store's custom {current_slot} (its template carries alias "
+            f"{CHROME_ALIAS_BY_SLOT[current_slot]}). The template it moves to must carry the same "
+            f"alias: without it the server stops treating the section as the {current_slot}, and "
+            f"pages it adds later get no {current_slot} at all."
+        )
+    raise UsageError(
+        f"Template {template_id} carries alias {CHROME_ALIAS_BY_SLOT[str(target_slot)]}: it is a "
+        f"store-wide {target_slot}, not a page section. Moving a regular section onto it puts a "
+        f"second {target_slot} on the page. See «Custom header or footer» in SKILL.md."
+    )
+
+
+def _refuse_chrome_template_as_section(workspace: workspace_engine.Workspace, template_id: str) -> None:
+    """A header/footer template goes into its slot, never in as one more page section.
+
+    As a regular section it renders a second header in the middle of the page, and the
+    server may pick that copy as the store header for pages it adds on its own later.
+    """
+    slot = pages_engine.template_chrome_slot(workspace.base, template_id)
+    if slot is None:
+        return
+    raise UsageError(
+        f"Template {template_id} carries alias {CHROME_ALIAS_BY_SLOT[slot]}: it is a store-wide "
+        f"{slot}, not a page section. Added as a section it would put a second {slot} on this page, "
+        f"and the server may copy it as the {slot} onto pages it adds later. It belongs in the "
+        f"{slot} slot — see «Custom header or footer» in SKILL.md."
+    )
 
 
 def _validate_edited_section(
@@ -1220,13 +1621,21 @@ def _validate_edited_section(
     template_id: str | None = None,
 ) -> None:
     """Validate new settings at edit time; pre-existing drift in the old settings never blocks."""
-    schema_document = _schema_for_gates(args)
+    schema_document = _schema_for_gates(args, workspace)
     candidate = dict(section)
     candidate["settings"] = settings
     # Judging the new settings against the template they are moving to, not the one
     # they are leaving: that check is the whole point of a rebind.
     if template_id is not None:
         candidate["template_id"] = template_id
+    if schema_document is None:
+        models = write_engine.bff_models_needed(candidate, workspace)
+        if models:
+            raise _no_workspace_schema(
+                f"Template {candidate.get('template_id')} takes editor models ({', '.join(models[:5])}) "
+                "from the storefront's widget schema, and these settings use them, so they cannot be "
+                "checked without that schema. "
+            )
     baseline: tuple[str, ...] = ()
     if with_baseline and schema_document is not None:
         baseline = tuple(write_engine._validate_section_settings(section, workspace, schema_document))
@@ -1239,14 +1648,67 @@ def run_content_pull(args: argparse.Namespace) -> int:
     base_url = resolve_base_url(args.base_url)
     content = _read_content(args)
     work_path = Path(args.out).expanduser() if args.out else workspace_engine.default_work_path(base_url)
+    # The schema build is matched to this store's storefront only: the single schema in
+    # the cache may belong to another store, so it is never taken as a stand-in.
+    bff_url = _optional_bff_url(args)
     schema_build = None
-    try:
-        schema_build = str(_cached_schema(args).get("buildVersion"))
-    except UsageError:
-        schema_build = None
-    manifest = workspace_engine.write_workspace(work_path, content, base_url, schema_build)
+    schema_note = None
+    if bff_url is None:
+        schema_note = (
+            "The storefront address is not known (no --bff-url or KIT_BFF_BASE_URL), so no widget "
+            "schema was matched to this store; edits of native widgets, and custom-section settings "
+            "that use the editor models of that schema (images, links, palettes), will ask for it."
+        )
+    else:
+        try:
+            schema_build = str(schema_engine.load_cached_schema(bff_url).get("buildVersion"))
+        except UsageError:
+            schema_note = (
+                f"'schema fetch' has not been run for {bff_url}; run it before editing native widgets, "
+                "or custom-section settings that use the editor models of the storefront schema."
+            )
+    manifest = workspace_engine.write_workspace(
+        work_path, content, base_url, schema_build, bff_url=bff_url, schema_note=schema_note
+    )
     emit_json({"work_path": str(work_path), "manifest": manifest})
     return EXIT_OK
+
+
+def _switch_slot(
+    args: argparse.Namespace,
+    workspace: workspace_engine.Workspace,
+    section: dict[str, object],
+    widget: str,
+    template_id: str | None,
+    settings: dict[str, object],
+) -> dict[str, object]:
+    """`section set --widget` on a header or footer slot: built-in ↔ custom template.
+
+    The new settings are judged as a new section's would be — against the template's schema,
+    or against the built-in widget's schema with the widget's version stamped from migrate
+    (empty settings only), exactly as `section add` does it. Whether the section is a slot
+    at all, and whether the slot can hold the target, is decided first and offline: a
+    refusal there never waits on the schema, the storefront or the settings.
+    """
+    workspace_engine.check_slot_switch(workspace, str(section.get("id")), widget, template_id)
+    if widget != schema_engine.MYSTIQUE_WIDGET and "version" not in settings:
+        document = _require_workspace_schema(args, workspace)
+        schema_engine.widget_schema(document, widget)
+        bff_url = _workspace_bff_url(args, workspace)
+        if bff_url is None:
+            raise UsageError(
+                "The widget version is read from the store's storefront, and its address is not "
+                "known for this workspace: pass --bff-url or set KIT_BFF_BASE_URL."
+            )
+        version = schema_engine.fetch_widget_version(bff_url, widget)
+        if version is not None:
+            settings = dict(settings)
+            settings["version"] = version
+    candidate: dict[str, object] = {"id": section.get("id"), "widget": widget}
+    if template_id:
+        candidate["template_id"] = template_id
+    _validate_edited_section(args, workspace, candidate, settings)
+    return workspace_engine.switch_slot_widget(workspace, str(section.get("id")), widget, template_id, settings)
 
 
 def run_section_set(args: argparse.Namespace) -> int:
@@ -1254,12 +1716,23 @@ def run_section_set(args: argparse.Namespace) -> int:
     settings = load_settings_file(Path(args.settings_file).expanduser(), "Settings")
     copies = workspace_engine.require_section_copies(workspace.content, args.id)
     template_id = getattr(args, "template_id", None)
+    widget = getattr(args, "widget", None)
+    if widget and widget != copies[0][2].get("widget"):
+        report = _switch_slot(args, workspace, copies[0][2], widget, template_id, settings)
+        workspace.save()
+        emit_json(report)
+        return EXIT_OK
     if template_id:
         _require_rebindable(copies[0][2], workspace, template_id)
     _validate_edited_section(
         args, workspace, copies[0][2], settings, with_baseline=True, template_id=template_id
     )
+    previous_template_id = copies[0][2].get("template_id")
     report = workspace_engine.set_section_settings(workspace, args.id, settings, template_id)
+    if template_id and template_id != previous_template_id:
+        placement = pages_engine.template_placement_warning(workspace.base, template_id)
+        if placement is not None:
+            report["warnings"] = [placement]
     workspace.save()
     emit_json(report)
     return EXIT_OK
@@ -1273,15 +1746,22 @@ def run_section_add(args: argparse.Namespace) -> int:
         if not args.template_id:
             raise UsageError(f"{schema_engine.MYSTIQUE_WIDGET} sections require --template-id.")
         workspace_engine.section_template(workspace.base, args.template_id)
+        _refuse_chrome_template_as_section(workspace, args.template_id)
     elif args.template_id:
         raise UsageError("--template-id applies only to YandexKit.Mystique sections.")
     else:
         # A new native section gets the widget's actual version from migrate; a widget
         # without migrations has no version and the field is not written at all.
-        document = _cached_schema(args)
+        document = _require_workspace_schema(args, workspace)
         schema_engine.widget_schema(document, args.widget)
         if "version" not in settings:
-            actual_version = schema_engine.fetch_widget_version(_resolved_bff_url(args), args.widget)
+            bff_url = _workspace_bff_url(args, workspace)
+            if bff_url is None:
+                raise UsageError(
+                    "The widget version is read from the store's storefront, and its address is not "
+                    "known for this workspace: pass --bff-url or set KIT_BFF_BASE_URL."
+                )
+            actual_version = schema_engine.fetch_widget_version(bff_url, args.widget)
             if actual_version is not None:
                 settings = dict(settings)
                 settings["version"] = actual_version
@@ -1297,6 +1777,10 @@ def run_section_add(args: argparse.Namespace) -> int:
         args.template_id,
         args.position,
     )
+    if args.template_id:
+        placement = pages_engine.template_placement_warning(workspace.base, args.template_id)
+        if placement is not None:
+            report["warnings"] = [placement]
     workspace.save()
     emit_json(report)
     return EXIT_OK
@@ -1304,7 +1788,19 @@ def run_section_add(args: argparse.Namespace) -> int:
 
 def run_section_remove(args: argparse.Namespace) -> int:
     workspace = workspace_engine.load_workspace(_work_path(args))
-    report = workspace_engine.remove_section(workspace, args.id)
+    report = workspace_engine.remove_section(
+        workspace, args.id, getattr(args, "page", None), getattr(args, "page_id", None)
+    )
+    workspace.save()
+    emit_json(report)
+    return EXIT_OK
+
+
+def run_section_status(args: argparse.Namespace) -> int:
+    workspace = workspace_engine.load_workspace(_work_path(args))
+    report = workspace_engine.set_section_status(
+        workspace, args.id, args.status, getattr(args, "page", None), getattr(args, "page_id", None)
+    )
     workspace.save()
     emit_json(report)
     return EXIT_OK
@@ -1321,9 +1817,12 @@ def run_section_move(args: argparse.Namespace) -> int:
 def run_theme_set(args: argparse.Namespace) -> int:
     workspace = workspace_engine.load_workspace(_work_path(args))
     settings = load_settings_file(Path(args.settings_file).expanduser(), "Global settings")
-    schema_document = _schema_for_gates(args)
+    schema_document = _schema_for_gates(args, workspace)
     if schema_document is None:
-        raise UsageError("Global settings are checked against the storefront theme schema; run 'schema fetch' first.")
+        raise UsageError(
+            "Global settings are checked against the storefront theme schema; pass --bff-url for this "
+            "store and run 'schema fetch' first."
+        )
     definitions = schema_document["definitions"]
     assert isinstance(definitions, dict)
     theme_node = schema_engine.theme_schema(schema_document)
@@ -1353,8 +1852,42 @@ def _seo_from_args(args: argparse.Namespace) -> dict[str, str] | None:
     return seo or None
 
 
+def _content_settings_builder(args: argparse.Namespace, workspace: workspace_engine.Workspace):
+    """Settings for a system page's content widget: the schema skeleton plus the widget version.
+
+    The same path `section add` takes for a native widget, so the page is created the way
+    the cabinet would fill it. Returns (settings, None), or (None, why) when the schema or
+    the version is out of reach — the page is then added empty and the report says so.
+    """
+    document = _schema_for_gates(args, workspace)
+    bff_url = _workspace_bff_url(args, workspace)
+
+    def build(widget: str) -> tuple[dict[str, object] | None, str | None]:
+        if document is None:
+            return None, "no widget schema is known for this storefront: pass --bff-url and run 'schema fetch'"
+        try:
+            skeleton = schema_engine.build_widget_skeleton(document, widget)
+        except UsageError as error:
+            return None, str(error)
+        if "version" not in skeleton:
+            if bff_url is None:
+                return None, "its version is read from the storefront, whose address is not known (--bff-url)"
+            try:
+                version = schema_engine.fetch_widget_version(bff_url, widget)
+            except (UsageError, ApiError) as error:
+                return None, f"its version could not be read from the storefront: {redact_secrets(str(error))}"
+            if version is not None:
+                skeleton = dict(skeleton)
+                skeleton["version"] = version
+        return skeleton, None
+
+    return build
+
+
 def run_page_add(args: argparse.Namespace) -> int:
     workspace = workspace_engine.load_workspace(_work_path(args))
+    alias = (args.alias or "").strip()
+    copy_layout_from = getattr(args, "copy_layout_from", None)
     report = pages_engine.add_page(
         workspace,
         title=args.title,
@@ -1363,10 +1896,39 @@ def run_page_add(args: argparse.Namespace) -> int:
         status=args.status,
         seo=_seo_from_args(args),
         with_chrome=not args.no_chrome,
+        # Only a system page has content widgets of its own; a custom page starts empty.
+        content_settings=_content_settings_builder(args, workspace) if alias and not copy_layout_from else None,
+        copy_layout_from=copy_layout_from,
     )
+    if "layout_copied_from" in report:
+        _report_inherited_drift(args, workspace, report)
     workspace.save()
     emit_json(report)
     return EXIT_OK
+
+
+def _report_inherited_drift(
+    args: argparse.Namespace, workspace: workspace_engine.Workspace, report: dict[str, object]
+) -> None:
+    """Name the copied sections whose settings today's schema flags, and what that means."""
+    copied_ids = [
+        str(entry["section_id"])
+        for entry in report.get("content_widgets_added") or []
+        if isinstance(entry, dict)
+    ]
+    drift = write_engine.inherited_drift(workspace, _schema_for_gates(args, workspace), copied_ids)
+    if not drift:
+        return
+    report["inherited_drift"] = drift
+    report["inherited_drift_note"] = (
+        "These copies carry the default template's settings byte for byte, including what "
+        "today's widget schema flags in them: the server stores such settings as they are, and "
+        "the default template already renders with them. The push gate judges each copy against "
+        "the section it came from, so this drift does not block the write, and a 'section set' "
+        "edit is checked only for what it changes. To clean a copy up, set the named fields "
+        "with 'section set': each copy is a section of the new template alone, so the default "
+        "template keeps its own settings."
+    )
 
 
 def run_page_set(args: argparse.Namespace) -> int:
@@ -1408,20 +1970,22 @@ def run_content_push(args: argparse.Namespace) -> int:
     if not commit_message:
         raise UsageError("--commit-message must not be empty.")
     publish = not args.no_publish
-    gate_errors = write_engine.check_gates(workspace, _schema_for_gates(args), args.allow_page_removal)
+    gate_errors = write_engine.check_gates(workspace, _schema_for_gates(args, workspace), args.allow_page_removal)
     if gate_errors:
         emit_json({"error": "push_gates_failed", "gates": gate_errors}, stream=sys.stderr)
         return EXIT_USAGE
     plan = write_engine.build_push_plan(workspace, commit_message, activate=publish)
-    emit_json(plan)
-    if args.dry_run:
-        return EXIT_OK
-    if not args.confirm:
+    if args.dry_run or not args.confirm:
+        emit_json(plan)
+        if args.dry_run:
+            return EXIT_OK
         print(
             "Push refused: get explicit confirmation, then rerun this operation with --confirm.",
             file=sys.stderr,
         )
         return EXIT_REFUSED
+    # From here on stdout carries exactly one JSON document, {"plan": ..., "result": ...},
+    # printed once the server has answered; failures go to stderr as before.
 
     body = write_engine.build_put_body(workspace, commit_message, activate=publish)
     try:
@@ -1469,6 +2033,7 @@ def run_content_push(args: argparse.Namespace) -> int:
             # The only reliable signal is the response: no distinct active_version_id
             # means the edit is LIVE right now, whatever the request asked for.
             workspace_engine.rebase_after_push(workspace, written_version_id, published=True, version_info=version)
+            emit_json({"plan": plan, "result": response})
             emit_json(
                 {
                     "error": "no_publish_not_supported_edit_published",
@@ -1489,17 +2054,24 @@ def run_content_push(args: argparse.Namespace) -> int:
         workspace_engine.rebase_after_push(workspace, active_version_id, published=False)
         emit_json(
             {
-                "mode": "proposal_stored_not_published",
-                "proposal_version_id": written_version_id,
-                "active_version_id": active_version_id,
-                "pages_count": response.get("pages_count"),
-                "sections_count": response.get("sections_count"),
-                "message": (
-                    f"Правка сохранена как версия-предложение {written_version_id} и НЕ опубликована. "
-                    f"На витрине сейчас версия {active_version_id} — копия прежнего контента. "
-                    f"Предложение открывается в истории по номеру {written_version_id}. "
-                    f"Манифест воркспейса переведён на версию {active_version_id}."
-                ),
+                "plan": plan,
+                "result": {
+                    "mode": "proposal_stored_not_published",
+                    "proposal_version_id": written_version_id,
+                    "active_version_id": active_version_id,
+                    "pages_count": response.get("pages_count"),
+                    "sections_count": response.get("sections_count"),
+                    "message": (
+                        f"Правка сохранена как версия-предложение {written_version_id} и НЕ опубликована. "
+                        f"На витрине сейчас версия {active_version_id} — копия прежнего контента. "
+                        f"Манифест воркспейса переведён на версию {active_version_id}. "
+                        "Отрисовать предложение агент не может: посмотреть его на десктопе и телефоне "
+                        f"может только пользователь — в истории конструктора кабинета, версия {written_version_id}. "
+                        f"Агенту доступна офлайн-проверка: versions content --id {written_version_id} и "
+                        "дизайн-линт этого снимка. Опубликовать, посмотреть и вернуть прежний контент "
+                        "новой записью — только с явного согласия пользователя."
+                    ),
+                },
             }
         )
         return EXIT_OK
@@ -1520,7 +2092,7 @@ def run_content_push(args: argparse.Namespace) -> int:
         published=True,
         version_info=version,
     )
-    emit_json(response)
+    emit_json({"plan": plan, "result": response})
     return EXIT_OK
 
 
@@ -1552,6 +2124,40 @@ def run_media_upload(args: argparse.Namespace) -> int:
     output = dict(uploaded)
     output["url"] = uploaded["public_path"]
     emit_json(output)
+    return EXIT_OK
+
+
+def run_media_font_upload(args: argparse.Namespace) -> int:
+    """Upload one confirmed local font file and print the theme's font-source fragment."""
+    if not args.confirm:
+        return refuse_mutation("font upload")
+
+    file_path, media_type = validate_local_media_file(args.file, "font")
+    body, content_type = encode_multipart_file(file_path, media_type)
+    response = request_json(
+        "POST",
+        build_url(resolve_base_url(args.base_url), "/files"),
+        load_token(),
+        raw_data=body,
+        content_type=content_type,
+        **telemetry(args),
+    )
+    uploaded = require_font_upload_response(response)
+    emit_json(
+        {
+            "file_id": uploaded["id"],
+            "file_path": uploaded["public_path"],
+            "type": uploaded["type"],
+            # Exactly what typography.fontFamily.custom.sources.<style>.<weight> takes.
+            "sources_fragment": {"fileId": uploaded["id"], "filePath": uploaded["public_path"]},
+            "next_step": (
+                "Reference it from the theme: theme set with typography.fontFamily.custom = {isSelected: "
+                "true, name, sources: {normal: {regular: <fragment>, bold: <fragment>}}} (medium and "
+                "semibold optional) and typography.fontFamily.predefined.isSelected = false. Upload "
+                "both the regular and the bold file. Only a font the user holds a web licence for."
+            ),
+        }
+    )
     return EXIT_OK
 
 
@@ -1687,6 +2293,12 @@ def build_parser() -> argparse.ArgumentParser:
     pull = content_commands.add_parser("pull", help="Snapshot full content into a local write workspace.")
     pull.add_argument("--out", help="Workspace file path (default: per-store workspace directory).")
     pull.set_defaults(handler=run_content_pull)
+    templates_sync = content_commands.add_parser(
+        "templates-sync",
+        help="Add section templates created after the pull to the workspace, keeping every edit in it.",
+    )
+    templates_sync.add_argument("--work", required=True, help="Workspace file path from 'content pull'.")
+    templates_sync.set_defaults(handler=run_content_templates_sync)
     content_diff = content_commands.add_parser("diff", help="Offline diff of the workspace against its base.")
     content_diff.add_argument("--work", required=True, help="Workspace file path from 'content pull'.")
     content_diff.set_defaults(handler=run_content_diff)
@@ -1755,6 +2367,13 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Do not copy the store header and footer onto the new page.",
     )
+    page_add.add_argument(
+        "--copy-layout-from",
+        choices=("default",),
+        help="For a new productCard/categoryAndCollection template: start from the layout of the "
+        "default template (its sections copied as new ones; a block it shares with other pages "
+        "stays shared and is listed as shared_sections).",
+    )
     page_add.set_defaults(handler=run_page_add)
 
     page_set = page_commands.add_parser("set", help="Change title, pattern, status, or SEO of one page.")
@@ -1806,6 +2425,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Rebind this custom section to another section template, on every page it appears on. "
         "The settings are checked against the new template, not the old one.",
     )
+    section_set.add_argument(
+        "--widget",
+        help="Header or footer slot only: switch it to YandexKit.Mystique (with --template-id of a "
+        "template carrying the slot's alias) or back to the built-in YandexKit.Header / "
+        "YandexKit.Footer, on every page at once.",
+    )
     section_set.set_defaults(handler=run_section_set)
     section_add = section_commands.add_parser("add", help="Insert one new section into a page in the workspace.")
     section_add.add_argument("--work", required=True, help="Workspace file path from 'content pull'.")
@@ -1817,10 +2442,29 @@ def build_parser() -> argparse.ArgumentParser:
     section_add.add_argument("--settings-file", required=True, help="Path to the settings JSON object.")
     section_add.add_argument("--position", type=parse_positive_limit, help="1-based position in the layout.")
     section_add.set_defaults(handler=run_section_add)
-    section_remove = section_commands.add_parser("remove", help="Remove one section from the workspace.")
+    section_remove = section_commands.add_parser(
+        "remove", help="Remove one section from the workspace: every copy, or the copy on one page."
+    )
     section_remove.add_argument("--work", required=True, help="Workspace file path from 'content pull'.")
     section_remove.add_argument("--id", required=True, type=parse_uuid, help="Section UUID.")
+    remove_page_selector = section_remove.add_mutually_exclusive_group()
+    remove_page_selector.add_argument(
+        "--page", help="Remove only the copy on this page (alias); the other pages keep theirs."
+    )
+    remove_page_selector.add_argument("--page-id", type=parse_uuid, help="Remove only the copy on this page (UUID).")
     section_remove.set_defaults(handler=run_section_remove)
+    section_status_parser = section_commands.add_parser(
+        "status", help="Hide or show one section: every copy, or the copy on one page."
+    )
+    section_status_parser.add_argument("--work", required=True, help="Workspace file path from 'content pull'.")
+    section_status_parser.add_argument("--id", required=True, type=parse_uuid, help="Section UUID.")
+    section_status_parser.add_argument(
+        "--status", required=True, choices=pages_engine.SECTION_STATUSES, help="New section status."
+    )
+    status_page_selector = section_status_parser.add_mutually_exclusive_group()
+    status_page_selector.add_argument("--page", help="Change only the copy on this page (alias).")
+    status_page_selector.add_argument("--page-id", type=parse_uuid, help="Change only the copy on this page (UUID).")
+    section_status_parser.set_defaults(handler=run_section_status)
     section_move = section_commands.add_parser("move", help="Move one section inside its page layout.")
     section_move.add_argument("--work", required=True, help="Workspace file path from 'content pull'.")
     section_move.add_argument("--id", required=True, type=parse_uuid, help="Section UUID.")
@@ -1875,12 +2519,21 @@ def build_parser() -> argparse.ArgumentParser:
     template_versions.add_argument("--id", required=True, type=parse_uuid, help="Section-template UUID.")
     template_versions.add_argument("--version-id", type=parse_uuid, help="One template version UUID.")
     template_versions.set_defaults(handler=run_templates_versions)
-    template_export = template_commands.add_parser("export", help="Write one template's html/css/schema to files.")
+    template_export = template_commands.add_parser(
+        "export", help="Write one template's html/css/schema/script to files."
+    )
     template_export.add_argument("--id", required=True, type=parse_uuid, help="Section-template UUID.")
     template_export.add_argument("--out", required=True, help="Output directory for the exported files.")
     template_export.set_defaults(handler=run_templates_export)
     create = template_commands.add_parser("create", help="Validate, preview, and create a section template.")
     create.add_argument("--file", required=True, help="Path to section-template request JSON.")
+    create.add_argument(
+        "--chrome-slot",
+        choices=sorted(CHROME_ALIAS_BY_SLOT),
+        help="Make the template a store-wide header or footer: sets alias YandexKit.Header or "
+        "YandexKit.Footer in the body (a chrome alias already in the file must match; without this "
+        "flag it is refused). The plan then carries a store-wide warning.",
+    )
     create.add_argument(
         "--confirm",
         action="store_true",
@@ -1891,7 +2544,17 @@ def build_parser() -> argparse.ArgumentParser:
         "--dry-run",
         action="store_true",
         default=argparse.SUPPRESS,
-        help="Validate and print the exact request without token or network access.",
+        help="Validate and print the compact create plan without token or network access.",
+    )
+    create.add_argument(
+        "--work",
+        help="Workspace file: after a confirmed create the new template is added to its snapshot "
+        "(as 'content templates-sync' would), so it can be placed without pulling again.",
+    )
+    create.add_argument(
+        "--show-body",
+        action="store_true",
+        help="Add the exact request body (html, css, schema, script) to the plan.",
     )
     create.set_defaults(handler=run_templates_create)
 
@@ -1906,6 +2569,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="Confirm this image upload.",
     )
     image_upload.set_defaults(handler=run_media_upload)
+
+    font_upload = media_commands.add_parser(
+        "font-upload", help="Upload a confirmed local font file (.woff2, .woff, .ttf, .otf) for the theme."
+    )
+    font_upload.add_argument("--file", required=True, help="Path to a local font file.")
+    font_upload.add_argument(
+        "--confirm",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="Confirm this font upload.",
+    )
+    font_upload.set_defaults(handler=run_media_font_upload)
 
     video_upload = media_commands.add_parser("video-upload", help="Upload a confirmed local video.")
     video_upload.add_argument("--file", required=True, help="Path to a local video file.")

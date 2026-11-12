@@ -23,7 +23,7 @@ REQUEST_TIMEOUT_SECONDS = 30
 SKILL_HEADER: str = "X-Skill"
 SKILL_NAME: str = "kit-storefront-constructor"
 # Дата публикации, `YYYY.MM.DD[.N]`.
-SKILL_VERSION: str = "2026.08.31"
+SKILL_VERSION: str = "2026.11.01"
 SKILL_VERSION_HEADER: str = "X-Skill-Version"
 SKILL_PROMPT_HEADER: str = "X-Skill-Prompt"
 SKILL_PROMPT_MAX_LENGTH = 1000

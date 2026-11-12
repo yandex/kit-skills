@@ -25,24 +25,70 @@ Routes, projections, and exit codes: [./references/api.md](./references/api.md).
   treats a missing `active_version_id` as "the edit is live" (loud message, exit 4), and
   never let any code path claim a preview happened without that field.
 - Response validators tolerate unknown extra fields. Never add a "no extra fields" check
-  to a response validator or an eval assert — the contract grows (`active_version_id` did),
-  and such a check turns a server rollout into a client failure after a successful mutation.
+  to a response validator or an eval assert — the contract grows (`active_version_id` and
+  the template `script` did), and such a check turns a server rollout into a client failure
+  after a successful mutation.
+- A template `alias` is stored unchecked by the server, and `""` is stored as a set alias,
+  not as none. It no longer decides whether a section can be hidden — the server accepts
+  `hidden` on any Mystique section. `YandexKit.Header` / `YandexKit.Footer` make the
+  template the store-wide header or footer; the storefront renders sections on
+  `YandexKit.Header` / `YandexKit.AnnouncementBar` templates in the header area and on
+  `YandexKit.Footer` in the footer area; an alias naming another native widget is the
+  cabinet's «Заменить» feature. Keep the local policy: `""` is dropped from the create body, the
+  chrome alias is set only by `--chrome-slot` with the store-wide warning in the plan, and
+  everything else is refused (a skill policy, not a server rule — say so in messages).
+  Keep chrome templates out of `usual` sections. A section placed onto a
+  `YandexKit.AnnouncementBar` template (a cabinet-made one may exist) is allowed with a
+  warning in the command report and the push plan, never silently. Keep the composite-copy gate comparing
+  widget, `template_id` and settings — the server stores all three once per section id,
+  from the parent copy. Switching a slot between the built-in widget and a template is
+  `section set --widget` on the slot only: every page copy at once, a template only with the
+  slot's own alias, the built-in widget only the slot's own, settings validated against the
+  new widget or template, a store-wide warning in the report and the plan — and the same
+  command with the other widget is the way back. Keep all of that together.
 - Section templates live outside content versions: the write does not carry them and no
   version revert touches them. The push gate refusing a workspace with modified
   `section_templates` is a safety boundary — do not remove it. Markup previews go through
   a new template plus a `template_id` rebind, never through editing a live template.
+  `content templates-sync` (and `templates create --work`) only ever adds templates the
+  snapshot lacks, to the working copy and the base alike, refreshing the base digest and
+  never the base version; a known template that changed on the server is reported, never
+  replaced, and nothing edits one side alone.
 - `POST /constructor-api/migrate` may only ever be sent with strictly empty settings
   (`schema widget-version`). On real data migrate overwrites content with placeholders —
   never add a code path that sends live settings to it.
 - Template update/delete, media deletion, page attachment, and mass-destructive operations
   are unavailable. Refuse them locally, without an API call.
 - Pages have no endpoint of their own: they travel only inside the full-replace body.
-  The page rules in `scripts/kitlib/pages.py` (canonical patterns, alias catalog, variant
-  derivation, hidden-status subset, protected default pages) mirror the server validators —
-  keep them in sync with the backend and never weaken the protected-page removal refusal.
+  The page rules in `scripts/kitlib/pages.py` are of five kinds, named as in its module
+  docstring and labelled where they are checked: server refusals mirrored (an unknown alias,
+  an empty or malformed custom address, a `~` route on a custom page, two pages on one
+  pattern, two default pages per alias, `hidden` on an alias that may not be hidden, SEO
+  meta on a dynamic pattern, the removal of a default page with an alias); rules that differ between backend versions — the pattern of an
+  aliased page: an older backend refuses anything but its own entry, a newer one writes its
+  canonical pattern — so it is sent as read and never rewritten from the client's table;
+  server rewrites refused — a custom page on a whole canonical pattern, which the server
+  makes that system page (silently when the store lacks it, with 400 when the store has
+  it); client policy stricter than the server (a custom page on a route of a system page
+  the store has; variant/exact derivation; the aliases `page add` does not create); and
+  plan warnings. A page a menu item links to cannot be removed — the server refuses the
+  whole write with 400 — and the menu is not readable here, so `page remove` says so
+  instead of predicting a cascade. Keep the tables in sync with the
+  backend by hand — the suite pins them to a snapshot and cannot see the backend change —
+  and never weaken the protected-page removal refusal.
+  `section status` and the hidden-status push gate mirror the server's table of widgets that
+  may be stored `hidden` (`HIDEABLE_SECTION_WIDGETS`); keep it in sync by hand like the
+  alias tables. `section remove --page` keeps the server's composite rule — one parent per
+  section id — by promoting a remaining copy, and never takes a header or footer slot off
+  one page.
+  The custom-address character rule is newer than some serving backends: an address the
+  edit introduces blocks, a stored one is a plan warning. Turn the warning into a gate only
+  once every contour the skill talks to is known to have the rule.
   `variant_type` and `exact` are derived values: never add a code path that lets a caller
   set them by hand. Assigning productCard/categoryAndCollection variants to specific
-  products or collections is a separate entity and stays out of this skill.
+  products or collections is a separate entity and stays out of this skill — but removing
+  an alternative variant clears its assignments on the server, and no revert or
+  no-publish write restores them, so `page remove` and the push plan keep saying so.
 - There is **no DELETE route** for section templates. Anything created against a live
   contour must be recorded in artifacts and removed by hand through the B2B cabinet — say
   so instead of implying cleanup happened.

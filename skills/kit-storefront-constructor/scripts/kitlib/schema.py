@@ -45,8 +45,9 @@ def resolve_bff_url(override: "str | None") -> str:
 
     Derivation only works when the Core API and the storefront share a host. They
     do not on production, where the Core API is a separate gateway — there the
-    origin is the store's own storefront, which `kit.py store` reports as
-    `b2c_url`. This function performs no network call; it refuses instead.
+    origin is the store's own storefront: the `b2c_url` that the `yandex-kit-cabinet`
+    skill reports for the store, or the address the user's customers open. This
+    function performs no network call; it refuses instead.
     """
     candidate = (override or os.environ.get("KIT_BFF_BASE_URL", "")).strip().rstrip("/")
     if candidate:
@@ -59,10 +60,12 @@ def resolve_bff_url(override: "str | None") -> str:
         return f"https://{core_host}"
     raise UsageError(
         "The storefront address is not set, and it cannot be worked out from the store "
-        "API address. Run `kit.py store`: the `b2c_url` it reports is the address of "
-        "this store's own site, which is what is needed here. Pass it as --bff-url or "
-        "set KIT_BFF_BASE_URL. Take the value as it comes — do not build it from the "
-        "store name, because a store on its own domain has a different one."
+        "API address. What is needed is the address of this store's own site: the "
+        "`b2c_url` that `scripts/kit.py store` of the yandex-kit-cabinet skill reports, "
+        "or — without that skill — the address the user's customers open, asked from "
+        "the user. Pass it as --bff-url or set KIT_BFF_BASE_URL. Take the value as it "
+        "comes — do not build it from the store name, because a store on its own domain "
+        "has a different one."
     )
 
 
@@ -73,8 +76,10 @@ def cache_dir() -> Path:
 
 
 def _cache_key(bff_url: str) -> str:
-    host = re.sub(r"^https?://", "", bff_url).split("/", 1)[0]
-    return re.sub(r"[^A-Za-z0-9.-]", "_", host)
+    # A host name is case-insensitive: `Store.example` and `store.example` share one cache
+    # entry, also on a case-sensitive file system.
+    host = re.sub(r"^https?://", "", bff_url.strip()).split("/", 1)[0].lower()
+    return re.sub(r"[^a-z0-9.-]", "_", host)
 
 
 def cache_paths(bff_url: str) -> "tuple[Path, Path]":
@@ -205,6 +210,14 @@ def load_cached_schema(bff_url: "str | None" = None) -> "dict[str, object]":
 # --- $ref resolution -------------------------------------------------------------------
 
 
+class MissingDefinition(UsageError):
+    """A `$ref` names a definition the definitions at hand do not have."""
+
+    def __init__(self, name: str) -> None:
+        super().__init__(f"BFF schema $ref points to a missing definition: {name}.")
+        self.name = name
+
+
 def resolve_node(
     node: object,
     definitions: "dict[str, object]",
@@ -221,9 +234,41 @@ def resolve_node(
             raise UsageError(f"Unsupported $ref target: {reference}.")
         ref_name = reference[len("#/definitions/") :]
         if ref_name not in definitions:
-            raise UsageError(f"BFF schema $ref points to a missing definition: {ref_name}.")
+            raise MissingDefinition(ref_name)
         node = definitions[ref_name]
     return node, ref_name
+
+
+def resolve_annotated(
+    node: object,
+    definitions: "dict[str, object]",
+) -> "tuple[object, str | None]":
+    """Follow a $ref chain like `resolve_node`, keeping the keywords written next to each $ref.
+
+    In this document a `$ref` routinely carries siblings — `default`, `title`, `options`,
+    on a few numeric fields `minimum`/`maximum` — and the storefront editor takes them from
+    there: `logo` is `{"$ref": CompanyLogoSize, "default": "md"}`, while CompanyLogoSize is
+    a bare enum starting at `xs`. Dropping the siblings builds a skeleton from the wrong
+    values and hides the real defaults from the projection. The sibling closest to the
+    property wins over one further down the chain.
+
+    Used for skeletons and projections only. Validation keeps draft-07 semantics, where
+    keywords next to a `$ref` do not constrain the instance.
+    """
+    resolved, ref_name = resolve_node(node, definitions)  # validates the chain: cycles, targets
+    overlays: "list[dict[str, object]]" = []
+    current = node
+    while isinstance(current, dict) and isinstance(current.get("$ref"), str):
+        siblings = {key: value for key, value in current.items() if key != "$ref"}
+        if siblings:
+            overlays.append(siblings)
+        current = definitions[str(current["$ref"])[len("#/definitions/") :]]
+    if not overlays or not isinstance(resolved, dict):
+        return resolved, ref_name
+    merged = dict(resolved)
+    for siblings in reversed(overlays):  # innermost first, so the outermost is applied last
+        merged.update(siblings)
+    return merged, ref_name
 
 
 def widget_schema(document: "dict[str, object]", widget: str) -> "dict[str, object]":
@@ -330,6 +375,27 @@ def validate_instance(
 # --- skeleton --------------------------------------------------------------------------
 
 
+def _is_number(value: object) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def _default_candidates(node: object, definitions: "dict[str, object]") -> "list[object]":
+    """Every `default` along a $ref chain, the one closest to the property first.
+
+    The chain was already checked by `resolve_node` (targets exist, no cycle).
+    """
+    candidates: "list[object]" = []
+    current = node
+    while isinstance(current, dict):
+        if "default" in current:
+            candidates.append(current["default"])
+        reference = current.get("$ref")
+        if not isinstance(reference, str):
+            break
+        current = definitions[reference[len("#/definitions/") :]]
+    return candidates
+
+
 def build_skeleton(schema: object, definitions: "dict[str, object]", _depth: int = 0) -> object:
     """Build a minimal instance from defaults so it validates against its own schema."""
     if _depth > 64:
@@ -338,17 +404,27 @@ def build_skeleton(schema: object, definitions: "dict[str, object]", _depth: int
         return {} if schema else None
     if not isinstance(schema, dict):
         raise UsageError("Schema node must be an object to build a skeleton.")
-    schema, _ref = resolve_node(schema, definitions)
+    # Defaults written next to a $ref are the editor's defaults; see `resolve_annotated`.
+    # Every candidate has to pass both the merged node and the draft-07 reading of the
+    # raw node (the referenced definition alone), because the final self-check in
+    # `build_widget_skeleton` uses the latter. A candidate failing either is skipped
+    # for the next one down the chain, ending with the definition's own default.
+    raw = schema
+    plain, _plain_ref = resolve_node(raw, definitions)
+    schema, _ref = resolve_annotated(raw, definitions)
     if isinstance(schema, bool):
         return {}
     assert isinstance(schema, dict)
 
     if "const" in schema:
         return copy.deepcopy(schema["const"])
-    if "default" in schema and not isinstance(schema.get("default"), dict):
-        candidate = copy.deepcopy(schema["default"])
-        if not validate_instance(candidate, schema, definitions):
-            return candidate
+    for candidate in _default_candidates(raw, definitions):
+        if isinstance(candidate, dict):
+            continue  # an object default is the base the object branch below starts from
+        if not validate_instance(candidate, schema, definitions) and not validate_instance(
+            candidate, raw, definitions
+        ):
+            return copy.deepcopy(candidate)
 
     if "anyOf" in schema and isinstance(schema["anyOf"], list):
         for branch in schema["anyOf"]:
@@ -372,7 +448,7 @@ def build_skeleton(schema: object, definitions: "dict[str, object]", _depth: int
         for name, subschema in properties.items():
             if name in result:
                 continue
-            resolved, _sub_ref = resolve_node(subschema, definitions)
+            resolved, _sub_ref = resolve_annotated(subschema, definitions)
             has_default = isinstance(resolved, dict) and "default" in resolved
             if name in required or has_default:
                 result[name] = build_skeleton(subschema, definitions, _depth + 1)
@@ -383,11 +459,14 @@ def build_skeleton(schema: object, definitions: "dict[str, object]", _depth: int
     if type_name == "string":
         return ""
     if type_name == "integer" or type_name == "number":
-        minimum = schema.get("minimum")
-        value: object = minimum if isinstance(minimum, (int, float)) else 0
-        maximum = schema.get("maximum")
-        if isinstance(maximum, (int, float)) and isinstance(value, (int, float)) and value > maximum:
-            value = maximum
+        # Bounds from both readings, the tighter one winning: a sibling bound looser than
+        # the definition's would otherwise pick a value the draft-07 self-check rejects.
+        bounded = [node for node in (schema, plain) if isinstance(node, dict)]
+        minimums = [node["minimum"] for node in bounded if _is_number(node.get("minimum"))]
+        maximums = [node["maximum"] for node in bounded if _is_number(node.get("maximum"))]
+        value: object = max(minimums) if minimums else 0
+        if maximums and isinstance(value, (int, float)) and value > min(maximums):
+            value = min(maximums)
         return value
     if type_name == "boolean":
         return False
@@ -439,7 +518,7 @@ def _project_object_schema(
     definitions: "dict[str, object]",
     label: str,
 ) -> "dict[str, object]":
-    resolved, ref_name = resolve_node(schema, definitions)
+    resolved, ref_name = resolve_annotated(schema, definitions)
     resolved = require_mapping(resolved, label)
     properties = resolved.get("properties")
     properties = properties if isinstance(properties, dict) else {}
@@ -448,7 +527,7 @@ def _project_object_schema(
     fields = []
     for name in sorted(properties):
         try:
-            sub_resolved, sub_ref = resolve_node(properties[name], definitions)
+            sub_resolved, sub_ref = resolve_annotated(properties[name], definitions)
         except UsageError as error:
             fields.append({"name": name, "type": "unresolvable", "error": str(error)})
             continue
@@ -464,6 +543,10 @@ def _project_object_schema(
             enum_values = sub_resolved.get("enum")
             if isinstance(enum_values, list):
                 field["enum"] = enum_values if len(enum_values) <= 8 else f"{len(enum_values)} values"
+            options = sub_resolved.get("options")
+            if isinstance(options, list) and 0 < len(options) <= 8 and all(isinstance(o, str) for o in options):
+                # The editor's labels for the enum values, in the same order.
+                field["options"] = options
             title = sub_resolved.get("title") or sub_resolved.get("description")
             if isinstance(title, str) and title:
                 field["title"] = title[:120]
