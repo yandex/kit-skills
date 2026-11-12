@@ -31,6 +31,35 @@ Response: `{"answer": "<generated text>"}`.
 The prompt comes from `--prompt`, `--prompt-file`, or stdin. `--dry-run` prints
 the prepared request without sending it.
 
+## Заглушка: агент выключен на сервере
+
+Сервер умеет выключить агентов, не убирая ручки. Тогда и `data-analyst`, и
+`support` на любой промпт отвечают одной и той же заглушкой:
+
+- код ответа — **`200`**, тело — обычное `{"answer": "…"}`;
+- `answer` начинается словами **«ИИ-помощник временно недоступен»**, дальше —
+  приглашение написать в поддержку.
+
+По статусу и форме это неотличимо от ответа, поэтому клиент узнаёт заглушку по
+первым словам `answer` и не выдаёт её за результат:
+
+```json
+{"unavailable": true, "answer": "ИИ-помощник временно недоступен. …"}
+```
+
+— на stdout, с пояснением на stderr и кодом выхода **`1`**. Что делать дальше:
+
+- **не пересказывать заглушку как ответ ассистента** и не цитировать её
+  контакты как решение вопроса пользователя;
+- **не повторять промпт** — ни сразу, ни в цикле: пока агент выключен, ответ
+  тот же;
+- вопрос про данные магазина посчитать самому по `list /v1/orders` и
+  `list /v1/variants`, назвав покрытие (см. `workflow.md`), или честно сказать,
+  что сводные показатели сейчас есть только в кабинете, раздел «Главная».
+  Трафика и конверсии в публичном API нет — их без ассистента не получить;
+- вопрос о работе с кабинетом — ответить по справочным страницам скила и
+  таблице «Чего в публичном API нет» в `SKILL.md`, называя раздел кабинета.
+
 ### `analyst` — data-analyst agent
 
 Answers questions about the store's own data and assembles free-form reports:
@@ -41,15 +70,18 @@ prompt can ask for something no single endpoint returns («сравни выру
 
 Prefer a real endpoint when one answers exactly — `api GET /v1/orders` for a
 list of orders, `api GET /v1/variants` for a catalog dump. The agent is for
-interpretation and reporting, not for fetching records.
+interpretation and reporting, not for fetching records — and only while it is
+switched on (see «Заглушка» above).
 
 ### `support` — support agent
 
 Answers how-to questions about the cabinet and its features, grounded in the
 product documentation: как добавить товар, как настроить доставку или оплату,
-где включить промокоды, что умеет тот или иной раздел. It is the honest answer
-for areas that have **no public API** (например, конструктор витрины): the agent
-explains how to do it in the UI instead of the skill improvising an endpoint.
+где включить промокоды, что умеет тот или иной раздел. When it is on, it is the
+honest answer for areas that have **no public API** (например, конструктор
+витрины): the agent explains how to do it in the UI instead of the skill
+improvising an endpoint. When it answers with the stub, the same job falls to
+the table «Чего в публичном API нет» in `SKILL.md`.
 
 ## Диалога нет: каждый вызов независим
 
@@ -134,4 +166,5 @@ Do not add either. The rest of the experimental specification
 | 504 | A gateway gave up before the agent answered. Not an application error — the body is plain text with no `trace_id`. Retry once, serially. |
 
 Error bodies are `{"code", "message", "trace_id"}` — quote `trace_id` when
-reporting a failure.
+reporting a failure. The stub of a switched-off agent is not in this table: it
+arrives as `200` (see «Заглушка» above).

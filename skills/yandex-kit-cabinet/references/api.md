@@ -125,14 +125,18 @@ kit.py ask support --prompt "..."   # AI-ассистент: как пользо
 Exit codes:
 
 - `0` — success.
-- `1` — API/network error the API decided (non-2xx it answered, failed read).
-- `2` — usage error, missing token, or a request body that violates the
-  documented schema (nothing was sent).
+- `1` — API/network error the API decided (non-2xx it answered, failed read),
+  or an `ask` agent that answered with the server's «switched off» stub
+  (`"unavailable": true`, see [`ai-assistant.md`](ai-assistant.md)).
+- `2` — usage error, missing token, a missing required query parameter, or a
+  request body that violates the documented schema (nothing was sent).
 - `3` — mutating operation refused (no `--confirm`).
 - `4` — **ambiguous write**: timeout, dropped connection, 408 or 5xx on a
   mutating call. The request may or may not have been applied. Verify with a
   read; never resend it blindly. See
-  [`workflow.md`](workflow.md#write-outcomes).
+  [`workflow.md`](workflow.md#write-outcomes). A file upload is the exception:
+  it exits `1` with «повтор безопасен», because an unattached file changes
+  nothing and there is no id to read back.
 
 ## Offline validation of a request body
 
@@ -165,8 +169,9 @@ spec and sets the header itself — `describe` prints which one applies.
 
 - Pagination is `page` + `per_page` (not `limit`/`offset`, `per_page` max 100);
   unknown query params are silently ignored. `kit.py list <path>` walks every
-  page and states whether the coverage is `complete` or `partial` — prefer it
-  over a single `api GET` whenever the count matters
+  page and states whether the coverage is `complete`, `partial` or `failed`
+  (not one page came back, exit `1` — never «0 объектов») — prefer it over a
+  single `api GET` whenever the count matters
   ([`workflow.md`](workflow.md#coverage-how-much-did-you-actually-read)).
 - List responses are wrapped: `{"<resource>": [...], "total_count": N}`.
 - Nine list endpoints **require** the `status` query param (omitting it is a
@@ -174,6 +179,9 @@ spec and sets the header itself — `describe` prints which one applies.
   `/v1/warehouses`, `/v1/promocodes`, `/v1/collections`, `/v1/blogs`,
   `/v1/discounts`, `/v1/videos`, `/v1/alerts`. The allowed values differ per
   endpoint — check with `kit.py describe GET <path>` instead of guessing.
+  `list` and `api GET` check required parameters against the spec before
+  sending: a missing one is refused with exit `2` and the allowed values
+  (`-q status=ACTIVE`; for an array parameter repeat `-q` to pass several).
 - IDs are UUIDv7 strings. Errors look like
   `{"code": "VALIDATION_ERROR", "message": "...", "trace_id": "..."}`.
 
@@ -211,12 +219,14 @@ needs. Mutating = POST/PUT/PATCH/DELETE (all need `--confirm`).
 | Коллекций (статических/динамических) и контекстных коллекций | [`collections.md`](collections.md) |
 | Заказов и клиентов | [`orders.md`](orders.md) |
 | Блога (новостей), редиректов, вебхуков, гео | [`site.md`](site.md) |
-| Вопросов к AI-ассистенту: аналитика магазина, справка по кабинету | [`ai-assistant.md`](ai-assistant.md) |
+| Вопросов к AI-ассистенту: аналитика магазина, справка по кабинету; заглушка выключенного агента | [`ai-assistant.md`](ai-assistant.md) |
 
-Витрина (конструктор: страницы, секции, меню, кастомные секции) **не покрыта
+Витрина (конструктор: страницы, секции, кастомные секции) **не покрыта
 публичным API**; не обходите это скрейпингом кабинета. Это граница этого скила,
 а не отказ пользователю: страницы, секции, тему и публикацию ведёт скил
 `kit-storefront-constructor`, вёрстку кастомной секции — `kit-custom-sections`.
+Меню витрины, баннеры и модальные окна не ведёт ни один скил — только кабинет,
+«Редактор сайта» (таблица «Чего в публичном API нет» в `SKILL.md`).
 
 ### Магазин и пользователь (core)
 

@@ -30,7 +30,8 @@ Usage examples:
 
 Exit codes:
   0 — success
-  1 — API/network error, or a request body that violates the documented schema
+  1 — API/network error, a list that could not read a single page, or an AI
+      agent that answered with the server's «switched off» notice
   2 — usage error or missing token
   3 — mutating operation refused (no --confirm)
   4 — write outcome ambiguous: the request may or may not have been applied.
@@ -54,6 +55,7 @@ import uuid
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
 
@@ -75,6 +77,15 @@ TELEMETRY_OPT_OUT_VARIABLE: str = "YANDEX_KIT_SKILLS_TELEMETRY_DISABLED"
 # bodies. The API does not serve its own spec in production, so `describe` and
 # `schema` read this file instead of guessing or calling the network.
 SPEC_FILE = Path(__file__).resolve().parent.parent / "references" / "openapi.json"
+# The spec is vendored verbatim and re-synced, never hand-edited, so a description
+# that is plainly wrong upstream is corrected here, on load, where a re-sync cannot
+# undo it. Prose only: a type, an enum or a required list is the contract, and a
+# wrong contract is reported upstream rather than papered over in the client.
+SPEC_DESCRIPTION_CORRECTIONS: dict[str, str] = {
+    # Every schema that references it (Characteristic, ProductSettings,
+    # VariantCharacteristic) holds a characteristic id, never a category id.
+    "CharacteristicID": "Идентификатор характеристики",
+}
 MAX_SCHEMA_DEPTH = 3
 REQUEST_TIMEOUT_SECONDS = 30
 # Public API limit is 10 rps per store; retry a few times on 429.
@@ -97,6 +108,10 @@ AI_AGENTS = {
 }
 # Agents generate text, so they answer in tens of seconds rather than instantly.
 AI_AGENT_TIMEOUT_SECONDS = 180
+# The server can switch the agents off and answer every prompt with a fixed notice
+# instead — HTTP 200, the notice in `answer`. Printed as-is it reads as the agent's
+# reply, so it is recognised by its opening words and reported as what it is.
+AI_UNAVAILABLE_MARKERS = ("ИИ-помощник временно недоступен",)
 # One prefix contract, shared by the entry surfaces and by redaction: a token is
 # only accepted in the shape `redact_secrets` below can recognise, so a token
 # this client holds can never be one it fails to hide.
@@ -573,27 +588,63 @@ AMBIGUOUS_NOTE = (
     "Do NOT resend this request. Read the object back to establish the real state;\n"
     "if the read cannot settle it, report «результат неизвестен, нужна проверка»."
 )
+# A product with one variant has no grouping characteristic, and the API refuses
+# a second variant (POST /v1/variants) or a variant moved in (PATCH product_id)
+# with this message. The body was valid, so `validate` cannot see it coming;
+# the order of steps is the fix, and the error does not say what it is.
+GROUPING_ERROR_MARKER = "группирующие характеристики"
+GROUPING_HINT = (
+    "Подсказка: у продукта не настроены группирующие характеристики. Второй товар в продукт\n"
+    "(и перенос товара через product_id) API примет только после этого:\n"
+    "  1. kit.py api PATCH /v1/products/<product_id> --data "
+    "'{\"settings\": {\"grouping_characteristic_ids\": [\"<id характеристики>\"], "
+    "\"splitting_characteristic_ids\": []}}' --confirm\n"
+    "  2. у каждого товара продукта — своё значение этой характеристики (в characteristics);\n"
+    "  3. затем повторите создание или перенос товара.\n"
+    "Подробно: references/catalog.md, «Продукт с несколькими товарами»."
+)
+# An upload is the one write where «read it back» has nothing to read: the id
+# never arrived and there is no file listing. It is also the one write where a
+# repeat is harmless — a file is attached to nothing until its id is put on a
+# product or a document — so the advice is the opposite of AMBIGUOUS_NOTE.
+UPLOAD_UNKNOWN_NOTE = (
+    "outcome: unknown — the file may have reached the store, but its id did not come back.\n"
+    "Файл ни к чему не привязан, пока его id не указан в товаре или документе, поэтому\n"
+    "повтор безопасен: запустите upload ещё раз и берите id из нового ответа. Лишний файл,\n"
+    "если он всё же загрузился, останется неиспользованным и ничего не изменит."
+)
 
 
 def _report_body_validation(method: str, path: str, body: object) -> tuple[list[str], list[str]]:
-    """Print schema violations and unknown-field warnings; return both."""
+    """Print schema violations and warnings; return (errors, all warnings)."""
     errors = validate_request_body(method, path, body)
-    warnings = unknown_fields(request_schema(method, path) or {}, body)
+    schema = request_schema(method, path) or {}
+    unknown = unknown_fields(schema, body)
+    deprecated = deprecated_fields(schema, body)
+    advisories = body_advisories(method, path, body)
     if errors:
         print(f"INVALID — {len(errors)} violation(s) against the documented schema:", file=sys.stderr)
         for error in errors:
             print(f"  - {error}", file=sys.stderr)
-    if warnings:
+    if unknown:
         print(
             "Warning — fields the spec does not document (the API ignores them "
             "silently, so the write would look successful while doing nothing):",
             file=sys.stderr,
         )
-        for warning in warnings:
+        for warning in unknown:
             print(f"  - {warning}", file=sys.stderr)
-    if errors or warnings:
+    if deprecated:
+        print("Warning — deprecated fields (the API still accepts them; send the replacement):", file=sys.stderr)
+        for warning in deprecated:
+            print(f"  - {warning}", file=sys.stderr)
+    if advisories:
+        print("Warning — the API will accept this, but the result is not what it looks like:", file=sys.stderr)
+        for warning in advisories:
+            print(f"  - {warning}", file=sys.stderr)
+    if errors or unknown or deprecated:
         print(f"Build the body from:  kit.py describe {method} {path}", file=sys.stderr)
-    return errors, warnings
+    return errors, unknown + deprecated + advisories
 
 
 def _call(
@@ -613,6 +664,13 @@ def _call(
             file=sys.stderr,
         )
         return EXIT_USAGE
+    if method == "GET":
+        # A missing required filter is a 400 the spec could have predicted; read
+        # through `list` it used to surface as «partial coverage» of nothing.
+        missing = missing_query_params(method, path, getattr(args, "query", None))
+        if missing:
+            print(missing_query_message(method, path, missing), file=sys.stderr)
+            return EXIT_USAGE
     url = f"{_base_url(args)}{path}{_parse_query(getattr(args, 'query', None))}"
     mutating = method in MUTATING_METHODS
     if mutating and not args.confirm:
@@ -668,10 +726,15 @@ def _call(
         )
     except ApiError as error:
         print(str(error), file=sys.stderr)
+        if error.ambiguous and upload_file is not None:
+            print(UPLOAD_UNKNOWN_NOTE, file=sys.stderr)
+            return EXIT_API_ERROR
         if error.ambiguous:
             print(AMBIGUOUS_NOTE, file=sys.stderr)
         elif mutating:
             print("outcome: failed — the API rejected the request, the store is unchanged.", file=sys.stderr)
+            if GROUPING_ERROR_MARKER in str(error).lower():
+                print(GROUPING_HINT, file=sys.stderr)
         return error.exit_code
 
     payload = redact_payload(result) if getattr(args, "redact", False) else result
@@ -687,9 +750,9 @@ def _call(
 
 @lru_cache(maxsize=1)
 def _load_spec() -> dict:
-    """Load the vendored specification (once per process)."""
+    """Load the vendored specification (once per process), with prose corrections."""
     try:
-        return json.loads(SPEC_FILE.read_text(encoding="utf-8"))
+        spec = json.loads(SPEC_FILE.read_text(encoding="utf-8"))
     except OSError as error:
         print(
             f"Cannot read the bundled API spec ({SPEC_FILE}): {error}\n"
@@ -700,6 +763,11 @@ def _load_spec() -> dict:
     except json.JSONDecodeError as error:
         print(f"Bundled API spec is not valid JSON: {error}", file=sys.stderr)
         raise SystemExit(EXIT_USAGE)
+    schemas = spec.get("components", {}).get("schemas", {}) if isinstance(spec, dict) else {}
+    for name, description in SPEC_DESCRIPTION_CORRECTIONS.items():
+        if isinstance(schemas.get(name), dict):
+            schemas[name]["description"] = description
+    return spec
 
 
 def _spec_operations(spec: dict) -> list[tuple[str, str, dict]]:
@@ -829,33 +897,118 @@ def request_schema(method: str, path: str) -> dict | None:
     return resolved if isinstance(resolved, dict) else None
 
 
-def required_query_params(method: str, path: str) -> list[str]:
-    """Return the query parameters the spec marks required."""
+def _query_parameters(method: str, path: str) -> list[dict]:
+    """Every resolved query parameter the spec documents for an operation."""
     _template, operation = operation_for(method, path)
     if not isinstance(operation, dict):
         return []
     return [
-        parameter["name"]
+        parameter
         for parameter in (resolve(item) for item in operation.get("parameters", []))
-        if isinstance(parameter, dict) and parameter.get("in") == "query" and parameter.get("required")
+        if isinstance(parameter, dict) and parameter.get("in") == "query"
     ]
 
 
-def validate_value(schema: dict, value: object, where: str = "body") -> list[str]:
-    """Validate a value against the OpenAPI subset this specification uses."""
+def required_query_params(method: str, path: str) -> list[str]:
+    """Return the query parameters the spec marks required."""
+    return [parameter["name"] for parameter in _query_parameters(method, path) if parameter.get("required")]
+
+
+def missing_query_params(method: str, path: str, pairs: list[str] | None) -> list[str]:
+    """Required query parameters that neither `-q` nor the path's own query supplies."""
+    split = urllib.parse.urlsplit(path)
+    supplied = {key for key, _value in urllib.parse.parse_qsl(split.query, keep_blank_values=True)}
+    supplied.update(pair.split("=", 1)[0] for pair in pairs or [])
+    return [name for name in required_query_params(method, split.path) if name not in supplied]
+
+
+def missing_query_message(method: str, path: str, missing: list[str]) -> str:
+    """Say which required query parameter is absent and how to pass it, values from the spec."""
+    split_path = urllib.parse.urlsplit(path).path
+    template = match_route(split_path) or split_path
+    by_name = {parameter.get("name"): parameter for parameter in _query_parameters(method, split_path)}
+    lines = []
+    for name in missing:
+        schema = by_name.get(name, {}).get("schema") or {}
+        repeated = schema.get("type") == "array"
+        values = (schema.get("items") or {}).get("enum") if repeated else schema.get("enum")
+        allowed = f" ({'|'.join(str(value) for value in values)})" if values else ""
+        example = values[0] if values else "…"
+        line = f"у {method} {template} обязателен {name}{allowed} — добавьте -q {name}={example}"
+        if repeated:
+            line += f"; несколько значений — повторите -q {name}=…"
+        lines.append(line)
+    lines.append("Без него API отвечает 400 — запрос не отправлен. Список параметров: kit.py describe GET " + template)
+    return "\n".join(lines)
+
+
+def _is_deprecated(schema: object) -> bool:
+    return isinstance(schema, dict) and bool(schema.get("deprecated"))
+
+
+def deprecation_note(operation: dict, spec: dict) -> str | None:
+    """What the spec says to use instead of a deprecated operation, or None.
+
+    The spec says it in one of two places: a line of the operation's own
+    description that starts with «Deprecated», or a paragraph of its tag's
+    description («Методы устарели — используйте методы раздела …»). Printing it
+    next to the `(deprecated)` mark keeps the mark from reading as a ban: the
+    operation still answers, and the replacement is named where it is seen.
+    """
+    if not _is_deprecated(operation):
+        return None
+    for line in str(operation.get("description", "")).splitlines():
+        if line.strip().lower().startswith("deprecated"):
+            return line.strip()
+    tags = {tag.get("name"): tag for tag in spec.get("tags", []) if isinstance(tag, dict)}
+    for name in operation.get("tags", []):
+        for paragraph in str(tags.get(name, {}).get("description", "")).split("\n\n"):
+            if "устарел" in paragraph.lower() or "deprecated" in paragraph.lower():
+                return " ".join(paragraph.split())
+    return None
+
+
+def successor_field(name: str, properties: dict) -> str | None:
+    """The field that replaced a deprecated one, e.g. `value` → `values`.
+
+    The spec marks the old spelling deprecated but names no replacement, so the
+    convention is read off the schema itself: the plural of the same name, not
+    deprecated. One field in the whole spec follows it today; a field that does
+    not simply has no successor.
+    """
+    candidate = name + "s"
+    prop = properties.get(candidate)
+    return candidate if isinstance(prop, dict) and not _is_deprecated(prop) else None
+
+
+def validate_value(schema: dict, value: object, where: str = "body", *, request: bool = True) -> list[str]:
+    """Validate a value against the OpenAPI subset this specification uses.
+
+    One rule depends on the direction, hence `request`. In a request (the
+    default, and the only use in this client) a deprecated property is never
+    required, even where the spec still lists it in `required` —
+    `VariantCharacteristic.value` is both. The server takes `values` and fills
+    `value` itself; a body that sends only the old spelling still counts for its
+    successor (the server reads it when `values` is empty), and
+    `deprecated_fields` warns about it. A body with neither stays invalid.
+
+    `request=False` checks what the server sends — a response, or a spec example
+    used to build one. The server still fills deprecated fields there, so
+    `required` is taken literally and neither relaxation applies.
+    """
     if not isinstance(schema, dict) or not schema:
         return []
 
     for variant in ("oneOf", "anyOf"):
         options = schema.get(variant)
         if isinstance(options, list) and options:
-            if any(not validate_value(option, value, where) for option in options):
+            if any(not validate_value(option, value, where, request=request) for option in options):
                 return []
             return [f"{where}: does not match any {variant} variant"]
     if isinstance(schema.get("allOf"), list):
         errors: list[str] = []
         for option in schema["allOf"]:
-            errors.extend(validate_value(option, value, where))
+            errors.extend(validate_value(option, value, where, request=request))
         return errors
 
     if value is None:
@@ -878,17 +1031,23 @@ def validate_value(schema: dict, value: object, where: str = "body") -> list[str
         if not isinstance(value, dict):
             return [f"{where}: must be object, got {type(value).__name__}"]
         properties = schema.get("properties") or {}
+        deprecated: set[str] = set()
+        stood_in: set[str | None] = set()
+        if request:
+            deprecated = {name for name, prop in properties.items() if _is_deprecated(prop)}
+            stood_in = {successor_field(name, properties) for name in deprecated if name in value}
         for name in schema.get("required") or []:
-            if name not in value:
-                errors.append(f"{where}: missing required field {name!r}")
+            if name in value or name in deprecated or name in stood_in:
+                continue
+            errors.append(f"{where}: missing required field {name!r}")
         for name, item in value.items():
             if name in properties:
-                errors.extend(validate_value(properties[name], item, f"{where}.{name}"))
+                errors.extend(validate_value(properties[name], item, f"{where}.{name}", request=request))
     if kind == "array" and isinstance(value, list):
         items = schema.get("items")
         if isinstance(items, dict):
             for index, item in enumerate(value):
-                errors.extend(validate_value(items, item, f"{where}[{index}]"))
+                errors.extend(validate_value(items, item, f"{where}[{index}]", request=request))
     return errors
 
 
@@ -936,6 +1095,93 @@ def unknown_fields(schema: object, value: object, where: str = "body") -> list[s
     elif isinstance(value, list) and isinstance(schema.get("items"), dict):
         for index, item in enumerate(value):
             found.extend(unknown_fields(schema["items"], item, f"{where}[{index}]"))
+    return found
+
+
+def deprecated_fields(schema: object, value: object, where: str = "body") -> list[str]:
+    """Return a warning for every deprecated field the body sends.
+
+    Not an error: the API still accepts the old spelling. But it is on its way
+    out, and the replacement is what the reference pages document, so the
+    warning names it.
+    """
+    if not isinstance(schema, dict) or not schema:
+        return []
+    for variant in ("oneOf", "anyOf"):
+        options = schema.get(variant)
+        if isinstance(options, list) and options:
+            per_option = [deprecated_fields(option, value, where) for option in options]
+            return sorted(set.intersection(*(set(item) for item in per_option)))
+    if isinstance(schema.get("allOf"), list):
+        documented: dict[str, object] = {}
+        for option in schema["allOf"]:
+            documented.update((option if isinstance(option, dict) else {}).get("properties") or {})
+        schema = {"type": "object", "properties": documented}
+
+    found: list[str] = []
+    if isinstance(value, dict):
+        properties = schema.get("properties") or {}
+        for name, item in value.items():
+            prop = properties.get(name)
+            if _is_deprecated(prop):
+                successor = successor_field(name, properties)
+                if successor is None:
+                    found.append(f"{where}.{name}: устарело (deprecated)")
+                elif successor in value:
+                    found.append(f"{where}.{name}: устарело — хватит одного {successor}, это поле уберите")
+                else:
+                    found.append(f"{where}.{name}: устарело — шлите {successor}")
+            elif isinstance(prop, dict):
+                found.extend(deprecated_fields(prop, item, f"{where}.{name}"))
+    elif isinstance(value, list) and isinstance(schema.get("items"), dict):
+        for index, item in enumerate(value):
+            found.extend(deprecated_fields(schema["items"], item, f"{where}[{index}]"))
+    return found
+
+
+BLOG_OPERATIONS = frozenset({"CreateBlog", "UpdateBlog"})
+
+
+def _parse_datetime(value: object) -> datetime | None:
+    """ISO 8601 date-time, `Z` included; naive values are read as UTC. None if unparseable."""
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = value.strip()
+    if text.endswith(("Z", "z")):
+        text = text[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+
+
+def body_advisories(method: str, path: str, body: object, now: datetime | None = None) -> list[str]:
+    """Warnings about a valid body that will not do what it looks like it does.
+
+    Not schema violations — the API accepts these with 2xx. An article whose
+    `blog_dates.start_date` lies ahead is saved ACTIVE and simply does not show
+    on the storefront until then, which reads as a broken write.
+    """
+    if operation_id(method, path) not in BLOG_OPERATIONS or not isinstance(body, dict):
+        return []
+    dates = body.get("blog_dates")
+    if not isinstance(dates, dict):
+        return []
+    now = now or datetime.now(timezone.utc)
+    found = []
+    start = _parse_datetime(dates.get("start_date"))
+    if start is not None and start > now:
+        found.append(
+            f"body.blog_dates.start_date {dates['start_date']} ещё не наступила: статья сохранится, "
+            "но на витрине её не будет до этого момента. Публиковать сейчас — ставьте текущее время."
+        )
+    end = _parse_datetime(dates.get("end_date"))
+    if end is not None and end <= now:
+        found.append(
+            f"body.blog_dates.end_date {dates['end_date']} уже прошла: статья на витрине не покажется. "
+            "Уберите end_date или поставьте дату в будущем."
+        )
     return found
 
 
@@ -996,8 +1242,14 @@ def _render_schema(schema: dict, indent: str = "  ") -> list[str]:
     width = min(max((len(name) for name in properties), default=4) + 1, 26)
     for name, prop in properties.items():
         prop = prop if isinstance(prop, dict) else {}
-        mark = "*" if name in required else " "
+        # A deprecated field is never asked of a new request, even where the
+        # spec still lists it as required — so it loses the `*`.
+        deprecated = _is_deprecated(prop)
+        mark = "*" if name in required and not deprecated else " "
         note = str(prop.get("description", "")).replace("\n", " ").strip()
+        if deprecated:
+            successor = successor_field(name, properties)
+            note = f"(deprecated{', use ' + successor if successor else ''}) {note}".strip()
         example = prop.get("example")
         if example is not None and not isinstance(example, (dict, list)):
             # Several spec examples contradict their own type: `price` is a
@@ -1037,9 +1289,15 @@ def _describe(args: argparse.Namespace) -> int:
         print(json.dumps(_resolve(operation, spec), ensure_ascii=False, indent=2))
         return EXIT_OK
 
-    print(f"{method} {template}  — {operation.get('summary', '')}")
+    print(f"{method} {template}  — {operation.get('summary', '')}" + ("  (deprecated)" if _is_deprecated(operation) else ""))
     if operation.get("operationId"):
         print(f"operationId: {operation['operationId']}")
+    if _is_deprecated(operation):
+        note = deprecation_note(operation, spec)
+        print(
+            f"deprecated: {note}" if note else "deprecated: the spec names no replacement.",
+            "The operation still answers; prefer the replacement for new writes.",
+        )
 
     parameters = [_resolve(item, spec) for item in operation.get("parameters", [])]
     if parameters:
@@ -1047,11 +1305,13 @@ def _describe(args: argparse.Namespace) -> int:
         for parameter in parameters:
             if not isinstance(parameter, dict):
                 continue
-            mark = "*" if parameter.get("required") else " "
+            deprecated = _is_deprecated(parameter)
+            mark = "*" if parameter.get("required") and not deprecated else " "
             schema = parameter.get("schema") or {}
+            note = str(parameter.get("description", "")).strip()
             print(
                 f"  {mark} {parameter.get('name', ''):<20} {parameter.get('in', ''):<6} "
-                f"{_type_of(schema):<24} {str(parameter.get('description', '')).strip()}"
+                f"{_type_of(schema):<24} {'(deprecated) ' if deprecated else ''}{note}"
             )
 
     name = _schema_name(body_ref)
@@ -1117,7 +1377,11 @@ def _endpoints(args: argparse.Namespace) -> int:
         body = _schema_name(
             operation.get("requestBody", {}).get("content", {}).get("application/json", {}).get("schema", {})
         )
-        print(f"{method:6} {path:58} {operation.get('summary', '')}" + (f"  [{body}]" if body else ""))
+        print(
+            f"{method:6} {path:58} {operation.get('summary', '')}"
+            + (f"  [{body}]" if body else "")
+            + ("  (deprecated)" if _is_deprecated(operation) else "")
+        )
     print(f"\n{len(rows)} operation(s). Details:  kit.py describe <METHOD> <path>", file=sys.stderr)
     return EXIT_OK
 
@@ -1324,8 +1588,8 @@ def _list(args: argparse.Namespace) -> int:
 
     A single unpaginated read is the quiet way to a wrong report: 100 of 137
     orders look like the whole store. This walks the collection to the end and
-    labels the result `complete` or `partial`, so a partial read can never be
-    presented as the full picture.
+    labels the result `complete`, `partial` or `failed` (not one page read), so
+    a partial read can never be presented as the full picture.
     """
     path = args.path if args.path.startswith("/") else "/" + args.path
     if any(c.isspace() for c in path):
@@ -1333,6 +1597,10 @@ def _list(args: argparse.Namespace) -> int:
         return EXIT_USAGE
     # page/per_page are owned by the walk itself.
     extra = [pair for pair in (args.query or []) if pair.split("=", 1)[0] not in ("page", "per_page")]
+    missing = missing_query_params("GET", path, extra)
+    if missing:
+        print(missing_query_message("GET", path, missing), file=sys.stderr)
+        return EXIT_USAGE
 
     items: list = []
     total_count: int | None = None
@@ -1350,7 +1618,10 @@ def _list(args: argparse.Namespace) -> int:
                 **_telemetry(args),
             )
         except ApiError as error:
-            coverage, note = "partial", f"page {page} failed: {error}"
+            # Nothing read at all is not a smaller version of the collection: it
+            # is a failed read, and a report must not treat it as «0 of N».
+            coverage = "failed" if pages_read == 0 else "partial"
+            note = f"page {page} failed: {error}"
             break
         chunk, total = _list_payload(payload)
         pages_read += 1
@@ -1386,7 +1657,9 @@ def _list(args: argparse.Namespace) -> int:
     if getattr(args, "format", "json") == "csv":
         # Before the coverage verdict: a refused export must never be followed by
         # `coverage: complete`, which would read as a verdict on the whole thing.
-        status = _emit_csv(items, getattr(args, "fields", None), path)
+        # A failed read writes no file at all — a header with no rows reads as
+        # «the store has none».
+        status = _emit_csv(items, getattr(args, "fields", None), path) if coverage != "failed" else EXIT_OK
         if status != EXIT_OK:
             return status
     else:
@@ -1395,13 +1668,20 @@ def _list(args: argparse.Namespace) -> int:
     if coverage == "complete":
         print(f"coverage: complete — {len(items)} item(s) over {pages_read} page(s).", file=sys.stderr)
         return EXIT_OK
+    if coverage == "failed":
+        print(
+            f"coverage: failed — nothing was read: {note}.\n"
+            "There is no data to report on: say the read failed, never «0 items».",
+            file=sys.stderr,
+        )
+        return EXIT_API_ERROR
     print(
         f"coverage: partial — {len(items)} of "
         f"{total_count if total_count is not None else 'unknown'} item(s) over {pages_read} page(s): {note}.\n"
         "State this coverage in the report. A partial read never supports «всё в порядке».",
         file=sys.stderr,
     )
-    return EXIT_OK if pages_read else EXIT_API_ERROR
+    return EXIT_OK
 
 
 def _read_prompt(args: argparse.Namespace) -> str:
@@ -1479,8 +1759,26 @@ def _ask(args: argparse.Namespace) -> int:
         # nothing in the store could have changed. Asking again is safe.
         print(str(error), file=sys.stderr)
         return EXIT_API_ERROR
+    if ai_agent_unavailable(result):
+        answer = result.get("answer") if isinstance(result, dict) else None
+        print(json.dumps({"unavailable": True, "answer": answer}, ensure_ascii=False, indent=2))
+        print(
+            f"Агент {args.agent} выключен на сервере: пришла заглушка, а не ответ (HTTP 200).\n"
+            "Не пересказывайте её как ответ ассистента и не повторяйте вопрос — ответ будет тем же.\n"
+            "Аналитику посчитайте сами по list /v1/orders и list /v1/variants, назвав покрытие, "
+            "или скажите, что сводные показатели сейчас есть только в кабинете (раздел «Главная»). "
+            "Вопрос о кабинете — по справочным страницам скила или в кабинет.",
+            file=sys.stderr,
+        )
+        return EXIT_API_ERROR
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return EXIT_OK
+
+
+def ai_agent_unavailable(result: object) -> bool:
+    """Tell the server's «agent switched off» notice apart from a real answer."""
+    answer = result.get("answer") if isinstance(result, dict) else None
+    return isinstance(answer, str) and answer.lstrip().startswith(AI_UNAVAILABLE_MARKERS)
 
 
 def _add_common_flags(parser: argparse.ArgumentParser) -> None:
@@ -1652,11 +1950,13 @@ def build_parser() -> argparse.ArgumentParser:
     for agent, help_text in (
         (
             "analyst",
-            "Store analytics: sales, orders, traffic, catalog — arbitrary reports from a prompt.",
+            "Store analytics: sales, orders, traffic, catalog — arbitrary reports from a prompt. "
+            "Exits 1 with \"unavailable\": true if the server has the agent switched off.",
         ),
         (
             "support",
-            "How-to questions about the cabinet and its features, answered from the documentation.",
+            "How-to questions about the cabinet and its features, answered from the documentation. "
+            "Exits 1 with \"unavailable\": true if the server has the agent switched off.",
         ),
     ):
         agent_parser = ask_agents.add_parser(agent, help=help_text)

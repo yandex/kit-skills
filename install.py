@@ -40,7 +40,7 @@ AGENT_TARGETS = {
 # this summary is read by the shop owner, not by whoever ran the command. A skill
 # missing from this map still installs — it is simply listed by name.
 SKILL_SUMMARIES = {
-    "yandex-kit-cabinet": "каталог, цены и остатки, заказы, промокоды, аналитика магазина",
+    "yandex-kit-cabinet": "каталог, цены и остатки, заказы, промокоды, подсчёты и выгрузки",
     "kit-store-checkup": "ревизия магазина: что не продаётся, что заканчивается, какие заказы застряли",
     "kit-storefront-constructor": "витрина: страницы, секции, картинки и видео, публикация",
     "kit-custom-sections": "своя секция витрины — свёрстать и проверить, не выходя в сеть",

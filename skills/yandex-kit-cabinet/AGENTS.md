@@ -17,9 +17,22 @@
   locally rejected body) are `failed`; timeout/408/5xx on a mutating call are
   `ambiguous` (`EXIT_AMBIGUOUS`), never retried automatically. A 429 is a plain
   failure — the limiter answered instead of the handler — and stays retryable.
+  The multipart upload is the single exception, on purpose: an unattached file
+  changes nothing and its id never arrived, so there is nothing to read back.
+  It exits `1` with `UPLOAD_UNKNOWN_NOTE` («повтор безопасен»). Do not extend the
+  exception to any write that changes what a buyer or the owner sees.
 - `list` exists so a report can state its coverage. If you change it, keep the
-  `coverage: complete|partial` verdict and the `total_count` gap check: silently
-  returning one page is the failure mode it was written to prevent.
+  `coverage: complete|partial|failed` verdict and the `total_count` gap check:
+  silently returning one page is the failure mode it was written to prevent, and
+  a read that got no page at all is `failed`, never «partial, 0 of unknown».
+- Required query parameters come from the spec (`required_query_params`). `list`
+  and `api GET` check them before any request and refuse with exit `2`, naming
+  the allowed values; do not let a predictable `400` reach the network.
+- The server can switch the AI agents off and answer every prompt with a fixed
+  notice at HTTP `200`. `ai_agent_unavailable` recognises it by its opening
+  words; keep `ask` turning it into `"unavailable": true` and exit `1`. A notice
+  printed as an ordinary answer with exit `0` gets relayed to the owner as the
+  assistant's reply.
 - Prompts are sent to an AI service. Keep the local guards that refuse a blank
   prompt, a prompt containing a token-shaped value, and a prompt containing an
   email address or a phone number. All of them run before the token is loaded
@@ -51,6 +64,15 @@
   the offline source of truth for request bodies. Never hand-edit it: re-sync with
   `python3 tools/sync_openapi.py` from the repo root, which also fails loudly about
   operations the reference pages do not document.
+- A few statements in the pages hold for this spec version only: the spec has
+  no list of files (`workflow.md`, lost upload), `similar/add` links both ways
+  (`catalog.md`), single promocodes are deprecated in favour of groups
+  (`promo.md`). The sync audit keeps them as pinned claims and fails when the
+  new spec stops backing one. Rewrite the page then; do not loosen the check.
+- `describe` and `endpoints` mark a deprecated operation, and `describe` prints
+  the replacement the spec names. A domain page that still lists such an
+  operation must say it is deprecated and what to use instead, or the agent
+  gets two opposite signals.
 - Spec routing and body validation live in `./scripts/kit.py` and are treated as a
   public surface of this module: the evaluation suite re-exports them so that its
   mock validates with exactly the code that ships. Keep them importable and do not

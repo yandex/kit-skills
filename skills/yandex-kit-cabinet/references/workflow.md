@@ -72,6 +72,13 @@ Rules that follow from the table:
   may create a duplicate or apply a change twice. Resolve it with a **read**: list
   or fetch the object and see what is actually there. If the read settles it, say
   so; if it cannot, tell the user the result is unknown and stop.
+- **The one exception is a file upload.** When `kit.py upload` loses the
+  connection, there is nothing to read back — the id never arrived, and the
+  bundled spec has no list of files to search. A repeat is also harmless: a
+  file is attached to nothing until its id goes into a product's `media` or a
+  document. So the client says «повтор безопасен» and exits `1`, not `4`:
+  upload again and use the id from the new answer. The extra file, if the first
+  attempt did land, stays unused.
 - **A read that fails is not ambiguous.** Reads change nothing, so a failed read
   can simply be retried.
 - **One ambiguous step blocks everything that depends on it.** In a multi-step
@@ -126,8 +133,15 @@ kit.py list /v1/categories -q status=ACTIVE # -q is passed through; page/per_pag
 
 - **`coverage: complete`** — every page was read. A conclusion about the whole
   collection is allowed.
-- **`coverage: partial`** — a page failed, the API reported more objects than
-  came back, or the page ceiling was hit. `coverage_note` says which.
+- **`coverage: partial`** — a later page failed, the API reported more objects
+  than came back, or the page ceiling was hit. `coverage_note` says which.
+- **`coverage: failed`** — not one page came back (exit `1`). There is nothing
+  to report on: say the read failed and why, never «0 объектов». `--format csv`
+  writes no file in this case.
+
+A required filter is checked before the walk starts: `list /v1/categories`
+without `-q status=…` is refused with exit `2` and the allowed values, and
+nothing is sent.
 
 The protocol for any report built on collection data:
 
@@ -201,6 +215,57 @@ the API.
   Array fields (`stocks`, `media`, `characteristics`) are **replaced wholesale**,
   so send the full array read from the object, with only the intended element
   changed.
+- **Добавить вариант в существующий продукт** (второй размер, объём, цвет).
+  Сначала прочитайте продукт: `api GET /v1/products/<id>` — если в
+  `settings.grouping_characteristic_ids` пусто, `POST /v1/variants` ответит
+  `400` «Укажите группирующие характеристики». Порядок, по одному подтверждению
+  на шаг:
+  ```bash
+  kit.py list /v1/characteristics -q status=ACTIVE        # есть ли «Объём»; нет — POST /v1/characteristics
+  kit.py api PATCH /v1/products/<id> --data \
+      '{"settings": {"grouping_characteristic_ids": ["<char_id>"], "splitting_characteristic_ids": []}}' --confirm
+  kit.py api PATCH /v1/variants/<существующий> --data \
+      '{"characteristics": [{"characteristic_id": "<char_id>", "values": ["150 мл"]}]}' --confirm
+  kit.py api POST /v1/variants --data @new-variant.json --confirm   # тот же product_id, "values": ["300 мл"]
+  ```
+  `characteristics` в `PATCH` заменяет массив целиком — передайте и прежние
+  характеристики товара. Перенос товара в другой продукт — то же самое, с
+  настройкой на целевом продукте. Подробно: [`catalog.md`](catalog.md),
+  «Продукт с несколькими товарами».
+- **SEO каталога пачкой.** Категория или подборка с пустыми `seo_title` и
+  `seo_description` получает на витрине шаблон магазина — по умолчанию с
+  «большим ассортиментом» и обещаниями «бонусов, рассрочки и кешбэка». Порядок:
+  ```bash
+  kit.py list /v1/categories -q status=ACTIVE --format csv --fields id,title,seo_title,seo_description
+  kit.py validate PATCH /v1/categories/<id> --data '{"seo_title": "…", "seo_description": "…"}'
+  kit.py api PATCH /v1/categories/<id> --data '{"seo_title": "…", "seo_description": "…"}' --confirm
+  kit.py api GET /v1/categories/<id>        # сверка, потом следующая категория
+  ```
+  Затем то же для подборок: `list /v1/collections -q status=ACTIVE`, у них есть
+  ещё `seo_h1`; автоматические (`is_automatic: true`) пропускайте — они по id не
+  правятся. Описание — одна-две фразы о том, что именно в категории и чем
+  магазин отличается, без обещаний, которых нет в его настройках. Покажите
+  владельцу всю таблицу «было → станет» сразу, но отправляйте по одной правке с
+  подтверждением. Шаблон для корзины, поиска, избранного, 404 и для пустых полей
+  — только в кабинете: Настройки → SEO, переменные `[TITLE]` и `[COMPANY]`;
+  его текст назовите владельцу и предложите переписать.
+- **Магазин из шаблона: что сделать в кабинете первым.** У магазина, созданного
+  из шаблона, на витрине остаются заглушки, до которых API не достаёт: логотип
+  «LOGO», телефон `8 (000) 000-00-00`, пустое основное меню (на телефоне нет
+  бургера), шаблонное SEO. Назовите владельцу конкретные поля и разделы, а не
+  «настройте магазин»:
+  - **Настройки → О компании** — название и описание магазина, логотип и
+    светлый логотип для тёмной шапки (без него тёмный логотип теряется на
+    тёмном фоне), фавикон, телефоны, режим работы. `kit.py upload` файл
+    загрузит, но привязать его к логотипу нельзя;
+  - **Редактор сайта → Меню** — основное, дополнительное и меню подвала;
+  - **Редактор сайта → Баннеры и окна** — окно подписки на рассылку и промокод
+    за подписку. Сам промокод создайте через API группой `SINGLE` с одним
+    кодом, а выбрать его для окна можно только там. Секции подписки на
+    странице нужен id кода, а не группы — пункт «Промокод за подписку на
+    рассылку» в [`promo.md`](promo.md);
+  - **Настройки → SEO** — шаблон описаний (см. рецепт выше).
+  Каталог, цены и остатки этот скил ведёт сам — их делайте после, через API.
 - **Add a product photo:** `upload photo.jpg --confirm` → take the returned file
   `id` → `api PATCH /v1/variants/<id>` with a `media` entry referencing it (plus
   the existing media).

@@ -2,19 +2,17 @@
 name: yandex-kit-cabinet
 description: >-
     Manage a Яндекс.Кит (Yandex KIT) e-com store through the public API
-    (api.kit.yandex.net) — catalog (категории, товары, продукты), цены и остатки,
-    заказы, промокоды/скидки/подарки, коллекции, бейджи, вебхуки. Also asks the
-    store's built-in AI assistant: the data-analyst agent answers questions about
-    this store's own data and builds arbitrary reports from a prompt
-    («проанализируй продажи», «сколько заказов за неделю», «почему упали заказы»,
-    «топ товаров за месяц», выручка, трафик, конверсия), and the support agent
-    answers how-to questions about the cabinet and its features from the
-    documentation («как настроить доставку», «где включить промокоды», «как
-    добавить товар», «какие возможности есть в кабинете»). Use for «Яндекс.Кит»,
-    «кабинет Кита», «магазин на Ките», «товары в Ките», «заказы Яндекс.Кит», «API
-    Кита», «спроси ассистента Кита», «ассистент Кита», «аналитика магазина».
-    Prefers the public API; never scrapes the UI. Not for unrelated Yandex
-    services.
+    (api.kit.yandex.net) — catalog (категории, характеристики, товары, продукты),
+    цены и остатки, заказы, промокоды/скидки/подарки, коллекции, бейджи, блог,
+    SEO товаров, категорий и подборок, вебхуки. Counts and exports read the whole
+    collection and state their coverage («сколько заказов за неделю», «выгрузи
+    заказы в CSV»). Can also put a question to the store's built-in AI assistant
+    (data-analyst and support agents); the server may have them switched off, and
+    then the skill says so and counts from the store's own data instead of
+    relaying a stub. Use for «Яндекс.Кит», «кабинет Кита», «магазин на Ките»,
+    «товары в Ките», «заказы Яндекс.Кит», «API Кита», «спроси ассистента Кита».
+    Prefers the public API; never scrapes the UI. Storefront pages and sections
+    are kit-storefront-constructor. Not for unrelated Yandex services.
 user-invocable: true
 allowed-tools: Bash(scripts/kit.py:*)
 ---
@@ -36,7 +34,8 @@ every future Kit skill builds on.
    this public API and not in this skill: hand storefront work over to
    `kit-storefront-constructor` (pages, sections, publication) or
    `kit-custom-sections` (building a custom section) instead of refusing it and
-   instead of working around it here.
+   instead of working around it here. The storefront menu and banners are in
+   neither of them — they are cabinet-only, «Редактор сайта» (table below).
 2. **Read-before-write.** Any create/update/delete against the store requires
    explicit per-operation user confirmation. Build the body from
    `scripts/kit.py describe <METHOD> <path>` — never from memory — check it with
@@ -100,8 +99,8 @@ every future Kit skill builds on.
 0. **First contact: say what this can do before asking for anything.** A user
    who has just installed the skills has been told nothing except that the copy
    succeeded. Open with three or four things they can now ask for — catalog and
-   prices, stock, orders, promo codes, store analytics — in their own words, not
-   as an endpoint list. Then move to the token as the one remaining step. Do not
+   prices, stock, orders, promo codes, counts and exports — in their own words,
+   not as an endpoint list. Then move to the token as the one remaining step. Do not
    open a session with a bare credential request: that is the difference between
    a tool that arrived and a tool that is now theirs. This applies once, on the
    first run for a user with no token; afterwards go straight to step 1.
@@ -147,6 +146,11 @@ every future Kit skill builds on.
 4. **Act.** Follow the workflow in
    [`references/workflow.md`](references/workflow.md) for each task; prepare the
    request, show it, confirm, then send.
+5. **A store created from a template?** Part of what its storefront shows is
+   not reachable through the API at all: the «LOGO» placeholder, the
+   `8 (000) 000-00-00` phone, an empty main menu, the default SEO template. Name
+   these fields to the owner as the first cabinet task, before catalog work —
+   [`references/workflow.md`](references/workflow.md), «Магазин из шаблона».
 
 ## The tool — `scripts/kit.py`
 
@@ -177,7 +181,8 @@ Two commands exist to keep answers honest, and both are cheap:
   type, a bad enum value and an invented field name. Mutating `api` calls run
   the same check and refuse to send an invalid body (exit `2`).
 - **`list`** walks a paginated collection to the end and prints
-  `{coverage, received, total_count, pages_read, items}`. Use it instead of a
+  `{coverage, received, total_count, pages_read, items}`, where `coverage` is
+  `complete`, `partial` or `failed` (not one page read). Use it instead of a
   single `api GET` whenever the answer depends on how many objects there are:
   one page of orders is not «все заказы». `--format csv --fields a,b,c` turns
   the same walk into an export: rows go to stdout, the coverage verdict to
@@ -248,7 +253,8 @@ not fall back to a guessed path.
 ## Shop AI Assistant
 
 Two endpoints put the cabinet's own AI assistant behind the same
-token. Both take one natural-language prompt and return generated text.
+token. Both take one natural-language prompt and return generated text — when
+the server has them switched on.
 
 ```bash
 python3 scripts/kit.py ask analyst --prompt "Сравни продажи по категориям за месяц"
@@ -260,6 +266,23 @@ python3 scripts/kit.py ask analyst --prompt-file ./question.txt
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `analyst` | Questions about **this store's own data** — продажи, заказы, выручка, трафик, конверсия, каталог. Builds arbitrary reports from a prompt. | The user asks an analytical «почему / сколько / сравни / построй отчёт» question that no single endpoint answers. |
 | `support` | How-to questions about **the cabinet itself**, grounded in the documentation.                                                             | The user asks how to do something in the UI, or what a feature does — including areas with no public API.         |
+
+**Ассистент может быть выключен на сервере.** Тогда на любой промпт сервер
+отвечает одной и той же заглушкой, которая начинается словами «ИИ-помощник
+временно недоступен», — с кодом `200`, то есть по статусу она неотличима от
+ответа. `kit.py ask` её узнаёт: печатает `{"unavailable": true, "answer": …}` и
+выходит с кодом `1`. Дальше:
+
+- заглушку не пересказывайте как ответ ассистента и вопрос не повторяйте —
+  придёт та же заглушка;
+- вопрос про данные магазина («топ товаров», «сколько заказов», «выручка за
+  неделю») посчитайте сами по `list /v1/orders` и `list /v1/variants` и назовите
+  покрытие; трафика и конверсии в API нет вовсе — так и скажите. Если посчитать
+  нечем, честно скажите, что сводные показатели сейчас есть только в кабинете,
+  раздел «Главная»;
+- вопрос о том, как что-то сделать в кабинете, — отвечайте по справочным
+  страницам этого скила и таблице «[Чего в публичном API нет](#чего-в-публичном-api-нет)»,
+  называя раздел кабинета.
 
 Rules:
 
@@ -308,6 +331,7 @@ JSON на stdout — для вас. Ответ в чате — для него.
 | --- | --- |
 | `GET /v1/orders` не поддерживает фильтры | заказы придётся просмотреть целиком — это займёт время |
 | `coverage: partial`, `received: 100 of 340` | я посмотрел 100 заказов из 340 — это не весь магазин |
+| `coverage: failed`, exit `1` | заказы прочитать не удалось: <причина>. Это не значит, что заказов нет |
 | в публичном API нет такой ручки | через меня это сделать нельзя, только в кабинете: <раздел> |
 | `variant` / `product card` | товар / карточка товара |
 | `PUBLISHED` / `HIDDEN` / `ARCHIVED` | опубликован / скрыт / в архиве |
@@ -342,13 +366,13 @@ JSON на stdout — для вас. Ответ в чате — для него.
 | Topic                                                               | Page                                                       |
 | ------------------------------------------------------------------- | ---------------------------------------------------------- |
 | Auth, base URL, exit codes, tool flags, gotchas, domain router      | [`references/api.md`](references/api.md)                   |
-| AI-ассистент: агенты analyst/support, контракт, ошибки, границы     | [`references/ai-assistant.md`](references/ai-assistant.md) |
+| AI-ассистент: агенты analyst/support, заглушка, контракт, ошибки    | [`references/ai-assistant.md`](references/ai-assistant.md) |
 | Workflow: describe → validate → confirm → send → verify; исходы записи (completed/failed/ambiguous); полнота покрытия | [`references/workflow.md`](references/workflow.md) |
 | Каталог: категории, характеристики, продукты, товары, файлы, склады | [`references/catalog.md`](references/catalog.md)           |
 | Промо: промокоды, скидки, подарки, подарочные карты, бейджи, услуги | [`references/promo.md`](references/promo.md)               |
 | Коллекции: статические, динамические, контекстные                   | [`references/collections.md`](references/collections.md)   |
 | Заказы и клиенты                                                    | [`references/orders.md`](references/orders.md)             |
-| Сайт и интеграции: блог, редиректы, вебхуки, гео; границы API       | [`references/site.md`](references/site.md)                 |
+| Сайт и интеграции: блог (как написать статью), редиректы, вебхуки, гео | [`references/site.md`](references/site.md)                 |
 
 ## Boundaries
 
@@ -358,9 +382,10 @@ public API. Not for other Yandex products, browser automation, or UI scraping.
 ### Чего в публичном API нет
 
 Пользователь видит эти возможности в кабинете и будет просить их — но ручек нет.
-Единственный правильный ответ: сказать, что операции нет в публичном API, и
-отправить в кабинет. Не изобретайте путь, не подменяйте операцию похожей и не
-предлагайте обойти это браузером.
+Правильный ответ: сказать, что операции нет в публичном API, и отправить в
+кабинет. Не изобретайте путь, не подменяйте операцию похожей и не предлагайте
+обойти это браузером. Несколько строк таблицы, наоборот, говорят «есть»: там
+граница проходит внутри одной области, и её важно назвать точно.
 
 Третья колонка — куда отправить пользователя. Отказ без маршрута бесполезен:
 человеку нужно доделать задачу, а не узнать про устройство нашего API.
@@ -369,24 +394,43 @@ public API. Not for other Yandex products, browser automation, or UI scraping.
 | --- | --- | --- |
 | Возвраты и частичные возвраты | Ручек нет. Отмена (`cancel`) — **не** возврат: другая операция и другие последствия для денег покупателя. | Заказы → карточка заказа |
 | Редактирование состава заказа, объединение заказов, массовые действия | Нет. Только документированные переходы статуса. | Заказы → карточка заказа |
-| Печать этикеток, накладных, ШК | Нет. | Заказы → выбрать заказы → печать |
-| Отзывы и рейтинги товаров | Нет. | Отзывы |
-| Наборы товаров (комплекты) | Нет. Ближайшее из доступного — скидка или подарок к товару; предложите это и дождитесь выбора. | Каталог → Наборы |
-| **Интеграции: платежи и эквайринг, Метрика, Вебмастер, внешние модули** | Нет ни одной ручки. Вебхуки (`/v1/webhooks`) — это исходящие уведомления, а **не** способ что-то подключить. | Настройки → Интеграции |
-| **Фиды: импорт и экспорт, YML** | Нет. Выгрузка каталога через `/v1/variants` — это другое: не фид магазина, не его формат и не его адрес. Так и назовите. | Каталог → Импорт/экспорт |
+| Печать этикеток, накладных, ШК | Нет. | Заказы |
+| Метки «Честного знака» | Нет. | Заказы |
+| Отзывы и рейтинги товаров | Нет. | Настройки → Отзывы |
+| Наборы товаров (комплекты) | Нет. Ближайшее из доступного — скидка или подарок к товару; предложите это и дождитесь выбора. | Акции → Наборы |
+| Автостратегия индекса цен (стратегии ценообразования) | Нет. | Акции → Стратегии ценообразования |
+| **Фильтры каталога**: какие характеристики фильтруют категорию или подборку, их порядок и скрытие | Нет. Новая характеристика сама в фильтры не попадает — после её создания назовите владельцу, какие фильтры включить ([`catalog.md`](references/catalog.md)). | Редактор сайта → Фильтры |
+| Описание категории | Нет. У подборок есть — `description` в `PATCH /v1/collections/{id}`. | Товары |
+| **Альтернативный шаблон страницы** для категории, подборки или товара | Назначить нельзя. Пока шаблон не назначен, вариант страницы, собранный в конструкторе витрины, покупатель не увидит. | Товары; Коллекции |
+| Адрес карточки товара | Формируется из названия первого товара при создании и через API не меняется. Название первого товара выбирайте осознанно. | — |
+| Удалить пустой продукт | Нет. Без товаров продукт на витрине не виден, но в кабинете остаётся: переносите товары так, чтобы не плодить пустышки. | Товары |
+| **Интеграции: платежи и эквайринг, Метрика, Вебмастер, внешние модули** | Нет ни одной ручки. Вебхуки (`/v1/webhooks`) — это исходящие уведомления, а **не** способ что-то подключить. | Интеграции; оплата — Настройки → Способы оплаты |
+| **Фиды: импорт и экспорт, YML** | Нет. Выгрузка каталога через `/v1/variants` — это другое: не фид магазина, не его формат и не его адрес. Так и назовите. | Импорт, в том числе YML-фид, — Настройки → Товары, цены, остатки → Источники данных; ссылка на фид для Директа — Товары, кнопка выгрузки |
 | **API-токены** | Выпуск и отзыв токена — только в кабинете. | Настройки → API |
-| **Домен, почта на домене, SEO и мета-теги** | Нет. Редиректы (`/v1/redirects`) — есть; это единственное из этой области. | Настройки → Домен; Сайт → SEO |
-| **Тарифы доставки, грузоместа, заборки** | Нет. Склады (`/v1/warehouses`) — есть; граница проходит именно здесь. | Настройки → Доставка |
-| **Сотрудники, роли, кассиры, компания, бизнес-аккаунт** | Нет. Из этой области только `GET /v1/users/current` и `GET /v1/store`. | Настройки → Сотрудники / Компания |
-| **Сообщения и Telegram-уведомления** | Нет. Алерты (`/v1/alerts`) — есть. | Настройки → Уведомления |
-| Дашборд, чек-листы, выручка, конверсия, сводные показатели | Отдельной ручки нет. Аналитические вопросы адресуйте `ask analyst`. | Главная |
-| Настройка фильтров каталога, автостратегия индекса цен, метки честного знака | Нет. | Каталог → Настройки |
-| Конструктор витрины: страницы, секции, меню, баннеры, модальные окна | Не в этом скиле. Передайте задачу соседям: страницы, секции, тема и публикация — `kit-storefront-constructor`; вёрстка кастомной секции — `kit-custom-sections`. Отказываться не нужно. | Сайт → Конструктор |
+| **Домен, почта на домене** | Нет. Редиректы (`/v1/redirects`) — есть. | Настройки → Домен |
+| **SEO товара, категории, подборки, статьи блога** | **Есть**: `PATCH` с `seo_title` и `seo_description`, у товаров, подборок и статей ещё `seo_h1`. Каждой категории и подборке задайте своё описание — иначе витрина подставит шаблон магазина (см. ниже). | — делается здесь |
+| **SEO страниц витрины** (главная, «О нас», служебные) | Не в этом скиле: `kit-storefront-constructor`, `page set --seo-*`. | — |
+| **Шаблоны SEO магазина** — подставляются, где своих полей нет: корзина, поиск, избранное, 404, товары и категории с пустыми `seo_*` | Нет. Переменные шаблона — `[TITLE]` и `[COMPANY]`. | Настройки → SEO |
+| **Тарифы и службы доставки, грузоместа, заборки** | Нет. Склады (`/v1/warehouses`) — есть; граница проходит именно здесь. | Настройки → Склады и логистика |
+| **Название, описание, логотип и светлый логотип для тёмной шапки, фавикон, телефоны, режим работы магазина** | Нет. `kit.py upload` загрузит файл, но привязать его к логотипу или фавикону нельзя. `GET /v1/store` отдаёт только id, slug и адрес витрины. | Настройки → О компании |
+| **Сотрудники, роли, кассиры, бизнес-аккаунт** | Нет. Из этой области только `GET /v1/users/current`. | Настройки → Пользователи и роли |
+| **Сообщения и Telegram-уведомления** | Нет. Алерты (`/v1/alerts`) — есть. | Настройки |
+| Дашборд, чек-листы, выручка, конверсия, сводные показатели | Отдельной ручки нет. Заказы и выручку посчитайте по `list /v1/orders`, назвав покрытие; трафика и конверсии в API нет вовсе. `ask analyst` — только если он отвечает, а не присылает заглушку. | Главная |
+| **Меню витрины**: основное, дополнительное, колонки и юридическое меню подвала | Нет — **ни в этом скиле, ни в `kit-storefront-constructor`**; соседям не передавать. У магазина из шаблона основное меню часто пустое (на телефоне нет бургера) — это первое, что нужно сделать в кабинете. Созданное меню конструктор видит по id (`menu_ids` в `section show`) и может подключить в шапку или подвал. | Редактор сайта → Меню |
+| **Баннеры и модальные окна**, в том числе окно подписки на рассылку и **промокод за подписку** | Окна и баннеры — нет ни здесь, ни у соседних скилов. Сам промокод создаётся здесь: группа `SINGLE` с одним кодом. Окно подписки и секция подписки ссылаются на **id кода, а не группы** — пункт «Промокод за подписку на рассылку» в [`promo.md`](references/promo.md). Выбрать промокод для окна можно только в кабинете; секцию подписки на странице правит `kit-storefront-constructor`, ему и передайте id кода. | Редактор сайта → Баннеры и окна |
+| Конструктор витрины: страницы, секции, тема, публикация | Не в этом скиле. Передайте задачу соседям: страницы, секции, тема и публикация — `kit-storefront-constructor`; вёрстка кастомной секции — `kit-custom-sections`. Отказываться не нужно. | Редактор сайта |
+
+**Шаблон SEO по умолчанию обещает лишнее.** Пока в «Настройки → SEO» ничего не
+меняли, страницы без своих полей получают платформенный текст про «быструю
+доставку, бонусы, скидки и акции, рассрочку и кешбэк», а категории — про
+«большой ассортимент». У нового магазина этого обычно нет. Скажите владельцу
+проверить и переписать шаблон в кабинете, а сами задайте `seo_description`
+каждой категории и подборке — рецепт «SEO каталога пачкой» в
+[`references/workflow.md`](references/workflow.md).
 
 Названия разделов могут отличаться от версии к версии кабинета — это ориентир,
-а не точный путь. Если не уверены в разделе, скажите про раздел без уточнения
-подпункта или спросите `ask support`: он отвечает по документации кабинета
-именно на такие вопросы.
+а не точный путь. Если не уверены в подпункте, называйте раздел верхнего уровня
+без него: неверный подпункт уводит человека дальше, чем никакой.
 
 Это не редкий угол: примерно **пятая часть** того, чем люди заняты в кабинете,
 публичным API не покрыта вовсе, а ещё столько же — покрыта частично. Поэтому
