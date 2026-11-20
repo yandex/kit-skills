@@ -398,6 +398,7 @@
   "skills/kit-storefront-constructor/scripts/kit.py":"yastore/ai/yandex-kit-skills/skills/kit-storefront-constructor/scripts/kit.py",
   "skills/kit-storefront-constructor/scripts/kitlib/__init__.py":"yastore/ai/yandex-kit-skills/skills/kit-storefront-constructor/scripts/kitlib/__init__.py",
   "skills/kit-storefront-constructor/scripts/kitlib/common.py":"yastore/ai/yandex-kit-skills/skills/kit-storefront-constructor/scripts/kitlib/common.py",
+  "skills/kit-storefront-constructor/scripts/kitlib/menu.py":"yastore/ai/yandex-kit-skills/skills/kit-storefront-constructor/scripts/kitlib/menu.py",
   "skills/kit-storefront-constructor/scripts/kitlib/pages.py":"yastore/ai/yandex-kit-skills/skills/kit-storefront-constructor/scripts/kitlib/pages.py",
   "skills/kit-storefront-constructor/scripts/kitlib/schema.py":"yastore/ai/yandex-kit-skills/skills/kit-storefront-constructor/scripts/kitlib/schema.py",
   "skills/kit-storefront-constructor/scripts/kitlib/selfupdate.py":"yastore/ai/yandex-kit-skills/skills/kit-storefront-constructor/scripts/kitlib/selfupdate.py",

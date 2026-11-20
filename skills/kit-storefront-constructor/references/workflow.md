@@ -75,7 +75,7 @@ Then diff → dry-run → confirm → push, as above.
 
 The header and footer are slots: one composite section per store, copied onto every page. A custom header is a template with alias `YandexKit.Header` sitting in that slot (the footer likewise with `YandexKit.Footer`).
 
-1. `section show --id <header section id>` → the current header settings and `menu_ids` (`main`, `additional`). Those ids are the only menus a custom header can point at: menus are not reachable from this skill. Take the ids from `menu_ids`, not from the raw settings — the main menu id sits at `modules.main.menu.menu` today, but older settings keep a plain string at `modules.main.menu` and some are wrapped in `menu` several times over; `menu_ids` reads through all of them. A field that wants a menu id gets the string, never the object. When the slot already holds a template, `menu_ids` lists that template's `MenuId` fields by setting path.
+1. `section show --id <header section id>` → the current header settings and `menu_ids` (`main`, `additional`). Those ids are the menus the header points at now; `menu list` shows every menu of the store and `menu show --id` reads one. Take the ids from `menu_ids`, not from the raw settings — the main menu id sits at `modules.main.menu.menu` today, but older settings keep a plain string at `modules.main.menu` and some are wrapped in `menu` several times over; `menu_ids` reads through all of them. A field that wants a menu id gets the string, never the object. When the slot already holds a template, `menu_ids` lists that template's `MenuId` fields by setting path.
 2. Build the markup with `kit-custom-sections` in slot mode (`--slot header --confirm-slot`), which writes the matching alias into its create file; a regular section file without an alias also works. Do not add the alias to a create file by hand.
 3. `templates create --file header.json --chrome-slot header --dry-run`: the flag sets `"alias": "YandexKit.Header"` in the body. Show the user the plan **including `store_wide_warning`**, in their language. Only after they confirm that store-wide change: the same command with `--confirm`. Record the template id — there is no delete.
 4. Switch the slot to the new template in the workspace: `section set --work work.json --id <header section id> --widget YandexKit.Mystique --template-id NEW --settings-file s.json` (the template must already be in the snapshot — `templates create --work`, or `content templates-sync`). Every page copy switches; show the `store_wide_warning`. Then `content push --no-publish --confirm` and let the user look at the proposal before a plain push publishes it. The cabinet's «Заменить» does the same switch by hand.
@@ -90,7 +90,7 @@ Before step 3, tell the user what a custom header does not inherit from the buil
 3. `page add --work work.json --title "Акции" --pattern /promo-august` — the client derives `exact` and `variant_type`, generates the id, checks locally every page rule the server refuses a write for, and copies the store header and footer onto the page (`--no-chrome` to opt out). `--status hidden` starts the page unpublished (custom pages support it); `--seo-title/--seo-h1/--seo-description` work on static patterns. An address a system page of this store already answers at — `/account`, `/catalog/sale`, `/products/gift` — is refused: the server would accept it, and the storefront would open either page there. If the store lacks that system page (mostly a store created before that page existed), the page is added with a warning to pass on.
 4. Fill the page: `section add --work work.json --page-id <new page UUID> --widget ...` — the new page has no alias, so select it by id from the `page add` report.
 5. Diff → dry-run → confirm → push, as with sections. Until the push the page exists only in the workspace.
-6. Make the page reachable. Nothing links to a new page: put a link to it into a section of this same edit (a button or a tile), or tell the user to add a menu item in the cabinet (section «Меню») right after the push — not before, the page does not exist until then and a menu edit is live at once.
+6. Make the page reachable. Nothing links to a new page: put a link to it into a section of this same edit (a button or a tile), or add a menu item (see «Editing a menu») right after the push — not before, the page does not exist until then and a menu write is live at once.
 
 A system page added with `--alias` arrives with its content widget (the refunds list, the product block, the listing, a titled `RichText` on a text page) — built from the storefront schema, so run `schema fetch` with the store's `--bff-url` first; otherwise the report warns that the page is empty and the widget is added later with `section add`.
 
@@ -102,10 +102,10 @@ A second page for an alias works only for `productCard` and `categoryAndCollecti
 
 ## Removing a page
 
-1. `page remove --work work.json --id UUID`. A default system page is refused outright — hide it instead when its alias allows. For everything else the report lists the sections that disappear with the page (last copies vs. composite copies that survive elsewhere) and warns that a page a menu item links to cannot be removed: the server then refuses the whole write with 400 and writes nothing. For an `alternative` product or collection page template it also carries `assignment_warning`: the products, categories or collections assigned to it fall back to the default template, and no revert or `--no-publish` brings the assignment back.
+1. `page remove --work work.json --id UUID`. A default system page is refused outright — hide it instead when its alias allows. For everything else the report lists the sections that disappear with the page (last copies vs. composite copies that survive elsewhere) and warns that a page a menu item links to cannot be removed: the server then refuses the whole write with 400 and writes nothing. Check the menus for a link to this page first (`menu list`, `menu show`). For an `alternative` product or collection page template it also carries `assignment_warning`: the products, categories or collections assigned to it fall back to the default template, and no revert or `--no-publish` brings the assignment back.
 2. Show that report to the user and get explicit consent for the deletion itself.
 3. `content push --work work.json --commit-message "..." --allow-page-removal --dry-run`, then only after confirmation the same with `--confirm`. Without `--allow-page-removal` the push gate refuses — that is the guard against silent page loss, because the server drops unaliased pages without any warning of its own.
-4. If the push answers 400 naming the page as linked to a menu item, nothing was written. The user removes that item in the cabinet (section «Меню»); then repeat the same push. A menu edit does not change the content version, so no re-pull is needed unless the push reports `version_conflict`. Tell the user before they edit the menu that the item vanishes from the live storefront at once and that no content rollback restores it.
+4. If the push answers 400 naming the page as linked to a menu item, nothing was written. Remove that item (see «Editing a menu») after telling the user that it vanishes from the live storefront at once and that no content rollback restores it; then repeat the same push. A menu write does not change the content version, so no re-pull is needed unless the push reports `version_conflict`.
 
 ## Removing and reordering
 
@@ -146,6 +146,23 @@ Never retry a create automatically after an ambiguous transport outcome — that
 2. `media upload --file PATH --confirm` for images, `media video-upload` for supported video.
 3. Use the returned `url`/`public_path` in section settings; poll `media video-status --id` until a terminal status.
 4. A brand font: confirm the user holds a web licence for it, `media font-upload --file Regular.woff2 --confirm` and the same for the bold file, then `theme set` with `typography.fontFamily.custom` built from the two `sources_fragment`s (`isSelected: true`, `name`, `sources.normal.regular` and `.bold`) and `predefined.isSelected: false` → diff → push. Have the user look at the storefront afterwards.
+
+## Editing a menu
+
+1. `menu list` → the store's menus; `section show --id <header or footer section id>` → `menu_ids`, which of them the storefront shows and where.
+2. `menu pull --alias main --work menu.json` (or `--id UUID`), then `menu links` for the ids of pages, categories and collections.
+3. Edit `title` and `tree` in `menu.json`. Order in the file is order on the storefront; nesting is `children`.
+4. `menu diff --work menu.json` → show the user what is added, removed, relinked and reordered, plus the warnings. A renamed item reads as removed and added, with everything under it.
+5. Only after explicit consent: `menu push --work menu.json --confirm`. The result names the snapshot file and the `undo` command — pass both on.
+6. On `menu_changed` (exit `1`) nothing was written: pull again, redo the edit, show the new plan.
+7. To undo: `menu restore --snapshot FILE --confirm`. When it is refused for a target that no longer exists, `--drop-missing` writes the rest and lists what it left out.
+
+## Changing the logo
+
+1. `logo show` → what the store has now.
+2. `logo set --file ./logo.png --dry-run`, then after explicit consent the same with `--confirm`. It saves the previous logo to a snapshot file, uploads the new one and writes it.
+3. Tell the user the change is live at once and give the `undo` command from the result (`logo restore --snapshot FILE --confirm`).
+4. A header on a dark background shows a separate inverted logo when the store has one; that one is set in the cabinet and does not follow this change.
 
 ## Push failure handling
 

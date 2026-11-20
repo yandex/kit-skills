@@ -1648,13 +1648,13 @@ _ASSIGNED_ITEMS = {"productCard": "products", "categoryAndCollection": "categori
 
 
 def reachability_note(page: "dict[str, object]") -> str:
-    """What makes a new custom page reachable: nothing yet, and this skill cannot add a menu item."""
+    """What makes a new custom page reachable: nothing yet — a link in a section or a menu item does."""
     return (
         f"{_page_label(page)} is new and nothing links to it: it is in no menu, and the storefront "
-        "only reaches it by typing its address. Menus are not editable from here. Either put a "
-        "link to it into a section in this same edit (a button or a tile), or have the user add a "
-        "menu item in the cabinet (section «Меню») right after the push — not before it: the page "
-        "does not exist until the push, and a menu edit is live at once."
+        "only reaches it by typing its address. Either put a link to it into a section in this "
+        "same edit (a button or a tile), or add a menu item with 'menu pull' and 'menu push' "
+        "right after the push — not before it: the page does not exist until the push, and a "
+        "menu write is live at once."
     )
 
 
@@ -1694,8 +1694,8 @@ def remove_page(workspace, page: "dict[str, object]") -> "dict[str, object]":
     A default page with an alias is refused outright — the server rejects the whole
     write with 400. Everything else is removed together with its section copies. A page
     a menu item links to is not deleted by the server at all: it refuses the whole write
-    with 400 and the item has to go first, in the cabinet. Which pages the menu links to
-    is not readable from here, so the report says so. The push still requires
+    with 400 and the item has to go first. This function works on the workspace alone and
+    does not read the menus, so the report names the check. The push still requires
     --allow-page-removal plus explicit confirmation.
     """
     if is_protected_page(page):
@@ -1745,15 +1745,15 @@ def remove_page(workspace, page: "dict[str, object]") -> "dict[str, object]":
             "The push will require --allow-page-removal and explicit confirmation."
         ),
         "menu_note": (
-            "Whether a menu item links to this page cannot be checked from here: the storefront "
-            "menu is not part of the constructor content and this API exposes no menu "
-            "operations. Say so plainly before confirming. If the push answers 400 naming "
-            "this page as linked to a menu item, nothing was written: the user removes that "
-            "item in the cabinet (section «Меню»), and the same push is repeated — a menu "
-            "edit does not change the content version, so the workspace stays valid. Warn the "
-            "user before that menu edit: a menu is not versioned, so the item disappears from "
-            "the live storefront at once, and neither --no-publish nor reverting a content "
-            "version brings it back."
+            "This command works on the workspace and does not read the menus. Check them before "
+            "confirming: 'menu list', then 'menu show' for each menu, and look for a page link "
+            "with this page's id. If the push answers 400 naming this page as linked to a menu "
+            "item, nothing was written: remove that item with 'menu pull' and 'menu push', and "
+            "the same push is repeated — a menu write does not change the content version, so "
+            "the workspace stays valid. Warn the user before that menu write: a menu is not "
+            "versioned, so the item disappears from the live storefront at once, and neither "
+            "--no-publish nor reverting a content version brings it back; 'menu restore' with "
+            "the snapshot of that menu push does."
         ),
     }
     assignment_warning = alternative_removal_warning(page)

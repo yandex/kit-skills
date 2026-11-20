@@ -72,8 +72,8 @@ Routes, projections, and exit codes: [./references/api.md](./references/api.md).
   it); client policy stricter than the server (a custom page on a route of a system page
   the store has; variant/exact derivation; the aliases `page add` does not create); and
   plan warnings. A page a menu item links to cannot be removed — the server refuses the
-  whole write with 400 — and the menu is not readable here, so `page remove` says so
-  instead of predicting a cascade. Keep the tables in sync with the
+  whole write with 400 — and `page remove` works on the workspace without reading the
+  menus, so it names the check instead of predicting a cascade. Keep the tables in sync with the
   backend by hand — the suite pins them to a snapshot and cannot see the backend change —
   and never weaken the protected-page removal refusal.
   `section status` and the hidden-status push gate mirror the server's table of widgets that
@@ -143,6 +143,13 @@ Routes, projections, and exit codes: [./references/api.md](./references/api.md).
   file's call sites instead of trusting the commands it knows. The header names,
   the 1000-character limit and the `YANDEX_KIT_SKILLS_TELEMETRY_DISABLED` opt-out
   (which drops every one of them) live once, in `kitlib.common`.
+- Menus and the logo are written outside constructor versions and are live at once:
+  `menu push`, `menu restore`, `logo set` and `logo restore` each require `--confirm`,
+  save the previous state to a snapshot file before the write and read the result back
+  (exit `5` when it differs). The server has no version check for a menu, so `menu push`
+  rereads it right before the write and refuses a workspace pulled from another state;
+  never remove that reread and never turn the refusal into a retry. The alias of a menu
+  goes back exactly as it was read: a write without it clears the alias of a system menu.
 
 ## Portability
 

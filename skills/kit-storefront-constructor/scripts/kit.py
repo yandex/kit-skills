@@ -27,6 +27,7 @@ _SCRIPT_DIR = Path(__file__).resolve().parent
 if str(_SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPT_DIR))
 
+from kitlib import menu as menu_engine  # noqa: E402
 from kitlib import pages as pages_engine  # noqa: E402
 from kitlib import schema as schema_engine  # noqa: E402
 from kitlib import selfupdate  # noqa: E402
@@ -123,6 +124,13 @@ EXIT_REFUSED = 3
 # the requested no-publish mode was not honored. Distinct so callers can never mistake it
 # for a clean preview (0) or for a write that did not happen (1/2/3).
 EXIT_PUBLISHED_NOT_PREVIEWED = 4
+# A menu or logo write went through, but reading it back did not return what was sent.
+# Distinct from 1/2/3, where nothing was written.
+EXIT_WRITTEN_NOT_VERIFIED = 5
+# The cabinet's limits for a store logo; the server itself checks only where the file is stored.
+LOGO_MAX_SIZE_BYTES = 5 * 1024 * 1024
+LOGO_MIME_TYPES = {"image/jpeg", "image/png", "image/webp"}
+LOGO_SNAPSHOT_KIND = "logo-snapshot"
 
 
 def resolve_base_url(override: str | None) -> str:
@@ -2197,6 +2205,431 @@ def run_media_video_status(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
+def _utc_now() -> datetime.datetime:
+    return datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+
+
+def _save_json_file(path: Path, value: object, label: str) -> None:
+    try:
+        path.write_text(canonical_json(value), encoding="utf-8")
+    except OSError as error:
+        raise UsageError(f"Cannot write {label} file {path}: {redact_secrets(str(error))}") from None
+
+
+def _request_feature(
+    args: argparse.Namespace,
+    feature: str,
+    method: str,
+    path: str,
+    *,
+    body: dict[str, object] | None = None,
+) -> object:
+    """A request to a route that an older server does not have yet.
+
+    There a missing route answers 404 like a missing object would, so the reads that
+    address no object say what the 404 means.
+    """
+    try:
+        return _request_for_args(args, method, path, body=body)
+    except ApiError as error:
+        if error.status == 404 and method == "GET":
+            raise ApiError(
+                404,
+                {"error": "not_supported", "detail": f"This server does not expose {feature} operations."},
+            ) from None
+        raise
+
+
+def _read_menus(args: argparse.Namespace) -> list[dict[str, object]]:
+    return menu_engine.validate_menus(_request_feature(args, "menu", "GET", "/menus"))
+
+
+def _read_menu(args: argparse.Namespace, menu_id: str) -> dict[str, object]:
+    return menu_engine.validate_menu(_request_for_args(args, "GET", f"/menus/{menu_id}"))
+
+
+def _read_menu_targets(args: argparse.Namespace) -> object:
+    return _request_feature(args, "menu", "GET", "/menu-links")
+
+
+def run_menu_list(args: argparse.Namespace) -> int:
+    menus = [menu_engine.project_menu(menu, with_tree=False) for menu in _read_menus(args)]
+    menus.sort(key=lambda menu: (menu["alias"] is None, str(menu["alias"]), str(menu["title"])))
+    emit_json({"menus": menus})
+    return EXIT_OK
+
+
+def run_menu_show(args: argparse.Namespace) -> int:
+    menu = menu_engine.select_menu(_read_menus(args), args.id, args.alias)
+    emit_json(menu_engine.project_menu(menu, with_tree=True))
+    return EXIT_OK
+
+
+def run_menu_links(args: argparse.Namespace) -> int:
+    emit_json(menu_engine.project_links(_read_menu_targets(args)))
+    return EXIT_OK
+
+
+def run_menu_pull(args: argparse.Namespace) -> int:
+    work_path = Path(args.work).expanduser()
+    if work_path.exists() and not args.force:
+        raise UsageError(f"{work_path} already exists; pass --force to overwrite it.")
+    menu = menu_engine.select_menu(_read_menus(args), args.id, args.alias)
+    _save_json_file(work_path, menu_engine.new_workspace(menu), "menu workspace")
+    emit_json({"work_path": str(work_path), "menu": menu_engine.project_menu(menu, with_tree=False)})
+    return EXIT_OK
+
+
+def _load_menu_workspace(raw_path: str) -> tuple[Path, dict[str, object]]:
+    work_path = Path(raw_path).expanduser()
+    return work_path, menu_engine.load_workspace(load_settings_file(work_path, "Menu workspace"))
+
+
+def _menu_plan(
+    menu_id: object,
+    alias: object,
+    title: str,
+    tree: list[dict[str, object]],
+    base_title: str,
+    base_tree: list[dict[str, object]],
+    targets: dict[str, set[str]] | None = None,
+) -> dict[str, object]:
+    """What a write would change, with the gate results; `targets` adds the link check."""
+    changes = menu_engine.diff_trees(base_tree, tree)
+    lint = menu_engine.lint_tree(title, tree, base_tree, targets)
+    plan: dict[str, object] = {
+        "menu_id": menu_id,
+        "alias": alias or None,
+        "title": title,
+        "items": {"before": menu_engine.tree_size(base_tree), "after": menu_engine.tree_size(tree)},
+        "depth": menu_engine.tree_depth(tree),
+        "changes": changes,
+        "unchanged": title == base_title and menu_engine.diff_is_empty(changes),
+        "errors": lint["errors"],
+        "warnings": lint["warnings"],
+    }
+    if title != base_title:
+        plan["title_before"] = base_title
+    return plan
+
+
+def _workspace_plan(
+    workspace: dict[str, object], targets: dict[str, set[str]] | None = None
+) -> dict[str, object]:
+    base = workspace["base"]
+    return _menu_plan(
+        workspace["menu_id"],
+        workspace["alias"],
+        str(workspace["title"]),
+        workspace["tree"],  # type: ignore[arg-type]
+        str(base["title"]),  # type: ignore[index]
+        base["tree"],  # type: ignore[index]
+        targets,
+    )
+
+
+def run_menu_diff(args: argparse.Namespace) -> int:
+    _, workspace = _load_menu_workspace(args.work)
+    emit_json(_workspace_plan(workspace))
+    return EXIT_OK
+
+
+def _replace_menu(
+    args: argparse.Namespace,
+    current: dict[str, object],
+    title: str,
+    alias: str,
+    tree: list[dict[str, object]],
+    snapshot_path: Path,
+) -> tuple[dict[str, object], bool]:
+    """Save what the menu is now, replace it, and read the result back."""
+    menu_id = str(current["id"])
+    _save_json_file(
+        snapshot_path,
+        menu_engine.new_snapshot(current, _utc_now().isoformat()),
+        "menu snapshot",
+    )
+    _request_for_args(args, "PUT", f"/menus/{menu_id}", body=menu_engine.draft_menu(title, alias, tree))
+    stored = _read_menu(args, menu_id)
+    verified = menu_engine.menu_state(stored)["fingerprint"] == menu_engine.fingerprint(title, alias, tree)
+    return stored, verified
+
+
+def _menu_write_result(stored: dict[str, object], snapshot_path: Path, verified: bool) -> dict[str, object]:
+    return {
+        "menu": menu_engine.project_menu(stored, with_tree=False),
+        "snapshot_path": str(snapshot_path),
+        "undo": f"menu restore --snapshot {snapshot_path} --confirm",
+        "verified": verified,
+    }
+
+
+def _report_unverified(what: str) -> int:
+    print(
+        f"The {what} was written, but reading it back returned something else. "
+        "Read it again before any further edit.",
+        file=sys.stderr,
+    )
+    return EXIT_WRITTEN_NOT_VERIFIED
+
+
+def run_menu_push(args: argparse.Namespace) -> int:
+    work_path, workspace = _load_menu_workspace(args.work)
+    plan = _workspace_plan(workspace)
+    if plan["errors"]:
+        emit_json({"plan": plan}, stream=sys.stderr)
+        return EXIT_USAGE
+    if args.dry_run or not args.confirm:
+        emit_json({"plan": plan})
+        if args.dry_run:
+            return EXIT_OK
+        return refuse_mutation("menu write")
+    if plan["unchanged"]:
+        raise UsageError("The workspace equals the menu it was pulled from; there is nothing to write.")
+
+    plan = _workspace_plan(workspace, menu_engine.targets_index(_read_menu_targets(args)))
+    if plan["errors"]:
+        emit_json({"plan": plan}, stream=sys.stderr)
+        return EXIT_USAGE
+
+    menu_id = str(workspace["menu_id"])
+    alias = str(workspace["alias"])
+    base = workspace["base"]
+    # The server has no version check, so the menu is read once more right before the write.
+    current = _read_menu(args, menu_id)
+    now = menu_engine.menu_state(current)
+    if now["fingerprint"] != base["fingerprint"]:  # type: ignore[index]
+        emit_json(
+            {
+                "error": "menu_changed",
+                "detail": "The menu was changed after 'menu pull'. Nothing was written; pull it again.",
+                "changes_since_pull": menu_engine.diff_trees(base["tree"], now["tree"]),  # type: ignore[index, arg-type]
+            },
+            stream=sys.stderr,
+        )
+        return EXIT_API_ERROR
+
+    snapshot_path = work_path.with_name(f"{work_path.name}.snapshot-{_utc_now():%Y%m%dT%H%M%SZ}.json")
+    title = str(workspace["title"])
+    tree = workspace["tree"]
+    stored, verified = _replace_menu(args, current, title, alias, tree, snapshot_path)  # type: ignore[arg-type]
+    if verified:
+        _save_json_file(work_path, menu_engine.new_workspace(stored), "menu workspace")
+    emit_json({"plan": plan, "result": _menu_write_result(stored, snapshot_path, verified)})
+    return EXIT_OK if verified else _report_unverified("menu")
+
+
+def run_menu_restore(args: argparse.Namespace) -> int:
+    snapshot_file = Path(args.snapshot).expanduser()
+    snapshot = menu_engine.load_snapshot(load_settings_file(snapshot_file, "Menu snapshot"))
+    title = str(snapshot["title"])
+    alias = str(snapshot["alias"])
+    tree: list[dict[str, object]] = snapshot["tree"]  # type: ignore[assignment]
+    if args.dry_run or not args.confirm:
+        emit_json(
+            {
+                "plan": {
+                    "menu_id": snapshot["menu_id"],
+                    "alias": alias or None,
+                    "title": title,
+                    "items": menu_engine.tree_size(tree),
+                    "taken_at": snapshot["taken_at"],
+                }
+            }
+        )
+        if args.dry_run:
+            return EXIT_OK
+        return refuse_mutation("menu restore")
+
+    targets = menu_engine.targets_index(_read_menu_targets(args))
+    dropped: list[str] = []
+    if args.drop_missing:
+        tree, dropped = menu_engine.drop_unknown_targets(tree, targets)
+    current = _read_menu(args, str(snapshot["menu_id"]))
+    now = menu_engine.menu_state(current)
+    plan = _menu_plan(snapshot["menu_id"], alias, title, tree, str(now["title"]), now["tree"], targets)  # type: ignore[arg-type]
+    plan["dropped"] = dropped
+    if plan["errors"]:
+        emit_json({"plan": plan}, stream=sys.stderr)
+        return EXIT_USAGE
+    if plan["unchanged"]:
+        raise UsageError("The menu already equals the snapshot; there is nothing to write.")
+
+    snapshot_path = snapshot_file.with_name(f"{snapshot_file.name}.before-restore-{_utc_now():%Y%m%dT%H%M%SZ}.json")
+    stored, verified = _replace_menu(args, current, title, alias, tree, snapshot_path)
+    emit_json({"plan": plan, "result": _menu_write_result(stored, snapshot_path, verified)})
+    return EXIT_OK if verified else _report_unverified("menu")
+
+
+def _read_logo(args: argparse.Namespace) -> dict[str, object]:
+    return require_mapping(_request_feature(args, "logo", "GET", "/company/logo"), "Company logo response")
+
+
+def _logo_value(logo: dict[str, object]) -> dict[str, object] | None:
+    """The stored logo as a write body, or None when the store has no logo."""
+    file_id, file_path = logo.get("file_id"), logo.get("file_path")
+    if not isinstance(file_id, str) or not isinstance(file_path, str) or not file_id or not file_path:
+        return None
+    sizes = logo.get("sizes")
+    return {
+        "file_id": file_id,
+        "file_path": file_path,
+        "sizes": sizes if isinstance(sizes, list) else [],
+        "display_sequence": 1,
+    }
+
+
+def _project_logo(logo: dict[str, object]) -> dict[str, object]:
+    value = _logo_value(logo)
+    if value is None:
+        return {"set": False}
+    return {"set": True, "file_id": value["file_id"], "file_path": value["file_path"], "sizes": value["sizes"]}
+
+
+def run_logo_show(args: argparse.Namespace) -> int:
+    emit_json(_project_logo(_read_logo(args)))
+    return EXIT_OK
+
+
+def validate_logo_file(raw_path: str) -> Path:
+    """Apply the cabinet's logo limits to a local image."""
+    file_path, media_type = validate_local_media_file(raw_path, "image")
+    if media_type not in LOGO_MIME_TYPES:
+        raise UsageError("A logo must be a JPEG, PNG or WEBP image.")
+    if file_path.stat().st_size > LOGO_MAX_SIZE_BYTES:
+        raise UsageError(f"A logo file must not exceed {LOGO_MAX_SIZE_BYTES} bytes.")
+    return file_path
+
+
+def _logo_snapshot_path(args: argparse.Namespace) -> Path:
+    if args.snapshot_out:
+        return Path(args.snapshot_out).expanduser()
+    return Path(f"logo-snapshot-{_utc_now():%Y%m%dT%H%M%SZ}.json")
+
+
+def _replace_logo(
+    args: argparse.Namespace,
+    previous: dict[str, object],
+    body: dict[str, object],
+    snapshot_path: Path,
+) -> int:
+    """Save what the logo is now, write the new value, and read the result back."""
+    _save_json_file(
+        snapshot_path,
+        {
+            "kind": LOGO_SNAPSHOT_KIND,
+            "version": 1,
+            "taken_at": _utc_now().isoformat(),
+            "logo": _logo_value(previous),
+        },
+        "logo snapshot",
+    )
+    write_error: object = None
+    try:
+        _request_for_args(args, "PUT", "/company/logo", body=body)
+    except ApiError as error:
+        # The server stores the logo before its follow-up steps, so a failed request
+        # can still have changed it: the read below decides.
+        write_error = {"status": error.status, "detail": error.payload}
+    stored = _read_logo(args)
+    verified = _logo_value(stored) is not None and stored.get("file_id") == body["file_id"]
+    if write_error is not None and not verified:
+        raise ApiError(write_error["status"], write_error["detail"])  # type: ignore[index]
+    result: dict[str, object] = {
+        "logo": _project_logo(stored),
+        "previous": _project_logo(previous),
+        "snapshot_path": str(snapshot_path),
+        "verified": verified,
+    }
+    if _logo_value(previous) is not None:
+        result["undo"] = f"logo restore --snapshot {snapshot_path} --confirm"
+    if write_error is not None:
+        result["write_error"] = write_error
+    emit_json(result)
+    return EXIT_OK if verified else _report_unverified("logo")
+
+
+def run_logo_set(args: argparse.Namespace) -> int:
+    if not args.confirm and not args.dry_run:
+        return refuse_mutation("logo change")
+    file_path = validate_logo_file(args.file)
+    if args.dry_run:
+        emit_json(
+            {
+                "plan": {
+                    "file": str(file_path),
+                    "bytes": file_path.stat().st_size,
+                    "requests": ["GET /company/logo", "POST /files", "PUT /company/logo", "GET /company/logo"],
+                }
+            }
+        )
+        return EXIT_OK
+
+    previous = _read_logo(args)
+    body, content_type = encode_multipart_file(file_path)
+    uploaded = require_image_upload_response(
+        request_json(
+            "POST",
+            build_url(resolve_base_url(args.base_url), "/files"),
+            load_token(),
+            raw_data=body,
+            content_type=content_type,
+            **telemetry(args),
+        )
+    )
+    sizes = uploaded.get("sizes")
+    logo = {
+        "file_id": uploaded["id"],
+        "file_path": uploaded["public_path"],
+        "sizes": sizes if isinstance(sizes, list) else [],
+        "display_sequence": 1,
+    }
+    return _replace_logo(args, previous, logo, _logo_snapshot_path(args))
+
+
+def run_logo_restore(args: argparse.Namespace) -> int:
+    snapshot_file = Path(args.snapshot).expanduser()
+    snapshot = load_settings_file(snapshot_file, "Logo snapshot")
+    if snapshot.get("kind") != LOGO_SNAPSHOT_KIND:
+        raise UsageError("This file is not a logo snapshot written by 'logo set'.")
+    saved = snapshot.get("logo")
+    logo = _logo_value(saved) if isinstance(saved, dict) else None
+    if logo is None:
+        raise UsageError(
+            "The snapshot holds no logo: the store had none, and this API cannot remove a logo."
+        )
+    if args.dry_run or not args.confirm:
+        emit_json({"plan": {"logo": _project_logo(logo), "taken_at": snapshot.get("taken_at")}})
+        if args.dry_run:
+            return EXIT_OK
+        return refuse_mutation("logo restore")
+    return _replace_logo(args, _read_logo(args), logo, _logo_snapshot_path(args))
+
+
+def _add_menu_selector(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--id", type=parse_uuid, help="Menu UUID from 'menu list'.")
+    parser.add_argument(
+        "--alias",
+        choices=menu_engine.SYSTEM_ALIASES,
+        help="A system menu by its alias instead of --id.",
+    )
+
+
+def _add_write_flags(parser: argparse.ArgumentParser, action: str) -> None:
+    parser.add_argument(
+        "--confirm",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help=f"Confirm this {action}.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="Print the plan without token or network access.",
+    )
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Yandex Kit experimental constructor fixed-route client.")
     parser.add_argument("--base-url", help="Override API base URL (else KIT_API_BASE_URL, else configured default).")
@@ -2595,6 +3028,55 @@ def build_parser() -> argparse.ArgumentParser:
     video_status = media_commands.add_parser("video-status", help="Get asynchronous video processing status.")
     video_status.add_argument("--id", required=True, help="Video ID returned by video-upload.")
     video_status.set_defaults(handler=run_media_video_status)
+
+    menu = commands.add_parser("menu", help="Read storefront menus, or replace one through a local workspace.")
+    menu_commands = menu.add_subparsers(dest="menu_command", required=True)
+    menu_commands.add_parser("list", help="List the store's menus with their totals.").set_defaults(
+        handler=run_menu_list
+    )
+    menu_show = menu_commands.add_parser("show", help="Show one menu as a tree with its link targets.")
+    _add_menu_selector(menu_show)
+    menu_show.set_defaults(handler=run_menu_show)
+    menu_commands.add_parser(
+        "links", help="List the pages, categories and collections a menu item can link to."
+    ).set_defaults(handler=run_menu_links)
+    menu_pull = menu_commands.add_parser("pull", help="Write one menu into a local workspace file.")
+    _add_menu_selector(menu_pull)
+    menu_pull.add_argument("--work", required=True, help="Path of the workspace file to write.")
+    menu_pull.add_argument("--force", action="store_true", help="Overwrite an existing workspace file.")
+    menu_pull.set_defaults(handler=run_menu_pull)
+    menu_diff = menu_commands.add_parser("diff", help="Offline diff and checks of a menu workspace.")
+    menu_diff.add_argument("--work", required=True, help="Workspace file path from 'menu pull'.")
+    menu_diff.set_defaults(handler=run_menu_diff)
+    menu_push = menu_commands.add_parser(
+        "push", help="Confirmed full replace of one menu from its workspace through PUT /menus/{id}."
+    )
+    menu_push.add_argument("--work", required=True, help="Workspace file path from 'menu pull'.")
+    _add_write_flags(menu_push, "menu write")
+    menu_push.set_defaults(handler=run_menu_push)
+    menu_restore = menu_commands.add_parser("restore", help="Write a menu back from a snapshot of 'menu push'.")
+    menu_restore.add_argument("--snapshot", required=True, help="Snapshot file path printed by 'menu push'.")
+    menu_restore.add_argument(
+        "--drop-missing",
+        action="store_true",
+        help="Leave out items whose page, category or collection no longer exists, with everything under them.",
+    )
+    _add_write_flags(menu_restore, "menu restore")
+    menu_restore.set_defaults(handler=run_menu_restore)
+
+    logo = commands.add_parser("logo", help="Read or replace the store logo.")
+    logo_commands = logo.add_subparsers(dest="logo_command", required=True)
+    logo_commands.add_parser("show", help="Show the current store logo.").set_defaults(handler=run_logo_show)
+    logo_set = logo_commands.add_parser("set", help="Upload a local image and make it the store logo.")
+    logo_set.add_argument("--file", required=True, help="Path to a local JPEG, PNG or WEBP file, at most 5 MB.")
+    logo_set.add_argument("--snapshot-out", help="Where to save the previous logo (default: ./logo-snapshot-<time>.json).")
+    _add_write_flags(logo_set, "logo change")
+    logo_set.set_defaults(handler=run_logo_set)
+    logo_restore = logo_commands.add_parser("restore", help="Put back the logo saved by 'logo set'.")
+    logo_restore.add_argument("--snapshot", required=True, help="Snapshot file path printed by 'logo set'.")
+    logo_restore.add_argument("--snapshot-out", help="Where to save the logo being replaced.")
+    _add_write_flags(logo_restore, "logo restore")
+    logo_restore.set_defaults(handler=run_logo_restore)
 
     return parser
 
